@@ -1,0 +1,40 @@
+{
+  "total_links": 9431,
+  "total_length_km": 2829.33,
+  "by_material": [
+    {
+      "name": "Earth",
+      "length_km": 1203.26
+    },
+    {
+      "name": "Marrum",
+      "length_km": 0.12
+    },
+    {
+      "name": "Murrum",
+      "length_km": 942.83
+    },
+    {
+      "name": "Tarmac",
+      "length_km": 683.12
+    }
+  ],
+  "by_class": [
+    {
+      "name": "Highway",
+      "length_km": 175.98
+    },
+    {
+      "name": "Major road",
+      "length_km": 127.25
+    },
+    {
+      "name": "Motorable track",
+      "length_km": 1852.14
+    },
+    {
+      "name": "Secondary road",
+      "length_km": 673.97
+    }
+  ]
+}

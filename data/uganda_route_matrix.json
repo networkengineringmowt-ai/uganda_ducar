@@ -1,0 +1,1023 @@
+{
+  "summary": {
+    "generated_at_utc": "2026-06-02T13:27:44.773934+00:00",
+    "source": "data/uganda_unified_roads_web_2026-06-02.geojson",
+    "edge_count": 37488,
+    "cartographic_route_count": 5626,
+    "node_count": 44972,
+    "source_record_count": 16319,
+    "candidate_segment_count": 38221,
+    "deduplicated_segment_count": 37488,
+    "duplicate_reduction_count": 733,
+    "total_length_km": 92856.94,
+    "by_network_category": {
+      "City Roads": 2258,
+      "Community Access Roads": 594,
+      "District Roads": 1754,
+      "KCCA": 7,
+      "National Roads": 1013
+    },
+    "route_matrix_pairs": 132,
+    "method": "Endpoint snapping at 4 decimal degrees, geometry-based length recalculation, route-key dissolve by category/system/district/name/surface, light topology-preserving simplification, node degree calculation, district centroid route matrix."
+  },
+  "districts": [
+    {
+      "district": "Kampala",
+      "length_km": 2346.7309999999998,
+      "flow": 70.8858225108225,
+      "records": 1848
+    },
+    {
+      "district": "Kabale",
+      "length_km": 1928.498,
+      "flow": 82.35087719298245,
+      "records": 114
+    },
+    {
+      "district": "Mbarara",
+      "length_km": 1914.054,
+      "flow": 73.12711864406779,
+      "records": 236
+    },
+    {
+      "district": "Luwero",
+      "length_km": 1830.474,
+      "flow": 78.43434343434343,
+      "records": 99
+    },
+    {
+      "district": "Arua",
+      "length_km": 1803.69,
+      "flow": 76.0,
+      "records": 78
+    },
+    {
+      "district": "Hoima",
+      "length_km": 1754.334,
+      "flow": 86.93846153846154,
+      "records": 65
+    },
+    {
+      "district": "Wakiso",
+      "length_km": 1618.099,
+      "flow": 67.25817555938038,
+      "records": 581
+    },
+    {
+      "district": "Kitgum",
+      "length_km": 1611.241,
+      "flow": 89.7948717948718,
+      "records": 39
+    },
+    {
+      "district": "Soroti",
+      "length_km": 1587.6209999999999,
+      "flow": 81.39506172839506,
+      "records": 81
+    },
+    {
+      "district": "Masaka",
+      "length_km": 1488.6689999999999,
+      "flow": 78.71,
+      "records": 100
+    },
+    {
+      "district": "Jinja",
+      "length_km": 1488.545,
+      "flow": 79.77777777777777,
+      "records": 162
+    },
+    {
+      "district": "Mubende",
+      "length_km": 1422.378,
+      "flow": 91.70731707317073,
+      "records": 41
+    }
+  ],
+  "routes": [
+    {
+      "origin": "Kampala",
+      "destination": "Kabale",
+      "straight_distance_km": 344.6,
+      "network_impedance_km": 461.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kampala",
+      "destination": "Mbarara",
+      "straight_distance_km": 253.9,
+      "network_impedance_km": 340.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kampala",
+      "destination": "Luwero",
+      "straight_distance_km": 62.0,
+      "network_impedance_km": 83.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kampala",
+      "destination": "Arua",
+      "straight_distance_km": 337.4,
+      "network_impedance_km": 452.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kampala",
+      "destination": "Hoima",
+      "straight_distance_km": 182.7,
+      "network_impedance_km": 244.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kampala",
+      "destination": "Wakiso",
+      "straight_distance_km": 20.3,
+      "network_impedance_km": 27.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kampala",
+      "destination": "Kitgum",
+      "straight_distance_km": 325.5,
+      "network_impedance_km": 436.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kampala",
+      "destination": "Soroti",
+      "straight_distance_km": 185.3,
+      "network_impedance_km": 248.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kampala",
+      "destination": "Masaka",
+      "straight_distance_km": 140.3,
+      "network_impedance_km": 188.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kampala",
+      "destination": "Jinja",
+      "straight_distance_km": 84.7,
+      "network_impedance_km": 113.5,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kampala",
+      "destination": "Mubende",
+      "straight_distance_km": 131.9,
+      "network_impedance_km": 176.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Kampala",
+      "straight_distance_km": 344.6,
+      "network_impedance_km": 461.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Mbarara",
+      "straight_distance_km": 91.6,
+      "network_impedance_km": 122.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Luwero",
+      "straight_distance_km": 358.1,
+      "network_impedance_km": 479.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Arua",
+      "straight_distance_km": 468.0,
+      "network_impedance_km": 627.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Hoima",
+      "straight_distance_km": 307.6,
+      "network_impedance_km": 412.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Wakiso",
+      "straight_distance_km": 324.4,
+      "network_impedance_km": 434.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Kitgum",
+      "straight_distance_km": 599.6,
+      "network_impedance_km": 803.5,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Soroti",
+      "straight_distance_km": 518.2,
+      "network_impedance_km": 694.4,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Masaka",
+      "straight_distance_km": 206.2,
+      "network_impedance_km": 276.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Jinja",
+      "straight_distance_km": 429.2,
+      "network_impedance_km": 575.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kabale",
+      "destination": "Mubende",
+      "straight_distance_km": 255.8,
+      "network_impedance_km": 342.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Kampala",
+      "straight_distance_km": 253.9,
+      "network_impedance_km": 340.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Kabale",
+      "straight_distance_km": 91.6,
+      "network_impedance_km": 122.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Luwero",
+      "straight_distance_km": 266.7,
+      "network_impedance_km": 357.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Arua",
+      "straight_distance_km": 401.2,
+      "network_impedance_km": 537.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Hoima",
+      "straight_distance_km": 228.0,
+      "network_impedance_km": 305.5,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Wakiso",
+      "straight_distance_km": 233.7,
+      "network_impedance_km": 313.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Kitgum",
+      "straight_distance_km": 513.9,
+      "network_impedance_km": 688.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Soroti",
+      "straight_distance_km": 426.7,
+      "network_impedance_km": 571.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Masaka",
+      "straight_distance_km": 118.0,
+      "network_impedance_km": 158.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Jinja",
+      "straight_distance_km": 338.6,
+      "network_impedance_km": 453.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mbarara",
+      "destination": "Mubende",
+      "straight_distance_km": 167.4,
+      "network_impedance_km": 224.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Kampala",
+      "straight_distance_km": 62.0,
+      "network_impedance_km": 83.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Kabale",
+      "straight_distance_km": 358.1,
+      "network_impedance_km": 479.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Mbarara",
+      "straight_distance_km": 266.7,
+      "network_impedance_km": 357.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Arua",
+      "straight_distance_km": 276.8,
+      "network_impedance_km": 370.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Hoima",
+      "straight_distance_km": 136.4,
+      "network_impedance_km": 182.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Wakiso",
+      "straight_distance_km": 65.6,
+      "network_impedance_km": 87.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Kitgum",
+      "straight_distance_km": 273.2,
+      "network_impedance_km": 366.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Soroti",
+      "straight_distance_km": 160.4,
+      "network_impedance_km": 214.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Masaka",
+      "straight_distance_km": 167.2,
+      "network_impedance_km": 224.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Jinja",
+      "straight_distance_km": 100.0,
+      "network_impedance_km": 134.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Luwero",
+      "destination": "Mubende",
+      "straight_distance_km": 112.8,
+      "network_impedance_km": 151.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Kampala",
+      "straight_distance_km": 337.4,
+      "network_impedance_km": 452.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Kabale",
+      "straight_distance_km": 468.0,
+      "network_impedance_km": 627.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Mbarara",
+      "straight_distance_km": 401.2,
+      "network_impedance_km": 537.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Luwero",
+      "straight_distance_km": 276.8,
+      "network_impedance_km": 370.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Hoima",
+      "straight_distance_km": 185.6,
+      "network_impedance_km": 248.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Wakiso",
+      "straight_distance_km": 334.5,
+      "network_impedance_km": 448.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Kitgum",
+      "straight_distance_km": 228.6,
+      "network_impedance_km": 306.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Soroti",
+      "straight_distance_km": 318.4,
+      "network_impedance_km": 426.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Masaka",
+      "straight_distance_km": 374.0,
+      "network_impedance_km": 501.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Jinja",
+      "straight_distance_km": 355.5,
+      "network_impedance_km": 476.4,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Arua",
+      "destination": "Mubende",
+      "straight_distance_km": 267.0,
+      "network_impedance_km": 357.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Kampala",
+      "straight_distance_km": 182.7,
+      "network_impedance_km": 244.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Kabale",
+      "straight_distance_km": 307.6,
+      "network_impedance_km": 412.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Mbarara",
+      "straight_distance_km": 228.0,
+      "network_impedance_km": 305.5,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Luwero",
+      "straight_distance_km": 136.4,
+      "network_impedance_km": 182.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Arua",
+      "straight_distance_km": 185.6,
+      "network_impedance_km": 248.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Wakiso",
+      "straight_distance_km": 172.3,
+      "network_impedance_km": 230.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Kitgum",
+      "straight_distance_km": 295.7,
+      "network_impedance_km": 396.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Soroti",
+      "straight_distance_km": 264.4,
+      "network_impedance_km": 354.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Masaka",
+      "straight_distance_km": 188.6,
+      "network_impedance_km": 252.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Jinja",
+      "straight_distance_km": 236.0,
+      "network_impedance_km": 316.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Hoima",
+      "destination": "Mubende",
+      "straight_distance_km": 81.9,
+      "network_impedance_km": 109.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Kampala",
+      "straight_distance_km": 20.3,
+      "network_impedance_km": 27.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Kabale",
+      "straight_distance_km": 324.4,
+      "network_impedance_km": 434.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Mbarara",
+      "straight_distance_km": 233.7,
+      "network_impedance_km": 313.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Luwero",
+      "straight_distance_km": 65.6,
+      "network_impedance_km": 87.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Arua",
+      "straight_distance_km": 334.5,
+      "network_impedance_km": 448.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Hoima",
+      "straight_distance_km": 172.3,
+      "network_impedance_km": 230.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Kitgum",
+      "straight_distance_km": 336.3,
+      "network_impedance_km": 450.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Soroti",
+      "straight_distance_km": 202.9,
+      "network_impedance_km": 271.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Masaka",
+      "straight_distance_km": 120.7,
+      "network_impedance_km": 161.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Jinja",
+      "straight_distance_km": 104.9,
+      "network_impedance_km": 140.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Wakiso",
+      "destination": "Mubende",
+      "straight_distance_km": 115.3,
+      "network_impedance_km": 154.5,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Kampala",
+      "straight_distance_km": 325.5,
+      "network_impedance_km": 436.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Kabale",
+      "straight_distance_km": 599.6,
+      "network_impedance_km": 803.5,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Mbarara",
+      "straight_distance_km": 513.9,
+      "network_impedance_km": 688.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Luwero",
+      "straight_distance_km": 273.2,
+      "network_impedance_km": 366.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Arua",
+      "straight_distance_km": 228.6,
+      "network_impedance_km": 306.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Hoima",
+      "straight_distance_km": 295.7,
+      "network_impedance_km": 396.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Wakiso",
+      "straight_distance_km": 336.3,
+      "network_impedance_km": 450.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Soroti",
+      "straight_distance_km": 183.0,
+      "network_impedance_km": 245.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Masaka",
+      "straight_distance_km": 435.0,
+      "network_impedance_km": 583.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Jinja",
+      "straight_distance_km": 285.7,
+      "network_impedance_km": 382.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Kitgum",
+      "destination": "Mubende",
+      "straight_distance_km": 346.9,
+      "network_impedance_km": 464.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Kampala",
+      "straight_distance_km": 185.3,
+      "network_impedance_km": 248.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Kabale",
+      "straight_distance_km": 518.2,
+      "network_impedance_km": 694.4,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Mbarara",
+      "straight_distance_km": 426.7,
+      "network_impedance_km": 571.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Luwero",
+      "straight_distance_km": 160.4,
+      "network_impedance_km": 214.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Arua",
+      "straight_distance_km": 318.4,
+      "network_impedance_km": 426.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Hoima",
+      "straight_distance_km": 264.4,
+      "network_impedance_km": 354.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Wakiso",
+      "straight_distance_km": 202.9,
+      "network_impedance_km": 271.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Kitgum",
+      "straight_distance_km": 183.0,
+      "network_impedance_km": 245.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Masaka",
+      "straight_distance_km": 321.6,
+      "network_impedance_km": 431.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Jinja",
+      "straight_distance_km": 116.8,
+      "network_impedance_km": 156.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Soroti",
+      "destination": "Mubende",
+      "straight_distance_km": 270.1,
+      "network_impedance_km": 362.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Kampala",
+      "straight_distance_km": 140.3,
+      "network_impedance_km": 188.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Kabale",
+      "straight_distance_km": 206.2,
+      "network_impedance_km": 276.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Mbarara",
+      "straight_distance_km": 118.0,
+      "network_impedance_km": 158.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Luwero",
+      "straight_distance_km": 167.2,
+      "network_impedance_km": 224.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Arua",
+      "straight_distance_km": 374.0,
+      "network_impedance_km": 501.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Hoima",
+      "straight_distance_km": 188.6,
+      "network_impedance_km": 252.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Wakiso",
+      "straight_distance_km": 120.7,
+      "network_impedance_km": 161.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Kitgum",
+      "straight_distance_km": 435.0,
+      "network_impedance_km": 583.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Soroti",
+      "straight_distance_km": 321.6,
+      "network_impedance_km": 431.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Jinja",
+      "straight_distance_km": 224.3,
+      "network_impedance_km": 300.5,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Masaka",
+      "destination": "Mubende",
+      "straight_distance_km": 107.0,
+      "network_impedance_km": 143.4,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Kampala",
+      "straight_distance_km": 84.7,
+      "network_impedance_km": 113.5,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Kabale",
+      "straight_distance_km": 429.2,
+      "network_impedance_km": 575.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Mbarara",
+      "straight_distance_km": 338.6,
+      "network_impedance_km": 453.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Luwero",
+      "straight_distance_km": 100.0,
+      "network_impedance_km": 134.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Arua",
+      "straight_distance_km": 355.5,
+      "network_impedance_km": 476.4,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Hoima",
+      "straight_distance_km": 236.0,
+      "network_impedance_km": 316.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Wakiso",
+      "straight_distance_km": 104.9,
+      "network_impedance_km": 140.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Kitgum",
+      "straight_distance_km": 285.7,
+      "network_impedance_km": 382.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Soroti",
+      "straight_distance_km": 116.8,
+      "network_impedance_km": 156.6,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Masaka",
+      "straight_distance_km": 224.3,
+      "network_impedance_km": 300.5,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Jinja",
+      "destination": "Mubende",
+      "straight_distance_km": 206.0,
+      "network_impedance_km": 276.1,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Kampala",
+      "straight_distance_km": 131.9,
+      "network_impedance_km": 176.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Kabale",
+      "straight_distance_km": 255.8,
+      "network_impedance_km": 342.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Mbarara",
+      "straight_distance_km": 167.4,
+      "network_impedance_km": 224.3,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Luwero",
+      "straight_distance_km": 112.8,
+      "network_impedance_km": 151.2,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Arua",
+      "straight_distance_km": 267.0,
+      "network_impedance_km": 357.8,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Hoima",
+      "straight_distance_km": 81.9,
+      "network_impedance_km": 109.7,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Wakiso",
+      "straight_distance_km": 115.3,
+      "network_impedance_km": 154.5,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Kitgum",
+      "straight_distance_km": 346.9,
+      "network_impedance_km": 464.9,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Soroti",
+      "straight_distance_km": 270.1,
+      "network_impedance_km": 362.0,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Masaka",
+      "straight_distance_km": 107.0,
+      "network_impedance_km": 143.4,
+      "traffic_flow_index": 100
+    },
+    {
+      "origin": "Mubende",
+      "destination": "Jinja",
+      "straight_distance_km": 206.0,
+      "network_impedance_km": 276.1,
+      "traffic_flow_index": 100
+    }
+  ]
+}
