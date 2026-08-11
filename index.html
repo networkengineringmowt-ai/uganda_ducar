@@ -1,14 +1,98 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>DUCAR Priority Studio</title>
-<meta name="description" content="DUCAR maintenance prioritisation, budget scenario analysis and GIS decision support tool for Uganda district, urban and community access roads." />
-  <script type="module" crossorigin src="/uganda_ducar/assets/index-gYbOrP4D.js"></script>
-  <link rel="stylesheet" crossorigin href="/uganda_ducar/assets/index-ByMP9Ldu.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#071b2c" />
+  <title>Uganda DUCAR Link Intelligence</title>
+  <meta name="description" content="Auditable link-level reporting for Uganda's district, urban and community access road network." />
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-<div id="root"></div>
+  <div id="loading" class="loading"><span class="loader"></span><strong>Building the national link register…</strong><small>Loading mapped links and administrative coverage</small></div>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#overview" aria-label="DUCAR Link Intelligence home">
+        <span class="brand-mark">UG</span>
+        <span><strong>DUCAR Link Intelligence</strong><small>Ministry of Works &amp; Transport · Uganda</small></span>
+      </a>
+      <div class="status"><i></i><span>Source-traceable reporting</span><small id="updated">Preparing data…</small></div>
+    </header>
+
+    <nav class="tabs" aria-label="Main navigation">
+      <button class="tab active" data-view="overview">Network brief</button>
+      <button class="tab" data-view="links">Link register</button>
+      <button class="tab" data-view="admin">Administrative coverage</button>
+      <button class="tab" data-view="method">Method &amp; quality</button>
+    </nav>
+
+    <main>
+      <section id="overview" class="view active">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">National DUCAR decision support · 2026 registry</p>
+            <h1>Every mapped road link.<br><em>One auditable record.</em></h1>
+            <p class="lede">Geometry-corrected road intelligence joining condition, surface, supplied traffic values and exact length coverage across Uganda’s administrative units.</p>
+            <div class="hero-actions"><button class="primary" data-open-view="links">Explore all links</button><a class="secondary" href="./data/ducar_link_reporting.geojson" download>Download full GeoJSON</a></div>
+          </div>
+          <div class="audit-card"><span>DATA INTEGRITY</span><strong id="quality-rate">—</strong><p>mapped links have source and geometry lengths aligned within 15%</p><div class="audit-line"><b id="admin-relations">—</b><small>link ↔ administrative-unit relations</small></div></div>
+        </div>
+
+        <div id="kpis" class="kpi-grid"></div>
+        <div class="data-note"><span>QA finding</span><p>The supplied route geometry was labelled as geographic coordinates but stored in UTM Zone 36N. The reporting layer repairs that CRS and uses calculated geometry length while retaining the original source length for audit.</p></div>
+
+        <div class="overview-grid">
+          <article class="panel map-panel"><div class="panel-head"><div><p class="eyebrow">Spatial register</p><h2>Condition by mapped link</h2></div><div class="legend"><span><i class="good"></i>Good</span><span><i class="fair"></i>Fair</span><span><i class="poor"></i>Poor</span><span><i class="unknown"></i>Unclassified</span></div></div><div id="map"></div><div id="map-fallback" class="map-fallback" hidden>Base map unavailable; the link register and administrative reports remain fully accessible.</div></article>
+          <div class="insights-column">
+            <article class="panel"><div class="panel-head"><div><p class="eyebrow">Geometry length</p><h2>Network by condition</h2></div></div><div id="condition-bars" class="bars"></div></article>
+            <article class="panel"><div class="panel-head"><div><p class="eyebrow">Geometry length</p><h2>Surface portfolio</h2></div></div><div id="surface-bars" class="bars"></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="links" class="view">
+        <div class="section-head"><div><p class="eyebrow">Link-level reporting</p><h1>Mapped DUCAR link register</h1><p>All supplied attributes, administrative relations, condition and traffic coverage—one row per unique link ID.</p></div><button id="export-links" class="primary">Export filtered CSV</button></div>
+        <div class="filters">
+          <label class="search"><span>Search</span><input id="link-search" placeholder="Link ID, road name or source code" /></label>
+          <label><span>District</span><select id="district-filter"><option value="">All districts</option></select></label>
+          <label><span>Condition</span><select id="condition-filter"><option value="">All conditions</option></select></label>
+          <label><span>Surface</span><select id="surface-filter"><option value="">All surfaces</option></select></label>
+          <label><span>Traffic</span><select id="traffic-filter"><option value="">All links</option><option value="yes">With AADT / PCU</option><option value="no">Traffic gap</option></select></label>
+        </div>
+        <div class="table-meta"><strong id="link-count">—</strong><span id="link-length">—</span><span>Click a row for the complete record and administrative length splits.</span></div>
+        <div class="table-wrap"><table><thead><tr><th>Link ID</th><th>Road / source code</th><th>Administrative unit</th><th>Length</th><th>Surface</th><th>Condition</th><th>AADT / PCU</th><th>Priority</th></tr></thead><tbody id="link-rows"></tbody></table></div>
+        <div class="pagination"><button id="prev-page">Previous</button><span id="page-label"></span><button id="next-page">Next</button></div>
+      </section>
+
+      <section id="admin" class="view">
+        <div class="section-head"><div><p class="eyebrow">Line × polygon analysis</p><h1>Length by administrative unit</h1><p>Calculated from the geometric intersection of every mapped link with official district, county, subcounty and parish boundaries.</p></div><button id="export-admin" class="primary">Export coverage CSV</button></div>
+        <div class="filters admin-filters">
+          <label class="search"><span>Find unit</span><input id="admin-search" placeholder="District, county, subcounty or parish" /></label>
+          <label><span>Reporting level</span><select id="admin-level"><option value="district">District</option><option value="subcounty">Subcounty</option><option value="parish">Parish</option></select></label>
+        </div>
+        <div id="admin-kpis" class="kpi-grid compact"></div>
+        <div class="table-wrap"><table><thead id="admin-head"></thead><tbody id="admin-rows"></tbody></table></div>
+      </section>
+
+      <section id="method" class="view">
+        <div class="section-head"><div><p class="eyebrow">Reproducible pipeline</p><h1>Method, provenance &amp; limitations</h1><p>What was measured, joined, transformed and intentionally left blank.</p></div></div>
+        <div class="method-grid">
+          <article class="panel"><span class="step">01</span><h2>Repair coordinates</h2><p>The source web routes declare CRS84 but contain UTM Zone 36N coordinates. Coordinates are reinterpreted as EPSG:32636, forced to 2D and transformed to EPSG:4326.</p></article>
+          <article class="panel"><span class="step">02</span><h2>Assign stable IDs</h2><p>Each link receives a deterministic ID from district, source code, road name and geometry. Re-running unchanged source data yields the same ID.</p></article>
+          <article class="panel"><span class="step">03</span><h2>Split by boundaries</h2><p>Every line is intersected with the official parish layer. Covered lengths are calculated in metres and rolled up to parish, subcounty, county and district.</p></article>
+          <article class="panel"><span class="step">04</span><h2>Join without invention</h2><p>AADT, PCU and speed are populated only on exact source-code matches to the supplied DUCAR link registry. Missing traffic stays null and is reported as a coverage gap.</p></article>
+        </div>
+        <article class="panel quality-panel"><div><p class="eyebrow">Automated audit</p><h2>Length agreement</h2></div><div id="quality-list"></div></article>
+        <article class="panel caveat-panel"><p class="eyebrow">Material caveats</p><div id="caveats"></div></article>
+      </section>
+    </main>
+  </div>
+
+  <aside id="drawer" class="drawer" aria-hidden="true"><button id="close-drawer" class="close" aria-label="Close link details">×</button><div id="drawer-content"></div></aside>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
