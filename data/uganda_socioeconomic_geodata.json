@@ -1,0 +1,1505 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.9,
+          1.8
+        ]
+      },
+      "properties": {
+        "id": "MIN-001",
+        "name": "Albertine Graben Petroleum Oilfield",
+        "category": "Mineral Deposit",
+        "sub_type": "Oil & Gas",
+        "status": "Critical Strategic",
+        "district": "Buliisa / Hoima",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.15,
+          0.65
+        ]
+      },
+      "properties": {
+        "id": "MIN-002",
+        "name": "Sukulu Hills Phosphate & Fertilizer",
+        "category": "Mineral Deposit",
+        "sub_type": "Phosphate / Iron",
+        "status": "High Priority",
+        "district": "Tororo",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.01,
+          0.2
+        ]
+      },
+      "properties": {
+        "id": "MIN-003",
+        "name": "Kilembe Copper & Cobalt Mines",
+        "category": "Mineral Deposit",
+        "sub_type": "Copper / Cobalt",
+        "status": "High Priority",
+        "district": "Kasese",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.39,
+          0.56
+        ]
+      },
+      "properties": {
+        "id": "MIN-004",
+        "name": "Mubende Gold Mining Field",
+        "category": "Mineral Deposit",
+        "sub_type": "Gold",
+        "status": "Artisanal & Industrial",
+        "district": "Mubende",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.52,
+          2.75
+        ]
+      },
+      "properties": {
+        "id": "MIN-005",
+        "name": "Karamoja Marble & Limestone Belt",
+        "category": "Mineral Deposit",
+        "sub_type": "Limestone / Marble",
+        "status": "High Priority",
+        "district": "Moroto",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.33,
+          -0.35
+        ]
+      },
+      "properties": {
+        "id": "MIN-006",
+        "name": "Buhweju Gold Fields",
+        "category": "Mineral Deposit",
+        "sub_type": "Gold",
+        "status": "Artisanal",
+        "district": "Buhweju",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.55,
+          1.48
+        ]
+      },
+      "properties": {
+        "id": "MIN-007",
+        "name": "Kabalega Oil Refinery Site",
+        "category": "Mineral Deposit",
+        "sub_type": "Petroleum Refining",
+        "status": "Strategic National",
+        "district": "Hoima",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.18,
+          0.68
+        ]
+      },
+      "properties": {
+        "id": "MIN-008",
+        "name": "Tororo Cement & Iron Ore Belt",
+        "category": "Mineral Deposit",
+        "sub_type": "Limestone / Iron Ore",
+        "status": "Industrial Active",
+        "district": "Tororo",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.17,
+          0.28
+        ]
+      },
+      "properties": {
+        "id": "MIN-009",
+        "name": "Hima Cement Quarry & Plant",
+        "category": "Mineral Deposit",
+        "sub_type": "Limestone / Cement",
+        "status": "Active Mining",
+        "district": "Kasese",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.93,
+          -0.78
+        ]
+      },
+      "properties": {
+        "id": "MIN-010",
+        "name": "Rukungiri Iron Ore Deposit",
+        "category": "Mineral Deposit",
+        "sub_type": "Iron Ore",
+        "status": "High Grade Reserve",
+        "district": "Rukungiri",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.98,
+          -1.25
+        ]
+      },
+      "properties": {
+        "id": "MIN-011",
+        "name": "Kabale Iron Ore & Wolfram Field",
+        "category": "Mineral Deposit",
+        "sub_type": "Iron Ore / Wolfram",
+        "status": "Strategic Reserve",
+        "district": "Kabale",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.93,
+          1.95
+        ]
+      },
+      "properties": {
+        "id": "MIN-012",
+        "name": "Amudat Gold & Gemstones Field",
+        "category": "Mineral Deposit",
+        "sub_type": "Gold / Gemstones",
+        "status": "Artisanal Active",
+        "district": "Amudat",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.26,
+          -0.88
+        ]
+      },
+      "properties": {
+        "id": "MIN-013",
+        "name": "Ntungamo Tin & Tantalite Mines",
+        "category": "Mineral Deposit",
+        "sub_type": "Tin / Tantalite",
+        "status": "Active Export",
+        "district": "Ntungamo",
+        "sepi_score": 92.5,
+        "traffic_impact": "Heavy Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.69,
+          0.35
+        ]
+      },
+      "properties": {
+        "id": "IND-014",
+        "name": "Namanve Industrial & Business Park",
+        "category": "Industrial Park",
+        "sub_type": "Multi-Sector Heavy Industry",
+        "status": "Operational",
+        "district": "Kampala / Mukono",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.66,
+          0.37
+        ]
+      },
+      "properties": {
+        "id": "IND-015",
+        "name": "Bweyogerere Industrial Estate",
+        "category": "Industrial Park",
+        "sub_type": "Agro-processing & Manufacturing",
+        "status": "Operational",
+        "district": "Wakiso",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.63,
+          0.31
+        ]
+      },
+      "properties": {
+        "id": "IND-016",
+        "name": "Luzira Industrial Park",
+        "category": "Industrial Park",
+        "sub_type": "Pharmaceuticals & Food Processing",
+        "status": "Operational",
+        "district": "Kampala",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.17,
+          0.68
+        ]
+      },
+      "properties": {
+        "id": "IND-017",
+        "name": "Kapeeka Industrial Park",
+        "category": "Industrial Park",
+        "sub_type": "Ceramics & Building Materials",
+        "status": "Operational",
+        "district": "Luweero / Nakaseke",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.61,
+          1.71
+        ]
+      },
+      "properties": {
+        "id": "IND-018",
+        "name": "Soroti Agro-Industrial Park",
+        "category": "Industrial Park",
+        "sub_type": "Fruit Processing & Grains",
+        "status": "Operational",
+        "district": "Soroti",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.17,
+          1.07
+        ]
+      },
+      "properties": {
+        "id": "IND-019",
+        "name": "Mbale Industrial Park",
+        "category": "Industrial Park",
+        "sub_type": "Textiles, Electronics & Logistics",
+        "status": "Operational",
+        "district": "Mbale",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.2,
+          0.43
+        ]
+      },
+      "properties": {
+        "id": "IND-020",
+        "name": "Jinja Industrial Zone",
+        "category": "Industrial Park",
+        "sub_type": "Steel Rolling, Sugar & Paper",
+        "status": "Operational",
+        "district": "Jinja",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.65,
+          -0.6
+        ]
+      },
+      "properties": {
+        "id": "IND-021",
+        "name": "Mbarara Industrial Estate",
+        "category": "Industrial Park",
+        "sub_type": "Dairy Processing & Beverages",
+        "status": "Operational",
+        "district": "Mbarara",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.29,
+          2.77
+        ]
+      },
+      "properties": {
+        "id": "IND-022",
+        "name": "Gulu Logistics & Industrial Hub",
+        "category": "Industrial Park",
+        "sub_type": "Grain Storage & Regional Trade",
+        "status": "Operational",
+        "district": "Gulu",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.91,
+          3.03
+        ]
+      },
+      "properties": {
+        "id": "IND-023",
+        "name": "Arua Eco-Industrial Park",
+        "category": "Industrial Park",
+        "sub_type": "Cross-Border Manufacturing",
+        "status": "Operational",
+        "district": "Arua",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.54,
+          1.43
+        ]
+      },
+      "properties": {
+        "id": "IND-024",
+        "name": "Hoima Industrial Park",
+        "category": "Industrial Park",
+        "sub_type": "Petrochemicals & Logistics",
+        "status": "Operational",
+        "district": "Hoima",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.19,
+          0.69
+        ]
+      },
+      "properties": {
+        "id": "IND-025",
+        "name": "Tororo Fertilizer & Industrial Complex",
+        "category": "Industrial Park",
+        "sub_type": "Chemical & Fertilizer",
+        "status": "Operational",
+        "district": "Tororo",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.93,
+          0.38
+        ]
+      },
+      "properties": {
+        "id": "IND-026",
+        "name": "Lugazi Sugar Estate & Industrial Zone",
+        "category": "Industrial Park",
+        "sub_type": "Sugar, Biofuel & Power",
+        "status": "Operational",
+        "district": "Buikwe",
+        "sepi_score": 95.0,
+        "traffic_impact": "High Freight Volume"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.568,
+          0.334
+        ]
+      },
+      "properties": {
+        "id": "EDU-027",
+        "name": "Makerere University Main Campus",
+        "category": "Educational Institution",
+        "sub_type": "Public University",
+        "status": "Active",
+        "district": "Kampala",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.63,
+          0.355
+        ]
+      },
+      "properties": {
+        "id": "EDU-028",
+        "name": "Kyambogo University Campus",
+        "category": "Educational Institution",
+        "sub_type": "Technical & Science University",
+        "status": "Active",
+        "district": "Kampala",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.655,
+          -0.615
+        ]
+      },
+      "properties": {
+        "id": "EDU-029",
+        "name": "Mbarara University of Science & Technology (MUST)",
+        "category": "Educational Institution",
+        "sub_type": "Medical & Science University",
+        "status": "Active",
+        "district": "Mbarara",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.316,
+          2.788
+        ]
+      },
+      "properties": {
+        "id": "EDU-030",
+        "name": "Gulu University Main Campus",
+        "category": "Educational Institution",
+        "sub_type": "Public University",
+        "status": "Active",
+        "district": "Gulu",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.15,
+          0.545
+        ]
+      },
+      "properties": {
+        "id": "EDU-031",
+        "name": "Busitema University Main Campus",
+        "category": "Educational Institution",
+        "sub_type": "Engineering & Agriculture University",
+        "status": "Active",
+        "district": "Busia",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.988,
+          -1.265
+        ]
+      },
+      "properties": {
+        "id": "EDU-032",
+        "name": "Kabale University Campus",
+        "category": "Educational Institution",
+        "sub_type": "Public University",
+        "status": "Active",
+        "district": "Kabale",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.92,
+          3.02
+        ]
+      },
+      "properties": {
+        "id": "EDU-033",
+        "name": "Muni University Campus",
+        "category": "Educational Institution",
+        "sub_type": "Public University",
+        "status": "Active",
+        "district": "Arua",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.735,
+          0.352
+        ]
+      },
+      "properties": {
+        "id": "EDU-034",
+        "name": "Uganda Christian University (UCU)",
+        "category": "Educational Institution",
+        "sub_type": "Private University",
+        "status": "Active",
+        "district": "Mukono",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.18,
+          1.09
+        ]
+      },
+      "properties": {
+        "id": "EDU-035",
+        "name": "Islamic University in Uganda (IUIU)",
+        "category": "Educational Institution",
+        "sub_type": "Private University",
+        "status": "Active",
+        "district": "Mbale",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.89,
+          2.25
+        ]
+      },
+      "properties": {
+        "id": "EDU-036",
+        "name": "Lira University Campus",
+        "category": "Educational Institution",
+        "sub_type": "Public Health University",
+        "status": "Active",
+        "district": "Lira",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.66,
+          -0.62
+        ]
+      },
+      "properties": {
+        "id": "EDU-037",
+        "name": "Uganda Petroleum Institute Nyamitanga",
+        "category": "Educational Institution",
+        "sub_type": "Petroleum Technical College",
+        "status": "Active",
+        "district": "Mbarara",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.625,
+          1.72
+        ]
+      },
+      "properties": {
+        "id": "EDU-038",
+        "name": "Soroti University Campus",
+        "category": "Educational Institution",
+        "sub_type": "Aviation & Technology University",
+        "status": "Active",
+        "district": "Soroti",
+        "sepi_score": 88.0,
+        "traffic_impact": "Passenger & Bus Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.576,
+          0.338
+        ]
+      },
+      "properties": {
+        "id": "HSP-039",
+        "name": "Mulago National Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "National Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Kampala",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.658,
+          -0.612
+        ]
+      },
+      "properties": {
+        "id": "HSP-040",
+        "name": "Mbarara Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Mbarara",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.298,
+          2.775
+        ]
+      },
+      "properties": {
+        "id": "HSP-041",
+        "name": "Gulu Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Gulu",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.178,
+          1.075
+        ]
+      },
+      "properties": {
+        "id": "HSP-042",
+        "name": "Mbale Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Mbale",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.912,
+          3.028
+        ]
+      },
+      "properties": {
+        "id": "HSP-043",
+        "name": "Arua Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Arua",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.208,
+          0.428
+        ]
+      },
+      "properties": {
+        "id": "HSP-044",
+        "name": "Jinja Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Jinja",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.275,
+          0.655
+        ]
+      },
+      "properties": {
+        "id": "HSP-045",
+        "name": "Fort Portal Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Kabarole",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.542,
+          1.432
+        ]
+      },
+      "properties": {
+        "id": "HSP-046",
+        "name": "Hoima Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Hoima",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.612,
+          1.712
+        ]
+      },
+      "properties": {
+        "id": "HSP-047",
+        "name": "Soroti Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Soroti",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.985,
+          -1.252
+        ]
+      },
+      "properties": {
+        "id": "HSP-048",
+        "name": "Kabale Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Kabale",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.901,
+          2.248
+        ]
+      },
+      "properties": {
+        "id": "HSP-049",
+        "name": "Lira Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Lira",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.665,
+          2.532
+        ]
+      },
+      "properties": {
+        "id": "HSP-050",
+        "name": "Moroto Regional Referral Hospital",
+        "category": "Healthcare Facility",
+        "sub_type": "Regional Referral Hospital",
+        "status": "Active 24/7",
+        "district": "Moroto",
+        "sepi_score": 94.0,
+        "traffic_impact": "Emergency & Access Demand"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.258,
+          0.635
+        ]
+      },
+      "properties": {
+        "id": "BDR-051",
+        "name": "Malaba OSBP Border Post (Kenya)",
+        "category": "Border Post",
+        "sub_type": "Northern Corridor International Border",
+        "status": "One-Stop Border Post",
+        "district": "Tororo",
+        "sepi_score": 98.0,
+        "traffic_impact": "Heavy International Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.092,
+          0.468
+        ]
+      },
+      "properties": {
+        "id": "BDR-052",
+        "name": "Busia OSBP Border Post (Kenya)",
+        "category": "Border Post",
+        "sub_type": "Northern Corridor International Border",
+        "status": "One-Stop Border Post",
+        "district": "Busia",
+        "sepi_score": 98.0,
+        "traffic_impact": "Heavy International Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.415,
+          -1.002
+        ]
+      },
+      "properties": {
+        "id": "BDR-053",
+        "name": "Mutukula OSBP Border Post (Tanzania)",
+        "category": "Border Post",
+        "sub_type": "Central Corridor International Border",
+        "status": "One-Stop Border Post",
+        "district": "Kyotera",
+        "sepi_score": 98.0,
+        "traffic_impact": "Heavy International Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.068,
+          3.568
+        ]
+      },
+      "properties": {
+        "id": "BDR-054",
+        "name": "Elegu OSBP Border Post (South Sudan)",
+        "category": "Border Post",
+        "sub_type": "Northern Corridor Export Border",
+        "status": "One-Stop Border Post",
+        "district": "Amuru",
+        "sepi_score": 98.0,
+        "traffic_impact": "Heavy International Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.012,
+          -1.428
+        ]
+      },
+      "properties": {
+        "id": "BDR-055",
+        "name": "Katuna OSBP Border Post (Rwanda)",
+        "category": "Border Post",
+        "sub_type": "Northern Corridor International Border",
+        "status": "One-Stop Border Post",
+        "district": "Kabale",
+        "sepi_score": 98.0,
+        "traffic_impact": "Heavy International Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.728,
+          0.052
+        ]
+      },
+      "properties": {
+        "id": "BDR-056",
+        "name": "Mpondwe OSBP Border Post (DR Congo)",
+        "category": "Border Post",
+        "sub_type": "DRC Trade Border Post",
+        "status": "One-Stop Border Post",
+        "district": "Kasese",
+        "sepi_score": 98.0,
+        "traffic_impact": "Heavy International Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.602,
+          -1.298
+        ]
+      },
+      "properties": {
+        "id": "BDR-057",
+        "name": "Bunagana Border Post (DR Congo)",
+        "category": "Border Post",
+        "sub_type": "DRC Trade Border Post",
+        "status": "One-Stop Border Post",
+        "district": "Kisoro",
+        "sepi_score": 98.0,
+        "traffic_impact": "Heavy International Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.985,
+          2.455
+        ]
+      },
+      "properties": {
+        "id": "BDR-058",
+        "name": "Goli Border Post (DR Congo)",
+        "category": "Border Post",
+        "sub_type": "DRC Trade Border Post",
+        "status": "One-Stop Border Post",
+        "district": "Zombo",
+        "sepi_score": 98.0,
+        "traffic_impact": "Heavy International Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.382,
+          0.795
+        ]
+      },
+      "properties": {
+        "id": "BDR-059",
+        "name": "Lwakhakha Border Post (Kenya)",
+        "category": "Border Post",
+        "sub_type": "East African Border Post",
+        "status": "One-Stop Border Post",
+        "district": "Namisindwa",
+        "sepi_score": 98.0,
+        "traffic_impact": "Heavy International Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.825,
+          3.542
+        ]
+      },
+      "properties": {
+        "id": "BDR-060",
+        "name": "Oraba Border Post (South Sudan)",
+        "category": "Border Post",
+        "sub_type": "South Sudan Export Border",
+        "status": "One-Stop Border Post",
+        "district": "Koboko",
+        "sepi_score": 98.0,
+        "traffic_impact": "Heavy International Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.245,
+          2.238
+        ]
+      },
+      "properties": {
+        "id": "AGR-061",
+        "name": "Karuma Hydroelectric Power Station (600MW)",
+        "category": "Energy Infrastructure",
+        "sub_type": "Hydroelectric Power",
+        "status": "Strategic Energy",
+        "district": "Kiryandongo",
+        "sepi_score": 99.0,
+        "traffic_impact": "Heavy Equipment & Grid Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.138,
+          0.498
+        ]
+      },
+      "properties": {
+        "id": "AGR-062",
+        "name": "Bujagali Hydroelectric Power Station (250MW)",
+        "category": "Energy Infrastructure",
+        "sub_type": "Hydroelectric Power",
+        "status": "Strategic Energy",
+        "district": "Jinja",
+        "sepi_score": 98.5,
+        "traffic_impact": "Grid Infrastructure Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.965,
+          0.835
+        ]
+      },
+      "properties": {
+        "id": "AGR-063",
+        "name": "Isimba Hydroelectric Power Station (183MW)",
+        "category": "Energy Infrastructure",
+        "sub_type": "Hydroelectric Power",
+        "status": "Strategic Energy",
+        "district": "Kayunga",
+        "sepi_score": 97.0,
+        "traffic_impact": "Grid Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.852,
+          1.765
+        ]
+      },
+      "properties": {
+        "id": "AGR-064",
+        "name": "Lake Albert Oil Central Processing Facility (CPF)",
+        "category": "Energy Infrastructure",
+        "sub_type": "Petroleum CPF",
+        "status": "Critical Strategic",
+        "district": "Buliisa",
+        "sepi_score": 99.5,
+        "traffic_impact": "Heavy Crude Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.542,
+          1.638
+        ]
+      },
+      "properties": {
+        "id": "AGR-065",
+        "name": "Kinyara Sugar Cane Estate & Factory",
+        "category": "Agricultural Corridor",
+        "sub_type": "Sugar & Bioethanol",
+        "status": "Agro-Industrial",
+        "district": "Masindi",
+        "sepi_score": 93.5,
+        "traffic_impact": "Heavy Agricultural Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.285,
+          0.505
+        ]
+      },
+      "properties": {
+        "id": "AGR-066",
+        "name": "Kakira Sugar Estate & Bio-Power Complex",
+        "category": "Agricultural Corridor",
+        "sub_type": "Sugar & Bio-Power",
+        "status": "Agro-Industrial",
+        "district": "Jinja",
+        "sepi_score": 95.0,
+        "traffic_impact": "Heavy Cane Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.342,
+          0.685
+        ]
+      },
+      "properties": {
+        "id": "AGR-067",
+        "name": "Kasunga Tea Estates & Processing Plant",
+        "category": "Agricultural Corridor",
+        "sub_type": "Tea Export Processing",
+        "status": "Agro-Industrial",
+        "district": "Kabarole",
+        "sepi_score": 91.0,
+        "traffic_impact": "Agricultural Export Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.735,
+          -0.338
+        ]
+      },
+      "properties": {
+        "id": "AGR-068",
+        "name": "Masaka Arabica Coffee Milling Hub",
+        "category": "Agricultural Corridor",
+        "sub_type": "Coffee Export Milling",
+        "status": "Agro-Industrial",
+        "district": "Masaka",
+        "sepi_score": 94.0,
+        "traffic_impact": "Coffee Export Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.185,
+          1.085
+        ]
+      },
+      "properties": {
+        "id": "AGR-069",
+        "name": "Bugisu Robusta & Arabica Coffee Mill",
+        "category": "Agricultural Corridor",
+        "sub_type": "Coffee Milling & Export",
+        "status": "Agro-Industrial",
+        "district": "Mbale",
+        "sepi_score": 93.8,
+        "traffic_impact": "Coffee Export Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.652,
+          -0.605
+        ]
+      },
+      "properties": {
+        "id": "AGR-070",
+        "name": "Ankole Cattle Corridor Livestock Market",
+        "category": "Agricultural Corridor",
+        "sub_type": "Livestock & Beef Trade",
+        "status": "Agro-Industrial",
+        "district": "Kiruhura / Mbarara",
+        "sepi_score": 92.5,
+        "traffic_impact": "Livestock Transport"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.618,
+          1.718
+        ]
+      },
+      "properties": {
+        "id": "AGR-071",
+        "name": "Teso Cotton Ginnery & Processing Plant",
+        "category": "Agricultural Corridor",
+        "sub_type": "Cotton Processing",
+        "status": "Agro-Industrial",
+        "district": "Soroti",
+        "sepi_score": 90.5,
+        "traffic_impact": "Cotton Logistics"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.898,
+          2.245
+        ]
+      },
+      "properties": {
+        "id": "AGR-072",
+        "name": "Lango Oilseed Processing Complex",
+        "category": "Agricultural Corridor",
+        "sub_type": "Sunflower & Edible Oils",
+        "status": "Agro-Industrial",
+        "district": "Lira",
+        "sepi_score": 92.0,
+        "traffic_impact": "Edible Oil Logistics"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.015,
+          0.198
+        ]
+      },
+      "properties": {
+        "id": "AGR-073",
+        "name": "Kasese Cobalt Bio-Leaching Plant",
+        "category": "Mineral Deposit",
+        "sub_type": "Cobalt Processing",
+        "status": "Critical Minerals",
+        "district": "Kasese",
+        "sepi_score": 96.0,
+        "traffic_impact": "Hazardous Chemical Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.045,
+          0.398
+        ]
+      },
+      "properties": {
+        "id": "AGR-074",
+        "name": "Mityana Tea Estates & Factory",
+        "category": "Agricultural Corridor",
+        "sub_type": "Tea Processing",
+        "status": "Agro-Industrial",
+        "district": "Mityana",
+        "sepi_score": 89.5,
+        "traffic_impact": "Tea Freight"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.225,
+          -0.312
+        ]
+      },
+      "properties": {
+        "id": "AGR-075",
+        "name": "Kalangala Oil Palm Processing Mill",
+        "category": "Agricultural Corridor",
+        "sub_type": "Palm Oil Processing",
+        "status": "Agro-Industrial",
+        "district": "Kalangala",
+        "sepi_score": 91.8,
+        "traffic_impact": "Palm Oil Freight"
+      }
+    }
+  ]
+}

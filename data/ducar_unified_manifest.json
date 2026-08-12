@@ -1,0 +1,130 @@
+{
+  "unified_schema": "unified_enterprise_schema.sql",
+  "total_master_sections": 31106,
+  "scopes": [
+    "National Road Network",
+    "DUCAR Network"
+  ],
+  "governing_bodies": [
+    "Ministry of Works and Transport - Department of National Roads (MoWT DNR)",
+    "MoWT DUCAR Umbrella"
+  ],
+  "road_classes": [
+    "M",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "U",
+    "CAR"
+  ],
+  "surface_types": [
+    "Bituminous",
+    "Gravel",
+    "Earth",
+    "Concrete",
+    "Paving Blocks"
+  ],
+  "condition_ratings": [
+    "Good",
+    "Fair",
+    "Poor",
+    "Very Poor"
+  ],
+  "color_ramp_config": {
+    "ramp_tiers": [
+      {
+        "tier": 1,
+        "label": "Low / Good",
+        "hex": "#00c853"
+      },
+      {
+        "tier": 2,
+        "label": "Moderate Low",
+        "hex": "#0095ff"
+      },
+      {
+        "tier": 3,
+        "label": "Medium / Moderate",
+        "hex": "#f4ea00"
+      },
+      {
+        "tier": 4,
+        "label": "High / Severe",
+        "hex": "#ff8a00"
+      },
+      {
+        "tier": 5,
+        "label": "Critical / Bad",
+        "hex": "#ed001c"
+      }
+    ],
+    "traffic_scale": [
+      {
+        "range_label": "< 1,000 PCU",
+        "hex": "#00c853"
+      },
+      {
+        "range_label": "1,000 - 3,000 PCU",
+        "hex": "#0095ff"
+      },
+      {
+        "range_label": "3,000 - 7,000 PCU",
+        "hex": "#f4ea00"
+      },
+      {
+        "range_label": "7,000 - 15,000 PCU",
+        "hex": "#ff8a00"
+      },
+      {
+        "range_label": "> 15,000 PCU",
+        "hex": "#ed001c"
+      }
+    ],
+    "accident_probability_bands": [
+      {
+        "band": "Low Risk (<10%)",
+        "hex": "#00c853"
+      },
+      {
+        "band": "Moderate Risk (10-25%)",
+        "hex": "#0095ff"
+      },
+      {
+        "band": "Elevated Risk (25-45%)",
+        "hex": "#f4ea00"
+      },
+      {
+        "band": "High Risk (45-70%)",
+        "hex": "#ff8a00"
+      },
+      {
+        "band": "Critical Blackspot (>70%)",
+        "hex": "#ed001c"
+      }
+    ],
+    "overload_severity_bands": [
+      {
+        "band": "Compliant (<5%)",
+        "hex": "#00c853"
+      },
+      {
+        "band": "Minor Overload (5-15%)",
+        "hex": "#0095ff"
+      },
+      {
+        "band": "Moderate Overload (15-30%)",
+        "hex": "#f4ea00"
+      },
+      {
+        "band": "Severe Overload (30-50%)",
+        "hex": "#ff8a00"
+      },
+      {
+        "band": "Critical Axle Damage (>50%)",
+        "hex": "#ed001c"
+      }
+    ]
+  }
+}
