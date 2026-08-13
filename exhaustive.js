@@ -56,6 +56,7 @@
     global: ["global_country_matrix"], socioeconomic: ["socioeconomic_link_analysis", "socioeconomic_facilities", "ducar_link_register", "ducar_link_admin_relations"], summaries: ["ducar_link_admin_relations", "admin_unit_distance_matrix", "admin_districts"]
   };
   const cache = {};
+  const vizTimers = new Set();
   const state = { section: sectionFromHash(), tab: tabFromHash(), page: 1, search: "", loading: false };
   const root = document.getElementById("exhaustive-root");
   if (!root) return;
@@ -97,7 +98,7 @@
       return Promise.all([data("links"), data("mapRoads")]);
     }
     if (state.section === "global") return data("global");
-    if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap")]);
+    if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap"), data("links"), data("database")]);
     if (state.section === "socioeconomic") return data("socio");
     return data("links");
   }
@@ -142,6 +143,51 @@
       return `<text class="chart-label" x="${left-10}" y="${y+18}" text-anchor="end">${esc(row.name.length > 27 ? row.name.slice(0,26)+"…" : row.name)}</text><rect class="chart-bar" x="${left}" y="${y+5}" width="${barW}" height="19" rx="4" fill="${color}"/><text class="chart-value" x="${valueX}" y="${y+19}">${esc(chartNumber(row.value, unit))}</text>`;
     }).join("");
     return `<article class="chart-card"><h3>${esc(title)}</h3><p class="chart-subtitle">${esc(subtitle)}</p><svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}"><line class="chart-axis" x1="${left}" y1="${height-bottom+4}" x2="${width-right}" y2="${height-bottom+4}"/>${svgTicks}${bars}</svg><div class="axis-title">Horizontal axis · ${esc(unit)}</div><div class="chart-legend"><span class="legend-key"><i class="legend-swatch" style="background:${color}"></i>${esc(unit)}</span></div></article>`;
+  }
+  function vizValues(values) { return sortData(values.filter(item=>Number(item.value)>0)); }
+  function vizLegend(values, unit) {
+    const total=values.reduce((sum,item)=>sum+Number(item.value||0),0);
+    return `<div class="dynamic-legend">${values.map((item,index)=>`<span title="${esc(item.name)}: ${esc(chartNumber(item.value,unit))}"><i style="background:${COLORS[index%COLORS.length]}"></i><b>${esc(item.name)}</b><small>${esc(chartNumber(item.value,unit))} · ${number(item.value/Math.max(total,1)*100,1)}%</small></span>`).join("")}</div>`;
+  }
+  function radialViz(values, unit, donut) {
+    const rows=vizValues(values), total=rows.reduce((sum,item)=>sum+item.value,0); let cursor=0;
+    const stops=rows.map((item,index)=>{const start=cursor;cursor+=item.value/Math.max(total,1)*360;return `${COLORS[index%COLORS.length]} ${start}deg ${cursor}deg`;}).join(",");
+    return `<div class="radial-layout"><div class="radial-chart ${donut?"donut":"pie"}" style="background:conic-gradient(${stops||"#303034 0 360deg"})" role="img" aria-label="${donut?"Donut":"Pie"} chart"><div class="radial-center">${donut?`<strong>${chartNumber(total,unit)}</strong><small>Total ${esc(unit)}</small>`:""}</div></div>${vizLegend(rows,unit)}</div>`;
+  }
+  function funnelViz(values, unit) {
+    const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1), width=640, rowH=44, center=320;
+    const shapes=rows.map((item,index)=>{const top=Math.max(70,item.value/max*530), next=Math.max(60,(rows[index+1]?.value||item.value*.82)/max*530), y=index*rowH+8;return `<polygon points="${center-top/2},${y} ${center+top/2},${y} ${center+next/2},${y+31} ${center-next/2},${y+31}" fill="${COLORS[index%COLORS.length]}" title="${esc(item.name)}: ${esc(chartNumber(item.value,unit))}"/><text x="${center}" y="${y+20}" text-anchor="middle">${esc(item.name.length>34?item.name.slice(0,33)+"…":item.name)} · ${esc(chartNumber(item.value,unit))}</text>`;}).join("");
+    return `<svg class="funnel-chart" viewBox="0 0 ${width} ${Math.max(80,rows.length*rowH+8)}" role="img" aria-label="Funnel chart">${shapes}</svg>`;
+  }
+  function clusteredViz(values, unit) {
+    const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1);
+    return `<div class="clustered-wrap"><div class="clustered-chart" style="grid-template-columns:repeat(${Math.max(rows.length,1)},minmax(42px,1fr))">${rows.map((item,index)=>`<div class="column-item" title="${esc(item.name)}: ${esc(chartNumber(item.value,unit))}"><strong>${esc(chartNumber(item.value,unit))}</strong><div class="column-track"><i style="height:${Math.max(2,item.value/max*100)}%;background:${COLORS[index%COLORS.length]}"></i></div><small>${esc(item.name)}</small></div>`).join("")}</div></div>`;
+  }
+  function stackedViz(values, unit) {
+    const rows=vizValues(values), total=rows.reduce((sum,item)=>sum+item.value,0);
+    return `<div class="stacked-layout"><div class="stacked-column" role="img" aria-label="Stacked column">${rows.map((item,index)=>`<i style="height:${item.value/Math.max(total,1)*100}%;background:${COLORS[index%COLORS.length]}" title="${esc(item.name)}: ${esc(chartNumber(item.value,unit))}"></i>`).join("")}</div>${vizLegend(rows,unit)}</div>`;
+  }
+  function vizCard(series, type) {
+    const renderer=type==="donut"?radialViz(series.values,series.unit,true):type==="pie"?radialViz(series.values,series.unit,false):type==="funnel"?funnelViz(series.values,series.unit):type==="clustered"?clusteredViz(series.values,series.unit):stackedViz(series.values,series.unit);
+    return `<article class="dynamic-chart-card"><header><h4>${esc(series.name)}</h4><span>${esc(series.unit)}</span></header>${renderer}</article>`;
+  }
+  function interactiveGallery(title, series) {
+    const types=[["donut","Donuts"],["pie","Pies"],["funnel","Funnels"],["clustered","Clustered columns"],["stacked","Stacked columns"]];
+    return `<section class="viz-studio" data-viz-studio><div class="viz-heading"><div><small>INTERACTIVE · COMPLETE POPULATION</small><h3>${esc(title)}</h3><p>Switch chart forms, hover marks for exact values, or animate the complete sequence. Every road value is cumulative affected length.</p></div><button class="viz-autoplay" data-viz-autoplay type="button">▶ Animate views</button></div><div class="viz-switcher" role="tablist">${types.map(([id,text],index)=>`<button type="button" role="tab" data-viz-type="${id}" class="${index===0?"active":""}" aria-selected="${index===0}">${text}</button>`).join("")}</div>${types.map(([id],index)=>`<div class="viz-panel ${index===0?"active":""}" data-viz-panel="${id}"><div class="dynamic-chart-grid">${series.map(item=>vizCard(item,id)).join("")}</div></div>`).join("")}</section>`;
+  }
+  function roadInteractiveSeries(rows, section) {
+    const missingKm=field=>rows.filter(row=>typeof row[field]!=="number").reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
+    const traffic=[{name:"Traffic supplied",value:rows.filter(r=>typeof r.registry_aadt==="number").reduce((s,r)=>s+Number(r.geometry_length_km||0),0)},{name:"Not supplied",value:missingKm("registry_aadt")}];
+    const standard={condition:{name:"Condition affected length",values:aggregate(rows,"condition"),unit:"affected km"},pavement:{name:"Pavement affected length",values:aggregate(rows,"pavement_class"),unit:"affected km"},priority:{name:"Priority affected length",values:aggregate(rows,"priority_band"),unit:"affected km"},traffic:{name:"Traffic data length",values:traffic,unit:"affected km"}};
+    if(section==="traffic") return [
+      {name:"AADT-band affected length",values:bands(rows,"registry_aadt",[["0–149",0,150],["150–499",150,500],["500–999",500,1000],["1,000+",1000,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_aadt")}]),unit:"affected km"},
+      {name:"PCU-band affected length",values:bands(rows,"registry_pcu",[["0–499",0,500],["500–999",500,1000],["1,000–1,499",1000,1500],["1,500+",1500,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_pcu")}]),unit:"affected km"},
+      {name:"Speed-band affected length",values:bands(rows,"registry_speed_kmh",[["<15 km/h",0,15],["15–19.9",15,20],["20–24.9",20,25],["25+ km/h",25,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_speed_kmh")}]),unit:"affected km"},standard.pavement];
+    if(section==="condition") return [standard.condition,{name:"Condition-risk affected length",values:aggregate(rows,r=>"Risk "+shown(r.condition_risk)),unit:"affected km"},{name:"Intervention affected length",values:aggregate(rows,"recommended_intervention"),unit:"affected km"},{name:"Surface affected length",values:aggregate(rows,"surface"),unit:"affected km"}];
+    if(section==="pims"||section==="budgets") return [standard.priority,{name:"Intervention affected length",values:aggregate(rows,"recommended_intervention"),unit:"affected km"},standard.condition,standard.pavement];
+    if(section==="network") return [{name:"Surface affected length",values:aggregate(rows,"surface"),unit:"affected km"},standard.pavement,standard.condition,standard.traffic];
+    if(section==="framework"||section==="hdm4") return [standard.traffic,standard.condition,standard.pavement,standard.priority];
+    return [standard.condition,standard.pavement,standard.priority,standard.traffic];
   }
   function matrix(rows) {
     const conditions = ["Good", "Fair", "Poor", "Unclassified", "Not supplied"];
@@ -290,7 +336,7 @@
       barChart("Affected length by priority","Every kilometre retained.",aggregate(rows,"priority_band"),"affected km",COLORS[4])
     ];
     else charts = (common[state.section]||common.overview).map(c=>barChart(c[0],c[1],aggregate(rows,c[2]),"affected km",c[3]));
-    return metricCards(metrics)+`<div class="chart-grid">${charts.join("")}${state.section==="condition"?matrix(rows):""}</div><div class="method-note">Every road chart uses cumulative geometry length. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are modelling allowances, not bills of quantities.</div>`;
+    return metricCards(metrics)+`<div class="chart-grid">${charts.join("")}${state.section==="condition"?matrix(rows):""}</div>`+interactiveGallery(`${SECTION_META[state.section][0]} · animated chart gallery`,roadInteractiveSeries(rows,state.section))+`<div class="method-note">Every road chart uses cumulative geometry length. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are modelling allowances, not bills of quantities.</div>`;
   }
 
   function socioeconomicDashboard(payload) {
@@ -302,7 +348,12 @@
       {label:"High + critical exposure",value:number(exposure.filter(x=>["High","Critical"].includes(x.band)).reduce((s,x)=>s+Number(x.affected_length_km||0),0),1)+" km",note:"Multi-factor access pressure"},
       {label:"School-access length",value:number(accessValue("School"),1)+" km",note:"Within 5 km"},
       {label:"Health-access length",value:number(accessValue("Health"),1)+" km",note:"Within 5 km"}
-    ])+`<div class="chart-grid">${barChart("Socioeconomic exposure by road length","Combined accessibility exposure for every DUCAR link.",exposure.map(x=>({name:x.band,value:Number(x.affected_length_km||0)})),"affected km",COLORS[4])}${barChart("Road length within service thresholds","Length exposed to each socioeconomic factor.",access.map(x=>({name:x.factor,value:Number(x.affected_length_km||0)})),"affected km",COLORS[1])}${barChart("Road length outside service thresholds","Cumulative accessibility-gap length.",access.map(x=>({name:x.factor,value:Number(x.outside_threshold_length_km||0)})),"affected km",COLORS[3])}${barChart("Primary socioeconomic factor","Dominant factor assigned to every road, by length.",aggregate(rows,"primary_socioeconomic_factor"),"affected km",COLORS[2])}</div><div class="method-note">Nearest-distance joins use exact road geometry in EPSG:32636. Threshold counts use road midpoint buffers. Results integrate local authoritative registers, OpenStreetMap/Geofabrik, UIA, MoES, MoH, DGSM and UBOS metadata; all values remain link-level and exportable.</div>`;
+    ])+`<div class="chart-grid">${barChart("Socioeconomic exposure by road length","Combined accessibility exposure for every DUCAR link.",exposure.map(x=>({name:x.band,value:Number(x.affected_length_km||0)})),"affected km",COLORS[4])}${barChart("Road length within service thresholds","Length exposed to each socioeconomic factor.",access.map(x=>({name:x.factor,value:Number(x.affected_length_km||0)})),"affected km",COLORS[1])}${barChart("Road length outside service thresholds","Cumulative accessibility-gap length.",access.map(x=>({name:x.factor,value:Number(x.outside_threshold_length_km||0)})),"affected km",COLORS[3])}${barChart("Primary socioeconomic factor","Dominant factor assigned to every road, by length.",aggregate(rows,"primary_socioeconomic_factor"),"affected km",COLORS[2])}</div>`+interactiveGallery("Socioeconomic · animated chart gallery",[
+      {name:"Exposure-band affected length",values:exposure.map(x=>({name:x.band,value:Number(x.affected_length_km||0)})),unit:"affected km"},
+      {name:"Within-threshold affected length",values:access.map(x=>({name:x.factor,value:Number(x.affected_length_km||0)})),unit:"affected km"},
+      {name:"Outside-threshold gap length",values:access.map(x=>({name:x.factor,value:Number(x.outside_threshold_length_km||0)})),unit:"affected km"},
+      {name:"Primary-factor affected length",values:aggregate(rows,"primary_socioeconomic_factor"),unit:"affected km"}
+    ])+`<div class="method-note">Nearest-distance joins use exact road geometry in EPSG:32636. Threshold counts use road midpoint buffers. Results integrate local authoritative registers, OpenStreetMap/Geofabrik, UIA, MoES, MoH, DGSM and UBOS metadata; all values remain link-level and exportable.</div>`;
   }
 
   function globalDashboard(payload) {
@@ -314,19 +365,36 @@
       {label:"Regions",value:number(Object.keys(payload.regions).length),note:"Complete configured geography"},
       {label:"Comparable sourced rows",value:number(sourced),note:"Repository evidence only"},
       {label:"Explicitly not supplied",value:number(rows.length-sourced),note:"No fabricated scores"}
-    ]) + `<div class="chart-grid">${barChart("Countries by configured region", "All countries retained and grouped by region.", regions, "country count", COLORS[0])}${barChart("Comparative source completeness", "Country metrics remain Not supplied until comparable sources are loaded.", [{name:"Comparable source supplied",value:sourced},{name:"Not supplied",value:rows.length-sourced}], "country count", COLORS[2])}</div><div class="method-note">The Global dashboard reports matrix completeness, not invented performance rankings. All unsourced country metrics remain explicitly “Not supplied”.</div>`;
+    ]) + `<div class="chart-grid">${barChart("Countries by configured region", "All countries retained and grouped by region.", regions, "country count", COLORS[0])}${barChart("Comparative source completeness", "Country metrics remain Not supplied until comparable sources are loaded.", [{name:"Comparable source supplied",value:sourced},{name:"Not supplied",value:rows.length-sourced}], "country count", COLORS[2])}</div>`+interactiveGallery("Global matrix · animated chart gallery",[{name:"Countries by region",values:regions,unit:"country count"},{name:"Source completeness",values:[{name:"Comparable source supplied",value:sourced},{name:"Not supplied",value:rows.length-sourced}],unit:"country count"}])+`<div class="method-note">The Global dashboard reports matrix completeness, not invented performance rankings. All unsourced country metrics remain explicitly “Not supplied”.</div>`;
   }
   function summaryDashboard(relations, mindmap) {
     const relKm = predicate => relations.filter(predicate).reduce((s,r)=>s+Number(r.covered_length_km||0),0);
     const spatial = relKm(r => r.relation_basis.startsWith("Spatial"));
     const fallback = relKm(r => !r.relation_basis.startsWith("Spatial"));
     const total = spatial + fallback;
+    const links=cache.links||[], database=cache.database||{tables:[]};
+    const networkKm=links.reduce((s,r)=>s+Number(r.geometry_length_km||0),0);
+    const supplied=(row,field)=>row[field]!==null&&row[field]!==undefined&&row[field]!==""&&shown(row[field])!=="Not supplied";
+    const covered=field=>links.filter(row=>supplied(row,field)).reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
+    const trafficKm=links.filter(row=>typeof row.registry_aadt==="number").reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
+    const validIdKm=links.filter(row=>/^[A-Z]{4}\d{3}$/.test(row.link_id)).reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
     const charts = barChart("Administrative relation basis", "True polygon intersections are separated from registry hierarchy fallbacks.", [{name:"Spatial polygon intersection",value:spatial},{name:"Registry hierarchy fallback",value:fallback}], "covered km", COLORS[5]) +
       barChart("Administrative length by pavement", "Every relation inherits the explicit paved/unpaved classification.", aggregate(relations, "pavement_class"), "covered km", COLORS[2]) +
       barChart("Administrative traffic coverage", "Exact-match traffic availability by relation-covered road length.", aggregate(relations, row => row.traffic_measured ? "Traffic supplied" : "Traffic not supplied"), "covered km", COLORS[0]);
     const nodes = mindmap.nodes || [];
-    const mind = `<article class="matrix-card"><h3>DUCAR site mind map</h3><p>Section and data ownership. Each reporting section has its own dashboard, records, SQL and schema views.</p><div class="mind-root">DUCAR Priority Studio</div><div class="mind-grid">${nodes.filter(n=>n.type!=="root").map(n=>`<div class="mind-node"><strong>${esc(n.label)}</strong><small>${esc(n.type)}${n.records ? " · "+number(n.records)+" records" : ""}</small></div>`).join("")}</div></article>`;
-    return metricCards([{label:"Administratively covered length",value:number(total,1)+" km",note:"Every mapped road relation"},{label:"Spatially intersected length",value:number(spatial,1)+" km",note:"Village polygon intersections"},{label:"Registry fallback length",value:number(fallback,1)+" km",note:"Explicit uncovered residual"},{label:"Traffic-covered admin length",value:number(relKm(r=>r.traffic_measured),1)+" km",note:"Exact-match observation coverage"}]) + `<div class="chart-grid">${charts}${mind}</div>`;
+    const edges=mindmap.edges||[];
+    const mind = `<article class="matrix-card admin-block"><h3>Interactive DUCAR system mind map</h3><p>Hover or focus a node to inspect its type, stored records and relationship count.</p><div class="mind-map-canvas"><button class="mind-root" type="button">DUCAR Priority Studio<small>${number(networkKm,1)} network km</small></button><div class="mind-branches"><section><h4>Reporting sections</h4>${nodes.filter(n=>n.type==="section").map(n=>`<button class="mind-node" type="button" title="${esc(n.label)} · ${edges.filter(e=>e.from===n.id||e.to===n.id).length} relationships"><strong>${esc(n.label)}</strong><small>${edges.filter(e=>e.from===n.id||e.to===n.id).length} relationships</small></button>`).join("")}</section><section><h4>Data and evidence stores</h4>${nodes.filter(n=>n.type==="data").map(n=>`<button class="mind-node data" type="button" title="${esc(n.label)}"><strong>${esc(n.label)}</strong><small>${n.records?number(n.records)+" rows":"Connected store"}</small></button>`).join("")}</section></div></div></article>`;
+    const parameterRows=LINK_FIELDS.map(field=>{const suppliedKm=covered(field);return {field,suppliedKm,gapKm:Math.max(0,networkKm-suppliedKm),pct:suppliedKm/Math.max(networkKm,1)*100};});
+    const parameters=`<article class="matrix-card admin-block"><h3>All network parameters · length completeness</h3><p>Every governed field measured against the complete DUCAR geometry length.</p><div class="table-wrap admin-table"><table class="data-table"><thead><tr><th>Parameter</th><th>Supplied length</th><th>Gap length</th><th>Length completeness</th><th>Health</th></tr></thead><tbody>${parameterRows.map(row=>`<tr><td>${esc(label(row.field))}</td><td>${number(row.suppliedKm,3)} km</td><td>${number(row.gapKm,3)} km</td><td><div class="health-meter"><i style="width:${Math.min(100,row.pct)}%"></i><span>${number(row.pct,1)}%</span></div></td><td class="${row.pct>=95?"cell-good":row.pct>=70?"cell-fair":"cell-poor"}">${row.pct>=95?"Healthy":row.pct>=70?"Attention":"Gap"}</td></tr>`).join("")}</tbody></table></div></article>`;
+    const representedLength=table=>table.table.includes("traffic")?trafficKm:table.table.includes("country")||table.table.includes("districts")||table.table.includes("distance_matrix")?null:table.table.includes("condition")?covered("condition"):networkKm;
+    const stores=`<article class="matrix-card admin-block"><h3>All DUCAR data stores</h3><p>Complete SQLite catalogue, schema scale, indexes and network length represented.</p><div class="table-wrap admin-table"><table class="data-table"><thead><tr><th>Data store</th><th>Rows</th><th>Columns</th><th>Indexes</th><th>Owned sections</th><th>Network length represented</th></tr></thead><tbody>${database.tables.map(table=>{const length=representedLength(table);return `<tr><td>${esc(table.table)}</td><td>${number(table.row_count)}</td><td>${number(table.column_count)}</td><td>${number(table.indexes.length)}</td><td>${esc(table.sections.join(", "))}</td><td>${length===null?"Not applicable":number(length,3)+" km"}</td></tr>`;}).join("")}</tbody></table></div></article>`;
+    const healthSeries=[
+      {name:"Link-ID standard",values:[{name:"Valid-ID length",value:validIdKm},{name:"ID gap length",value:Math.max(0,networkKm-validIdKm)}],unit:"covered km"},
+      {name:"Traffic parameter health",values:[{name:"Traffic supplied",value:trafficKm},{name:"Traffic gap",value:networkKm-trafficKm}],unit:"covered km"},
+      {name:"Condition parameter health",values:[{name:"Condition supplied",value:covered("condition")},{name:"Condition gap",value:networkKm-covered("condition")}],unit:"covered km"},
+      {name:"Planning parameter health",values:[{name:"Priority supplied",value:covered("priority_band")},{name:"Priority gap",value:networkKm-covered("priority_band")}],unit:"covered km"}
+    ];
+    return metricCards([{label:"Network geometry health",value:number(networkKm,1)+" km",note:"Complete DUCAR reporting denominator"},{label:"Valid Link-ID length",value:number(validIdKm,1)+" km",note:number(validIdKm/Math.max(networkKm,1)*100,1)+"% standard compliance"},{label:"Spatial admin length",value:number(spatial,1)+" km",note:"Polygon-intersected coverage"},{label:"Traffic parameter length",value:number(trafficKm,1)+" km",note:"Exact-match observation coverage"}]) + `<div class="chart-grid">${charts}</div>`+interactiveGallery("System health · animated chart gallery",healthSeries)+`<div class="admin-grid">${mind}${stores}${parameters}</div>`;
   }
   function dashboardHtml() {
     if (state.section === "global") return globalDashboard(cache.global);
@@ -439,6 +507,7 @@
     return `<div class="sql-intro"><div><h2>${esc(SECTION_META[state.section][0])} schema</h2><p>DDL, columns, data types and indexes for this section’s related SQL tables.</p></div><a class="studio-button" href="./data/${esc(cache.database.database_file)}" download>Download SQLite database</a></div><div class="schema-grid">${relevantTables().map(table=>`<article class="schema-card"><h3>${esc(table.table)}</h3><p>${number(table.row_count)} rows · ${number(table.column_count)} columns · ${number(table.indexes.length)} indexes</p><div class="schema-columns">${table.columns.map(column=>`<span class="schema-column">${esc(column.name)} · ${esc(column.type)}</span>`).join("")}</div><pre>${esc(table.create_sql)}</pre></article>`).join("")}</div>`;
   }
   async function render() {
+    vizTimers.forEach(timer=>clearInterval(timer)); vizTimers.clear();
     const restoreFocus = document.activeElement?.classList?.contains("records-search");
     state.loading = true;
     shell(`<div class="studio-loading">Loading this section’s complete reporting population…</div>`);
@@ -457,6 +526,13 @@
     root.querySelector("[data-export]")?.addEventListener("click",()=>exportRecords(recordDataset()));
     root.querySelector('[data-page="prev"]')?.addEventListener("click",()=>{state.page--;render();});
     root.querySelector('[data-page="next"]')?.addEventListener("click",()=>{state.page++;render();});
+    root.querySelectorAll("[data-viz-studio]").forEach(studio=>{
+      const buttons=[...studio.querySelectorAll("[data-viz-type]")], panels=[...studio.querySelectorAll("[data-viz-panel]")];
+      let active=0, timer=null;
+      const show=index=>{active=(index+buttons.length)%buttons.length;buttons.forEach((button,i)=>{button.classList.toggle("active",i===active);button.setAttribute("aria-selected",String(i===active));});panels.forEach((panel,i)=>{panel.classList.toggle("active",i===active);if(i===active){panel.classList.remove("animate-in");void panel.offsetWidth;panel.classList.add("animate-in");}});};
+      buttons.forEach((button,index)=>button.addEventListener("click",()=>show(index)));
+      studio.querySelector("[data-viz-autoplay]")?.addEventListener("click",event=>{if(timer){clearInterval(timer);vizTimers.delete(timer);timer=null;event.currentTarget.textContent="▶ Animate views";event.currentTarget.classList.remove("active");}else{event.currentTarget.textContent="Ⅱ Pause animation";event.currentTarget.classList.add("active");timer=setInterval(()=>show(active+1),2200);vizTimers.add(timer);show(active+1);}});
+    });
   }
   function activateSection(section) {
     if (!section || section===state.section) return;
