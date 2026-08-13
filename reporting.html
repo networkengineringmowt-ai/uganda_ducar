@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+  <title>DUCAR Verified Link &amp; Administrative Reporting</title>
+  <meta name="description" content="Auditable link-level and district-to-village road reporting for Uganda DUCAR." />
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./reporting-dark.css" />
+</head>
+<body>
+  <div id="loading" class="loading"><span class="loader"></span><strong>Loading verified road intelligence…</strong><small>7,733 mapped links and district-to-village spatial relations</small></div>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Back to DUCAR Priority Studio">
+        <span class="brand-mark">UG</span>
+        <span><strong>DUCAR Verified Reporting</strong><small>Link intelligence · administrative length matrix</small></span>
+      </a>
+      <div class="status"><i></i><span>Geometry-audited</span><small id="updated">Preparing data…</small></div>
+    </header>
+
+    <nav class="tabs" aria-label="Reporting navigation">
+      <button class="tab active" data-view="overview">Network brief</button>
+      <button class="tab" data-view="links">Link register</button>
+      <button class="tab" data-view="admin">Administrative matrix</button>
+      <button class="tab" data-view="method">Method &amp; quality</button>
+      <a class="studio-return" href="./">Priority Studio ↗</a>
+    </nav>
+
+    <main>
+      <section id="overview" class="view active">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">Verified DUCAR spatial reporting · Uganda</p>
+            <h1>Every mapped link.<br><em>Every covered unit.</em></h1>
+            <p class="lede">Stable link IDs connect all supplied road attributes, condition, exact-match traffic and geometry-derived length to district, county, subcounty, parish and village coverage.</p>
+            <div class="hero-actions"><button class="primary" data-open-view="links">Explore 7,733 links</button><button class="secondary" data-open-view="admin">Open administrative matrix</button></div>
+          </div>
+          <div class="audit-card"><span>ADMIN COVERAGE</span><strong id="admin-coverage-rate">—</strong><p>of mapped geometry assigned through supplied village polygons</p><div class="audit-line"><b id="admin-relations">—</b><small>link ↔ village relations</small></div></div>
+        </div>
+
+        <div id="kpis" class="kpi-grid"></div>
+        <div class="data-note"><span>QA finding</span><p>The route source declares geographic coordinates but stores UTM Zone 36N values. Calculated geometry length is therefore the reporting measure; source length is retained for audit. Traffic remains blank without an exact supplied source-code match.</p></div>
+
+        <div class="overview-grid">
+          <article class="panel map-panel"><div class="panel-head"><div><p class="eyebrow">Spatial register</p><h2>Condition by mapped link</h2></div><div class="legend"><span><i class="good"></i>Good</span><span><i class="fair"></i>Fair</span><span><i class="poor"></i>Poor</span><span><i class="unknown"></i>Unclassified</span></div></div><div id="map"></div><div id="map-fallback" class="map-fallback" hidden>Base map unavailable; all reporting tables remain available.</div></article>
+          <div class="insights-column">
+            <article class="panel"><div class="panel-head"><div><p class="eyebrow">Geometry length</p><h2>Network by condition</h2></div></div><div id="condition-bars" class="bars"></div></article>
+            <article class="panel"><div class="panel-head"><div><p class="eyebrow">Geometry length</p><h2>Surface portfolio</h2></div></div><div id="surface-bars" class="bars"></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="links" class="view">
+        <div class="section-head"><div><p class="eyebrow">Link-level reporting</p><h1>Mapped DUCAR link register</h1><p>All supplied attributes, condition, traffic provenance, quality checks and district-to-village length relations—one row per stable link ID.</p></div><button id="export-links" class="primary">Export filtered CSV</button></div>
+        <div class="filters">
+          <label class="search"><span>Search</span><input id="link-search" placeholder="Link ID, road name or source code" /></label>
+          <label><span>District</span><select id="district-filter"><option value="">All districts</option></select></label>
+          <label><span>Condition</span><select id="condition-filter"><option value="">All conditions</option></select></label>
+          <label><span>Surface</span><select id="surface-filter"><option value="">All surfaces</option></select></label>
+          <label><span>Traffic</span><select id="traffic-filter"><option value="">All links</option><option value="yes">With AADT / PCU</option><option value="no">Traffic gap</option></select></label>
+        </div>
+        <div class="table-meta"><strong id="link-count">—</strong><span id="link-length">—</span><span>Click a row for its complete record and village-level length splits.</span></div>
+        <div class="table-wrap"><table><thead><tr><th>Link ID</th><th>Road / source code</th><th>Administrative unit</th><th>Length</th><th>Surface</th><th>Condition</th><th>AADT / PCU</th><th>Priority</th></tr></thead><tbody id="link-rows"></tbody></table></div>
+        <div class="pagination"><button id="prev-page">Previous</button><span id="page-label"></span><button id="next-page">Next</button></div>
+      </section>
+
+      <section id="admin" class="view">
+        <div class="section-head"><div><p class="eyebrow">Heavy geospatial join</p><h1>Administrative distance matrix</h1><p>Geometry-derived road kilometres, surfaces, conditions and supplied traffic rolled up through district, county, subcounty, parish and village.</p></div><button id="export-admin" class="primary">Export current level CSV</button></div>
+        <div class="filters admin-filters">
+          <label class="search"><span>Find unit</span><input id="admin-search" placeholder="District, county, subcounty, parish or village" /></label>
+          <label><span>Reporting level</span><select id="admin-level"><option value="district">District</option><option value="county">County</option><option value="subcounty">Subcounty</option><option value="parish">Parish</option><option value="village">Village</option></select></label>
+        </div>
+        <div id="admin-kpis" class="kpi-grid compact"></div>
+        <div class="table-meta"><strong id="admin-count">—</strong><span>Metrics use covered geometry length; traffic averages include measured links only.</span></div>
+        <div class="table-wrap"><table><thead id="admin-head"></thead><tbody id="admin-rows"></tbody></table></div>
+        <div class="pagination"><button id="admin-prev-page">Previous</button><span id="admin-page-label"></span><button id="admin-next-page">Next</button></div>
+      </section>
+
+      <section id="method" class="view">
+        <div class="section-head"><div><p class="eyebrow">Reproducible pipeline</p><h1>Method, provenance &amp; limitations</h1><p>Measured, joined and retained without fabricating missing traffic or administrative coverage.</p></div></div>
+        <div class="method-grid">
+          <article class="panel"><span class="step">01</span><h2>Repair coordinates</h2><p>Routes are reinterpreted in EPSG:32636, forced to two dimensions and transformed to EPSG:4326 for browser mapping.</p></article>
+          <article class="panel"><span class="step">02</span><h2>Assign stable IDs</h2><p>Each link ID hashes its district, source code, road name and geometry; exact duplicates receive deterministic occurrence suffixes.</p></article>
+          <article class="panel"><span class="step">03</span><h2>Intersect villages</h2><p>Every line is intersected with 42,816 supplied village polygons. Boundary overlaps are proportionally scaled so a link cannot be double-counted.</p></article>
+          <article class="panel"><span class="step">04</span><h2>Join without invention</h2><p>AADT, PCU and speed are populated only from exact source-code matches. Missing traffic remains null and is measured as a coverage gap.</p></article>
+        </div>
+        <article class="panel quality-panel"><div><p class="eyebrow">Automated audit</p><h2>Length agreement</h2></div><div id="quality-list"></div></article>
+        <article class="panel caveat-panel"><p class="eyebrow">Material limitations</p><div id="caveats"></div></article>
+      </section>
+    </main>
+  </div>
+
+  <aside id="drawer" class="drawer" aria-hidden="true"><button id="close-drawer" class="close" aria-label="Close link details">×</button><div id="drawer-content"></div></aside>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="./app.js?v=20260811-admin-matrix"></script>
+</body>
+</html>
