@@ -777,7 +777,7 @@
   }
   function formulaTable(rows, formulas) {
     const length=rows.reduce((s,r)=>s+analyticsLength(r),0), count=rows.length;
-    const output=formulas.map(item=>{const numerator=item.numerator(rows,length,count),denominator=item.denominator(rows,length,count),result=item.result(rows,length,count);return {metric:item.name,formula:item.expression,numerator:item.unit.includes("%")?number(numerator,3)+" km":number(numerator,2),denominator:item.unit.includes("%")?number(denominator,3)+" km":number(denominator,2),result:{text:number(result,2)+" "+item.unit,tone:analyticsTone(result,item.risk)},unit:item.unit,interpretation:item.note};});
+    const output=formulas.map(item=>{const numerator=item.numerator(rows,length,count),denominator=item.denominator(rows,length,count),lengthBasis=item.unit==="% length";return {metric:item.name,formula:item.expression,numerator:lengthBasis?number(numerator,3)+" km":item.unit==="% occurrences"?number(numerator)+" occurrences":number(numerator,2),denominator:lengthBasis?number(denominator,3)+" km":item.unit==="% occurrences"?number(denominator)+" occurrences":number(denominator,2),result:{text:number(item.result(rows,length,count),2)+" "+item.unit,tone:analyticsTone(item.result(rows,length,count),item.risk)},unit:item.unit,interpretation:item.note};});
     return analyticsTable("Section formula register","Auditable complete-population formulas; no sampling and no hidden exclusions.",["metric","formula","numerator","denominator","result","unit","interpretation"],output);
   }
   function categorySummary(rows, field) {
