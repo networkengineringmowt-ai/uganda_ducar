@@ -7,10 +7,13 @@
     relations: "./data/ducar_link_admin_relations.json",
     global: "./data/global_country_matrix.json",
     database: "./data/ducar_database_catalog.json",
-    mindmap: "./data/ducar_site_mind_map.json"
+    mindmap: "./data/ducar_site_mind_map.json",
+    socio: "./data/ducar_socioeconomic_link_analysis.json",
+    facilities: "./data/uganda_socioeconomic_facilities.geojson",
+    mapRoads: "./data/ducar_socioeconomic_roads.geojson"
   };
   const COLORS = ["#0a84ff", "#30d158", "#ff9f0a", "#ff375f", "#bf5af2", "#64d2ff", "#ffd60a", "#5e5ce6"];
-  const SECTION_TABS = [["dashboard", "Dashboard"], ["records", "Full Exhaustive Table"], ["sql", "SQL Tables"], ["schema", "SQL Schema"]];
+  const SECTION_TABS = [["dashboard", "Dashboard"], ["map", "Map"], ["records", "Full Exhaustive Table"], ["analytics", "Deep Analytics"], ["sql", "SQL Tables"], ["schema", "SQL Schema"]];
   const SECTION_META = {
     overview: ["National DUCAR Overview", "Whole-register coverage, condition, pavement, traffic and planning status."],
     ducar: ["DUCAR Executive Dashboard", "Mapped DUCAR link governance, inventory completeness and planning readiness."],
@@ -22,26 +25,27 @@
     framework: ["Data & Governance Framework", "Record provenance, QA, coverage, hierarchy and modelling-basis controls."],
     budgets: ["Budget & Prioritisation", "Link-level planning allowances, priority bands and intervention allocation."],
     global: ["Global Country Matrix", "All configured countries retained with explicit source-completeness status."],
+    socioeconomic: ["Socioeconomic & Accessibility Analysis", "Road-length exposure to schools, health facilities, markets, industry, minerals, agriculture, energy and logistics."],
     summaries: ["Summaries & Admin Tools", "Administrative relations, site topology, SQLite tables and database schema."]
   };
   const LINK_FIELDS = [
-    "link_id", "link_id_district", "link_id_standard", "source_code", "road_name", "district", "source_district",
-    "admin_district", "county", "subcounty", "parish",
-    "surface", "pavement_class", "condition", "source_length_km", "geometry_length_km", "length_variance_pct",
-    "length_quality", "registry_speed_kmh", "registry_aadt", "registry_pcu", "traffic_source", "condition_risk",
+    "link_id", "road_name", "district", "county", "subcounty", "parish",
+    "surface", "pavement_class", "condition", "source_length_km", "geometry_length_km",
+    "registry_speed_kmh", "registry_aadt", "registry_pcu", "condition_risk",
     "surface_risk", "planning_priority_score", "priority_band", "priority_basis", "recommended_intervention",
-    "planning_unit_cost_ugx_km", "planning_cost_ugx", "cost_basis", "record_status", "admin_coverage"
+    "planning_unit_cost_ugx_km", "planning_cost_ugx", "cost_basis", "admin_coverage"
   ];
   const RECORD_FIELDS = {
     overview: LINK_FIELDS,
-    ducar: ["link_id", "link_id_district", "source_code", "road_name", "district", "source_district", "admin_district", "county", "subcounty", "parish", "surface", "pavement_class", "condition", "geometry_length_km", "registry_aadt", "planning_priority_score", "priority_band", "recommended_intervention", "record_status"],
-    network: ["link_id", "road_name", "surface", "pavement_class", "source_length_km", "geometry_length_km", "length_variance_pct", "length_quality", "district", "admin_district", "county", "subcounty", "parish", "admin_coverage"],
-    traffic: ["link_id", "road_name", "registry_aadt", "registry_pcu", "registry_speed_kmh", "traffic_source", "geometry_length_km", "surface", "pavement_class", "condition", "district", "county", "subcounty", "parish", "record_status"],
-    condition: ["link_id", "road_name", "condition", "surface", "pavement_class", "condition_risk", "surface_risk", "recommended_intervention", "planning_priority_score", "priority_band", "geometry_length_km", "district", "county", "subcounty", "parish", "length_quality", "record_status"],
+    ducar: ["link_id", "road_name", "district", "county", "subcounty", "parish", "surface", "pavement_class", "condition", "geometry_length_km", "registry_aadt", "registry_pcu", "planning_priority_score", "priority_band", "recommended_intervention", "planning_cost_ugx", "admin_coverage"],
+    network: ["link_id", "road_name", "surface", "pavement_class", "source_length_km", "geometry_length_km", "district", "county", "subcounty", "parish", "registry_aadt", "condition", "recommended_intervention", "admin_coverage"],
+    traffic: ["link_id", "road_name", "registry_aadt", "registry_pcu", "registry_speed_kmh", "geometry_length_km", "surface", "pavement_class", "condition", "district", "county", "subcounty", "parish", "planning_priority_score", "recommended_intervention"],
+    condition: ["link_id", "road_name", "condition", "surface", "pavement_class", "condition_risk", "surface_risk", "recommended_intervention", "planning_priority_score", "priority_band", "geometry_length_km", "district", "county", "subcounty", "parish", "planning_cost_ugx"],
     pims: ["link_id", "road_name", "priority_band", "planning_priority_score", "priority_basis", "recommended_intervention", "planning_cost_ugx", "condition", "surface", "pavement_class", "geometry_length_km", "district", "county", "subcounty", "parish", "cost_basis"],
-    hdm4: ["link_id", "road_name", "geometry_length_km", "source_length_km", "length_variance_pct", "length_quality", "registry_speed_kmh", "registry_aadt", "registry_pcu", "surface", "pavement_class", "condition", "planning_unit_cost_ugx_km", "planning_cost_ugx", "cost_basis"],
-    framework: ["link_id", "link_id_district", "link_id_standard", "source_code", "road_name", "record_status", "traffic_source", "length_quality", "length_variance_pct", "priority_basis", "cost_basis", "admin_district", "county", "subcounty", "parish", "admin_coverage"],
-    budgets: ["link_id", "road_name", "priority_band", "planning_priority_score", "recommended_intervention", "planning_cost_ugx", "planning_unit_cost_ugx_km", "cost_basis", "condition", "surface", "pavement_class", "geometry_length_km", "district", "county", "subcounty", "parish"]
+    hdm4: ["link_id", "road_name", "geometry_length_km", "source_length_km", "registry_speed_kmh", "registry_aadt", "registry_pcu", "surface", "pavement_class", "condition", "planning_priority_score", "recommended_intervention", "planning_unit_cost_ugx_km", "planning_cost_ugx", "cost_basis"],
+    framework: ["link_id", "road_name", "district", "county", "subcounty", "parish", "surface", "pavement_class", "condition", "geometry_length_km", "registry_aadt", "planning_priority_score", "priority_band", "recommended_intervention", "priority_basis", "cost_basis", "admin_coverage"],
+    budgets: ["link_id", "road_name", "priority_band", "planning_priority_score", "recommended_intervention", "planning_cost_ugx", "planning_unit_cost_ugx_km", "cost_basis", "condition", "surface", "pavement_class", "geometry_length_km", "district", "county", "subcounty", "parish"],
+    socioeconomic: ["link_id", "road_name", "district", "county", "subcounty", "parish", "geometry_length_km", "surface", "pavement_class", "condition", "registry_aadt", "planning_priority_score", "recommended_intervention", "socioeconomic_exposure_score", "exposure_band", "primary_socioeconomic_factor", "nearest_school_km", "school_sites_within_5km", "nearest_health_km", "health_sites_within_5km", "nearest_market_km", "market_sites_within_5km", "nearest_industry_km", "industry_sites_within_10km", "nearest_mineral_km", "mineral_sites_within_25km", "nearest_agriculture_km", "agriculture_sites_within_10km", "nearest_energy_km", "energy_sites_within_25km", "nearest_logistics_km", "logistics_sites_within_10km"]
   };
   const SECTION_SQL = {
     overview: ["ducar_link_register", "master_road_sections"], ducar: ["ducar_link_register", "master_road_sections"],
@@ -49,10 +53,10 @@
     traffic: ["ducar_link_register", "traffic_survey_counts"], condition: ["ducar_link_register", "pms_pavement_condition"],
     pims: ["ducar_link_register", "pms_pavement_condition"], hdm4: ["ducar_link_register", "pms_pavement_condition"],
     framework: ["ducar_link_register", "ducar_link_admin_relations"], budgets: ["ducar_link_register", "pms_pavement_condition"],
-    global: ["global_country_matrix"], summaries: ["ducar_link_admin_relations", "admin_unit_distance_matrix", "admin_districts"]
+    global: ["global_country_matrix"], socioeconomic: ["socioeconomic_link_analysis", "socioeconomic_facilities", "ducar_link_register", "ducar_link_admin_relations"], summaries: ["ducar_link_admin_relations", "admin_unit_distance_matrix", "admin_districts"]
   };
   const cache = {};
-  const state = { section: sectionFromHash(), tab: "dashboard", page: 1, search: "", loading: false };
+  const state = { section: sectionFromHash(), tab: tabFromHash(), page: 1, search: "", loading: false };
   const root = document.getElementById("exhaustive-root");
   if (!root) return;
 
@@ -73,7 +77,7 @@
     return SECTION_TABS.some(([tab]) => tab === id) ? id : "dashboard";
   }
   function sectionFromTitle(title) {
-    const map = { TOP: "overview", "DUCAR Dashboard": "ducar", Network: "network", Traffic: "traffic", Condition: "condition", PIMS: "pims", "HDM-4": "hdm4", Framework: "framework", "Budgets & Prioritization": "budgets", Global: "global", "Summaries & Admin Tools": "summaries" };
+    const map = { TOP: "overview", "DUCAR Dashboard": "ducar", Network: "network", Traffic: "traffic", Condition: "condition", PIMS: "pims", "HDM-4": "hdm4", Framework: "framework", "Budgets & Prioritization": "budgets", Global: "global", "Socioeconomic Analysis": "socioeconomic", "Summaries & Admin Tools": "summaries" };
     return map[title] || null;
   }
   async function data(key) {
@@ -86,8 +90,15 @@
   }
   async function ensureData() {
     if (["sql", "schema"].includes(state.tab)) return data("database");
+    if (state.tab === "map") {
+      if (state.section === "socioeconomic") return Promise.all([data("socio"), data("mapRoads"), data("facilities")]);
+      if (state.section === "global") return Promise.all([data("global"), data("mapRoads")]);
+      if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap"), data("mapRoads")]);
+      return Promise.all([data("links"), data("mapRoads")]);
+    }
     if (state.section === "global") return data("global");
     if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap")]);
+    if (state.section === "socioeconomic") return data("socio");
     return data("links");
   }
   function number(value, digits = 0) { return Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: digits }); }
@@ -99,7 +110,7 @@
     const totals = new Map();
     rows.forEach(row => {
       const key = shown(typeof category === "function" ? category(row) : row[category]);
-      const amount = metric ? Number(row[metric] || 0) : 1;
+      const amount = metric ? Number(row[metric] || 0) : Object.prototype.hasOwnProperty.call(row,"geometry_length_km") ? Number(row.geometry_length_km || 0) : Object.prototype.hasOwnProperty.call(row,"covered_length_km") ? Number(row.covered_length_km || 0) : 1;
       totals.set(key, (totals.get(key) || 0) + amount);
     });
     return [...totals].map(([name, value]) => ({ name, value }));
@@ -107,14 +118,14 @@
   function bands(rows, field, definitions) {
     return definitions.map(([name, min, max]) => ({ name, value: rows.filter(row => {
       const value = row[field]; return typeof value === "number" && value >= min && value < max;
-    }).length }));
+    }).reduce((sum, row) => sum + Number(row.geometry_length_km || 0), 0) }));
   }
   function sortData(values) { return [...values].sort((a, b) => b.value - a.value || a.name.localeCompare(b.name)); }
   function metricCards(items) {
     return `<div class="metric-grid">${items.map(item => `<article class="metric-card"><small>${esc(item.label)}</small><strong>${esc(item.value)}</strong><em>${esc(item.note)}</em></article>`).join("")}</div>`;
   }
   function barChart(title, subtitle, values, unit, color = COLORS[0]) {
-    const rows = sortData(values).slice(0, 10);
+    const rows = sortData(values);
     const width = 720, left = 190, right = 85, top = 18, rowH = 34, bottom = 42;
     const height = top + Math.max(rows.length, 1) * rowH + bottom;
     const max = Math.max(...rows.map(row => row.value), 1);
@@ -130,13 +141,13 @@
       const valueX = Math.min(left + barW + 7, width - right + 4);
       return `<text class="chart-label" x="${left-10}" y="${y+18}" text-anchor="end">${esc(row.name.length > 27 ? row.name.slice(0,26)+"…" : row.name)}</text><rect class="chart-bar" x="${left}" y="${y+5}" width="${barW}" height="19" rx="4" fill="${color}"/><text class="chart-value" x="${valueX}" y="${y+19}">${esc(chartNumber(row.value, unit))}</text>`;
     }).join("");
-    return `<article class="chart-card"><h3>${esc(title)}</h3><p class="chart-subtitle">${esc(subtitle)}</p><svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}"><line class="chart-axis" x1="${left}" y1="${height-bottom+4}" x2="${width-right}" y2="${height-bottom+4}"/>${svgTicks}${bars}</svg><div class="axis-title">Horizontal axis · ${esc(unit)}</div><div class="chart-legend"><span class="legend-key"><i class="legend-swatch" style="background:${color}"></i>${esc(unit)}</span><span class="legend-key">■ Bar mark</span><span class="legend-key">│ Major tick</span><span class="legend-key">— Grid key</span></div></article>`;
+    return `<article class="chart-card"><h3>${esc(title)}</h3><p class="chart-subtitle">${esc(subtitle)}</p><svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}"><line class="chart-axis" x1="${left}" y1="${height-bottom+4}" x2="${width-right}" y2="${height-bottom+4}"/>${svgTicks}${bars}</svg><div class="axis-title">Horizontal axis · ${esc(unit)}</div><div class="chart-legend"><span class="legend-key"><i class="legend-swatch" style="background:${color}"></i>${esc(unit)}</span></div></article>`;
   }
   function matrix(rows) {
     const conditions = ["Good", "Fair", "Poor", "Unclassified", "Not supplied"];
     const pavements = ["Paved", "Unpaved", "Not supplied"];
-    const cells = conditions.map(condition => pavements.map(pavement => rows.filter(row => shown(row.condition) === condition && shown(row.pavement_class) === pavement).length));
-    return `<article class="matrix-card"><h3>Condition × pavement classification matrix</h3><p>Complete link count cross-tabulation. Gravel/Earth = Unpaved; Bituminous/Concrete = Paved.</p><div class="matrix-grid" style="grid-template-columns:170px repeat(3,minmax(105px,1fr))"><div class="matrix-cell head">Condition</div>${pavements.map(x => `<div class="matrix-cell head">${x}</div>`).join("")}${conditions.map((condition,i) => `<div class="matrix-cell row-head">${condition}</div>${cells[i].map(value => `<div class="matrix-cell">${number(value)} links</div>`).join("")}`).join("")}</div><div class="chart-legend"><span class="legend-key"><i class="legend-swatch" style="background:#30d158"></i>Paved: Bituminous + Concrete</span><span class="legend-key"><i class="legend-swatch" style="background:#ff9f0a"></i>Unpaved: Gravel + Earth</span></div></article>`;
+    const cells = conditions.map(condition => pavements.map(pavement => rows.filter(row => shown(row.condition) === condition && shown(row.pavement_class) === pavement).reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0)));
+    return `<article class="matrix-card"><h3>Condition × pavement classification matrix</h3><p>Complete cumulative road-length cross-tabulation. Gravel/Earth = Unpaved; Bituminous/Concrete = Paved.</p><div class="matrix-grid" style="grid-template-columns:170px repeat(3,minmax(105px,1fr))"><div class="matrix-cell head">Condition</div>${pavements.map(x => `<div class="matrix-cell head">${x}</div>`).join("")}${conditions.map((condition,i) => `<div class="matrix-cell row-head">${condition}</div>${cells[i].map(value => `<div class="matrix-cell">${number(value,1)} km</div>`).join("")}`).join("")}</div><div class="chart-legend"><span class="legend-key"><i class="legend-swatch" style="background:#30d158"></i>Paved: Bituminous + Concrete</span><span class="legend-key"><i class="legend-swatch" style="background:#ff9f0a"></i>Unpaved: Gravel + Earth</span></div></article>`;
   }
   function linkDashboard(rows) {
     const measured = rows.filter(row => typeof row.registry_aadt === "number").length;
@@ -224,6 +235,76 @@
     }
     return metricCards(baseMetrics) + `<div class="chart-grid">${charts.join("")}${state.section === "condition" ? matrix(rows) : ""}</div><div class="method-note">All dashboard values are derived from the complete section population. Charts do not select Top-N roads. Planning costs are modelling allowances and are not engineer’s estimates or bills of quantities.</div>`;
   }
+  function lengthDashboard(rows) {
+    const km = row => Number(row.geometry_length_km || 0);
+    const sum = predicate => rows.filter(predicate).reduce((total,row)=>total+km(row),0);
+    const totalKm = sum(()=>true), trafficKm = sum(row=>typeof row.registry_aadt === "number");
+    const cost = rows.reduce((total,row)=>total+Number(row.planning_cost_ugx||0),0);
+    const missingKm = field => sum(row=>typeof row[field] !== "number");
+    let metrics;
+    if (state.section === "condition") metrics = ["Good","Fair","Poor","Unclassified"].map(name=>({label:name+" affected length",value:number(sum(r=>shown(r.condition)===name),1)+" km",note:"Cumulative geometry length"}));
+    else if (state.section === "traffic") metrics = [
+      {label:"Traffic-covered length",value:number(trafficKm,1)+" km",note:number(trafficKm/Math.max(totalKm,1)*100,1)+"% of network length"},
+      {label:"Traffic data gap",value:number(totalKm-trafficKm,1)+" km",note:"Retained as Not supplied"},
+      {label:"High-AADT length",value:number(sum(r=>Number(r.registry_aadt)>=1000),1)+" km",note:"AADT 1,000 or more"},
+      {label:"Low-speed length",value:number(sum(r=>typeof r.registry_speed_kmh==="number"&&r.registry_speed_kmh<15),1)+" km",note:"Speed below 15 km/h"}
+    ];
+    else if (state.section === "network") metrics = [
+      {label:"Paved length",value:number(sum(r=>shown(r.pavement_class)==="Paved"),1)+" km",note:"Bituminous + Concrete"},
+      {label:"Unpaved length",value:number(sum(r=>shown(r.pavement_class)==="Unpaved"),1)+" km",note:"Gravel + Earth"},
+      {label:"Condition-supplied length",value:number(sum(r=>shown(r.condition)!=="Not supplied"),1)+" km",note:"Road condition coverage"},
+      {label:"Admin-attributed length",value:number(sum(r=>shown(r.district)!=="Not supplied"),1)+" km",note:"District hierarchy coverage"}
+    ];
+    else if (state.section === "budgets") metrics = [
+      {label:"Screened network length",value:number(totalKm,1)+" km",note:"Every DUCAR geometry"},
+      {label:"Critical-priority length",value:number(sum(r=>shown(r.priority_band)==="Critical"),1)+" km",note:"Highest planning band"},
+      {label:"Total planning allowance",value:"UGX "+number(cost/1e12,2)+"T",note:"Modelled, not a BOQ"},
+      {label:"Critical-band allowance",value:"UGX "+number(rows.filter(r=>shown(r.priority_band)==="Critical").reduce((s,r)=>s+Number(r.planning_cost_ugx||0),0)/1e9,1)+"B",note:"Complete critical length"}
+    ];
+    else metrics = [
+      {label:"Analyzed road length",value:number(totalKm,1)+" km",note:"Complete mapped register"},
+      {label:"Traffic-covered length",value:number(trafficKm,1)+" km",note:"Exact-match observations"},
+      {label:"Critical-priority length",value:number(sum(r=>shown(r.priority_band)==="Critical"),1)+" km",note:"Complete screened population"},
+      {label:"Paved road length",value:number(sum(r=>shown(r.pavement_class)==="Paved"),1)+" km",note:"Bituminous + Concrete"}
+    ];
+    const common = {
+      overview: [["Condition affected length","All mapped road length by condition.","condition",COLORS[1]],["Pavement affected length","Paved and unpaved cumulative length.","pavement_class",COLORS[2]],["Priority affected length","Planning bands by cumulative road length.","priority_band",COLORS[4]],["Traffic data coverage","Road length with or without exact traffic data.",r=>typeof r.registry_aadt==="number"?"Traffic supplied":"Not supplied",COLORS[5]]],
+      ducar: [["Intervention coverage length","Cumulative length assigned to each treatment.","recommended_intervention",COLORS[2]],["Condition coverage length","Network condition by affected road length.","condition",COLORS[1]],["Pavement coverage length","Paved and unpaved road length.","pavement_class",COLORS[0]],["Priority coverage length","Screened length by priority band.","priority_band",COLORS[4]]],
+      network: [["Surface composition","Complete geometry length by surface.","surface",COLORS[2]],["Pavement classification","Explicit paved/unpaved length.","pavement_class",COLORS[1]],["Condition coverage","Affected length by road condition.","condition",COLORS[3]],["Administrative coverage","Road length by district.","district",COLORS[0]]],
+      condition: [["Condition by network length","Complete affected road length.","condition",COLORS[1]],["Condition risk","Affected length by condition-risk score.",r=>"Risk "+shown(r.condition_risk),COLORS[3]],["Recommended interventions","Cumulative length by treatment.","recommended_intervention",COLORS[2]],["Surface condition coverage","Complete length by surface.","surface",COLORS[5]]],
+      pims: [["Priority screening bands","Affected road length by priority.","priority_band",COLORS[4]],["Intervention pipeline","Cumulative treatment length.","recommended_intervention",COLORS[2]],["Screening by condition","Input length by condition.","condition",COLORS[0]],["Screening by pavement","Input length by pavement.","pavement_class",COLORS[1]]],
+      hdm4: [["HDM-4 traffic coverage","Road length with exact traffic inputs.",r=>typeof r.registry_aadt==="number"?"Traffic supplied":"Not supplied",COLORS[0]],["Pavement input length","Model length by pavement.","pavement_class",COLORS[2]],["Condition input length","Model length by condition.","condition",COLORS[3]],["Priority input length","Model length by planning band.","priority_band",COLORS[4]]],
+      framework: [["Condition data coverage","Governed length by condition.","condition",COLORS[1]],["Traffic data provenance","Length with exact traffic values.",r=>typeof r.registry_aadt==="number"?"Traffic supplied":"Not supplied",COLORS[4]],["Administrative hierarchy","Length with parish attribution.",r=>shown(r.parish)==="Not supplied"?"Not supplied":"Parish supplied",COLORS[0]],["Pavement governance","Length by explicit pavement class.","pavement_class",COLORS[2]]]
+    };
+    let charts;
+    if (state.section === "traffic") charts = [
+      barChart("AADT affected length","Cumulative road length in every AADT band.",bands(rows,"registry_aadt",[["0–149",0,150],["150–499",150,500],["500–999",500,1000],["1,000+",1000,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_aadt")}]),"affected km",COLORS[0]),
+      barChart("PCU affected length","Cumulative road length in every PCU band.",bands(rows,"registry_pcu",[["0–499",0,500],["500–999",500,1000],["1,000–1,499",1000,1500],["1,500+",1500,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_pcu")}]),"affected km",COLORS[4]),
+      barChart("Speed affected length","Cumulative road length in every speed band.",bands(rows,"registry_speed_kmh",[["<15 km/h",0,15],["15–19.9",15,20],["20–24.9",20,25],["25+ km/h",25,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_speed_kmh")}]),"affected km",COLORS[1]),
+      barChart("Traffic coverage by pavement","Length with supplied AADT by pavement.",aggregate(rows.filter(r=>typeof r.registry_aadt==="number"),"pavement_class"),"affected km",COLORS[2])
+    ];
+    else if (state.section === "budgets") charts = [
+      barChart("Allowance by priority","Planning allowance for all road length.",aggregate(rows,"priority_band","planning_cost_ugx"),"UGX",COLORS[1]),
+      barChart("Allowance by intervention","Allowance by complete treatment length.",aggregate(rows,"recommended_intervention","planning_cost_ugx"),"UGX",COLORS[2]),
+      barChart("Affected length by intervention","Cumulative road length for each treatment.",aggregate(rows,"recommended_intervention"),"affected km",COLORS[0]),
+      barChart("Affected length by priority","Every kilometre retained.",aggregate(rows,"priority_band"),"affected km",COLORS[4])
+    ];
+    else charts = (common[state.section]||common.overview).map(c=>barChart(c[0],c[1],aggregate(rows,c[2]),"affected km",c[3]));
+    return metricCards(metrics)+`<div class="chart-grid">${charts.join("")}${state.section==="condition"?matrix(rows):""}</div><div class="method-note">Every road chart uses cumulative geometry length. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are modelling allowances, not bills of quantities.</div>`;
+  }
+
+  function socioeconomicDashboard(payload) {
+    const rows = payload.rows || [], exposure = payload.exposure_summary || [], access = payload.access_summary || [];
+    const total = Number(payload.metadata?.road_length_km || rows.reduce((s,r)=>s+Number(r.geometry_length_km||0),0));
+    const accessValue = key => Number(access.find(item=>item.factor===key)?.affected_length_km || 0);
+    return metricCards([
+      {label:"Analyzed road length",value:number(total,1)+" km",note:"All 7,733 DUCAR links"},
+      {label:"High + critical exposure",value:number(exposure.filter(x=>["High","Critical"].includes(x.band)).reduce((s,x)=>s+Number(x.affected_length_km||0),0),1)+" km",note:"Multi-factor access pressure"},
+      {label:"School-access length",value:number(accessValue("School"),1)+" km",note:"Within 5 km"},
+      {label:"Health-access length",value:number(accessValue("Health"),1)+" km",note:"Within 5 km"}
+    ])+`<div class="chart-grid">${barChart("Socioeconomic exposure by road length","Combined accessibility exposure for every DUCAR link.",exposure.map(x=>({name:x.band,value:Number(x.affected_length_km||0)})),"affected km",COLORS[4])}${barChart("Road length within service thresholds","Length exposed to each socioeconomic factor.",access.map(x=>({name:x.factor,value:Number(x.affected_length_km||0)})),"affected km",COLORS[1])}${barChart("Road length outside service thresholds","Cumulative accessibility-gap length.",access.map(x=>({name:x.factor,value:Number(x.outside_threshold_length_km||0)})),"affected km",COLORS[3])}${barChart("Primary socioeconomic factor","Dominant factor assigned to every road, by length.",aggregate(rows,"primary_socioeconomic_factor"),"affected km",COLORS[2])}</div><div class="method-note">Nearest-distance joins use exact road geometry in EPSG:32636. Threshold counts use road midpoint buffers. Results integrate local authoritative registers, OpenStreetMap/Geofabrik, UIA, MoES, MoH, DGSM and UBOS metadata; all values remain link-level and exportable.</div>`;
+  }
+
   function globalDashboard(payload) {
     const rows = payload.rows;
     const regions = aggregate(rows, "region");
@@ -236,25 +317,27 @@
     ]) + `<div class="chart-grid">${barChart("Countries by configured region", "All countries retained and grouped by region.", regions, "country count", COLORS[0])}${barChart("Comparative source completeness", "Country metrics remain Not supplied until comparable sources are loaded.", [{name:"Comparable source supplied",value:sourced},{name:"Not supplied",value:rows.length-sourced}], "country count", COLORS[2])}</div><div class="method-note">The Global dashboard reports matrix completeness, not invented performance rankings. All unsourced country metrics remain explicitly “Not supplied”.</div>`;
   }
   function summaryDashboard(relations, mindmap) {
-    const spatial = relations.filter(r => r.relation_basis.startsWith("Spatial")).length;
-    const fallback = relations.length - spatial;
-    const districts = new Set(relations.map(r => shown(r.admin_district))).size;
-    const villages = new Set(relations.map(r => shown(r.village_id))).size;
-    const charts = barChart("Administrative relation basis", "True polygon intersections are separated from registry hierarchy fallbacks.", [{name:"Spatial polygon intersection",value:spatial},{name:"Registry hierarchy fallback",value:fallback}], "relation count", COLORS[5]) +
-      barChart("Relations by pavement class", "Every relation inherits the link paved/unpaved classification.", aggregate(relations, "pavement_class"), "relation count", COLORS[2]) +
-      barChart("Relation traffic coverage", "Relations retain exact-match traffic availability from the source link.", aggregate(relations, row => row.traffic_measured ? "Traffic supplied" : "Traffic not supplied"), "relation count", COLORS[0]);
+    const relKm = predicate => relations.filter(predicate).reduce((s,r)=>s+Number(r.covered_length_km||0),0);
+    const spatial = relKm(r => r.relation_basis.startsWith("Spatial"));
+    const fallback = relKm(r => !r.relation_basis.startsWith("Spatial"));
+    const total = spatial + fallback;
+    const charts = barChart("Administrative relation basis", "True polygon intersections are separated from registry hierarchy fallbacks.", [{name:"Spatial polygon intersection",value:spatial},{name:"Registry hierarchy fallback",value:fallback}], "covered km", COLORS[5]) +
+      barChart("Administrative length by pavement", "Every relation inherits the explicit paved/unpaved classification.", aggregate(relations, "pavement_class"), "covered km", COLORS[2]) +
+      barChart("Administrative traffic coverage", "Exact-match traffic availability by relation-covered road length.", aggregate(relations, row => row.traffic_measured ? "Traffic supplied" : "Traffic not supplied"), "covered km", COLORS[0]);
     const nodes = mindmap.nodes || [];
     const mind = `<article class="matrix-card"><h3>DUCAR site mind map</h3><p>Section and data ownership. Each reporting section has its own dashboard, records, SQL and schema views.</p><div class="mind-root">DUCAR Priority Studio</div><div class="mind-grid">${nodes.filter(n=>n.type!=="root").map(n=>`<div class="mind-node"><strong>${esc(n.label)}</strong><small>${esc(n.type)}${n.records ? " · "+number(n.records)+" records" : ""}</small></div>`).join("")}</div></article>`;
-    return metricCards([{label:"Admin relations",value:number(relations.length),note:"Every mapped link represented"},{label:"Spatial relations",value:number(spatial),note:"Village polygon intersections"},{label:"Registry fallbacks",value:number(fallback),note:"Explicit uncovered residual"},{label:"Administrative districts",value:number(districts),note:number(villages)+" village identifiers"}]) + `<div class="chart-grid">${charts}${mind}</div>`;
+    return metricCards([{label:"Administratively covered length",value:number(total,1)+" km",note:"Every mapped road relation"},{label:"Spatially intersected length",value:number(spatial,1)+" km",note:"Village polygon intersections"},{label:"Registry fallback length",value:number(fallback,1)+" km",note:"Explicit uncovered residual"},{label:"Traffic-covered admin length",value:number(relKm(r=>r.traffic_measured),1)+" km",note:"Exact-match observation coverage"}]) + `<div class="chart-grid">${charts}${mind}</div>`;
   }
   function dashboardHtml() {
     if (state.section === "global") return globalDashboard(cache.global);
     if (state.section === "summaries") return summaryDashboard(cache.relations, cache.mindmap);
-    return linkDashboard(cache.links);
+    if (state.section === "socioeconomic") return socioeconomicDashboard(cache.socio);
+    return lengthDashboard(cache.links);
   }
   function recordDataset() {
     if (state.section === "global") return { rows: cache.global.rows, fields: Object.keys(cache.global.rows[0]) };
     if (state.section === "summaries") return { rows: cache.relations, fields: Object.keys(cache.relations[0]) };
+    if (state.section === "socioeconomic") return { rows: cache.socio.rows, fields: RECORD_FIELDS.socioeconomic };
     return { rows: cache.links, fields: RECORD_FIELDS[state.section] || LINK_FIELDS };
   }
   function cellClass(field, raw) {
@@ -262,6 +345,7 @@
     if (value === "not supplied" || value.includes("no comparable")) return "not-supplied";
     if (field === "condition" && ["good","fair","poor"].includes(value)) return "cell-" + value;
     if (field === "priority_band" && ["low","moderate","high","critical"].includes(value)) return "cell-" + value;
+    if (field === "exposure_band" && ["low","moderate","high","critical"].includes(value)) return "cell-" + value;
     if (field === "pavement_class") return value === "paved" ? "cell-paved" : value === "unpaved" ? "cell-unpaved" : "";
     if (field === "registry_aadt" && typeof raw === "number") return raw >= 1000 ? "cell-critical" : raw >= 500 ? "cell-high" : raw >= 150 ? "cell-moderate" : "cell-low";
     return "";
@@ -285,6 +369,62 @@
     const start = (state.page-1)*PAGE_SIZE, shownRows = rows.slice(start,start+PAGE_SIZE);
     return `<div class="records-toolbar"><input class="records-search" value="${esc(state.search)}" placeholder="Search this section’s complete records" aria-label="Search section records"><button class="studio-button" data-export>Export this complete section</button>${state.section==="overview" ? `<a class="studio-button" href="./data/ducar_link_register.csv" download>Download master CSV</a>` : ""}</div><div class="records-status"><strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records · ${number(dataset.fields.length)} section-specific fields · pagination changes display only</div><div class="table-wrap"><table class="data-table"><thead><tr>${dataset.fields.map(field=>`<th>${esc(label(field))}</th>`).join("")}</tr></thead><tbody>${shownRows.map(row=>`<tr>${dataset.fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(shown(row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div><div class="pages"><button data-page="prev" ${state.page===1?"disabled":""}>Previous</button><span>Page ${number(state.page)} of ${number(pages)}</span><button data-page="next" ${state.page===pages?"disabled":""}>Next</button></div>`;
   }
+
+  function mapHtml() {
+    const facilityControl = state.section === "socioeconomic" ? `<label class="map-filter">Facility layer<select id="facility-category"><option value="All">All socioeconomic features</option>${(cache.socio.category_summary||[]).map(item=>`<option value="${esc(item.category)}">${esc(item.category)} · ${number(item.features)}</option>`).join("")}</select></label>` : "";
+    return `<div class="map-toolbar"><div><strong>${esc(SECTION_META[state.section][0])} geospatial interface</strong><small>Complete DUCAR geometry · click a road or facility for its attributes</small></div>${facilityControl}</div><div id="section-map" class="section-map" role="application" aria-label="${esc(SECTION_META[state.section][0])} map"></div><div class="map-key"><span><i style="background:#30d158"></i>Good / Low</span><span><i style="background:#ffd60a"></i>Fair / Moderate</span><span><i style="background:#ff375f"></i>Poor / High / Critical</span><span><i style="background:#64d2ff"></i>Socioeconomic facility</span></div>`;
+  }
+
+  function mapColor(properties) {
+    if (state.section === "condition") return ({Good:"#30d158",Fair:"#ffd60a",Poor:"#ff375f"})[properties.condition] || "#8e8e93";
+    if (["pims","budgets","hdm4"].includes(state.section)) return ({Low:"#30d158",Moderate:"#ffd60a",High:"#ff9f0a",Critical:"#ff375f"})[properties.priority_band] || "#8e8e93";
+    return properties.pavement_class === "Paved" ? "#0a84ff" : properties.pavement_class === "Unpaved" ? "#ff9f0a" : "#8e8e93";
+  }
+
+  function initSectionMap() {
+    const node = document.getElementById("section-map");
+    if (!node || !window.L || !cache.mapRoads) return;
+    const map = L.map(node,{preferCanvas:true,zoomControl:true}).setView([1.35,32.3],7);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:19,attribution:"© OpenStreetMap contributors · © CARTO"}).addTo(map);
+    const socioById = new Map((cache.socio?.rows||[]).map(row=>[row.link_id,row]));
+    const roads = L.geoJSON(cache.mapRoads,{style:feature=>{const socio=socioById.get(feature.properties.link_id);return {color:state.section==="socioeconomic"?({Low:"#30d158",Moderate:"#ffd60a",High:"#ff9f0a",Critical:"#ff375f"})[socio?.exposure_band]||"#8e8e93":mapColor(feature.properties),weight:2,opacity:.8};},onEachFeature:(feature,layer)=>{
+      const p=feature.properties, s=socioById.get(p.link_id);
+      layer.bindPopup(`<strong>${esc(p.link_id)} · ${esc(shown(p.road_name))}</strong><br>${esc(shown(p.district))} · ${esc(shown(p.surface))} · ${esc(shown(p.condition))}<br>${number(p.geometry_length_km,3)} km${s?`<br>Socioeconomic score ${number(s.socioeconomic_exposure_score,2)} · ${esc(s.exposure_band)}<br>Primary factor: ${esc(s.primary_socioeconomic_factor)}`:""}`);
+    }}).addTo(map);
+    try { map.fitBounds(roads.getBounds(),{padding:[12,12]}); } catch (_) {}
+    if (state.section === "socioeconomic" && cache.facilities) {
+      let facilitiesLayer;
+      const draw = category => {
+        if (facilitiesLayer) facilitiesLayer.remove();
+        facilitiesLayer=L.geoJSON(cache.facilities,{filter:f=>category==="All"||f.properties.category===category,renderer:L.canvas({padding:.4}),pointToLayer:(feature,latlng)=>L.circleMarker(latlng,{radius:3,color:"#050506",weight:.4,fillColor:"#64d2ff",fillOpacity:.78}),onEachFeature:(feature,layer)=>{const p=feature.properties;layer.bindPopup(`<strong>${esc(shown(p.name))}</strong><br>${esc(shown(p.category))} · ${esc(shown(p.sub_type))}<br>${esc(shown(p.district))}<br>Source: ${esc(shown(p.source_dataset))}`);}}).addTo(map);
+      };
+      draw("All");
+      document.getElementById("facility-category")?.addEventListener("change",event=>draw(event.target.value));
+    }
+    setTimeout(()=>map.invalidateSize(),100);
+  }
+
+  function districtAnalytics(rows) {
+    const groups = new Map();
+    rows.forEach(row=>{
+      const district=shown(row.district), item=groups.get(district)||{district,total_length_km:0,paved_length_km:0,unpaved_length_km:0,poor_length_km:0,traffic_covered_length_km:0,critical_high_length_km:0,planning_cost_ugx:0};
+      const length=Number(row.geometry_length_km||0); item.total_length_km+=length;
+      if(row.pavement_class==="Paved")item.paved_length_km+=length; if(row.pavement_class==="Unpaved")item.unpaved_length_km+=length;
+      if(row.condition==="Poor")item.poor_length_km+=length; if(typeof row.registry_aadt==="number")item.traffic_covered_length_km+=length;
+      if(["Critical","High"].includes(row.exposure_band||row.priority_band))item.critical_high_length_km+=length;
+      item.planning_cost_ugx+=Number(row.planning_cost_ugx||0); groups.set(district,item);
+    });
+    return [...groups.values()].sort((a,b)=>a.district.localeCompare(b.district));
+  }
+
+  function analyticsHtml() {
+    if (state.section === "global") return `<div class="method-note">The complete all-country comparison matrix is owned by this section’s exhaustive table. Unsourced metrics remain explicitly Not supplied.</div>${barChart("Country coverage by region","All configured countries, without selective reporting.",aggregate(cache.global.rows,"region"),"country count",COLORS[0])}`;
+    const rows = state.section === "summaries" ? cache.relations.map(r=>({...r,district:r.admin_district,geometry_length_km:r.covered_length_km})) : state.section === "socioeconomic" ? cache.socio.rows : cache.links;
+    const districts = districtAnalytics(rows), fields = ["district","total_length_km","paved_length_km","unpaved_length_km","poor_length_km","traffic_covered_length_km","critical_high_length_km","planning_cost_ugx"];
+    const charts = state.section === "socioeconomic" ? `${barChart("Accessibility exposure band","Every road by cumulative affected length.",aggregate(rows,"exposure_band"),"affected km",COLORS[4])}${barChart("Primary factor coverage","Dominant socioeconomic factor by length.",aggregate(rows,"primary_socioeconomic_factor"),"affected km",COLORS[2])}` : `${barChart("Deep condition cross-section","All length by condition.",aggregate(rows,"condition"),"affected km",COLORS[1])}${barChart("Deep pavement cross-section","All length by pavement class.",aggregate(rows,"pavement_class"),"affected km",COLORS[2])}`;
+    const provenance = state.section === "socioeconomic" ? `<article class="matrix-card analytics-provenance"><h3>Geospatial source register</h3><p>Authority and scope retained with the analysis.</p><div class="source-grid">${cache.socio.metadata.sources.map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noreferrer"><strong>${esc(source.name)}</strong><small>${esc(source.coverage)}</small></a>`).join("")}</div><div class="category-grid">${cache.socio.category_summary.map(item=>`<span><strong>${number(item.features)}</strong>${esc(item.category)}</span>`).join("")}</div></article>` : "";
+    return `<div class="chart-grid">${charts}${provenance}</div><div class="records-status"><strong>${number(districts.length)}</strong> administrative units · cumulative length, coverage, risk and planning relations</div><div class="table-wrap analytics-table"><table class="data-table"><thead><tr>${fields.map(f=>`<th>${esc(label(f))}</th>`).join("")}</tr></thead><tbody>${districts.map(row=>`<tr>${fields.map(f=>`<td>${esc(f==="district"?row[f]:f==="planning_cost_ugx"?"UGX "+number(row[f],0):number(row[f],3)+" km")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
   function relevantTables() {
     const names = SECTION_SQL[state.section] || [];
     return (cache.database.tables || []).filter(table => names.includes(table.table));
@@ -303,14 +443,14 @@
     state.loading = true;
     shell(`<div class="studio-loading">Loading this section’s complete reporting population…</div>`);
     try { await ensureData(); state.loading=false; } catch (error) { state.loading=false; shell(`<div class="studio-loading">${esc(error.message)}</div>`); return; }
-    let body = state.tab === "dashboard" ? dashboardHtml() : state.tab === "records" ? recordsHtml() : state.tab === "sql" ? sqlHtml() : schemaHtml();
+    let body = state.tab === "dashboard" ? dashboardHtml() : state.tab === "map" ? mapHtml() : state.tab === "records" ? recordsHtml() : state.tab === "analytics" ? analyticsHtml() : state.tab === "sql" ? sqlHtml() : schemaHtml();
     shell(body); bind();
+    if (state.tab === "map") initSectionMap();
     if (restoreFocus) { const input=root.querySelector(".records-search"); input?.focus(); input?.setSelectionRange(input.value.length,input.value.length); }
   }
   function shell(body) {
-    const networkMapMode = state.section === "network" && state.tab === "dashboard";
-    document.body.classList.toggle("network-map-mode", networkMapMode);
-    root.innerHTML = `<section class="exhaustive-shell"><div class="section-studio"><nav class="section-tabs" aria-label="Section reporting views">${SECTION_TABS.map(([id,text])=>`<a class="section-tab ${state.tab===id?"active":""}" href="#${state.section}:${id}">${esc(networkMapMode && id === "dashboard" ? "Network Map" : text)}</a>`).join("")}</nav>${body}</div></section>`;
+    document.body.classList.remove("network-map-mode");
+    root.innerHTML = `<section class="exhaustive-shell"><div class="section-studio"><nav class="section-tabs" aria-label="Section reporting views">${SECTION_TABS.map(([id,text])=>`<a class="section-tab ${state.tab===id?"active":""}" href="#${state.section}:${id}">${esc(text)}</a>`).join("")}</nav>${body}</div></section>`;
   }
   function bind() {
     const search=root.querySelector(".records-search"); if(search) search.addEventListener("input",()=>{state.search=search.value;state.page=1;render();});
@@ -320,12 +460,22 @@
   }
   function activateSection(section) {
     if (!section || section===state.section) return;
-    state.section=section;state.tab="dashboard";state.page=1;state.search="";render();
+    state.section=section;state.tab="dashboard";state.page=1;state.search="";history.replaceState(null,"",`#${section}:dashboard`);render();
   }
   document.addEventListener("click",event=>{
     const button=event.target.closest?.("button[title]");
     if(button)setTimeout(()=>activateSection(sectionFromTitle(button.getAttribute("title"))),0);
   },true);
+  function ensureSocioeconomicNav() {
+    if (document.querySelector('button[title="Socioeconomic Analysis"]')) return true;
+    const globalButton = document.querySelector('button[title="Global"]');
+    if (!globalButton) return false;
+    const button = globalButton.cloneNode(true); button.setAttribute("title","Socioeconomic Analysis"); button.setAttribute("aria-label","Socioeconomic Analysis");
+    const walker=document.createTreeWalker(button,NodeFilter.SHOW_TEXT); let node;
+    while((node=walker.nextNode())) if(node.nodeValue.trim()==="Global") node.nodeValue=node.nodeValue.replace("Global","Socioeconomic Analysis");
+    globalButton.insertAdjacentElement("afterend",button); return true;
+  }
+  let navAttempts=0; const navTimer=setInterval(()=>{navAttempts++;if(ensureSocioeconomicNav()||navAttempts>40)clearInterval(navTimer);},250);
   window.addEventListener("hashchange",()=>{
     state.section=sectionFromHash();state.tab=tabFromHash();state.page=1;state.search="";render();
   });
