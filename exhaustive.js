@@ -196,6 +196,70 @@
     if(section==="framework"||section==="hdm4") return [standard.traffic,standard.condition,standard.pavement,standard.priority];
     return [standard.condition,standard.pavement,standard.priority,standard.traffic];
   }
+  function completenessValues(rows, fields, unit="affected km") {
+    return fields.map(field=>({name:label(field),value:rows.filter(row=>shown(row[field])!=="Not supplied").reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0),unit}));
+  }
+  function roadInsightSeries(rows, section) {
+    const missingKm=field=>rows.filter(row=>typeof row[field]!=="number").reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0);
+    const trafficCoverage=[{name:"Traffic supplied",value:rows.filter(row=>typeof row.registry_aadt==="number").reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0)},{name:"Not supplied",value:missingKm("registry_aadt")}];
+    const district={name:"Administrative district",values:aggregate(rows,"district"),unit:"affected km"};
+    const catalog={
+      surface:{name:"Surface type",values:aggregate(rows,"surface"),unit:"affected km"},
+      pavement:{name:"Pavement class",values:aggregate(rows,"pavement_class"),unit:"affected km"},
+      condition:{name:"Road condition",values:aggregate(rows,"condition"),unit:"affected km"},
+      conditionRisk:{name:"Condition risk",values:aggregate(rows,row=>"Risk "+shown(row.condition_risk)),unit:"affected km"},
+      surfaceRisk:{name:"Surface risk",values:aggregate(rows,row=>"Risk "+shown(row.surface_risk)),unit:"affected km"},
+      priority:{name:"Planning priority",values:aggregate(rows,"priority_band"),unit:"affected km"},
+      intervention:{name:"Recommended intervention",values:aggregate(rows,"recommended_intervention"),unit:"affected km"},
+      traffic:{name:"Traffic-data coverage",values:trafficCoverage,unit:"affected km"},
+      aadt:{name:"AADT band",values:bands(rows,"registry_aadt",[["0–149",0,150],["150–499",150,500],["500–999",500,1000],["1,000+",1000,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_aadt")}]),unit:"affected km"},
+      pcu:{name:"PCU band",values:bands(rows,"registry_pcu",[["0–499",0,500],["500–999",500,1000],["1,000–1,499",1000,1500],["1,500+",1500,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_pcu")}]),unit:"affected km"},
+      speed:{name:"Operating-speed band",values:bands(rows,"registry_speed_kmh",[["Below 15 km/h",0,15],["15–19.9 km/h",15,20],["20–24.9 km/h",20,25],["25+ km/h",25,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_speed_kmh")}]),unit:"affected km"},
+      score:{name:"Planning-score band",values:bands(rows,"planning_priority_score",[["0–24.9",0,25],["25–49.9",25,50],["50–74.9",50,75],["75–100",75,101]]),unit:"affected km"},
+      linkLength:{name:"Individual-link length band",values:bands(rows,"geometry_length_km",[["Below 1 km",0,1],["1–2.9 km",1,3],["3–4.9 km",3,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
+      hierarchy:{name:"Administrative hierarchy",values:aggregate(rows,row=>shown(row.parish)==="Not supplied"?"Parish not supplied":"Parish supplied"),unit:"affected km"},
+      completeness:{name:"Governed parameter completeness",values:completenessValues(rows,["district","county","subcounty","parish","surface","pavement_class","condition","registry_aadt","priority_band","recommended_intervention"]),unit:"affected km"}
+    };
+    const owned={
+      traffic:[catalog.aadt,catalog.pcu,catalog.speed,catalog.traffic,catalog.pavement,catalog.condition,catalog.linkLength,catalog.completeness],
+      condition:[catalog.condition,catalog.conditionRisk,catalog.surfaceRisk,catalog.intervention,catalog.surface,catalog.pavement,catalog.priority,catalog.linkLength,catalog.completeness],
+      network:[catalog.surface,catalog.pavement,catalog.condition,catalog.linkLength,catalog.hierarchy,catalog.traffic,catalog.intervention,catalog.completeness],
+      pims:[catalog.priority,catalog.score,catalog.intervention,catalog.condition,catalog.surfaceRisk,catalog.pavement,catalog.traffic,catalog.linkLength],
+      hdm4:[catalog.aadt,catalog.pcu,catalog.speed,catalog.traffic,catalog.pavement,catalog.condition,catalog.linkLength,catalog.completeness],
+      framework:[catalog.hierarchy,catalog.completeness,catalog.traffic,catalog.condition,catalog.pavement,catalog.priority,catalog.intervention,catalog.linkLength],
+      budgets:[catalog.priority,catalog.score,catalog.intervention,catalog.condition,catalog.pavement,catalog.surface,catalog.traffic,catalog.linkLength],
+      ducar:[catalog.intervention,catalog.condition,catalog.pavement,catalog.priority,catalog.surface,catalog.traffic,catalog.linkLength,catalog.completeness],
+      overview:[catalog.condition,catalog.pavement,catalog.priority,catalog.traffic,catalog.surface,catalog.intervention,catalog.linkLength,catalog.completeness]
+    };
+    return [district,...(owned[section]||owned.overview)];
+  }
+  function insightMicro(type, share, meanShare, color) {
+    const p=Math.max(0,Math.min(100,share)), mean=Math.max(0,Math.min(100,meanShare));
+    const style=`--pct:${p.toFixed(2)}%;--half:${(p/2).toFixed(2)}%;--mean-pct:${mean.toFixed(2)}%;--heat-opacity:${(.12+p/125).toFixed(3)};--accent:${color}`;
+    if(type==="ring") return `<div class="micro-ring" style="${style}"><i></i><b>${number(p,1)}%</b></div>`;
+    if(type==="pie") return `<div class="micro-pie" style="${style}"><b>${number(p,1)}%</b></div>`;
+    if(type==="gauge") return `<div class="micro-gauge" style="${style}"><i></i><b>${number(p,1)}%</b></div>`;
+    if(type==="column") return `<div class="micro-column" style="${style}"><i></i><span>100%</span></div>`;
+    if(type==="lollipop") return `<div class="micro-lollipop" style="${style}"><i></i><b></b></div>`;
+    if(type==="stacked") return `<div class="micro-stacked" style="${style}"><i></i><b></b></div>`;
+    if(type==="funnel") return `<div class="micro-funnel" style="${style}"><i></i></div>`;
+    if(type==="heat") return `<div class="micro-heat" style="${style}"><i></i><b>${number(p,1)}% share</b></div>`;
+    if(type==="bullet") return `<div class="micro-bullet" style="${style}"><i></i><b title="Dimension average"></b></div>`;
+    return `<div class="micro-bar" style="${style}"><i></i><b>${number(p,1)}%</b></div>`;
+  }
+  function insightWall(title, series) {
+    const types=["bar","ring","column","lollipop","stacked","pie","funnel","heat","bullet","gauge"];
+    const cards=[];
+    series.forEach((group,groupIndex)=>{
+      const values=(group.values||[]).map(item=>({name:shown(item.name),value:Number(item.value||0)}));
+      const total=values.reduce((sum,item)=>sum+item.value,0), mean=total/Math.max(values.length,1), meanShare=mean/Math.max(total,1)*100;
+      values.forEach((item,itemIndex)=>{
+        const share=item.value/Math.max(total,1)*100, delta=item.value-mean, type=types[(cards.length+groupIndex)%types.length], color=COLORS[(itemIndex+groupIndex)%COLORS.length];
+        cards.push(`<article class="insight-card" data-insight-card data-series="${esc(group.name)}" data-insight-search="${esc((group.name+" "+item.name).toLowerCase())}" style="--delay:${(cards.length%16)*22}ms"><header><span>${esc(group.name)}</span><em>${esc(type)}</em></header><h4>${esc(item.name)}</h4><strong>${esc(chartNumber(item.value,group.unit))}</strong>${insightMicro(type,share,meanShare,color)}<footer><span>${number(share,2)}% of dimension</span><span class="${delta>=0?"positive":"negative"}">${delta>=0?"+":""}${esc(chartNumber(delta,group.unit))} vs mean</span></footer></article>`);
+      });
+    });
+    return `<section class="insight-wall" data-insight-wall data-total="${cards.length}"><div class="insight-heading"><div><small>SECTION-SPECIFIC · COMPLETE POPULATION</small><h3>${esc(title)}</h3><p>Each infographic is a distinct category insight. Values use the full section population; nothing is limited to a Top-N list.</p></div><strong><span data-insight-count>${cards.length}</span> infographics</strong></div><div class="insight-controls"><label>Dimension<select data-insight-series><option value="all">All dimensions</option>${series.map(group=>`<option value="${esc(group.name)}">${esc(group.name)}</option>`).join("")}</select></label><label>Find an insight<input type="search" data-insight-search placeholder="Search district, condition, surface…"></label><button type="button" data-insight-motion>Pause motion</button></div><div class="insight-grid">${cards.join("")}</div><div class="insight-empty" hidden>No infographic matches this filter.</div></section>`;
+  }
   function matrix(rows) {
     const conditions = ["Good", "Fair", "Poor", "Unclassified", "Not supplied"];
     const pavements = ["Paved", "Unpaved", "Not supplied"];
@@ -343,7 +407,7 @@
       barChart("Affected length by priority","Every kilometre retained.",aggregate(rows,"priority_band"),"affected km",COLORS[4])
     ];
     else charts = (common[state.section]||common.overview).map(c=>barChart(c[0],c[1],aggregate(rows,c[2]),"affected km",c[3]));
-    return metricCards(metrics)+`<div class="chart-grid">${charts.join("")}${state.section==="condition"?matrix(rows):""}</div>`+interactiveGallery(`${SECTION_META[state.section][0]} · animated chart gallery`,roadInteractiveSeries(rows,state.section))+`<div class="method-note">Every road chart uses cumulative geometry length. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are modelling allowances, not bills of quantities.</div>`;
+    return metricCards(metrics)+`<div class="chart-grid">${charts.join("")}${state.section==="condition"?matrix(rows):""}</div>`+interactiveGallery(`${SECTION_META[state.section][0]} · animated chart gallery`,roadInteractiveSeries(rows,state.section))+insightWall(`${SECTION_META[state.section][0]} · 50+ insight atlas`,roadInsightSeries(rows,state.section))+`<div class="method-note">Every road chart uses cumulative geometry length. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are modelling allowances, not bills of quantities.</div>`;
   }
 
   function socioeconomicDashboard(payload) {
@@ -360,6 +424,19 @@
       {name:"Within-threshold affected length",values:access.map(x=>({name:x.factor,value:Number(x.affected_length_km||0)})),unit:"affected km"},
       {name:"Outside-threshold gap length",values:access.map(x=>({name:x.factor,value:Number(x.outside_threshold_length_km||0)})),unit:"affected km"},
       {name:"Primary-factor affected length",values:aggregate(rows,"primary_socioeconomic_factor"),unit:"affected km"}
+    ])+insightWall("Socioeconomic & Accessibility · 50+ insight atlas",[
+      {name:"Administrative district",values:aggregate(rows,"district"),unit:"affected km"},
+      {name:"Exposure band",values:aggregate(rows,"exposure_band"),unit:"affected km"},
+      {name:"Primary socioeconomic factor",values:aggregate(rows,"primary_socioeconomic_factor"),unit:"affected km"},
+      {name:"Surface type",values:aggregate(rows,"surface"),unit:"affected km"},
+      {name:"Pavement class",values:aggregate(rows,"pavement_class"),unit:"affected km"},
+      {name:"Road condition",values:aggregate(rows,"condition"),unit:"affected km"},
+      {name:"Exposure-score band",values:bands(rows,"socioeconomic_exposure_score",[["0–19.9",0,20],["20–39.9",20,40],["40–59.9",40,60],["60–79.9",60,80],["80–100",80,101]]),unit:"affected km"},
+      {name:"Nearest-school distance",values:bands(rows,"nearest_school_km",[["Below 1 km",0,1],["1–4.9 km",1,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
+      {name:"Nearest-health distance",values:bands(rows,"nearest_health_km",[["Below 1 km",0,1],["1–4.9 km",1,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
+      {name:"Nearest-market distance",values:bands(rows,"nearest_market_km",[["Below 1 km",0,1],["1–4.9 km",1,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
+      {name:"Within service threshold",values:access.map(x=>({name:x.factor,value:Number(x.affected_length_km||0)})),unit:"affected km"},
+      {name:"Outside service threshold",values:access.map(x=>({name:x.factor,value:Number(x.outside_threshold_length_km||0)})),unit:"affected km"}
     ])+`<div class="method-note">Nearest-distance joins use exact road geometry in EPSG:32636. Threshold counts use road midpoint buffers. Results integrate local authoritative registers, OpenStreetMap/Geofabrik, UIA, MoES, MoH, DGSM and UBOS metadata; all values remain link-level and exportable.</div>`;
   }
 
@@ -376,7 +453,20 @@
       {label:"High-risk exposed length",value:number(highRisk,1)+" km",note:"Critical + High structure risk"},
       {label:"Bridge-carrying length",value:number(value(payload.class_summary,"Bridge"),1)+" km",note:"Allocated without link double-counting"},
       {label:"Major-culvert length",value:number(value(payload.class_summary,"Major Culvert"),1)+" km",note:"Culvert-associated road exposure"}
-    ])+`<div class="chart-grid">${barChart("Structure class by road length","Bridges, major culverts, drifts and other structures by allocated linked-road length.",classValues,"affected km",COLORS[5])}${barChart("Structure condition by road length","Complete structure register translated to non-duplicated allocated road length.",conditionValues,"affected km",COLORS[1])}${barChart("Structure risk by road length","Risk band from the supplied current condition.",riskValues,"affected km",COLORS[3])}${barChart("Administrative structure exposure","Every supplying district by allocated road length.",districtValues,"affected km",COLORS[2])}</div>`+interactiveGallery("Structures · animated chart gallery",series)+`<div class="method-note">All ${number(payload.metadata.structure_occurrences)} structure occurrences are retained from ${number(payload.metadata.source_workbooks)} district workbooks plus the programme bridge GeoJSON. Multi-chainage rows are expanded. Linked road length is divided across structures on the same Link ID, so dashboard totals are additive and do not count one road repeatedly. Low-confidence and unmatched joins remain explicit in the exhaustive table.</div>`;
+    ])+`<div class="chart-grid">${barChart("Structure class by road length","Bridges, major culverts, drifts and other structures by allocated linked-road length.",classValues,"affected km",COLORS[5])}${barChart("Structure condition by road length","Complete structure register translated to non-duplicated allocated road length.",conditionValues,"affected km",COLORS[1])}${barChart("Structure risk by road length","Risk band from the supplied current condition.",riskValues,"affected km",COLORS[3])}${barChart("Administrative structure exposure","Every supplying district by allocated road length.",districtValues,"affected km",COLORS[2])}</div>`+interactiveGallery("Structures · animated chart gallery",series)+insightWall("Structures · 50+ insight atlas",(()=>{const weighted=rows.map(row=>({...row,geometry_length_km:Number(row.allocated_road_length_km||0)}));return [
+      {name:"Administrative district",values:aggregate(weighted,"district"),unit:"affected km"},
+      {name:"Structure class",values:aggregate(weighted,"structure_class"),unit:"affected km"},
+      {name:"Structure type",values:aggregate(weighted,"structure_type"),unit:"affected km"},
+      {name:"Current condition",values:aggregate(weighted,"current_condition"),unit:"affected km"},
+      {name:"Risk band",values:aggregate(weighted,"risk_band"),unit:"affected km"},
+      {name:"Recommended intervention",values:aggregate(weighted,"recommended_intervention"),unit:"affected km"},
+      {name:"Structure age",values:aggregate(weighted,"structure_age"),unit:"affected km"},
+      {name:"Linkage quality",values:aggregate(weighted,"linkage_quality"),unit:"affected km"},
+      {name:"Map-location method",values:aggregate(weighted,"map_location_method"),unit:"affected km"},
+      {name:"Link-match score band",values:bands(weighted,"link_match_score",[["Below 0.50",0,.5],["0.50–0.74",.5,.75],["0.75–0.89",.75,.9],["0.90–1.00",.9,1.01]]),unit:"affected km"},
+      {name:"Chainage band",values:bands(weighted,"chainage_km",[["Below 1 km",0,1],["1–4.9 km",1,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
+      {name:"Source workbook",values:aggregate(weighted,"source_file"),unit:"affected km"}
+    ];})())+`<div class="method-note">All ${number(payload.metadata.structure_occurrences)} structure occurrences are retained from ${number(payload.metadata.source_workbooks)} district workbooks plus the programme bridge GeoJSON. Multi-chainage rows are expanded. Linked road length is divided across structures on the same Link ID, so dashboard totals are additive and do not count one road repeatedly. Low-confidence and unmatched joins remain explicit in the exhaustive table.</div>`;
   }
 
   function globalDashboard(payload) {
@@ -388,7 +478,11 @@
       {label:"Regions",value:number(Object.keys(payload.regions).length),note:"Complete configured geography"},
       {label:"Comparable sourced rows",value:number(sourced),note:"Repository evidence only"},
       {label:"Explicitly not supplied",value:number(rows.length-sourced),note:"No fabricated scores"}
-    ]) + `<div class="chart-grid">${barChart("Countries by configured region", "All countries retained and grouped by region.", regions, "country count", COLORS[0])}${barChart("Comparative source completeness", "Country metrics remain Not supplied until comparable sources are loaded.", [{name:"Comparable source supplied",value:sourced},{name:"Not supplied",value:rows.length-sourced}], "country count", COLORS[2])}</div>`+interactiveGallery("Global matrix · animated chart gallery",[{name:"Countries by region",values:regions,unit:"country count"},{name:"Source completeness",values:[{name:"Comparable source supplied",value:sourced},{name:"Not supplied",value:rows.length-sourced}],unit:"country count"}])+`<div class="method-note">The Global dashboard reports matrix completeness, not invented performance rankings. All unsourced country metrics remain explicitly “Not supplied”.</div>`;
+    ]) + `<div class="chart-grid">${barChart("Countries by configured region", "All countries retained and grouped by region.", regions, "country count", COLORS[0])}${barChart("Comparative source completeness", "Country metrics remain Not supplied until comparable sources are loaded.", [{name:"Comparable source supplied",value:sourced},{name:"Not supplied",value:rows.length-sourced}], "country count", COLORS[2])}</div>`+interactiveGallery("Global matrix · animated chart gallery",[{name:"Countries by region",values:regions,unit:"country count"},{name:"Source completeness",values:[{name:"Comparable source supplied",value:sourced},{name:"Not supplied",value:rows.length-sourced}],unit:"country count"}])+insightWall("Global country matrix · 50+ insight atlas",[
+      {name:"Configured country",values:rows.map(row=>({name:row.country,value:1})),unit:"country"},
+      {name:"Geographic region",values:regions,unit:"country count"},
+      {name:"Comparable-source status",values:aggregate(rows,"source_status"),unit:"country count"}
+    ])+`<div class="method-note">The Global dashboard reports matrix completeness, not invented performance rankings. All unsourced country metrics remain explicitly “Not supplied”.</div>`;
   }
   function summaryDashboard(relations, mindmap) {
     const relKm = predicate => relations.filter(predicate).reduce((s,r)=>s+Number(r.covered_length_km||0),0);
@@ -417,7 +511,19 @@
       {name:"Condition parameter health",values:[{name:"Condition supplied",value:covered("condition")},{name:"Condition gap",value:networkKm-covered("condition")}],unit:"covered km"},
       {name:"Planning parameter health",values:[{name:"Priority supplied",value:covered("priority_band")},{name:"Priority gap",value:networkKm-covered("priority_band")}],unit:"covered km"}
     ];
-    return metricCards([{label:"Network geometry health",value:number(networkKm,1)+" km",note:"Complete DUCAR reporting denominator"},{label:"Valid Link-ID length",value:number(validIdKm,1)+" km",note:number(validIdKm/Math.max(networkKm,1)*100,1)+"% standard compliance"},{label:"Spatial admin length",value:number(spatial,1)+" km",note:"Polygon-intersected coverage"},{label:"Traffic parameter length",value:number(trafficKm,1)+" km",note:"Exact-match observation coverage"}]) + `<div class="chart-grid">${charts}</div>`+interactiveGallery("System health · animated chart gallery",healthSeries)+`<div class="admin-grid">${mind}${stores}${parameters}</div>`;
+    const relationRows=relations.map(row=>({...row,geometry_length_km:Number(row.covered_length_km||0)}));
+    const adminInsights=[
+      {name:"Administrative district",values:aggregate(relationRows,"admin_district"),unit:"covered km"},
+      {name:"Relation basis",values:aggregate(relationRows,"relation_basis"),unit:"covered km"},
+      {name:"Pavement class",values:aggregate(relationRows,"pavement_class"),unit:"covered km"},
+      {name:"Road condition",values:aggregate(relationRows,"condition"),unit:"covered km"},
+      {name:"Traffic-data coverage",values:aggregate(relationRows,row=>row.traffic_measured?"Traffic supplied":"Not supplied"),unit:"covered km"},
+      {name:"Planning priority",values:aggregate(relationRows,"priority_band"),unit:"covered km"},
+      {name:"Recommended intervention",values:aggregate(relationRows,"recommended_intervention"),unit:"covered km"},
+      {name:"System parameter completeness",values:parameterRows.map(row=>({name:label(row.field),value:row.suppliedKm})),unit:"covered km"},
+      {name:"Database store population",values:database.tables.map(table=>({name:table.table,value:Number(table.row_count||0)})),unit:"records"}
+    ];
+    return metricCards([{label:"Network geometry health",value:number(networkKm,1)+" km",note:"Complete DUCAR reporting denominator"},{label:"Valid Link-ID length",value:number(validIdKm,1)+" km",note:number(validIdKm/Math.max(networkKm,1)*100,1)+"% standard compliance"},{label:"Spatial admin length",value:number(spatial,1)+" km",note:"Polygon-intersected coverage"},{label:"Traffic parameter length",value:number(trafficKm,1)+" km",note:"Exact-match observation coverage"}]) + `<div class="chart-grid">${charts}</div>`+interactiveGallery("System health · animated chart gallery",healthSeries)+insightWall("System health & administration · 50+ insight atlas",adminInsights)+`<div class="admin-grid">${mind}${stores}${parameters}</div>`;
   }
   function dashboardHtml() {
     if (state.section === "global") return globalDashboard(cache.global);
@@ -578,6 +684,12 @@
       const show=index=>{active=(index+buttons.length)%buttons.length;buttons.forEach((button,i)=>{button.classList.toggle("active",i===active);button.setAttribute("aria-selected",String(i===active));});panels.forEach((panel,i)=>{panel.classList.toggle("active",i===active);if(i===active){panel.classList.remove("animate-in");void panel.offsetWidth;panel.classList.add("animate-in");}});};
       buttons.forEach((button,index)=>button.addEventListener("click",()=>show(index)));
       studio.querySelector("[data-viz-autoplay]")?.addEventListener("click",event=>{if(timer){clearInterval(timer);vizTimers.delete(timer);timer=null;event.currentTarget.textContent="▶ Animate views";event.currentTarget.classList.remove("active");}else{event.currentTarget.textContent="Ⅱ Pause animation";event.currentTarget.classList.add("active");timer=setInterval(()=>show(active+1),2200);vizTimers.add(timer);show(active+1);}});
+    });
+    root.querySelectorAll("[data-insight-wall]").forEach(wall=>{
+      const cards=[...wall.querySelectorAll("[data-insight-card]")], series=wall.querySelector("[data-insight-series]"), search=wall.querySelector("[data-insight-search]"), count=wall.querySelector("[data-insight-count]"), empty=wall.querySelector(".insight-empty");
+      const filter=()=>{const dimension=series?.value||"all", query=(search?.value||"").trim().toLowerCase();let visible=0;cards.forEach(card=>{const showCard=(dimension==="all"||card.dataset.series===dimension)&&(!query||card.dataset.insightSearch.includes(query));card.hidden=!showCard;if(showCard)visible++;});if(count)count.textContent=number(visible);if(empty)empty.hidden=visible!==0;};
+      series?.addEventListener("change",filter);search?.addEventListener("input",filter);
+      wall.querySelector("[data-insight-motion]")?.addEventListener("click",event=>{const paused=wall.classList.toggle("motion-paused");event.currentTarget.textContent=paused?"Resume motion":"Pause motion";});
     });
   }
   function activateSection(section) {
