@@ -676,3 +676,14 @@ table td:first-child {
     transform: translateY(0) scale(1);
   }
 }
+
+/* narrow margins, no dead space */
+.exhaustive-shell{padding:4px 6px 16px!important;margin-left:210px!important;width:calc(100% - 210px)!important;max-width:calc(100vw - 210px)!important}
+#root{height:56px!important;min-height:56px!important}
+#exhaustive-root{min-height:calc(100vh - 56px)!important;margin-top:0!important;padding-top:0!important}
+body.network-map-mode #root main{padding-top:0!important}
+.section-tabs{margin:0 0 6px!important;padding:0 0 5px!important}
+.metric-grid,.chart-grid{gap:6px!important;margin-bottom:6px!important}
+.metric-card,.chart-card,.analytics-block,.table-card{padding:9px!important}
+.section-head,.analytics-intro,.map-toolbar{margin-bottom:6px!important;padding:8px 10px!important}
+.map-workspace{gap:6px!important;height:calc(100vh - 118px)!important}
