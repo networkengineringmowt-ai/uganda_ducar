@@ -233,9 +233,59 @@ function setKccaData(value) {
     }
 
     // Re-wire buttons after every render (exhaustive.js re-renders on section change)
+    function injectOfficialCharts() {
+      if (document.getElementById('off-charts')) return;
+      var root = document.getElementById('exhaustive-root');
+      if (!root) return;
+      var allText = root.innerText || '';
+      if (allText.indexOf('OFFICIAL TOTAL ROAD HEADLINE') < 0) return;
+      var mc = Array.from(root.querySelectorAll('.metric-card'));
+      if (!mc.length) return;
+      var par = mc[0].parentElement;
+      if (!par) return;
+      var sentinel = document.createElement('div');
+      sentinel.id = 'off-charts';
+      root.appendChild(sentinel);
+      var R = 70; var C = 2 * Math.PI * R;
+      var pKm = 56117.49; var uKm = 162835.98; var tKm = pKm + uKm;
+      var pArc = (pKm / tKm * C).toFixed(2);
+      var uArc = (C - pKm / tKm * C).toFixed(2);
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;padding:1.5rem 1.5rem 0;';
+      var donSVG = '<svg width="220" height="220" viewBox="0 0 220 220" style="display:block;">' +
+        '<circle cx="110" cy="110" r="70" fill="none" stroke="#1e3a5f" stroke-width="28"/>' +
+        '<circle cx="110" cy="110" r="70" fill="none" stroke="#f59e0b" stroke-width="28" stroke-dasharray="' + pArc + ' ' + uArc + '" transform="rotate(-90 110 110)"/>' +
+        '<text x="110" y="105" text-anchor="middle" fill="#f0f4f8" font-family="Inter,sans-serif" font-size="13" font-weight="600">218,953 km</text>' +
+        '<text x="110" y="122" text-anchor="middle" fill="#94a3b8" font-family="Inter,sans-serif" font-size="10">national network</text>' +
+        '</svg>';
+      var legend = '<div style="display:flex;flex-direction:column;gap:1rem;justify-content:center;">' +
+        '<div><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>' +
+        '<b style="color:#f0f4f8;">25.6% Paved</b></div><div style="color:#94a3b8;font-size:0.82rem;padding-left:22px;">56,117 km — Bituminous + Concrete</div></div>' +
+        '<div><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#1e3a5f;border:1px solid #334155;display:inline-block;"></span>' +
+        '<b style="color:#f0f4f8;">74.4% Unpaved</b></div><div style="color:#94a3b8;font-size:0.82rem;padding-left:22px;">162,836 km — Gravel + Earth</div></div>' +
+        '</div>';
+      var donutCard = '<div style="background:#1c2a3a;border-radius:12px;padding:1.5rem;">' +
+        '<p style="color:#f0f4f8;font-size:0.8rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;margin:0 0 1rem;">Paved vs Unpaved — Official National Network</p>' +
+        '<div style="display:flex;align-items:center;gap:1.5rem;">' + donSVG + legend + '</div></div>';
+      var cls = [{n:'Community Access (CAR)',k:117578.55,p:53.7,c:'#f59e0b'},{n:'Urban Roads',k:46795.41,p:21.4,c:'#00ACC1'},{n:'District Roads',k:33442.76,p:15.3,c:'#43A047'},{n:'National Roads',k:21136.75,p:9.6,c:'#3b82f6'}];
+      var bars = cls.map(function(cl) {
+        var w = (cl.k / 117578.55 * 100).toFixed(1);
+        return '<div style="margin-bottom:0.9rem;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#94a3b8;font-size:0.78rem;">' + cl.n + '</span>' +
+          '<span style="color:#f0f4f8;font-size:0.78rem;font-weight:600;">' + cl.k.toLocaleString(undefined,{maximumFractionDigits:0}) + ' km <span style="color:#64748b;">(' + cl.p + '%)</span></span></div>' +
+          '<div style="background:#0f1923;border-radius:4px;height:10px;"><div style="background:' + cl.c + ';height:10px;border-radius:4px;width:' + w + '%;"></div></div></div>';
+      }).join('');
+      var classCard = '<div style="background:#1c2a3a;border-radius:12px;padding:1.5rem;">' +
+        '<p style="color:#f0f4f8;font-size:0.8rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;margin:0 0 1rem;">Functional Class Breakdown — 218,953 km Total</p>' +
+        bars +
+        '<div style="margin-top:0.75rem;border-top:1px solid rgba(241,159,11,0.18);padding-top:0.6rem;color:#475569;font-size:0.7rem;">Source: MoWT Strategic Plan 2026. National 21,137 km + DUCAR 197,817 km</div></div>';
+      wrap.innerHTML = donutCard + classCard;
+      par.insertBefore(wrap, mc[mc.length - 1].nextSibling);
+    }
+
     var observer = new MutationObserver(function() {
       wireButtons();
       attachToMap();
+      injectOfficialCharts();
     });
 
     document.addEventListener('DOMContentLoaded', function() {
