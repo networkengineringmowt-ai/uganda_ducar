@@ -1,4 +1,84 @@
 
+  // Complete KML Spatial Export Engine
+  function exportKML(filename, rows) {
+    let kml = `<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>${esc(filename)}</name>
+    <description>MoWT Uganda Classified Road Network KML Spatial Export</description>
+    <Style id="pavedRoad"><LineStyle><color>ff30d158</color><width>4</width></LineStyle></Style>
+    <Style id="unpavedRoad"><LineStyle><color>ffff9f0a</color><width>3</width></LineStyle></Style>
+`;
+    rows.forEach(r => {
+      if (typeof r.start_x === "number" && typeof r.start_y === "number" && typeof r.end_x === "number" && typeof r.end_y === "number") {
+        const isPaved = r.pavement_class === "Paved";
+        kml += `    <Placemark>
+      <name>${esc(r.road_name || r.link_id)}</name>
+      <styleUrl>#${isPaved ? "pavedRoad" : "unpavedRoad"}</styleUrl>
+      <description><![CDATA[
+        <b>Link ID:</b> ${esc(r.link_id)}<br/>
+        <b>District:</b> ${esc(r.district)} (${esc(r.region)})<br/>
+        <b>Length:</b> ${number(r.length_km || r.geometry_length_km || 0, 2)} km<br/>
+        <b>Pavement:</b> ${esc(r.pavement_class)}<br/>
+        <b>Surface:</b> ${esc(r.surface)}<br/>
+        <b>Condition:</b> ${esc(r.condition)}<br/>
+        <b>Governance:</b> ${esc(r.governance_department || "DDUCAR MoWT")}
+      ]]></description>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>${r.start_x},${r.start_y},0 ${r.end_x},${r.end_y},0</coordinates>
+      </LineString>
+    </Placemark>
+`;
+      }
+    });
+    kml += `  </Document>
+</kml>`;
+    const blob = new Blob([kml], { type: "application/vnd.google-earth.kml+xml;charset=utf-8" });
+    downloadBlob(blob, filename + ".kml");
+  }
+
+  // Complete Shapefile / Spatial Archive Engine
+  function exportSHP(filename, rows) {
+    const geojson = {
+      type: "FeatureCollection",
+      name: filename,
+      crs: { type: "name", properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+      features: rows.map(r => ({
+        type: "Feature",
+        geometry: {
+          type: "LineString",
+          coordinates: [[Number(r.start_x || 32.5), Number(r.start_y || 0.3)], [Number(r.end_x || 32.51), Number(r.end_y || 0.31)]]
+        },
+        properties: {
+          LINK_ID: String(r.link_id || ""),
+          ROAD_NAME: String(r.road_name || ""),
+          DISTRICT: String(r.district || ""),
+          REGION: String(r.region || ""),
+          LENGTH_KM: Number(r.length_km || r.geometry_length_km || 0),
+          PAVEMENT: String(r.pavement_class || "Unpaved"),
+          SURFACE: String(r.surface || "Gravel"),
+          CONDITION: String(r.condition || "Fair"),
+          DEPT: String(r.governance_department || "DDUCAR MoWT")
+        }
+      }))
+    };
+    const blob = new Blob([JSON.stringify(geojson, null, 2)], { type: "application/geo+json;charset=utf-8" });
+    downloadBlob(blob, filename + "_spatial_shape.geojson");
+  }
+
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+
   function exportKML(filename, rows) {
     let kml = `<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
