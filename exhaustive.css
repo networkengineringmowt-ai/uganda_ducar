@@ -687,3 +687,178 @@ table td:first-child {
 .section-tab,.studio-button,.chart-download,.csv-download,.pdf-download,.pager-btn,.metric-card,.chart-card,.dynamic-chart-card{transition:transform .18s cubic-bezier(.2,.75,.25,1),background-color .18s ease,border-color .18s ease,box-shadow .18s ease}
 .section-tab:hover,.studio-button:hover{transform:translateY(-1px)}
 .viz-panel.active,.insight-card{will-change:transform,opacity}
+
+
+/* ============================================================
+   CANONICAL UPDATE 2026-08-18 — Dark Theme + Animations
+   ============================================================ */
+
+/* Inter font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body, .exhaustive-shell, .canonical-shell {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Dark theme colour tokens */
+:root {
+  --bg-card:      #1c2a3a;
+  --bg-sidebar:   #0f1923;
+  --bg-surface:   #162231;
+  --bg-deep:      #0b141e;
+  --accent:       #f59e0b;
+  --accent-light: #fbbf24;
+  --text-primary: #f0f4f8;
+  --text-muted:   #8ba4bc;
+  --border:       rgba(241,159,11,0.18);
+  --shadow-card:  0 4px 24px rgba(0,0,0,0.35);
+}
+
+/* Apply dark background to key containers */
+.exhaustive-shell,
+.app-viewport-container,
+.canonical-shell,
+body {
+  background: var(--bg-deep, #0b141e) !important;
+  color: var(--text-primary, #f0f4f8) !important;
+}
+
+.canonical-top-nav,
+.canonical-nav-rail,
+.nav-rail {
+  background: var(--bg-sidebar, #0f1923) !important;
+  border-color: var(--border, rgba(241,159,11,0.18)) !important;
+}
+
+.metric-card,
+.kpi-card,
+.insight-card,
+.chart-card,
+.table-card,
+.section-card,
+[class*="card"] {
+  background: var(--bg-card, #1c2a3a) !important;
+  border: 1px solid var(--border, rgba(241,159,11,0.18)) !important;
+  box-shadow: var(--shadow-card, 0 4px 24px rgba(0,0,0,0.35)) !important;
+  color: var(--text-primary, #f0f4f8) !important;
+}
+
+/* Accent highlights */
+.metric-value,
+.kpi-value,
+.stat-value,
+.number-primary {
+  color: var(--accent, #f59e0b) !important;
+}
+
+.header-nav-btn.active,
+.nav-link.active,
+[class*="active"][class*="nav"],
+[class*="nav"][class*="active"] {
+  color: var(--accent, #f59e0b) !important;
+  border-bottom-color: var(--accent, #f59e0b) !important;
+}
+
+/* ── Section-scoped nav controls ─────────────────────────── */
+/* Hide the middle controls bar and right-side filter controls
+   on every section except the Map / Network section          */
+
+body:not([data-section="map"]) .top-nav-middle {
+  display: none !important;
+}
+body:not([data-section="map"]) .top-action-select,
+body:not([data-section="map"]) .top-export-dropdown,
+body:not([data-section="map"]) .top-action-btn:not(.export-btn) {
+  display: none !important;
+}
+
+/* ── Count-up animation ──────────────────────────────────── */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.metric-value,
+.kpi-value,
+.stat-number,
+.number-primary {
+  animation: countUp 0.6s ease-out both;
+}
+
+/* Stagger child cards */
+.metric-card:nth-child(1) { animation-delay: 0.05s; }
+.metric-card:nth-child(2) { animation-delay: 0.10s; }
+.metric-card:nth-child(3) { animation-delay: 0.15s; }
+.metric-card:nth-child(4) { animation-delay: 0.20s; }
+.metric-card:nth-child(5) { animation-delay: 0.25s; }
+.metric-card:nth-child(6) { animation-delay: 0.30s; }
+
+/* ── Hover lift for cards ────────────────────────────────── */
+.metric-card,
+.kpi-card,
+.insight-card,
+.chart-card,
+[class*="card"] {
+  transition: transform 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+.metric-card:hover,
+.kpi-card:hover,
+.insight-card:hover,
+.chart-card:hover,
+[class*="card"]:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+}
+
+/* ── Fade-in for chart containers ───────────────────────── */
+@keyframes fadeInChart {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+canvas,
+.chart-container,
+.chart-wrap,
+svg.recharts-surface,
+[class*="chart"] {
+  animation: fadeInChart 0.5s ease-out both;
+}
+
+/* ── Table readability ───────────────────────────────────── */
+.data-table th,
+.table-wrap th,
+[class*="table"] th {
+  background: var(--bg-sidebar, #0f1923) !important;
+  color: var(--accent, #f59e0b) !important;
+  font-weight: 600;
+}
+
+.data-table td,
+.table-wrap td,
+[class*="table"] td {
+  color: var(--text-primary, #f0f4f8) !important;
+  border-color: var(--border, rgba(241,159,11,0.18)) !important;
+}
+
+.data-table tr:hover td,
+.table-wrap tr:hover td {
+  background: rgba(245,158,11,0.06) !important;
+}
+
+/* ── Benchmark callout ───────────────────────────────────── */
+.benchmark-callout,
+.insight-callout,
+[class*="benchmark"] {
+  background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04)) !important;
+  border-left: 3px solid var(--accent, #f59e0b) !important;
+  color: var(--text-primary, #f0f4f8) !important;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin: 8px 0;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep, #0b141e); }
+::-webkit-scrollbar-thumb { background: var(--border, rgba(241,159,11,0.3)); border-radius: 3px; }
