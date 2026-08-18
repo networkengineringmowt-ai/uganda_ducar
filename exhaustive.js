@@ -2797,29 +2797,37 @@ function analyticsHtml() {
   });
 
 
-/* layout normaliser - measures the fixed chrome and pins content to full extent */
+/* layout normaliser - delta correction against the fixed chrome, idempotent */
 (function(){
-  function px(v){return Math.round(v)+'px';}
-  function fixedBox(sel){var e=document.querySelector(sel);if(!e)return null;var c=getComputedStyle(e);if(c.position!=='fixed'&&c.position!=='sticky')return null;if(c.display==='none'||c.visibility==='hidden')return null;var r=e.getBoundingClientRect();return r.width>0&&r.height>0?r:null;}
-  function apply(){
-    var rail=fixedBox('.canonical-nav-rail')||fixedBox('.nav-rail');
-    var top=fixedBox('.canonical-top-nav');
-    var left=rail?rail.right:0, head=top?top.bottom:0;
-    var wrap=document.querySelector('main.app-content-wrapper');
-    var layout=document.querySelector('.app-main-layout');
-    var shell=document.querySelector('.exhaustive-shell');
-    if(layout){layout.style.setProperty('margin-top','0','important');layout.style.setProperty('margin-left','0','important');layout.style.setProperty('padding-left','0','important');}
-    if(wrap){wrap.style.setProperty('padding-left',px(left),'important');wrap.style.setProperty('padding-top',px(head),'important');wrap.style.setProperty('padding-right','0','important');wrap.style.setProperty('margin','0','important');wrap.style.setProperty('max-width','none','important');}
-    else if(shell){shell.style.setProperty('margin-left',px(left),'important');}
-    if(shell){shell.style.setProperty('margin-right','0','important');shell.style.setProperty('padding','2px 6px 12px','important');shell.style.setProperty('width','auto','important');shell.style.setProperty('max-width','none','important');}
-    var root=document.getElementById('exhaustive-root');
-    if(root){root.style.setProperty('margin','0','important');root.style.setProperty('padding','0','important');}
+ function vis(sel){var e=document.querySelector(sel);if(!e)return null;var c=getComputedStyle(e);if(c.display==='none'||c.visibility==='hidden')return null;var r=e.getBoundingClientRect();return (r.width>0&&r.height>0)?r:null;}
+ function apply(){
+  var shell=document.querySelector('.exhaustive-shell'); if(!shell) return;
+  var rail=vis('.canonical-nav-rail')||vis('.nav-rail');
+  var top=vis('.canonical-top-nav');
+  var wantL=rail?Math.round(rail.right):0, wantT=top?Math.round(top.bottom):0;
+  var host=shell.closest('main.app-content-wrapper')||shell;
+  var root=document.getElementById('exhaustive-root'); if(root){root.style.setProperty('margin','0','important');root.style.setProperty('padding','0','important');}
+  shell.style.setProperty('padding','2px 6px 12px','important');
+  shell.style.setProperty('margin','0','important');
+  shell.style.setProperty('width','auto','important');
+  shell.style.setProperty('max-width','none','important');
+  for(var pass=0;pass<3;pass++){
+   var r=shell.getBoundingClientRect();
+   var dL=wantL-Math.round(r.left), dT=wantT-Math.round(r.top);
+   if(Math.abs(dL)<2&&Math.abs(dT)<2) break;
+   var cs=getComputedStyle(host);
+   var pl=Math.max(0,parseFloat(cs.paddingLeft||0)+dL);
+   var pt=Math.max(0,parseFloat(cs.paddingTop||0)+dT);
+   host.style.setProperty('padding-left',pl+'px','important');
+   host.style.setProperty('padding-top',pt+'px','important');
+   host.style.setProperty('padding-right','0','important');
+   host.style.setProperty('margin','0','important');
+   host.style.setProperty('max-width','none','important');
   }
-  var raf; function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(apply);}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule);else schedule();
-  window.addEventListener('resize',schedule);
-  window.addEventListener('hashchange',function(){setTimeout(schedule,60);});
-  var obs=new MutationObserver(schedule);
-  obs.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
-  [0,150,400,900,1800,3000].forEach(function(d){setTimeout(schedule,d);});
+ }
+ var raf; function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(apply);}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule);else schedule();
+ addEventListener('resize',schedule); addEventListener('hashchange',function(){setTimeout(schedule,80);});
+ new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
+ [0,200,600,1200,2500,4000].forEach(function(d){setTimeout(schedule,d);});
 })();
