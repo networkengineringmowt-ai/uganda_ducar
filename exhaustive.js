@@ -206,8 +206,40 @@
   function esc(value) { return String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
   function shown(value) {
     if (value === null || value === undefined || value === "") return "Not Supplied";
-    if (Array.isArray(value) || typeof value === "object") return JSON.stringify(value);
     if (typeof value === "boolean") return value ? "Yes" : "No";
+    
+    // Handle nested JSON strings or objects
+    let parsed = value;
+    if (typeof value === "string" && (value.startsWith("[{") || value.startsWith("{\"") || value.startsWith("[{\""))) {
+      try { parsed = JSON.parse(value); } catch(e) {}
+    }
+    
+    if (Array.isArray(parsed)) {
+      if (parsed.length === 0) return "Not Supplied";
+      const parts = parsed.map(item => {
+        if (item && typeof item === "object") {
+          const d = item.district || item.District || "";
+          const c = item.county || "";
+          const sc = item.subcounty || "";
+          const p = item.parish || "";
+          const loc = [d, c, sc, p].filter(Boolean).join(" · ");
+          return loc || "Admin Unit";
+        }
+        return String(item);
+      });
+      return parts.slice(0, 2).join(" | ") + (parts.length > 2 ? ` (+${parts.length - 2} more)` : "");
+    }
+    
+    if (typeof parsed === "object") {
+      const d = parsed.district || parsed.District || "";
+      const c = parsed.county || "";
+      const sc = parsed.subcounty || "";
+      const p = parsed.parish || "";
+      const loc = [d, c, sc, p].filter(Boolean).join(" · ");
+      if (loc) return loc;
+      return "Admin Unit";
+    }
+    
     return String(value);
   }
   function label(value) {
