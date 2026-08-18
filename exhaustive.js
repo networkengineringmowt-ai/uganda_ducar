@@ -2528,12 +2528,105 @@ function analyticsHtml() {
 
   }
 
+  
+  const NAV_RAIL_ITEMS = [
+    { id: "overview", label: "TOP", icon: "↑", cls: "top-pill" },
+    { id: "ducar", label: "DUCAR Dashboard", icon: "📊", cls: "ducar-badge" },
+    { id: "network", label: "Network", icon: "🗺️", cls: "blue" },
+    { id: "traffic", label: "Traffic", icon: "🚗", cls: "pink" },
+    { id: "condition", label: "Condition", icon: "🛡️", cls: "gold" },
+    { id: "structures", label: "Structures", icon: "🌉", cls: "amber" },
+    { id: "pims", label: "PIMS", icon: "📁", cls: "cyan" },
+    { id: "hdm4", label: "HDM-4", icon: "📈", cls: "emerald" },
+    { id: "framework", label: "Framework", icon: "⚖️", cls: "magenta" },
+    { id: "budgets", label: "Budgets & Prioritization", icon: "💰", cls: "green" },
+    { id: "global", label: "Global", icon: "🌐", cls: "pink" },
+    { id: "socioeconomic", label: "Socioeconomic Analysis", icon: "👥", cls: "magenta" },
+    { id: "summaries", label: "Summaries & Admin Tools", icon: "📑", cls: "violet" }
+  ];
+
+  function topNavHtml() {
+    return `
+      <header class="canonical-top-nav">
+        <div class="top-nav-left">
+          <div class="nav-brand-logo">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="nav-brand-text">
+            <h1 class="nav-brand-title">DUCAR Priority Studio</h1>
+            <span class="nav-brand-sub">Uganda District, Urban &amp; Community Access Roads Intelligence</span>
+          </div>
+        </div>
+        <div class="top-nav-middle">
+          <a class="header-nav-btn ${state.section === 'summaries' ? 'active' : ''}" href="#summaries:dashboard">🏛 Administrative Units</a>
+          <a class="header-nav-btn ${state.section === 'network' ? 'active' : ''}" href="#network:dashboard">↔ Functional Classification</a>
+          <a class="header-nav-btn ${state.section === 'condition' ? 'active' : ''}" href="#condition:dashboard">🛡 Road Condition</a>
+          <a class="header-nav-btn ${state.section === 'traffic' ? 'active' : ''}" href="#traffic:dashboard">📊 Traffic</a>
+        </div>
+        <div class="top-nav-right">
+          <button class="top-action-btn" type="button" data-action="toggle-filters">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            <span>Filters</span>
+          </button>
+          <select class="top-action-select" aria-label="Road Class Filter">
+            <option value="all">🛣️ All Road Classes</option>
+            <option value="district">District Roads</option>
+            <option value="urban">Urban Roads</option>
+            <option value="community">Community Access</option>
+          </select>
+          <div class="top-export-dropdown">
+            <button class="top-action-btn export-btn" type="button">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Export</span>
+              <small>▾</small>
+            </button>
+            <div class="top-export-menu">
+              <button type="button" data-export="kml">🗺️ Export KML (Google Earth)</button>
+              <button type="button" data-export="shp">📦 Export SHP (Spatial GeoJSON)</button>
+              <button type="button" data-export="csv">📊 Export CSV (Table Data)</button>
+              <button type="button" data-section-pdf>📑 Export PDF Report</button>
+            </div>
+          </div>
+        </div>
+      </header>
+    `;
+  }
+
+  function navRailHtml() {
+    return `
+      <aside class="canonical-nav-rail" aria-label="Main Navigation">
+        <div class="nav-rail-inner">
+          ${NAV_RAIL_ITEMS.map(item => `
+            <a class="nav-rail-btn ${item.cls} ${state.section === item.id ? 'active' : ''}" href="#${item.id}:${state.tab}" title="${item.label}">
+              <span class="nav-rail-icon">${item.icon}</span>
+              <span class="nav-rail-text">${item.label}</span>
+            </a>
+          `).join("")}
+        </div>
+      </aside>
+    `;
+  }
+
   function shell(body) {
-
     document.body.classList.remove("network-map-mode");
-
-    root.innerHTML = `<section class="exhaustive-shell"><div class="section-studio"><nav class="section-tabs" aria-label="Section reporting views">${SECTION_TABS.map(([id,text])=>`<a class="section-tab ${state.tab===id?"active":""}" href="#${state.section}:${id}">${esc(text)}</a>`).join("")}</nav>${body}</div></section>`;
-
+    root.innerHTML = `
+      <div class="app-viewport-container">
+        ${topNavHtml()}
+        <div class="app-main-layout">
+          ${navRailHtml()}
+          <main class="app-content-wrapper">
+            <section class="exhaustive-shell">
+              <div class="section-studio">
+                <nav class="section-tabs" aria-label="Section reporting views">
+                  ${SECTION_TABS.map(([id, text]) => `<a class="section-tab ${state.tab === id ? 'active' : ''}" href="#${state.section}:${id}">${esc(text)}</a>`).join("")}
+                </nav>
+                ${body}
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+    `;
   }
 
   function bind() {
