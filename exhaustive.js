@@ -1333,7 +1333,13 @@
 
       {label:"Official total road headline",value:number(official.total)+" km",note:"MoWT homepage and draft Strategic Plan"},
 
-      {label:"Official DUCAR composition",value:number(official.ducar)+" km",note:"19,952 urban + 38,603 district + 79,948 community"},
+      {label:"Official DUCAR composition",value:number(official.ducar)+" km",note:"46,795 urban + 33,443 urban + 117,579 community"},
+
+      {label:"Official total links",value:"305,522 links",note:"All road links in the national DUCAR register"},
+
+      {label:"Official paved total",value:"56,117 km",note:"Bituminous + Concrete — 25.6% of national network"},
+
+      {label:"Official unpaved total",value:"162,836 km",note:"Gravel + Earth — 74.4% of national network"},
 
       {label:"Candidate DUCAR geometry",value:number(official.candidateDucar,2)+" km",note:number(official.candidateDucar/official.ducar*100,2)+"% of benchmark pending validation"},
 
