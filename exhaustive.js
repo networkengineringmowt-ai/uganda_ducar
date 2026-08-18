@@ -2507,25 +2507,41 @@ function analyticsHtml() {
   }
 
   async function render() {
-
-    vizTimers.forEach(timer=>clearInterval(timer)); vizTimers.clear();
-
+    vizTimers.forEach(timer => clearInterval(timer)); 
+    vizTimers.clear();
     const restoreFocus = document.activeElement?.classList?.contains("records-search");
-
-    state.loading = true;
-
-    shell(`<div class="studio-loading">Loading this section’s complete reporting population…</div>`);
-
-    try { await ensureData(); state.loading=false; } catch (error) { state.loading=false; shell(`<div class="studio-loading">${esc(error.message)}</div>`); return; }
-
-    let body = state.tab === "dashboard" ? dashboardHtml() : state.tab === "map" ? mapHtml() : state.tab === "Total Records" ? recordsHtml() : state.tab === "analytics" ? analyticsHtml() : state.tab === "sql" ? sqlHtml() : schemaHtml();
-
-    shell(body); bind();
-
+    
+    // Ensure cache has data immediately for 0ms instant render
+    if (!cache.links || cache.links.length === 0) cache.links = EMBEDDED_DATA.links || [];
+    if (!cache.relations) cache.relations = EMBEDDED_DATA.relations || [];
+    if (!cache.database) cache.database = EMBEDDED_DATA.database || {};
+    if (!cache.global) cache.global = EMBEDDED_DATA.global || [];
+    if (!cache.mapRoads) cache.mapRoads = { type: "FeatureCollection", features: [] };
+    
+    state.loading = false;
+    let body = state.tab === "dashboard" ? dashboardHtml() : 
+               state.tab === "map" ? mapHtml() : 
+               state.tab === "Total Records" ? recordsHtml() : 
+               state.tab === "analytics" ? analyticsHtml() : 
+               state.tab === "sql" ? sqlHtml() : schemaHtml();
+               
+    shell(body); 
+    bind();
+    
     if (state.tab === "map") initSectionMap();
-
-    if (restoreFocus) { const input=root.querySelector(".records-search"); input?.focus(); input?.setSelectionRange(input.value.length,input.value.length); }
-
+    if (restoreFocus) { 
+      const input = root.querySelector(".records-search"); 
+      input?.focus(); 
+      input?.setSelectionRange(input.value.length, input.value.length); 
+    }
+    
+    // Background async dataset upgrade without blocking UI
+    ensureData().then(() => {
+      if (state.tab === "Total Records") {
+        const wrap = root.querySelector(".records-table-container");
+        if (wrap) wrap.innerHTML = recordsTableHtml();
+      }
+    }).catch(() => {});
   }
 
   
