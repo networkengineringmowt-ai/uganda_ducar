@@ -1,4 +1,45 @@
 
+  function exportKML(filename, rows) {
+    let kml = `<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>${esc(filename)}</name>
+    <description>MoWT Uganda Classified Road Network Export</description>
+`;
+    rows.slice(0, 5000).forEach(r => {
+      if (typeof r.start_x === "number" && typeof r.start_y === "number" && typeof r.end_x === "number" && typeof r.end_y === "number") {
+        kml += `    <Placemark>
+      <name>${esc(r.road_name || r.link_id)}</name>
+      <description><![CDATA[
+        <b>Link ID:</b> ${esc(r.link_id)}<br/>
+        <b>District:</b> ${esc(r.district)} (${esc(r.region)})<br/>
+        <b>Length:</b> ${number(r.geometry_length_km || r.length_km || 0, 2)} km<br/>
+        <b>Pavement:</b> ${esc(r.pavement_class)}<br/>
+        <b>Surface:</b> ${esc(r.surface)}<br/>
+        <b>Condition:</b> ${esc(r.condition)}<br/>
+        <b>Governance:</b> ${esc(r.governance_department || r.governance_scope || "DDUCAR MoWT")}
+      ]]></description>
+      <LineString>
+        <coordinates>${r.start_x},${r.start_y},0 ${r.end_x},${r.end_y},0</coordinates>
+      </LineString>
+    </Placemark>
+`;
+      }
+    });
+    kml += `  </Document>
+</kml>`;
+    const blob = new Blob([kml], { type: "application/vnd.google-earth.kml+xml;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename + ".kml";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+
   function toProperTitleCase(str) {
     if (!str) return "";
     const acronyms = ["MOWT", "DNR", "DDUCAR", "UNRA", "DLG", "KCCA", "AADT", "PCU", "IRI", "UGX", "AC", "ST", "RC", "GIS", "CAR", "PIMS", "HDM4", "HDM-4", "MCA", "ID", "KM", "DD", "QA", "QC", "FY"];
@@ -1125,3 +1166,15 @@ function analyticsHtml() {
   });
   render();
 })();
+
+
+  // Immediate Safe Initialization
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      if (document.getElementById('exhaustive-root') && !document.getElementById('exhaustive-root').hasChildNodes()) {
+        renderApp();
+      }
+    } catch (e) {
+      console.warn("Auto-render triggered safely:", e);
+    }
+  });
