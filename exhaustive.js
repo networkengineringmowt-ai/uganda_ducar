@@ -1783,7 +1783,7 @@
 
     const start = (state.page-1)*PAGE_SIZE, shownRows = rows.slice(start,start+PAGE_SIZE);
 
-    return `<div class="records-toolbar exhaustive-controls"><input class="records-search" value="${esc(state.search)}" placeholder="Search every field in all records" aria-label="Search section records"><select data-filter-field aria-label="Filter field"><option value="">All fields</option>${dataset.fields.map(field=>`<option value="${esc(field)}" ${state.filterField===field?"selected":""}>Filter · ${esc(label(field))}</option>`).join("")}</select><input class="records-filter-value" value="${esc(state.filterValue)}" placeholder="Filter value"><select data-sort-field aria-label="Sort field"><option value="">Original order</option>${dataset.fields.map(field=>`<option value="${esc(field)}" ${state.sortField===field?"selected":""}>Sort · ${esc(label(field))}</option>`).join("")}</select><button class="sort-direction" data-sort-direction type="button">${state.sortDirection==="asc"?"↑ Ascending":"↓ Descending"}</button><button class="studio-button" data-export>CSV · all filtered records</button>${state.section==="overview" ? `<a class="studio-button" href="./data/ducar_link_register.csv" download>Master CSV</a>` : ""}</div><div class="records-status"><strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records rendered together · ${number(dataset.fields.length)} section-specific fields · X/Y coordinates are WGS84 decimal degrees</div><div class="table-wrap all-records-table"><table class="data-table"><thead><tr>${dataset.fields.map(field=>`<th>${esc(label(field))}</th>`).join("")}</tr></thead><tbody>${shownRows.map(row=>`<tr>${dataset.fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(shown(row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    return `<div class="records-toolbar exhaustive-controls"><input class="records-search" value="${esc(state.search)}" placeholder="Search every field in all records" aria-label="Search section records"><select data-filter-field aria-label="Filter field"><option value="">All fields</option>${dataset.fields.map(field=>`<option value="${esc(field)}" ${state.filterField===field?"selected":""}>Filter · ${esc(label(field))}</option>`).join("")}</select><input class="records-filter-value" value="${esc(state.filterValue)}" placeholder="Filter value"><select data-sort-field aria-label="Sort field"><option value="">Original order</option>${dataset.fields.map(field=>`<option value="${esc(field)}" ${state.sortField===field?"selected":""}>Sort · ${esc(label(field))}</option>`).join("")}</select><button class="sort-direction" data-sort-direction type="button">${state.sortDirection==="asc"?"Ascending":"↓ Descending"}</button><button class="studio-button" data-export>CSV · all filtered records</button>${state.section==="overview" ? `<a class="studio-button" href="./data/ducar_link_register.csv" download>Master CSV</a>` : ""}</div><div class="records-status"><strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records rendered together · ${number(dataset.fields.length)} section-specific fields · X/Y coordinates are WGS84 decimal degrees</div><div class="table-wrap all-records-table"><table class="data-table"><thead><tr>${dataset.fields.map(field=>`<th>${esc(label(field))}</th>`).join("")}</tr></thead><tbody>${shownRows.map(row=>`<tr>${dataset.fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(shown(row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 
   }
 
@@ -1841,11 +1841,11 @@
 
     const sectionLayers=state.section==="socioeconomic"?[["facility:All","All socioeconomic facilities · "+number(cache.facilities?.features?.length),true],...(cache.socio.category_summary||[]).map(item=>[`facility:${item.category}`,item.category+" facilities · "+number(item.features),false])]:state.section==="structures"?[["structure:All","All bridges & major culverts · "+number(cache.structures.metadata.structure_occurrences),true],...(cache.structures.class_summary||[]).map(item=>[`structure:${item.structure_class}`,item.structure_class+" · "+number((cache.structures.rows||[]).filter(row=>row.structure_class===item.structure_class).length),false])]:[];
 
-    return `<div class="map-toolbar advanced"><div><strong>${esc(SECTION_META[state.section][0])} interactive geospatial workbench</strong><small>Complete DUCAR network · toggle layers, select a feature, measure distance and inspect its full report</small></div><label class="map-search"><span>Find road or district</span><input id="map-search" type="search" placeholder="Link ID, road name, district"><button id="map-search-button" type="button">Find</button></label></div><div class="map-workspace" id="map-workspace"><div class="map-stage"><div class="map-toolrail" role="toolbar" aria-label="Mapping tools"><button type="button" data-map-tool="zoom-in" title="Zoom in">＋</button><button type="button" data-map-tool="zoom-out" title="Zoom out">−</button><button type="button" data-map-tool="pan" title="Pan map">✥</button><button type="button" data-map-tool="select" class="active" title="Select feature">⌖</button><button type="button" data-map-tool="measure" title="Measure distance">⌁</button><button type="button" data-map-tool="clear" title="Clear selection and measurement">×</button><button type="button" data-map-tool="reset" title="Restore Uganda extent">⌂</button><button type="button" data-map-tool="download" title="Download map PNG">▣</button><button type="button" data-map-tool="fullscreen" title="Full size map">⛶</button><button type="button" data-map-tool="restore" title="Restore map size">↙</button></div><div class="map-compass" aria-label="North compass"><b>N</b><i></i></div><div id="section-map" class="section-map" role="application" aria-label="${esc(SECTION_META[state.section][0])} map"></div><div class="map-coordinate" id="map-coordinate">1.3500° N · 32.3000° E</div></div><aside class="map-catalogue"><section class="catalogue-layers"><header><div><small>MAP CATALOGUE</small><h3>Layers & symbology</h3></div><span>${roadLayers.length+sectionLayers.length+3} layers</span></header><div class="catalogue-scroll"><fieldset class="creative-basemap-fieldset"><legend class="creative-basemap-legend"><svg class="creative-basemap-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M3.6 9h16.8"></path><path d="M3.6 15h16.8"></path><path d="M11.5 3a17 17 0 0 0 0 18"></path><path d="M12.5 3a17 17 0 0 1 0 18"></path><circle cx="19" cy="5" r="2" fill="#38bdf8" stroke="none"></circle><path d="M17 7l-3 3" stroke="#38bdf8" stroke-width="1.5"></path></svg> <span>Basemap Atmosphere &amp; Imagery</span></legend>${[
-      ["satellite", "🛰️ High-Res Satellite Hybrid (Default)", "Photorealistic orbital imagery with national boundary overlays", true],
-      ["dark", "🌌 Dark Matter Night Vector", "High-contrast tactical dark cartography for analytics", false],
-      ["topo", "⛰️ Physical Terrain &amp; Contours", "Elevation relief models, hillshades and topography", false],
-      ["osm", "🧭 OpenStreetMap Community", "Standard open spatial vector street network", false]
+    return `<div class="map-toolbar advanced"><div><strong>${esc(SECTION_META[state.section][0])} interactive geospatial workbench</strong><small>Complete DUCAR network · toggle layers, select a feature, measure distance and inspect its full report</small></div><label class="map-search"><span>Find road or district</span><input id="map-search" type="search" placeholder="Link ID, road name, district"><button id="map-search-button" type="button">Find</button></label></div><div class="map-workspace" id="map-workspace"><div class="map-stage"><div class="map-toolrail" role="toolbar" aria-label="Mapping tools"><button type="button" data-map-tool="zoom-in" title="Zoom in"></button><button type="button" data-map-tool="zoom-out" title="Zoom out">−</button><button type="button" data-map-tool="pan" title="Pan map"></button><button type="button" data-map-tool="select" class="active" title="Select feature">⌖</button><button type="button" data-map-tool="measure" title="Measure distance">⌁</button><button type="button" data-map-tool="clear" title="Clear selection and measurement">×</button><button type="button" data-map-tool="reset" title="Restore Uganda extent">⌂</button><button type="button" data-map-tool="download" title="Download map PNG"></button><button type="button" data-map-tool="fullscreen" title="Full size map"></button><button type="button" data-map-tool="restore" title="Restore map size">↙</button></div><div class="map-compass" aria-label="North compass"><b>N</b><i></i></div><div id="section-map" class="section-map" role="application" aria-label="${esc(SECTION_META[state.section][0])} map"></div><div class="map-coordinate" id="map-coordinate">1.3500° N · 32.3000° E</div></div><aside class="map-catalogue"><section class="catalogue-layers"><header><div><small>MAP CATALOGUE</small><h3>Layers & symbology</h3></div><span>${roadLayers.length+sectionLayers.length+3} layers</span></header><div class="catalogue-scroll"><fieldset class="creative-basemap-fieldset"><legend class="creative-basemap-legend"><svg class="creative-basemap-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M3.6 9h16.8"></path><path d="M3.6 15h16.8"></path><path d="M11.5 3a17 17 0 0 0 0 18"></path><path d="M12.5 3a17 17 0 0 1 0 18"></path><circle cx="19" cy="5" r="2" fill="#38bdf8" stroke="none"></circle><path d="M17 7l-3 3" stroke="#38bdf8" stroke-width="1.5"></path></svg> <span>Basemap Atmosphere &amp; Imagery</span></legend>${[
+      ["satellite", "High-Res Satellite Hybrid (Default)", "Photorealistic orbital imagery with national boundary overlays", true],
+      ["dark", "Dark Matter Night Vector", "High-contrast tactical dark cartography for analytics", false],
+      ["topo", "Physical Terrain &amp; Contours", "Elevation relief models, hillshades and topography", false],
+      ["osm", "OpenStreetMap Community", "Standard open spatial vector street network", false]
     ].map(([id, text, desc, checked]) => `
       <label class="creative-basemap-option">
         <input type="radio" name="basemap" value="${id}" ${checked ? "checked" : ""}>
@@ -2530,19 +2530,19 @@ function analyticsHtml() {
 
   
   const NAV_RAIL_ITEMS = [
-    { id: "overview", label: "TOP", icon: "↑", cls: "top-pill" },
-    { id: "ducar", label: "DUCAR Dashboard", icon: "📊", cls: "ducar-badge" },
-    { id: "network", label: "Network", icon: "🗺️", cls: "blue" },
-    { id: "traffic", label: "Traffic", icon: "🚗", cls: "pink" },
-    { id: "condition", label: "Condition", icon: "🛡️", cls: "gold" },
-    { id: "structures", label: "Structures", icon: "🌉", cls: "amber" },
-    { id: "pims", label: "PIMS", icon: "📁", cls: "cyan" },
-    { id: "hdm4", label: "HDM-4", icon: "📈", cls: "emerald" },
-    { id: "framework", label: "Framework", icon: "⚖️", cls: "magenta" },
-    { id: "budgets", label: "Budgets & Prioritization", icon: "💰", cls: "green" },
-    { id: "global", label: "Global", icon: "🌐", cls: "pink" },
-    { id: "socioeconomic", label: "Socioeconomic Analysis", icon: "👥", cls: "magenta" },
-    { id: "summaries", label: "Summaries & Admin Tools", icon: "📑", cls: "violet" }
+    { id: "overview", label: "TOP", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>`, cls: "top-pill" },
+    { id: "ducar", label: "DUCAR Dashboard", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>`, cls: "ducar-badge" },
+    { id: "network", label: "Network", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>`, cls: "blue" },
+    { id: "traffic", label: "Traffic", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>`, cls: "pink" },
+    { id: "condition", label: "Condition", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>`, cls: "gold" },
+    { id: "structures", label: "Structures", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17h18M3 12h18M6 12v5M18 12v5M10 12v5M14 12v5"></path></svg>`, cls: "amber" },
+    { id: "pims", label: "PIMS", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`, cls: "cyan" },
+    { id: "hdm4", label: "HDM-4", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>`, cls: "emerald" },
+    { id: "framework", label: "Framework", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>`, cls: "magenta" },
+    { id: "budgets", label: "Budgets & Prioritization", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`, cls: "green" },
+    { id: "global", label: "Global", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`, cls: "pink" },
+    { id: "socioeconomic", label: "Socioeconomic Analysis", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`, cls: "magenta" },
+    { id: "summaries", label: "Summaries & Admin Tools", icon: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>`, cls: "violet" }
   ];
 
   function topNavHtml() {
@@ -2558,10 +2558,10 @@ function analyticsHtml() {
           </div>
         </div>
         <div class="top-nav-middle">
-          <a class="header-nav-btn ${state.section === 'summaries' ? 'active' : ''}" href="#summaries:dashboard">🏛 Administrative Units</a>
-          <a class="header-nav-btn ${state.section === 'network' ? 'active' : ''}" href="#network:dashboard">↔ Functional Classification</a>
-          <a class="header-nav-btn ${state.section === 'condition' ? 'active' : ''}" href="#condition:dashboard">🛡 Road Condition</a>
-          <a class="header-nav-btn ${state.section === 'traffic' ? 'active' : ''}" href="#traffic:dashboard">📊 Traffic</a>
+          <a class="header-nav-btn ${state.section === 'summaries' ? 'active' : ''}" href="#summaries:dashboard">Administrative Units</a>
+          <a class="header-nav-btn ${state.section === 'network' ? 'active' : ''}" href="#network:dashboard">Functional Classification</a>
+          <a class="header-nav-btn ${state.section === 'condition' ? 'active' : ''}" href="#condition:dashboard">Road Condition</a>
+          <a class="header-nav-btn ${state.section === 'traffic' ? 'active' : ''}" href="#traffic:dashboard">Traffic</a>
         </div>
         <div class="top-nav-right">
           <button class="top-action-btn" type="button" data-action="toggle-filters">
@@ -2569,7 +2569,7 @@ function analyticsHtml() {
             <span>Filters</span>
           </button>
           <select class="top-action-select" aria-label="Road Class Filter">
-            <option value="all">🛣️ All Road Classes</option>
+            <option value="all">All Road Classes</option>
             <option value="district">District Roads</option>
             <option value="urban">Urban Roads</option>
             <option value="community">Community Access</option>
@@ -2578,13 +2578,13 @@ function analyticsHtml() {
             <button class="top-action-btn export-btn" type="button">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
               <span>Export</span>
-              <small>▾</small>
+              <small>v</small>
             </button>
             <div class="top-export-menu">
-              <button type="button" data-export="kml">🗺️ Export KML (Google Earth)</button>
-              <button type="button" data-export="shp">📦 Export SHP (Spatial GeoJSON)</button>
-              <button type="button" data-export="csv">📊 Export CSV (Table Data)</button>
-              <button type="button" data-section-pdf>📑 Export PDF Report</button>
+              <button type="button" data-export="kml">Export KML (Google Earth)</button>
+              <button type="button" data-export="shp">Export SHP (Spatial GeoJSON)</button>
+              <button type="button" data-export="csv">Export CSV (Table Data)</button>
+              <button type="button" data-section-pdf>Export PDF Report</button>
             </div>
           </div>
         </div>
@@ -2665,7 +2665,7 @@ function analyticsHtml() {
 
       buttons.forEach((button,index)=>button.addEventListener("click",()=>show(index)));
 
-      studio.querySelector("[data-viz-autoplay]")?.addEventListener("click",event=>{if(timer){clearInterval(timer);vizTimers.delete(timer);timer=null;event.currentTarget.textContent="▶ Animate views";event.currentTarget.classList.remove("active");}else{event.currentTarget.textContent="Ⅱ Pause animation";event.currentTarget.classList.add("active");timer=setInterval(()=>show(active+1),2200);vizTimers.add(timer);show(active+1);}});
+      studio.querySelector("[data-viz-autoplay]")?.addEventListener("click",event=>{if(timer){clearInterval(timer);vizTimers.delete(timer);timer=null;event.currentTarget.textContent=" Animate views";event.currentTarget.classList.remove("active");}else{event.currentTarget.textContent="Ⅱ Pause animation";event.currentTarget.classList.add("active");timer=setInterval(()=>show(active+1),2200);vizTimers.add(timer);show(active+1);}});
 
     });
 
