@@ -1878,7 +1878,14 @@
 
     if (!node || !window.L || !cache.mapRoads) return;
 
-    const map = L.map(node,{preferCanvas:true,zoomControl:false,doubleClickZoom:false}).setView([1.35,32.3],7);
+    const isGlobal = state.section === "global";
+    // Uganda National extent vs Whole Globe view
+    const initialCenter = isGlobal ? [20, 10] : [1.37, 32.3];
+    const initialZoom = isGlobal ? 2 : 7;
+    const map = L.map(node, { preferCanvas: true, zoomControl: false, doubleClickZoom: false }).setView(initialCenter, initialZoom);
+    if (!isGlobal) {
+      map.fitBounds([[-1.5, 29.5], [4.3, 35.1]], { padding: [15, 15] });
+    }
 
     const bases={
 
