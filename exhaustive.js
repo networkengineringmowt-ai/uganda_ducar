@@ -86,7 +86,7 @@
       .replace(/\bKcca\b/g, "KCCA")
       .replace(/\bDlg\b/g, "DLG")
       .replace(/\bMowt\b/g, "MoWT")
-      .replace(/\bUnra\b/g, "UNRA")
+      .replace(/\bUnra\b/g, "DNR MoWT")
       .replace(/\bOsm\b/g, "OSM")
       .replace(/\bHdm4\b/g, "HDM-4")
       .replace(/\bPims\b/g, "PIMS")
