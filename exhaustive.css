@@ -687,3 +687,16 @@ body.network-map-mode #root main{padding-top:0!important}
 .metric-card,.chart-card,.analytics-block,.table-card{padding:9px!important}
 .section-head,.analytics-intro,.map-toolbar{margin-bottom:6px!important;padding:8px 10px!important}
 .map-workspace{gap:6px!important;height:calc(100vh - 118px)!important}
+
+/* full extent - zero wasted margins */
+.app-content-wrapper{padding:0!important;margin:0!important;max-width:none!important}
+.exhaustive-shell{margin:0!important;padding:2px 6px 12px!important;width:100%!important;max-width:100%!important}
+#exhaustive-root{margin:0!important;padding:0!important;min-height:0!important}
+.section-studio{margin:0!important;padding:0!important;max-width:none!important}
+.section-tabs{margin:0 0 6px!important;padding:0 0 5px!important}
+.metric-grid,.chart-grid,.dynamic-chart-grid,.schema-grid,.analytics-workbook{gap:6px!important;margin-bottom:6px!important}
+.metric-card,.chart-card,.analytics-block,.table-card,.benchmark-panel,.viz-studio,.insight-wall{padding:9px!important;margin-bottom:6px!important}
+.section-head,.analytics-intro,.map-toolbar,.sql-intro{margin-bottom:6px!important;padding:8px 10px!important}
+.map-workspace{gap:6px!important;height:calc(100vh - 108px)!important;max-height:none!important}
+.table-wrap{max-height:calc(100vh - 150px)!important}
+@media(max-width:800px){.exhaustive-shell{padding:2px 3px 10px!important}}
