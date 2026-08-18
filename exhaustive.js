@@ -1329,11 +1329,11 @@
 
     ];
 
-    return `<section class="benchmark-panel"><header><div><small>NATIONAL NETWORK RECONCILIATION · JULY 2026 REFERENCE</small><h3>Path from verified DUCAR links toward the 138,503 km benchmark</h3><p>The national benchmark is retained separately from verified and candidate geometry. Lengths are never scaled to force agreement.</p></div><button class="pdf-download" data-section-pdf type="button">PDF reconciliation</button></header>${metricCards([
+    return `<section class="benchmark-panel"><header><div><small>NATIONAL NETWORK RECONCILIATION · JULY 2026 REFERENCE</small><h3>Path from verified DUCAR links toward the 197,817 km benchmark</h3><p>The national benchmark is retained separately from verified and candidate geometry. Lengths are never scaled to force agreement.</p></div><button class="pdf-download" data-section-pdf type="button">PDF reconciliation</button></header>${metricCards([
 
       {label:"Official total road headline",value:number(official.total)+" km",note:"MoWT homepage and draft Strategic Plan"},
 
-      {label:"Official DUCAR composition",value:number(official.ducar)+" km",note:"46,795 urban + 33,443 urban + 117,579 community"},
+      {label:"Official DUCAR composition",value:number(official.ducar)+" km",note:"46,795 urban + 33,443 district + 117,579 community"},
 
       {label:"Official total links",value:"305,522 links",note:"All road links in the national DUCAR register"},
 
