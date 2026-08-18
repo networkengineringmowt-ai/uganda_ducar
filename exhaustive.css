@@ -141,3 +141,43 @@ input,textarea{color-scheme:dark}
 .basemap-satellite{height:11px;background:#18382b;border:1px solid #30d158}
 .dynamic-legend{display:grid;gap:5px;align-content:start;max-height:220px;overflow-y:auto;scrollbar-gutter:stable;padding-right:4px}
 .legend-swatch-line{display:inline-block;width:14px;height:2px;background:#fff;border-top:1px dashed #fff;vertical-align:middle;margin-right:6px}
+
+
+/* Axis Scales & Tick Mark Styling */
+.chart-axis-x, .chart-axis-y {
+  stroke: #475569 !important;
+  stroke-width: 1.5px !important;
+}
+.chart-tick-x, .chart-tick-y {
+  stroke: #718096 !important;
+  stroke-width: 1.5px !important;
+}
+.chart-gridline {
+  stroke: rgba(255, 255, 255, 0.08) !important;
+  stroke-dasharray: 3, 3;
+}
+.chart-tick {
+  fill: #94a3b8 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+}
+.chart-label {
+  fill: #f1f5f9 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+}
+.chart-value {
+  fill: #e2e8f0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+.axis-title {
+  font-size: 10.5px !important;
+  color: #64748b !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  margin-top: 6px !important;
+}
