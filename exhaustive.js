@@ -2796,3 +2796,30 @@ function analyticsHtml() {
 
   });
 
+
+/* layout normaliser - measures the fixed chrome and pins content to full extent */
+(function(){
+  function px(v){return Math.round(v)+'px';}
+  function fixedBox(sel){var e=document.querySelector(sel);if(!e)return null;var c=getComputedStyle(e);if(c.position!=='fixed'&&c.position!=='sticky')return null;if(c.display==='none'||c.visibility==='hidden')return null;var r=e.getBoundingClientRect();return r.width>0&&r.height>0?r:null;}
+  function apply(){
+    var rail=fixedBox('.canonical-nav-rail')||fixedBox('.nav-rail');
+    var top=fixedBox('.canonical-top-nav');
+    var left=rail?rail.right:0, head=top?top.bottom:0;
+    var wrap=document.querySelector('main.app-content-wrapper');
+    var layout=document.querySelector('.app-main-layout');
+    var shell=document.querySelector('.exhaustive-shell');
+    if(layout){layout.style.setProperty('margin-top','0','important');layout.style.setProperty('margin-left','0','important');layout.style.setProperty('padding-left','0','important');}
+    if(wrap){wrap.style.setProperty('padding-left',px(left),'important');wrap.style.setProperty('padding-top',px(head),'important');wrap.style.setProperty('padding-right','0','important');wrap.style.setProperty('margin','0','important');wrap.style.setProperty('max-width','none','important');}
+    else if(shell){shell.style.setProperty('margin-left',px(left),'important');}
+    if(shell){shell.style.setProperty('margin-right','0','important');shell.style.setProperty('padding','2px 6px 12px','important');shell.style.setProperty('width','auto','important');shell.style.setProperty('max-width','none','important');}
+    var root=document.getElementById('exhaustive-root');
+    if(root){root.style.setProperty('margin','0','important');root.style.setProperty('padding','0','important');}
+  }
+  var raf; function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(apply);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule);else schedule();
+  window.addEventListener('resize',schedule);
+  window.addEventListener('hashchange',function(){setTimeout(schedule,60);});
+  var obs=new MutationObserver(schedule);
+  obs.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+  [0,150,400,900,1800,3000].forEach(function(d){setTimeout(schedule,d);});
+})();
