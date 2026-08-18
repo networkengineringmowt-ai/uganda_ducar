@@ -688,6 +688,6 @@ body.network-map-mode #root main{padding-top:0!important}
 .section-head,.analytics-intro,.map-toolbar{margin-bottom:6px!important;padding:8px 10px!important}
 .map-workspace{gap:6px!important;height:calc(100vh - 118px)!important}
 
-/* reclaim duplicated top-nav offset */
-.app-main-layout{margin-top:0!important}
-.app-viewport-container{padding-bottom:0!important}
+/* clear the fixed nav rail without adding a gutter */
+.app-content-wrapper{padding-left:225px!important}
+@media(max-width:800px){.app-content-wrapper{padding-left:0!important}}
