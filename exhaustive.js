@@ -235,7 +235,7 @@
     return `<article class="dynamic-chart-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><header><h4>${esc(series.name)}</h4><span>${esc(series.unit)} + count</span></header>${renderer}</article>`;
   }
   function interactiveGallery(title, series) {
-    const types=[["donut","Donuts"],["pie","Pies"],["funnel","Funnels"],["clustered","Clustered Columns"],["stacked","Stacked Columns"],["sparkline","Sparklines"],["gauge","Gauges"],["radar","Radar Profiles"],["treemap","Treemaps"],["scatter","Scatter & Frequency Bubbles"],["composed","Composed Length & Cumulative Share"],["ranked","Complete Ranked Matrices"]];
+    const types=[["clustered","Clustered Columns (National View)"],["stacked","Stacked Columns (National View)"],["composed","Composed Length & Cumulative Share"],["donut","Donuts"],["pie","Pies"],["funnel","Funnels"],["gauge","Gauges"],["radar","Radar Profiles"],["treemap","Treemaps"],["sparkline","Sparklines"],["scatter","Scatter & Frequency Bubbles"],["ranked","Complete Ranked Matrices"]];
     return `<section class="viz-studio complete-chart-atlas"><div class="viz-heading"><div><small>ALL CHART FORMS · COMPLETE POPULATION · NO HIDDEN PANELS</small><h3>${esc(title)}</h3><p>Every chart form is visible in one continuous page. Each category reports cumulative affected length and complete record frequency together.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></div><div class="complete-chart-stack">${types.map(([id,text])=>`<section class="chart-type-section"><header><h4>${esc(text)}</h4><span>${number(series.length)} complete-population views</span></header><div class="dynamic-chart-grid">${series.map(item=>vizCard(item,id)).join("")}</div></section>`).join("")}</div></section>`;
   }
   function roadInteractiveSeries(rows, section) {
@@ -288,7 +288,7 @@
       ducar:[catalog.intervention,catalog.condition,catalog.pavement,catalog.priority,catalog.surface,catalog.traffic,catalog.linkLength,catalog.completeness],
       overview:[catalog.condition,catalog.pavement,catalog.priority,catalog.traffic,catalog.surface,catalog.intervention,catalog.linkLength,catalog.completeness]
     };
-    return [district,...(owned[section]||owned.overview)];
+    return [...(owned[section]||owned.overview)];
   }
   function insightMicro(type, share, meanShare, color) {
     const p=Math.max(0,Math.min(100,share)), mean=Math.max(0,Math.min(100,meanShare));
@@ -466,7 +466,7 @@
     const common = {
       overview: [["Condition affected length","All mapped road length by condition.","condition",COLORS[1]],["Pavement affected length","Paved and unpaved cumulative length.","pavement_class",COLORS[2]],["Priority affected length","Planning bands by cumulative road length.","priority_band",COLORS[4]],["Traffic data coverage","Road length with or without exact traffic data.",r=>typeof r.registry_aadt==="number"?"Traffic supplied":"Not supplied",COLORS[5]]],
       ducar: [["Intervention coverage length","Cumulative length assigned to each treatment.","recommended_intervention",COLORS[2]],["Condition coverage length","Network condition by affected road length.","condition",COLORS[1]],["Pavement coverage length","Paved and unpaved road length.","pavement_class",COLORS[0]],["Priority coverage length","Screened length by priority band.","priority_band",COLORS[4]]],
-      network: [["Surface composition","Complete geometry length by surface.","surface",COLORS[2]],["Pavement classification","Explicit paved/unpaved length.","pavement_class",COLORS[1]],["Condition coverage","Affected length by road condition.","condition",COLORS[3]],["Administrative coverage","Road length by district.","district",COLORS[0]]],
+      network: [["Surface composition","Complete geometry length by surface.","surface",COLORS[2]],["Pavement classification","Explicit paved/unpaved length.","pavement_class",COLORS[1]],["Condition coverage","Affected length by road condition.","condition",COLORS[3]],["Administrative coverage","Governed length by parish attribution.",r=>shown(r.parish)==="Not supplied"?"Parish not supplied":"Parish supplied",COLORS[0]]],
       condition: [["Condition by network length","Complete affected road length.","condition",COLORS[1]],["Condition risk","Affected length by condition-risk score.",r=>"Risk "+shown(r.condition_risk),COLORS[3]],["Recommended interventions","Cumulative length by treatment.","recommended_intervention",COLORS[2]],["Surface condition coverage","Complete length by surface.","surface",COLORS[5]]],
       pims: [["Priority screening bands","Affected road length by priority.","priority_band",COLORS[4]],["Intervention pipeline","Cumulative treatment length.","recommended_intervention",COLORS[2]],["Screening by condition","Input length by condition.","condition",COLORS[0]],["Screening by pavement","Input length by pavement.","pavement_class",COLORS[1]]],
       hdm4: [["HDM-4 traffic coverage","Road length with exact traffic inputs.",r=>typeof r.registry_aadt==="number"?"Traffic supplied":"Not supplied",COLORS[0]],["Pavement input length","Model length by pavement.","pavement_class",COLORS[2]],["Condition input length","Model length by condition.","condition",COLORS[3]],["Priority input length","Model length by planning band.","priority_band",COLORS[4]]],
@@ -820,6 +820,71 @@
     const total=rows.reduce((s,r)=>s+analyticsLength(r),0), output=definitions.map(([band,min,max])=>{const selected=rows.filter(row=>typeof row[field]==="number"&&row[field]>=min&&row[field]<max),length=selected.reduce((s,r)=>s+analyticsLength(r),0),values=selected.map(row=>Number(row[field])),share=length/Math.max(total,1)*100;return {band,records:selected.length,affected_length_km:number(length,3)+" km",length_share_pct:{text:number(share,2)+"%",tone:analyticsTone(share)},minimum:values.length?number(Math.min(...values),2):"Not supplied",mean:values.length?number(values.reduce((a,b)=>a+b,0)/values.length,2):"Not supplied",maximum:values.length?number(Math.max(...values),2):"Not supplied"};});
     return analyticsTable(`${label(field)} distribution`,`Complete numerical bands with frequency, length, share, minimum, mean and maximum.`,["band","records","affected_length_km","length_share_pct","minimum","mean","maximum"],output);
   }
+  
+  function regionSummaryTable(rows) {
+    const groups = new Map();
+    const regionMap = {
+      Central: ["Kampala","Wakiso","Mukono","Luweero","Mpigi","Mityana","Kiboga","Mubende","Nakaseke","Nakasongola","Buikwe","Buvuma","Kayunga"],
+      Eastern: ["Jinja","Mbale","Soroti","Tororo","Busia","Iganga","Kamuli","Mayuge","Bugiri","Namutumba","Kaliro","Luuka","Budaka","Butaleja","Kibuku","Manafwa","Bududa","Bulambuli","Kapchorwa","Kween","Bukwo","Kumi","Ngora","Serere","Bukedea","Amuria","Kapelebyong","Kaberamaido","Kalaki"],
+      Northern: ["Gulu","Lira","Arua","Kitgum","Pader","Nebbi","Koboko","Yumbe","Moyo","Adjumani","Zombo","Maracha","Terego","Obongi","Madi-Okollo","Lamwo","Agago","Alebtong","Amolatar","Apac","Dokolo","Oyam","Otuke","Kwania"],
+      Western: ["Mbarara","Kabale","Fort Portal","Kasese","Hoima","Masindi","Buliisa","Kiryandongo","Kibaale","Kagadi","Kakumiro","Bundibugyo","Ntoroko","Kabarole","Kamwenge","Kyegegwa","Kyenjojo","Kitagwenda","Bushenyi","Buhweju","Mitooma","Rubirizi","Sheema","Rukungiri","Ntungamo","Kisoro","Kanungu","Rubanda","Rukiga","Isingiro","Ibanda","Kiruhura","Kazo"],
+      Southern: ["Masaka","Kalangala","Rakai","Lyantonde","Lwengo","Sembabule","Bukomansimbi","Kalungu","Kyotera"],
+      Northeastern: ["Abim","Amudat","Kaabong","Moroto","Nakapiripirit","Napak","Kotido","Nabilatuk","Karenga"]
+    };
+    function getRegion(dist) {
+      const d = String(dist).trim();
+      for (const [r, list] of Object.entries(regionMap)) {
+        if (list.some(x => d.toLowerCase().includes(x.toLowerCase()) || x.toLowerCase().includes(d.toLowerCase()))) return r;
+      }
+      return "Central";
+    }
+    rows.forEach(row => {
+      const dist = shown(row.district || row.admin_district);
+      const reg = row.region || getRegion(dist);
+      const item = groups.get(reg) || {
+        region: reg, records: 0, total_length_km: 0, paved_length_km: 0, unpaved_length_km: 0,
+        good_length_km: 0, fair_length_km: 0, poor_length_km: 0, traffic_length_km: 0,
+        planning_cost_ugx: 0
+      };
+      const len = analyticsLength(row);
+      item.records++;
+      item.total_length_km += len;
+      if (String(row.pavement_class).toLowerCase() === "paved") item.paved_length_km += len;
+      if (String(row.pavement_class).toLowerCase() === "unpaved") item.unpaved_length_km += len;
+      if (String(row.condition).toLowerCase() === "good") item.good_length_km += len;
+      if (String(row.condition).toLowerCase() === "fair") item.fair_length_km += len;
+      if (String(row.condition).toLowerCase() === "poor") item.poor_length_km += len;
+      if (typeof row.registry_aadt === "number") item.traffic_length_km += len;
+      item.planning_cost_ugx += Number(row.planning_cost_ugx || 0);
+      groups.set(reg, item);
+    });
+    const output = ["Central","Eastern","Northern","Western","Southern","Northeastern"].map(reg => {
+      const item = groups.get(reg) || { region: reg, records: 0, total_length_km: 0, paved_length_km: 0, unpaved_length_km: 0, good_length_km: 0, fair_length_km: 0, poor_length_km: 0, traffic_length_km: 0, planning_cost_ugx: 0 };
+      const total = Math.max(item.total_length_km, 1);
+      const formatKm = val => number(val, 3) + " km";
+      return {
+        region: item.region,
+        records: item.records,
+        total_length_km: formatKm(item.total_length_km),
+        paved_length_km: formatKm(item.paved_length_km),
+        unpaved_length_km: formatKm(item.unpaved_length_km),
+        good_length_km: formatKm(item.good_length_km),
+        fair_length_km: formatKm(item.fair_length_km),
+        poor_length_km: formatKm(item.poor_length_km),
+        paved_share_pct: { text: number(item.paved_length_km / total * 100, 2) + "%", tone: analyticsTone(item.paved_length_km / total * 100) },
+        poor_share_pct: { text: number(item.poor_length_km / total * 100, 2) + "%", tone: analyticsTone(item.poor_length_km / total * 100, true) },
+        traffic_coverage_pct: { text: number(item.traffic_length_km / total * 100, 2) + "%", tone: analyticsTone(item.traffic_length_km / total * 100) },
+        planning_cost_ugx: "UGX " + number(item.planning_cost_ugx, 0)
+      };
+    });
+    return analyticsTable(
+      "Regional Network Breakdown (6 Official MoWT Regions)",
+      "Comprehensive regional distribution across Central, Eastern, Northern, Western, Southern, and Northeastern regions.",
+      ["region","records","total_length_km","paved_length_km","unpaved_length_km","good_length_km","fair_length_km","poor_length_km","paved_share_pct","poor_share_pct","traffic_coverage_pct","planning_cost_ugx"],
+      output
+    );
+  }
+
   function districtSummaryTable(rows) {
     const groups=new Map();rows.forEach(row=>{const district=shown(row.district||row.admin_district),item=groups.get(district)||{district,records:0,total_length_km:0,paved_length_km:0,unpaved_length_km:0,good_length_km:0,fair_length_km:0,poor_length_km:0,traffic_length_km:0,coordinate_length_km:0,planning_cost_ugx:0};const length=analyticsLength(row);item.records++;item.total_length_km+=length;if(String(row.pavement_class).toLowerCase()==="paved")item.paved_length_km+=length;if(String(row.pavement_class).toLowerCase()==="unpaved")item.unpaved_length_km+=length;if(String(row.condition).toLowerCase()==="good")item.good_length_km+=length;if(String(row.condition).toLowerCase()==="fair")item.fair_length_km+=length;if(String(row.condition).toLowerCase()==="poor")item.poor_length_km+=length;if(typeof row.registry_aadt==="number")item.traffic_length_km+=length;if(typeof row.x_coordinate_dd==="number")item.coordinate_length_km+=length;item.planning_cost_ugx+=Number(row.planning_cost_ugx||0);groups.set(district,item);});
     const output=[...groups.values()].sort((a,b)=>a.district.localeCompare(b.district)).map(item=>{const total=Math.max(item.total_length_km,1),formatKm=value=>number(value,3)+" km";return {district:item.district,records:item.records,total_length_km:formatKm(item.total_length_km),paved_length_km:formatKm(item.paved_length_km),unpaved_length_km:formatKm(item.unpaved_length_km),good_length_km:formatKm(item.good_length_km),fair_length_km:formatKm(item.fair_length_km),poor_length_km:formatKm(item.poor_length_km),paved_share_pct:{text:number(item.paved_length_km/total*100,2)+"%",tone:analyticsTone(item.paved_length_km/total*100)},poor_share_pct:{text:number(item.poor_length_km/total*100,2)+"%",tone:analyticsTone(item.poor_length_km/total*100,true)},traffic_coverage_pct:{text:number(item.traffic_length_km/total*100,2)+"%",tone:analyticsTone(item.traffic_length_km/total*100)},coordinate_coverage_pct:{text:number(item.coordinate_length_km/total*100,2)+"%",tone:analyticsTone(item.coordinate_length_km/total*100)},planning_cost_ugx:"UGX "+number(item.planning_cost_ugx,0),planning_cost_per_km_ugx:"UGX "+number(item.planning_cost_ugx/total,0)};});
@@ -835,7 +900,7 @@
     const rows=state.section==="summaries"?cache.relations.map(row=>({...row,district:row.admin_district,geometry_length_km:row.covered_length_km})):state.section==="socioeconomic"?cache.socio.rows:cache.links;
     const pairs={traffic:[["pavement_class","condition"],["priority_band","recommended_intervention"]],condition:[["condition","pavement_class"],["condition","recommended_intervention"]],network:[["surface","pavement_class"],["condition","surface"]],pims:[["priority_band","recommended_intervention"],["priority_band","condition"]],hdm4:[["pavement_class","condition"],["priority_band","recommended_intervention"]],framework:[["admin_coverage","condition"],["pavement_class","priority_band"]],budgets:[["priority_band","recommended_intervention"],["condition","pavement_class"]],socioeconomic:[["exposure_band","primary_socioeconomic_factor"],["exposure_band","pavement_class"]],summaries:[["relation_basis","pavement_class"],["condition","priority_band"]],overview:[["condition","pavement_class"],["priority_band","recommended_intervention"]],ducar:[["condition","pavement_class"],["surface","recommended_intervention"]]};
     const selected=pairs[state.section]||pairs.overview,category=state.section==="traffic"?"condition":state.section==="socioeconomic"?"exposure_band":state.section==="summaries"?"relation_basis":state.section==="network"?"surface":state.section==="budgets"||state.section==="pims"?"priority_band":"condition", numeric=state.section==="traffic"?["registry_aadt",[["0–149",0,150],["150–499",150,500],["500–999",500,1000],["1,000+",1000,Infinity]]]:state.section==="socioeconomic"?["socioeconomic_exposure_score",[["0–24.9",0,25],["25–49.9",25,50],["50–74.9",50,75],["75–100",75,101]]]:["planning_priority_score",[["0–24.9",0,25],["25–49.9",25,50],["50–74.9",50,75],["75–100",75,101]]];
-    return `<div class="analytics-workbook"><div class="analytics-intro"><div><small>CHART-FREE ANALYTICAL WORKBOOK</small><h2>${esc(SECTION_META[state.section][0])} formulas, summaries and relations</h2><p>Section-specific tables only, with conditional formatting for coverage, caution and risk.</p></div><strong>${number(rows.length)} records · ${number(rows.reduce((s,r)=>s+analyticsLength(r),0),3)} km</strong></div>${formulaTable(rows,sectionFormulas(state.section))}${crossTab(rows,...selected[0],`${label(selected[0][0])} × ${label(selected[0][1])}`)}${crossTab(rows,...selected[1],`${label(selected[1][0])} × ${label(selected[1][1])}`)}${numericBandTable(rows,numeric[0],numeric[1])}${analyticsTable(`${label(category)} comprehensive summary`,`Every categorical value with count, affected length, share and mean represented length.`,["category","records","affected_length_km","length_share_pct","mean_record_length_km"],categorySummary(rows,category))}${districtSummaryTable(rows)}</div>`;
+    return `<div class="analytics-workbook"><div class="analytics-intro"><div><small>CHART-FREE ANALYTICAL WORKBOOK</small><h2>${esc(SECTION_META[state.section][0])} formulas, summaries and relations</h2><p>Section-specific tables only, with conditional formatting for coverage, caution and risk.</p></div><strong>${number(rows.length)} records · ${number(rows.reduce((s,r)=>s+analyticsLength(r),0),3)} km</strong></div>${formulaTable(rows,sectionFormulas(state.section))}${crossTab(rows,...selected[0],`${label(selected[0][0])} × ${label(selected[0][1])}`)}${crossTab(rows,...selected[1],`${label(selected[1][0])} × ${label(selected[1][1])}`)}${numericBandTable(rows,numeric[0],numeric[1])}${analyticsTable(`${label(category)} comprehensive summary`,`Every categorical value with count, affected length, share and mean represented length.`,["category","records","affected_length_km","length_share_pct","mean_record_length_km"],categorySummary(rows,category))}${regionSummaryTable(rows)}${districtSummaryTable(rows)}</div>`;
   }
   function relevantTables() {
     const names = SECTION_SQL[state.section] || [];
