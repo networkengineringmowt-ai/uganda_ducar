@@ -62,5 +62,196 @@ function setKccaData(value) {
 <script defer src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script defer src="https://unpkg.com/leaflet-image@0.4.0/leaflet-image.js"></script>
 <script defer src="./exhaustive.js?v=20260818-clean"></script>
+
+  <!-- Canonical fix: button handlers + map road alignments 2026-08-18 -->
+  <script>
+  (function() {
+    var ROAD_STYLES = {
+      classM:    { color: '#FFD700', weight: 3.0, opacity: 0.95 },
+      classA:    { color: '#E53935', weight: 2.5, opacity: 0.95 },
+      classB:    { color: '#FB8C00', weight: 2.0, opacity: 0.90 },
+      classC:    { color: '#FDD835', weight: 1.5, opacity: 0.85 },
+      district:  { color: '#43A047', weight: 1.0, opacity: 0.80 },
+      urban:     { color: '#00ACC1', weight: 1.0, opacity: 0.80 },
+      car:       { color: '#9E9E9E', weight: 0.5, opacity: 0.70 },
+      footpath:  { color: '#9E9E9E', weight: 0.5, opacity: 0.00 }
+    };
+
+    var MAP_LAYERS = [
+      { file: './data/roads_class_m.geojson',  style: ROAD_STYLES.classM,   name: 'Class M — Motorways/Expressways' },
+      { file: './data/roads_class_a.geojson',  style: ROAD_STYLES.classA,   name: 'Class A — National Primary' },
+      { file: './data/roads_class_b.geojson',  style: ROAD_STYLES.classB,   name: 'Class B — National Secondary' },
+      { file: './data/roads_class_c.geojson',  style: ROAD_STYLES.classC,   name: 'Class C — National Tertiary' },
+      { file: './data/roads_district.geojson', style: ROAD_STYLES.district, name: 'District Roads' },
+      { file: './data/roads_urban.geojson',    style: ROAD_STYLES.urban,    name: 'Urban Roads' },
+      { file: './data/roads_car.geojson',      style: ROAD_STYLES.car,      name: 'Community Access Roads' },
+      { file: './data/roads_footpath.geojson', style: ROAD_STYLES.footpath, name: 'Footpaths (non-vehicular)' }
+    ];
+
+    function initRoadLayers(map) {
+      var control = L.control.layers(null, null, { collapsed: false, position: 'topright' });
+      MAP_LAYERS.forEach(function(layer) {
+        fetch(layer.file)
+          .then(function(r) { return r.ok ? r.json() : null; })
+          .then(function(data) {
+            if (!data) return;
+            var geoLayer = L.geoJSON(data, {
+              style: function() { return layer.style; },
+              onEachFeature: function(feature, lyr) {
+                var p = feature.properties || {};
+                lyr.bindTooltip(
+                  '<strong>' + (p.name || p.road_name || 'Road') + '</strong><br>' +
+                  (p.functional_class || layer.name) + '<br>' +
+                  'Surface: ' + (p.surface_type || 'Unknown') +
+                  (p.length_km ? '<br>Length: ' + Number(p.length_km).toFixed(2) + ' km' : ''),
+                  { sticky: true, opacity: 0.9 }
+                );
+              }
+            });
+            if (layer.style.opacity > 0) geoLayer.addTo(map);
+            control.addOverlay(geoLayer, layer.name);
+          })
+          .catch(function() { /* file not yet uploaded — skip silently */ });
+      });
+      control.addTo(map);
+    }
+
+    function attachToMap() {
+      // Wait for Leaflet map to be created by exhaustive.js
+      var attempts = 0;
+      var check = setInterval(function() {
+        attempts++;
+        if (attempts > 60) { clearInterval(check); return; }
+        var mapDiv = document.querySelector('#exhaustive-root .leaflet-container');
+        if (!mapDiv || !mapDiv._leaflet_id) return;
+        var mapKey = Object.keys(mapDiv).find(function(k) { return k.startsWith('_leaflet'); });
+        // Access Leaflet map instance from the div
+        for (var k in L.Map._maps || {}) {
+          var m = L.Map._maps[k];
+          if (m && m.getContainer && m.getContainer() === mapDiv) {
+            clearInterval(check);
+            if (!mapDiv.__roadsLoaded) {
+              mapDiv.__roadsLoaded = true;
+              initRoadLayers(m);
+            }
+            return;
+          }
+        }
+        // Fallback: use Leaflet map registry
+        if (window._leafletMap && !window._roadsLoaded) {
+          window._roadsLoaded = true;
+          clearInterval(check);
+          initRoadLayers(window._leafletMap);
+        }
+      }, 500);
+    }
+
+    function wireButtons() {
+      var root = document.getElementById('exhaustive-root');
+      if (!root) return;
+
+      // Chart PNG downloads (.chart-download)
+      root.querySelectorAll('.chart-download:not([data-wired])').forEach(function(btn) {
+        btn.setAttribute('data-wired', '1');
+        btn.addEventListener('click', function() {
+          var card = btn.closest('.chart-card, [class*="chart"], .kpi-card, [class*="card"]') || btn.parentElement;
+          var canvas = card ? card.querySelector('canvas') : null;
+          if (canvas) {
+            var a = document.createElement('a');
+            a.download = 'ducar-chart-' + Date.now() + '.png';
+            a.href = canvas.toDataURL('image/png');
+            a.click();
+          } else if (typeof html2canvas !== 'undefined' && card) {
+            html2canvas(card, { backgroundColor: '#1c2a3a', scale: 2 }).then(function(c) {
+              var a = document.createElement('a');
+              a.download = 'ducar-chart-' + Date.now() + '.png';
+              a.href = c.toDataURL('image/png');
+              a.click();
+            });
+          }
+        });
+      });
+
+      // PDF downloads (.pdf-download)
+      root.querySelectorAll('.pdf-download:not([data-wired])').forEach(function(btn) {
+        btn.setAttribute('data-wired', '1');
+        btn.addEventListener('click', function() {
+          var target = btn.closest('[class*="section"], [class*="card"]') || root;
+          if (typeof html2canvas === 'undefined') { alert('PDF library loading, please retry.'); return; }
+          html2canvas(target, { backgroundColor: '#1c2a3a', scale: 1.5 }).then(function(canvas) {
+            if (typeof window.jspdf !== 'undefined') {
+              var jsPDF = window.jspdf.jsPDF;
+              var doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a3' });
+              var w = doc.internal.pageSize.getWidth() - 20;
+              var h = (canvas.height / canvas.width) * w;
+              doc.addImage(canvas.toDataURL('image/jpeg', 0.9), 'JPEG', 10, 10, w, h);
+              doc.save('ducar-report-' + new Date().toISOString().slice(0,10) + '.pdf');
+            } else {
+              var a = document.createElement('a');
+              a.download = 'ducar-report-' + Date.now() + '.png';
+              a.href = canvas.toDataURL('image/png');
+              a.click();
+            }
+          });
+        });
+      });
+
+      // Export button — trigger section export
+      root.querySelectorAll('.export-btn:not([data-wired])').forEach(function(btn) {
+        btn.setAttribute('data-wired', '1');
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var menu = btn.nextElementSibling;
+          if (menu && menu.classList.contains('export-menu')) {
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+          } else {
+            // Fallback: screenshot the main content
+            var shell = document.querySelector('.exhaustive-shell, #exhaustive-root');
+            if (shell && typeof html2canvas !== 'undefined') {
+              html2canvas(shell, { backgroundColor: '#0b141e', scale: 1.5 }).then(function(c) {
+                var a = document.createElement('a');
+                a.download = 'ducar-export-' + Date.now() + '.png';
+                a.href = c.toDataURL('image/png');
+                a.click();
+              });
+            }
+          }
+        });
+      });
+
+      // Filter select — update map display
+      root.querySelectorAll('.top-action-select:not([data-wired])').forEach(function(sel) {
+        sel.setAttribute('data-wired', '1');
+        sel.addEventListener('change', function() {
+          var val = sel.value;
+          // Dispatch to exhaustive.js state if available
+          if (window.state) { window.state.filterValue = val; }
+          // Also dispatch custom event for map filtering
+          document.dispatchEvent(new CustomEvent('ducar:filter', { detail: { roadClass: val } }));
+        });
+      });
+    }
+
+    // Re-wire buttons after every render (exhaustive.js re-renders on section change)
+    var observer = new MutationObserver(function() {
+      wireButtons();
+      attachToMap();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var root = document.getElementById('exhaustive-root');
+      if (root) {
+        observer.observe(root, { childList: true, subtree: false });
+        wireButtons();
+        attachToMap();
+      }
+    });
+    window.addEventListener('load', function() {
+      wireButtons();
+      attachToMap();
+    });
+  })();
+  </script>
+
 </body>
 </html>
