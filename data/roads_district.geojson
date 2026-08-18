@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"name":"Wakiso District Road sample","functional_class":"District Road","surface_type":"Unpaved","length_km":45},"geometry":{"type":"LineString","coordinates":[[32.577,0.317],[32.7,0.6],[32.9,0.8]]}}]}
