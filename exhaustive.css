@@ -691,3 +691,8 @@ body.network-map-mode #root main{padding-top:0!important}
 /* clear the fixed nav rail without adding a gutter */
 .app-content-wrapper{padding-left:225px!important}
 @media(max-width:800px){.app-content-wrapper{padding-left:0!important}}
+
+/* rail clearance with explicit specificity */
+html body main.app-content-wrapper{padding-left:225px!important;padding-right:0!important}
+html body div.app-main-layout{padding-left:0!important;margin-left:0!important}
+@media(max-width:800px){html body main.app-content-wrapper{padding-left:0!important}}
