@@ -556,7 +556,7 @@
 
     relations: [{"region": "Central", "regional_office": "Kampala Regional Works HQ", "districts_count": 13, "total_length_km": 96140.22, "paved_km": 28842.06, "unpaved_km": 67298.16}, {"region": "Western", "regional_office": "Mbarara / Fort Portal Works HQ", "districts_count": 33, "total_length_km": 84210.15, "paved_km": 18526.23, "unpaved_km": 65683.92}, {"region": "Eastern", "regional_office": "Jinja / Mbale Works HQ", "districts_count": 29, "total_length_km": 62490.8, "paved_km": 11248.34, "unpaved_km": 51242.46}, {"region": "Northern", "regional_office": "Gulu / Lira Works HQ", "districts_count": 24, "total_length_km": 51320.45, "paved_km": 7698.07, "unpaved_km": 43622.38}, {"region": "Southern", "regional_office": "Masaka Regional Works HQ", "districts_count": 9, "total_length_km": 18240.18, "paved_km": 3465.63, "unpaved_km": 14774.55}, {"region": "Northeastern", "regional_office": "Moroto Works HQ (Karamoja)", "districts_count": 9, "total_length_km": 11033.28, "paved_km": 1120.44, "unpaved_km": 9912.84}],
 
-    database: {"total_roads": 681678, "total_km": 323435.08, "statutory_baseline_km": 159623.0, "paved_km": 70900.77, "unpaved_km": 252534.3, "governance": ["DNR MoWT", "DDUCAR MoWT"], "regions_count": 6, "districts_count": 135},
+    database: {"total_roads": 305522, "total_km": 218953.47, "statutory_baseline_km": 159623.0, "paved_km": 56117.49, "unpaved_km": 162835.98, "governance": ["DNR MoWT", "DDUCAR MoWT"], "regions_count": 6, "districts_count": 135},
 
     global: [
 
@@ -648,6 +648,8 @@
 
   }
 
+  
+  function fmtKm(v,d=1){return Number(v||0).toLocaleString(undefined,{maximumFractionDigits:d,minimumFractionDigits:d})+' km';}
   function aggregate(rows, category, metric) {
 
     const totals = new Map();
@@ -1309,7 +1311,7 @@
 
   function nationalNetworkReconciliation(rows) {
 
-    const official={total:159623,national:21292,urban:19952,district:38603,community:79948,ducar:138503,pavedNational:6405,unpavedNational:14897,candidateDucar:67551.55};
+    const official={total:218953.47,national:21136.75,urban:46795.41,district:33442.76,community:117578.55,ducar:197816.72,pavedNational:6514.13,unpavedNational:14622.62,pavedDucar:49603.36,unpavedDucar:148213.36,pavedTotal:56117.49,unpavedTotal:162835.98,baseline:159623,links:305522,nationalLinks:1014,ducarLinks:304508};
 
     const verified=rows.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0), additional=Math.max(0,official.candidateDucar-verified), unresolved=Math.max(0,official.ducar-official.candidateDucar), componentTotal=official.national+official.ducar, pavedTotal=official.pavedNational+official.unpavedNational;
 
@@ -2580,12 +2582,12 @@ function analyticsHtml() {
             <span class="nav-brand-sub">Uganda District, Urban &amp; Community Access Roads Intelligence</span>
           </div>
         </div>
-        <div class="top-nav-middle">
+        ${state.section==='map'?`<div class="top-nav-middle">
           <a class="header-nav-btn ${state.section === 'summaries' ? 'active' : ''}" href="#summaries:dashboard">Administrative Units</a>
           <a class="header-nav-btn ${state.section === 'network' ? 'active' : ''}" href="#network:dashboard">Functional Classification</a>
           <a class="header-nav-btn ${state.section === 'condition' ? 'active' : ''}" href="#condition:dashboard">Road Condition</a>
           <a class="header-nav-btn ${state.section === 'traffic' ? 'active' : ''}" href="#traffic:dashboard">Traffic</a>
-        </div>
+        </div>`:''}
         <div class="top-nav-right">
           <button class="top-action-btn" type="button" data-action="toggle-filters">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
@@ -2710,7 +2712,7 @@ function analyticsHtml() {
 
     if (!section || section===state.section) return;
 
-    state.section=section;state.tab="dashboard";state.page=1;state.search="";state.filterField="";state.filterValue="";state.sortField="";history.replaceState(null,"",`#${section}:dashboard`);render();setTimeout(syncInjectedNav,0);
+    state.section=section;state.tab="dashboard";state.page=1;state.search="";state.filterField="";state.filterValue="";state.sortField="";history.replaceState(null,"",`#${section}:dashboard`);document.body.setAttribute('data-section',state.section);render();setTimeout(syncInjectedNav,0);
 
   }
 
