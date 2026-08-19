@@ -1103,3 +1103,88 @@ body:not(.network-map-mode) #root{height:0!important;min-height:0!important;over
   color: #0f1923 !important;
   font-weight: 700 !important;
 }
+
+/* ============================================================
+   MOBILE RESPONSIVE LAYOUT — v20260819-mobile
+   Additive only: off-canvas nav rail + hamburger toggle, KPI
+   stacking, larger touch targets, safe overflow. Desktop (>768px)
+   is untouched — every rule below is scoped to a max-width query
+   except the toggle button/backdrop, which are display:none
+   outside those queries.
+   ============================================================ */
+
+/* Hamburger toggle + backdrop: injected into the DOM by a small
+   script in index.html, hidden on desktop by default */
+.mobile-nav-toggle{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:44px;
+  min-width:44px;
+  min-height:44px;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:9px;
+  background:rgba(255,255,255,.06);
+  color:#f8fafc;
+  cursor:pointer;
+  margin-right:10px;
+  flex:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.mobile-nav-toggle:hover{background:rgba(255,255,255,.12)}
+.mobile-nav-toggle svg{display:block;width:20px;height:20px;pointer-events:none}
+.mobile-nav-backdrop{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  z-index:895;
+}
+
+@media (max-width:768px){
+  html,body{overflow-x:hidden!important}
+  .app-viewport-container,.app-main-layout,.app-content-wrapper,.exhaustive-shell{max-width:100vw!important}
+
+  .mobile-nav-toggle{display:inline-flex!important}
+  .nav-brand-sub{display:none!important}
+
+  /* Nav rail becomes an off-canvas drawer, hidden by default */
+  .canonical-nav-rail{
+    transform:translateX(-100%)!important;
+    transition:transform .25s cubic-bezier(.2,.75,.25,1)!important;
+    width:min(280px,82vw)!important;
+    z-index:1300!important;
+  }
+  body.mobile-nav-open .canonical-nav-rail{
+    transform:translateX(0)!important;
+    box-shadow:14px 0 40px rgba(0,0,0,.55)!important;
+  }
+  body.mobile-nav-open .mobile-nav-backdrop{display:block!important}
+  body.mobile-nav-open{overflow:hidden!important}
+
+  .app-content-wrapper{margin-left:0!important;width:100%!important}
+
+  /* KPI / stat cards: single column on mobile */
+  .metric-grid{grid-template-columns:1fr!important}
+
+  /* Touch targets: minimum 44px for primary interactive controls */
+  .nav-rail-btn{min-height:44px!important;padding:11px 12px!important}
+  .section-tab{min-height:44px!important;padding:13px 15px!important;display:inline-flex!important;align-items:center!important;box-sizing:border-box!important}
+  .header-nav-btn{min-height:44px!important;padding:10px 14px!important;display:inline-flex!important;align-items:center!important;box-sizing:border-box!important}
+  .top-action-btn,.top-action-select{min-height:44px!important;height:44px!important}
+  .studio-button{min-height:44px!important;padding:13px 15px!important;box-sizing:border-box!important}
+  .pages button{min-height:44px!important;min-width:44px!important;padding:10px 14px!important;box-sizing:border-box!important}
+
+  /* Readability: keep body copy from shrinking too far */
+  .metric-card strong{font-size:22px!important}
+  .metric-card small{font-size:10px!important}
+  .chart-card h3{font-size:14px!important}
+  .nav-brand-title{font-size:14px!important}
+}
+
+@media (max-width:480px){
+  .canonical-nav-rail{width:86vw!important}
+  .metric-card strong{font-size:20px!important}
+  .nav-brand-title{font-size:13px!important}
+}

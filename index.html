@@ -44,7 +44,7 @@ function setKccaData(value) {
 <script type="module" crossorigin src="./assets/index-gYbOrP4D.js?v=20260819-header-scope"></script>
 <link rel="stylesheet" crossorigin href="./assets/index-ByMP9Ldu.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-<link rel="stylesheet" href="./exhaustive.css?v=20260819-pure-black" />
+<link rel="stylesheet" href="./exhaustive.css?v=20260819-mobile-responsive" />
 <style>
 .verified-reporting-link{position:fixed;right:18px;bottom:18px;z-index:9999;padding:12px 16px;border:1px solid #2f663d;border-radius:12px;background:rgba(12,24,16,.94);color:#56e879;text-decoration:none;font:700 12px/1.2 Inter,"Segoe UI",sans-serif;box-shadow:0 12px 38px rgba(0,0,0,.45);backdrop-filter:blur(14px)}
 .verified-reporting-link:hover{background:#16331f;color:#fff}
@@ -62,5 +62,78 @@ function setKccaData(value) {
 <script defer src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script defer src="https://unpkg.com/leaflet-image@0.4.0/leaflet-image.js"></script>
 <script defer src="./exhaustive.js?v=20260819-geo-global-fix2"></script>
+<script>
+/* Mobile off-canvas nav toggle. Purely additive UI chrome: injects a
+   hamburger button + backdrop next to the app's own top nav / nav rail
+   (rendered by exhaustive.js) and wires up open/close. exhaustive.js
+   periodically re-renders its shell (route changes, async data loads),
+   which can remove DOM nodes we don't own — so this re-asserts the
+   toggle/backdrop on a light interval instead of injecting once.
+   No application data or logic is touched. */
+(function () {
+  function closeNav() {
+    document.body.classList.remove('mobile-nav-open');
+    var btn = document.querySelector('.mobile-nav-toggle');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+  function openNav() {
+    document.body.classList.add('mobile-nav-open');
+    var btn = document.querySelector('.mobile-nav-toggle');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  }
+  function toggleNav() {
+    if (document.body.classList.contains('mobile-nav-open')) closeNav();
+    else openNav();
+  }
+
+  function ensureBackdrop() {
+    var backdrop = document.querySelector('.mobile-nav-backdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'mobile-nav-backdrop';
+      backdrop.addEventListener('click', closeNav);
+      document.body.appendChild(backdrop);
+    }
+  }
+
+  function ensureToggle() {
+    var topNav = document.querySelector('.canonical-top-nav');
+    var navRail = document.querySelector('.canonical-nav-rail');
+    if (!topNav || !navRail) return;
+
+    ensureBackdrop();
+
+    if (!document.querySelector('.mobile-nav-toggle')) {
+      var toggleBtn = document.createElement('button');
+      toggleBtn.type = 'button';
+      toggleBtn.className = 'mobile-nav-toggle';
+      toggleBtn.setAttribute('aria-label', 'Toggle navigation menu');
+      toggleBtn.setAttribute('aria-expanded', document.body.classList.contains('mobile-nav-open') ? 'true' : 'false');
+      toggleBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+      toggleBtn.addEventListener('click', toggleNav);
+
+      var left = topNav.querySelector('.top-nav-left');
+      (left || topNav).insertBefore(toggleBtn, (left || topNav).firstChild);
+    }
+
+    if (!navRail.__mobileNavCloseBound) {
+      navRail.__mobileNavCloseBound = true;
+      navRail.addEventListener('click', function (e) {
+        if (e.target.closest('a')) closeNav();
+      });
+    }
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeNav();
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 768) closeNav();
+  });
+
+  ensureToggle();
+  setInterval(ensureToggle, 500);
+})();
+</script>
 </body>
 </html>
