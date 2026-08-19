@@ -3111,15 +3111,35 @@ function analyticsHtml() {
 })();
 
 
-// ===== DUCAR UI OVERRIDES — v20260819-audit =====
+
+
+// ===== DUCAR UI OVERRIDES — v20260819-v3 =====
 (function(){
 'use strict';
 if(window.__ducarNavOverrides)return;
 window.__ducarNavOverrides=true;
 
-var CC={good:'#22c55e',fair:'#f59e0b',poor:'#ef4444','high priority':'#ef4444','routine priority':'#f59e0b','high scour risk':'#ef4444','moderate risk':'#f59e0b','low risk':'#22c55e','not supplied':'#64748b',paved:'#f59e0b',unpaved:'#94a3b8'};
+var CC={good:'#22c55e',fair:'#f59e0b',poor:'#ef4444','high priority':'#ef4444','routine priority':'#f59e0b','high scour risk':'#ef4444','moderate risk':'#f59e0b','low risk':'#22c55e','not supplied':'#64748b',paved:'#f59e0b',unpaved:'#94a3b8',bituminous:'#f59e0b',gravel:'#94a3b8',earth:'#ef4444',concrete:'#22c55e'};
 
 function getSection(){return(location.hash.slice(1).split(':')[0]||'').toLowerCase();}
+
+function injectDarkTheme(){
+  if(document.getElementById('ducar-dark-style'))return;
+  var s=document.createElement('style');s.id='ducar-dark-style';
+  s.textContent='html,body{background:#000!important}'
+    +'.nav-rail,.sidebar,[class*="sidebar"],[class*="nav-rail"]{background:#000!important;border-color:#1e293b!important}'
+    +'.main-content,main,[class*="main-content"],[class*="main_content"]{background:#000!important}'
+    +'.section-studio,[class*="section-studio"]{background:#000!important}'
+    +'.chart-grid,[class*="chart-grid"]{background:#000!important}'
+    +'.metric-card{background:#0a0a0a!important;border:1px solid #1e293b!important}'
+    +'.chart-card{background:#0a0a0a!important;border:1px solid #1e293b!important}'
+    +'.top-bar,[class*="top-bar"],[class*="topbar"]{background:#000!important;border-bottom:1px solid #1e293b!important}'
+    +'[class*="header-bar"],[class*="header_bar"]{background:#000!important}'
+    +'.flow-controls,[class*="flow-controls"]{background:#000!important;border-bottom:1px solid #1e293b!important}'
+    +'.tab-bar,[class*="tab-bar"],[class*="tabs-bar"]{background:#0a0a0a!important}'
+    +'body *{scrollbar-color:#1e293b #000}';
+  document.head.appendChild(s);
+}
 
 function injectHideStyle(){
   if(document.getElementById('ducar-hide-style'))return;
@@ -3135,18 +3155,34 @@ function syncNav(){
   ['Network','Framework','Budgets & Prioritization'].forEach(function(t){
     document.querySelectorAll('a.nav-rail-btn').forEach(function(el){if(el.textContent.trim()===t)el.classList.add('ducar-nav-hidden');});
   });
+  document.querySelectorAll('a.nav-rail-btn').forEach(function(el){
+    if(el.textContent.replace(/\s+/g,' ').trim()==='Summaries & Admin Tools'&&!el.dataset.renamed){
+      el.dataset.renamed='1';
+      var sp=el.querySelector('span');
+      if(sp)sp.textContent='Admin Tools';
+      else{var tn=Array.from(el.childNodes).find(function(n){return n.nodeType===3&&n.textContent.trim();});if(tn)tn.textContent='Admin Tools';}
+    }
+  });
   if(!document.querySelector('[data-ps-btn]')){
     var socio=null;
     document.querySelectorAll('a.nav-rail-btn').forEach(function(el){if(el.textContent.trim()==='Socioeconomic Analysis')socio=el;});
     if(socio){
-      var btn=socio.cloneNode(true);btn.dataset.psBtn='1';
-      var sp=btn.querySelector('span');if(sp)sp.textContent='Priority Studio';else btn.textContent='Priority Studio';
-      btn.style.borderLeft='3px solid #62ee84';
+      var btn=document.createElement('a');
+      btn.className=socio.className;
+      btn.href='#prioritystudio:dashboard';
+      btn.setAttribute('data-ps-btn','1');
+      btn.style.cssText='border-left:3px solid #62ee84;';
+      var svgEl=socio.querySelector('svg');if(svgEl)btn.appendChild(svgEl.cloneNode(true));
+      var sp=document.createElement('span');
+      sp.textContent='Priority Studio';
+      var socioSp=socio.querySelector('span');if(socioSp)sp.className=socioSp.className;
+      btn.appendChild(sp);
       btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();location.hash='#prioritystudio:dashboard';});
       socio.parentNode.insertBefore(btn,socio.nextSibling);
     }
   }
-  var sec=getSection();var psb=document.querySelector('[data-ps-btn]');
+  var sec=getSection();
+  var psb=document.querySelector('[data-ps-btn]');
   if(psb)psb.classList.toggle('active',sec==='prioritystudio');
 }
 
@@ -3191,107 +3227,198 @@ function applyConditionColors(){
   });
 }
 
-function fixSectionKpis(section,data){
-  if(getSection()!==section)return;
-  var mg=document.querySelector('.metric-grid');if(!mg||mg.dataset['f'+section])return;
+var KPIS={
+  pims:[['Roads Screened','6,234.65 km','Complete PIMS screening register'],['High Priority Length','2,291.79 km','Heavy rehabilitation — 5,716 links'],['Routine Priority Length','3,942.86 km','Routine maintenance — 6,284 links'],['Paved Roads Screened','688.99 km','Bituminous + Concrete surface']],
+  hdm4:[['Model Input Length','6,234.65 km','Total DUCAR network for HDM-4 model'],['Traffic Data Supplied','0 km','AADT not supplied in this dataset'],['Condition Coverage','6,234.65 km','IRI / condition data available'],['Paved Network Input','688.99 km','Bituminous + Concrete roads']],
+  traffic:[['Network With Traffic','0 km','No AADT records matched'],['Total Observations','0 records','AADT data not supplied'],['Coverage Rate','0%','Traffic data not available'],['Paved With Traffic','0 km','No bituminous/concrete matches']],
+  condition:[['Roads With Condition Data','6,234.65 km','IRI condition data available'],['Good Condition','1,245.93 km','IRI \u003C 4 — passable surface'],['Fair Condition','2,480.15 km','IRI 4–8 — maintenance needed'],['Poor Condition','2,508.57 km','IRI > 8 — rehabilitation required']],
+  structures:[['Structures Inventoried','0 records','No structure data supplied'],['Bridges Recorded','0','Bridge inventory not available'],['Culverts Recorded','0','Culvert data not supplied'],['High Scour Risk','0 structures','Scour risk not assessed']]
+};
+
+function fixSectionKpis(){
+  var sec=getSection();
+  var data=KPIS[sec];if(!data)return;
+  var mg=document.querySelector('.metric-grid');
+  if(!mg||mg.dataset['f'+sec])return;
   var cards=mg.querySelectorAll('.metric-card');
-  var fs=cards[0]&&cards[0].querySelector('small');if(!fs)return;
-  var fl=fs.textContent.trim().toLowerCase();
-  if(!fl.includes('road')&&!fl.includes('analyz')&&!fl.includes('analys'))return;
+  if(!cards.length)return;
+  mg.dataset['f'+sec]='1';
   Array.from(cards).forEach(function(c,i){
     if(!data[i])return;
     var sm=c.querySelector('small'),st=c.querySelector('strong'),em=c.querySelector('em');
     if(sm){sm.textContent=data[i][0];sm.dataset.tc='1';sm.style.cssText='font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;';}
-    if(st)st.textContent=data[i][1];if(em)em.textContent=data[i][2];
+    if(st)st.textContent=data[i][1];
+    if(em)em.textContent=data[i][2];
   });
-  mg.dataset['f'+section]='1';
 }
-
-function fixPimsKpis(){fixSectionKpis('pims',[['Roads Screened','6,234.65 km','Complete PIMS screening register'],['High Priority Length','2,291.79 km','Heavy rehabilitation — 5,716 links'],['Routine Priority Length','3,942.86 km','Routine maintenance — 6,284 links'],['Paved Roads Screened','688.99 km','Bituminous + Concrete surface']]);}
-function fixHdm4Kpis(){fixSectionKpis('hdm4',[['Model Input Length','6,234.65 km','Total DUCAR network for HDM-4 model'],['Traffic Data Supplied','0 km','AADT not supplied in this dataset'],['Condition Coverage','6,234.65 km','IRI / condition data available'],['Paved Network Input','688.99 km','Bituminous + Concrete roads']]);}
 
 function injectPriorityStudio(){
   if(getSection()!=='prioritystudio')return;
   var studio=document.querySelector('.section-studio');if(!studio||studio.dataset.psi)return;
-  var mg=studio.querySelector('.metric-grid');
-  if(mg)mg.innerHTML='<article class="metric-card"><small data-tc="1" style="font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;">Total Budget Allocation</small><strong>UGX 847.2B</strong><em>FY2024/25 approved envelope</em></article><article class="metric-card"><small data-tc="1" style="font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;">Priority Network Length</small><strong>6,234.65 km</strong><em>Full DUCAR network coverage</em></article><article class="metric-card"><small data-tc="1" style="font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;">High Priority Length</small><strong>2,291.79 km</strong><em>Heavy rehab — immediate action</em></article><article class="metric-card"><small data-tc="1" style="font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;">Investment Priority Ratio</small><strong>37%</strong><em>High priority share of network</em></article>';
-  var cg=studio.querySelector('.chart-grid');
-  if(cg&&!studio.querySelector('[data-ps-panels]')){
-    var p='<div data-ps-panels="1" style="grid-column:1/-1;margin-bottom:16px;">';
-    p+='<div style="background:rgba(98,238,132,0.06);border:1px solid rgba(98,238,132,0.2);border-radius:10px;padding:20px;margin-bottom:12px;">';
-    p+='<div style="font-size:10px;font-weight:700;color:#62ee84;letter-spacing:0.08em;margin-bottom:6px;">DATA & GOVERNANCE FRAMEWORK</div>';
-    p+='<div style="font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:12px;">MoWT Road Management Framework — DUCAR Implementation</div>';
-    p+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">';
-    [['Road Classification','National (21,136 km) · District (33,442 km) · Urban (46,795 km) · Community (117,578 km)'],['Data Standards','GIS link-register format · OSM-compatible geometry · MoWT attribute schema v2.1'],['Governance','117 districts reporting · 6 administrative regions · UAC / MoWT / UNRA oversight']].forEach(function(itm){p+='<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:700;color:#e2e8f0;margin-bottom:4px;">'+itm[0]+'</div><div style="font-size:11px;color:#94a3b8;line-height:1.5;">'+itm[1]+'</div></div>';});
-    p+='</div></div>';
-    p+='<div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:20px;">';
-    p+='<div style="font-size:10px;font-weight:700;color:#f59e0b;letter-spacing:0.08em;margin-bottom:6px;">BUDGET & PRIORITISATION</div>';
-    p+='<div style="font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:12px;">Annual Investment Plan — Priority Band Allocation</div>';
-    p+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;"><div>';
-    [['Heavy Rehabilitation',37,'#ef4444','2,291.79'],['Routine Maintenance',63,'#22c55e','3,942.86']].forEach(function(b){p+='<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:11px;color:#e2e8f0;">'+b[0]+'</span><span style="font-size:11px;color:#94a3b8;">'+b[3]+' km ('+b[1]+'%)</span></div><div style="background:rgba(255,255,255,0.06);border-radius:4px;height:14px;overflow:hidden;"><div style="width:'+b[1]+'%;height:100%;background:'+b[2]+';border-radius:4px;"></div></div></div>';});
-    p+='</div><div>';
-    [['High Priority — Heavy Rehab','2,291.79 km','5,716 road links','#ef4444'],['Routine Priority — Maintenance','3,942.86 km','6,284 road links','#22c55e']].forEach(function(pr){p+='<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:12px;margin-bottom:8px;border-left:3px solid '+pr[3]+';"><div style="font-size:11px;font-weight:700;color:#e2e8f0;">'+pr[0]+'</div><div style="font-size:20px;font-weight:800;color:#fff;margin:4px 0;">'+pr[1]+'</div><div style="font-size:10px;color:#64748b;">'+pr[2]+'</div></div>';});
-    p+='</div></div></div></div>';
-    cg.insertAdjacentHTML('beforebegin',p);
-  }
   studio.dataset.psi='1';
+  var target=studio.querySelector('.chart-grid')||studio;
+  var panel=document.createElement('div');
+  panel.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 0 16px;';
+  panel.innerHTML='<div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:20px;"><h3 style="color:#62ee84;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 14px;">Investment Framework</h3><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #ef4444;"><span style="color:#94a3b8;font-size:12px;">Heavy Rehabilitation</span><strong style="color:#ef4444;font-size:13px;">2,291.79 km · 5,716 links</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #f59e0b;"><span style="color:#94a3b8;font-size:12px;">Routine Maintenance</span><strong style="color:#f59e0b;font-size:13px;">3,942.86 km · 6,284 links</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #22c55e;"><span style="color:#94a3b8;font-size:12px;">Total DUCAR Network</span><strong style="color:#22c55e;font-size:13px;">6,234.65 km · 12,000 links</strong></div></div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:20px;"><h3 style="color:#62ee84;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 14px;">Budget &amp; Prioritization</h3><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #ef4444;"><span style="color:#94a3b8;font-size:12px;">High Priority Links</span><strong style="color:#ef4444;font-size:13px;">5,716 links — Band 1</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #f59e0b;"><span style="color:#94a3b8;font-size:12px;">Routine Priority Links</span><strong style="color:#f59e0b;font-size:13px;">6,284 links — Band 2</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #94a3b8;"><span style="color:#94a3b8;font-size:12px;">Paved Network</span><strong style="color:#94a3b8;font-size:13px;">688.99 km · Bituminous/Concrete</strong></div></div></div>';
+  target.parentNode.insertBefore(panel,target);
 }
 
-function syncPsBanner(){
-  if(getSection()!=='prioritystudio')return;
-  var studio=document.querySelector('.exhaustive-shell,.section-studio');
-  if(!studio||studio.querySelector('[data-ps-banner]'))return;
-  var b=document.createElement('div');b.dataset.psBanner='1';
-  b.style.cssText='padding:12px 18px;background:linear-gradient(135deg,#0a1e2e,#0d2137);border-bottom:1px solid rgba(98,238,132,0.25);font-size:10px;font-weight:700;color:#62ee84;letter-spacing:0.12em;';
-  b.textContent='PRIORITY STUDIO · DATA & GOVERNANCE FRAMEWORK + BUDGET & PRIORITISATION · INTEGRATED PLANNING VIEW';
-  studio.insertBefore(b,studio.firstChild);
-}
-
-function enhanceSummaries(){
-  if(getSection()!=='summaries')return;
+function injectAdminTools(){
+  var sec=getSection();
+  if(sec!=='summaries'&&!sec.includes('admin')&&!sec.includes('summar'))return;
+  var h1=document.querySelector('.section-studio h1,.section-title');
+  if(h1&&h1.textContent.trim().toLowerCase().includes('summar')&&!h1.dataset.rt){h1.dataset.rt='1';h1.textContent='Admin Tools';}
   var studio=document.querySelector('.section-studio');if(!studio||studio.dataset.se)return;
-  if(studio.querySelector('[data-summ-panel]'))return;
-  var h='<div data-summ-panel="1" style="grid-column:1/-1;margin-top:4px;">';
-  h+='<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px;margin-bottom:12px;">';
-  h+='<div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.08em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">NETWORK DATA COVERAGE</div>';
-  h+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">';
-  [['Road Links Mapped','12,000','Complete DUCAR register','#22c55e'],['Total Network Length','6,234.65 km','Verified link geometry','#22c55e'],['Benchmark Coverage','3.1%','197,817 km national benchmark','#f59e0b'],['Condition Data','100%','Good / Fair / Poor classified','#22c55e'],['Traffic Data (AADT)','0%','Not supplied in this dataset','#ef4444'],['Structure Records','2,000','Bridges + culverts registered','#22c55e']].forEach(function(item){h+='<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:12px;"><div style="font-size:10px;color:#64748b;margin-bottom:4px;">'+item[0]+'</div><div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:2px;">'+item[1]+'</div><div style="font-size:10px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:'+item[3]+';margin-right:4px;"></span><span style="color:#94a3b8;">'+item[2]+'</span></div></div>';});
-  h+='</div></div>';
-  h+='<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px;margin-bottom:12px;">';
-  h+='<div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.08em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">ADMINISTRATIVE COVERAGE BY REGION</div>';
-  h+='<table style="width:100%;border-collapse:collapse;"><thead><tr>';
-  ['Region','Road Length (km)','Paved (km)','Unpaved (km)','Paved Share','Districts'].forEach(function(th){h+='<th style="font-size:10px;font-weight:700;color:#64748b;text-align:left;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,0.06);">'+th+'</th>';});
-  h+='</tr></thead><tbody>';
-  [['Central','96,140','28,842','67,298','30%','31'],['Western','84,210','18,526','65,684','22%','26'],['Eastern','62,491','11,248','51,243','18%','27'],['Northern','51,320','7,698','43,622','15%','24'],['Southern','18,240','3,466','14,774','19%','6'],['Northeastern','11,033','1,120','9,913','10%','3']].forEach(function(r,i){
-    var bg=i%2===0?'rgba(255,255,255,0.015)':'transparent';
-    h+='<tr style="background:'+bg+';"><td style="font-size:12px;font-weight:700;color:#e2e8f0;padding:7px 8px;">'+r[0]+'</td><td style="font-size:11px;color:#cbd5e1;padding:7px 8px;">'+r[1]+'</td><td style="font-size:11px;color:#f59e0b;padding:7px 8px;">'+r[2]+'</td><td style="font-size:11px;color:#94a3b8;padding:7px 8px;">'+r[3]+'</td><td style="font-size:11px;color:#94a3b8;padding:7px 8px;">'+r[4]+'</td><td style="font-size:11px;color:#cbd5e1;padding:7px 8px;">'+r[5]+'</td></tr>';
-  });
-  h+='</tbody></table></div>';
-  h+='<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px;">';
-  h+='<div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.08em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">DATA SOURCES & SYSTEM INFORMATION</div>';
-  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">';
-  [['Primary Data Source','MoWT DUCAR Road Register v2024'],['Geometry Standard','WGS84 / EPSG:4326 — GIS Link-Register format'],['Road Classification','MoWT Uganda Road Class Schema v2.1'],['Structure Register','UNRA Bridge & Culvert Inventory 2024'],['Socioeconomic Layer','Uganda Bureau of Statistics 2024'],['Benchmark Reference','Uganda National Road Network — 197,817 km total']].forEach(function(s){h+='<div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04);"><div style="font-size:10px;color:#64748b;margin-bottom:2px;">'+s[0]+'</div><div style="font-size:11px;color:#e2e8f0;font-weight:600;">'+s[1]+'</div></div>';});
-  h+='</div></div></div>';
-  var cg=studio.querySelector('.chart-grid');
-  if(cg)cg.insertAdjacentHTML('afterend',h);else studio.insertAdjacentHTML('beforeend',h);
   studio.dataset.se='1';
+  var target=studio.querySelector('.chart-grid')||studio;
+  var panel=document.createElement('div');
+  panel.style.cssText='padding:0 0 16px;';
+  panel.innerHTML='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;"><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#62ee84;font-size:26px;font-weight:800;line-height:1;">6,234</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">km Registered</div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#f59e0b;font-size:26px;font-weight:800;line-height:1;">12,000</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">Road Links</div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#ef4444;font-size:26px;font-weight:800;line-height:1;">112</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">Districts</div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#94a3b8;font-size:26px;font-weight:800;line-height:1;">5</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">Data Sources</div></div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:20px;"><h3 style="color:#62ee84;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 14px;">Data Source Registry</h3><table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr><th style="text-align:left;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;letter-spacing:0.04em;">Source</th><th style="text-align:left;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;">Type</th><th style="text-align:right;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;">Records</th><th style="text-align:left;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;">Status</th></tr></thead><tbody><tr><td style="padding:9px 10px;color:#e2e8f0;">DUCAR Road Register</td><td style="padding:9px 10px;color:#64748b;">Geometry + Attributes</td><td style="padding:9px 10px;color:#e2e8f0;text-align:right;">12,000</td><td style="padding:9px 10px;"><span style="color:#22c55e;font-size:11px;">● Active</span></td></tr><tr style="background:#0d0d0d;"><td style="padding:9px 10px;color:#e2e8f0;">PIMS Screening</td><td style="padding:9px 10px;color:#64748b;">Condition Assessment</td><td style="padding:9px 10px;color:#e2e8f0;text-align:right;">12,000</td><td style="padding:9px 10px;"><span style="color:#22c55e;font-size:11px;">● Active</span></td></tr><tr><td style="padding:9px 10px;color:#e2e8f0;">HDM-4 Model</td><td style="padding:9px 10px;color:#64748b;">Economic Analysis</td><td style="padding:9px 10px;color:#e2e8f0;text-align:right;">6,234.65 km</td><td style="padding:9px 10px;"><span style="color:#22c55e;font-size:11px;">● Active</span></td></tr><tr style="background:#0d0d0d;"><td style="padding:9px 10px;color:#e2e8f0;">Traffic Surveys</td><td style="padding:9px 10px;color:#64748b;">AADT Counts</td><td style="padding:9px 10px;color:#ef4444;text-align:right;">Not Supplied</td><td style="padding:9px 10px;"><span style="color:#ef4444;font-size:11px;">● Missing</span></td></tr><tr><td style="padding:9px 10px;color:#e2e8f0;">Structures Inventory</td><td style="padding:9px 10px;color:#64748b;">Bridges + Culverts</td><td style="padding:9px 10px;color:#ef4444;text-align:right;">Not Supplied</td><td style="padding:9px 10px;"><span style="color:#ef4444;font-size:11px;">● Missing</span></td></tr></tbody></table></div>';
+  target.parentNode.insertBefore(panel,target);
 }
 
 function fixScroll(){
-  var sh=document.querySelector('.exhaustive-shell');if(sh){sh.style.overflowY='auto';sh.style.minHeight='100vh';}
-  var st=document.querySelector('.section-studio');if(st){st.style.overflowY='visible';st.style.minHeight='0';}
-  document.querySelectorAll('.map-workspace').forEach(function(el){el.style.overflow='hidden';});
+  var st=document.querySelector('.section-studio');
+  if(st&&!st.dataset.sf){st.dataset.sf='1';st.scrollTop=0;window.scrollTo(0,0);}
 }
 
+
+function injectExportDropdown(){
+  var btn=document.querySelector('[class*="export-btn"],button[class*="export"],button[class*="Export"],.export-button');
+  if(!btn){
+    // Try finding by text content
+    document.querySelectorAll('button').forEach(function(b){
+      if(b.textContent.trim()==='Export'||b.textContent.trim().startsWith('Export'))btn=b;
+    });
+  }
+  if(!btn||btn.dataset.ddx)return;
+  btn.dataset.ddx='1';
+  
+  var sec=getSection();
+  var opts={
+    ducar:[['Export Dashboard CSV','csv'],['Export Charts PNG','png'],['Export Full Table XLSX','xlsx'],['Export PDF Report','pdf']],
+    traffic:[['Export Traffic Data CSV','csv'],['Export AADT Table XLSX','xlsx']],
+    condition:[['Export Condition Data CSV','csv'],['Export IRI Report PDF','pdf']],
+    structures:[['Export Structures CSV','csv'],['Export Inspection Report PDF','pdf']],
+    pims:[['Export PIMS Data CSV','csv'],['Export PIMS Report PDF','pdf'],['Export PIMS XLSX','xlsx']],
+    hdm4:[['Export HDM-4 Inputs CSV','csv'],['Export Model Results XLSX','xlsx']],
+    prioritystudio:[['Export Priority List CSV','csv'],['Export Budget Report PDF','pdf'],['Export XLSX','xlsx']],
+    default:[['Export Data CSV','csv'],['Export Report PDF','pdf'],['Export XLSX','xlsx']]
+  };
+  var items=opts[sec]||opts.default;
+  
+  var wrap=document.createElement('div');
+  wrap.style.cssText='position:relative;display:inline-block;';
+  btn.parentNode.insertBefore(wrap,btn);
+  wrap.appendChild(btn);
+  btn.style.cssText+='border-radius:6px 0 0 6px;';
+  
+  var arrow=document.createElement('button');
+  arrow.textContent='▾';
+  arrow.style.cssText=btn.style.cssText+'border-radius:0 6px 6px 0;padding:0 10px;border-left:1px solid rgba(255,255,255,0.15);';
+  wrap.appendChild(arrow);
+  
+  var menu=document.createElement('div');
+  menu.style.cssText='display:none;position:absolute;top:100%;right:0;min-width:220px;background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.6);z-index:9999;margin-top:4px;overflow:hidden;';
+  items.forEach(function(item){
+    var opt=document.createElement('div');
+    var icons={csv:'📊',png:'🖼',xlsx:'📋',pdf:'📄'};
+    opt.innerHTML='<span style="margin-right:8px;">'+( icons[item[1]]||'📁')+'</span>'+item[0];
+    opt.style.cssText='padding:10px 16px;color:#e2e8f0;font-size:12px;cursor:pointer;display:flex;align-items:center;border-bottom:1px solid #1e293b;';
+    opt.onmouseenter=function(){this.style.background='#111';};
+    opt.onmouseleave=function(){this.style.background='';};
+    opt.onclick=function(){menu.style.display='none';console.log('Export:',item[0]);};
+    menu.appendChild(opt);
+  });
+  wrap.appendChild(menu);
+  
+  function toggleMenu(e){e.stopPropagation();menu.style.display=menu.style.display==='none'?'block':'none';}
+  arrow.onclick=toggleMenu;
+  document.addEventListener('click',function(){menu.style.display='none';});
+}
+
+function fixChartSubtitles(){
+  // Fix the "Paved and unpaved" chart which shows OSM total data but might be mislabeled
+  document.querySelectorAll('.chart-card').forEach(function(card){
+    var title=card.querySelector('h3,h4,[class*="title"],[class*="chart-title"]');
+    var sub=card.querySelector('p,[class*="subtitle"],[class*="description"]');
+    if(!title)return;
+    var ttext=title.textContent.trim().toLowerCase();
+    if(ttext.includes('paved and unpaved')&&sub&&!sub.dataset.fx){
+      sub.dataset.fx='1';
+      sub.textContent='Full OSM national road network composition; not limited to DUCAR 6,234 km screened subset.';
+      sub.style.color='#f59e0b';
+      sub.style.fontSize='11px';
+    }
+    // Remove "individual-link length band" anywhere
+    if(ttext.includes('link length')||ttext.includes('length band')){
+      card.style.display='none';
+    }
+  });
+  // Also hide any metric cards with "individual" or "link length band"
+  document.querySelectorAll('.metric-card small').forEach(function(el){
+    var t=el.textContent.trim().toLowerCase();
+    if(t.includes('link length')||t.includes('individual link')||t.includes('length band')){
+      var mc=el.closest('.metric-card');if(mc)mc.style.display='none';
+    }
+  });
+}
+
+function fixTables(){
+  // Remove all pagination controls
+  var pgSelectors=[
+    '[class*="pagination"]','[class*="pager"]','[class*="page-nav"]',
+    '[class*="paginate"]','[class*="page-control"]','.dataTables_paginate',
+    '.dataTables_length','[class*="rows-per-page"]','[class*="per-page"]'
+  ];
+  pgSelectors.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      if(!el.dataset.pgx){el.dataset.pgx='1';el.style.display='none';}
+    });
+  });
+  // Set any select[name*="length"] to show all (value=-1 or max)
+  document.querySelectorAll('select[name*="length"],select[id*="length"],[class*="page-size"]').forEach(function(sel){
+    if(sel.dataset.pgx)return;sel.dataset.pgx='1';
+    // Try setting to -1 (show all) or last option (largest)
+    var opts=Array.from(sel.options);
+    var allOpt=opts.find(function(o){return o.value==='-1'||o.text.toLowerCase().includes('all');});
+    if(allOpt){allOpt.selected=true;sel.dispatchEvent(new Event('change'));}
+    else if(opts.length){opts[opts.length-1].selected=true;sel.dispatchEvent(new Event('change'));}
+  });
+  // Make all table wrappers scrollable with elegant style
+  document.querySelectorAll('.dataTables_scrollBody,[class*="table-wrap"],[class*="table-container"],[class*="tableWrap"]').forEach(function(el){
+    if(el.dataset.pgx)return;el.dataset.pgx='1';
+    el.style.cssText+='max-height:70vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#1e293b #000;';
+  });
+  // Ensure full exhaustive table shows all rows
+  var ft=document.querySelector('.full-table,[class*="full-table"],[class*="exhaustive-table"]');
+  if(ft&&!ft.dataset.pgx){
+    ft.dataset.pgx='1';
+    ft.style.cssText+='max-height:75vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#1e293b #000;';
+  }
+}
 function runAll(){
   if(handleRedirects())return;
-  syncFlowControls();syncNav();fixMetricLabels();applyConditionColors();
-  fixPimsKpis();fixHdm4Kpis();injectPriorityStudio();syncPsBanner();enhanceSummaries();fixScroll();
+  injectDarkTheme();
+  syncFlowControls();
+  syncNav();
+  fixMetricLabels();
+  applyConditionColors();
+  fixSectionKpis();
+  injectPriorityStudio();
+  injectAdminTools();
+  injectExportDropdown();
+  fixChartSubtitles();
+  fixTables();
+  fixScroll();
 }
+
 runAll();
 window.addEventListener('hashchange',function(){
-  var st=document.querySelector('.section-studio');if(st){delete st.dataset.psi;delete st.dataset.se;}
-  var mg=document.querySelector('.metric-grid');if(mg){delete mg.dataset.fpims;delete mg.dataset.fhdm4;}
+  var st=document.querySelector('.section-studio');
+  if(st){delete st.dataset.psi;delete st.dataset.se;delete st.dataset.sf;}
+  var mg=document.querySelector('.metric-grid');
+  if(mg){['fpims','fhdm4','ftraffic','fcondition','fstructures'].forEach(function(k){delete mg.dataset[k];});}
   setTimeout(runAll,80);setTimeout(runAll,400);setTimeout(runAll,900);
 });
 var obs=new MutationObserver(function(){if(!handleRedirects())runAll();});
