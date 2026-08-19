@@ -1,247 +1,5 @@
 
 
-  // Complete KML Spatial Export Engine
-
-  function exportKML(filename, rows) {
-
-    let kml = `<?xml version="1.0" encoding="UTF-8"?>
-
-<kml xmlns="http://www.opengis.net/kml/2.2">
-
-  <Document>
-
-    <name>${esc(filename)}</name>
-
-    <description>MoWT Uganda Classified Road Network KML Spatial Export</description>
-
-    <Style id="pavedRoad"><LineStyle><color>ff30d158</color><width>4</width></LineStyle></Style>
-
-    <Style id="unpavedRoad"><LineStyle><color>ffff9f0a</color><width>3</width></LineStyle></Style>
-
-`;
-
-    rows.forEach(r => {
-
-      if (typeof r.start_x === "number" && typeof r.start_y === "number" && typeof r.end_x === "number" && typeof r.end_y === "number") {
-
-        const isPaved = r.pavement_class === "Paved";
-
-        kml += `    <Placemark>
-
-      <name>${esc(r.road_name || r.link_id)}</name>
-
-      <styleUrl>#${isPaved ? "pavedRoad" : "unpavedRoad"}</styleUrl>
-
-      <description><![CDATA[
-
-        <b>Link ID:</b> ${esc(r.link_id)}<br/>
-
-        <b>District:</b> ${esc(r.district)} (${esc(r.region)})<br/>
-
-        <b>Length:</b> ${number(r.length_km || r.geometry_length_km || 0, 2)} km<br/>
-
-        <b>Pavement:</b> ${esc(r.pavement_class)}<br/>
-
-        <b>Surface:</b> ${esc(r.surface)}<br/>
-
-        <b>Condition:</b> ${esc(r.condition)}<br/>
-
-        <b>Governance:</b> ${esc(r.governance_department || "DDUCAR MoWT")}
-
-      ]]></description>
-
-      <LineString>
-
-        <tessellate>1</tessellate>
-
-        <coordinates>${r.start_x},${r.start_y},0 ${r.end_x},${r.end_y},0</coordinates>
-
-      </LineString>
-
-    </Placemark>
-
-`;
-
-      }
-
-    });
-
-    kml += `  </Document>
-
-</kml>`;
-
-    const blob = new Blob([kml], { type: "application/vnd.google-earth.kml+xml;charset=utf-8" });
-
-    downloadBlob(blob, filename + ".kml");
-
-  }
-
-
-
-  // Complete Shapefile / Spatial Archive Engine
-
-  function exportSHP(filename, rows) {
-
-    const geojson = {
-
-      type: "FeatureCollection",
-
-      name: filename,
-
-      crs: { type: "name", properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-
-      features: rows.map(r => ({
-
-        type: "Feature",
-
-        geometry: {
-
-          type: "LineString",
-
-          coordinates: [[Number(r.start_x || 32.5), Number(r.start_y || 0.3)], [Number(r.end_x || 32.51), Number(r.end_y || 0.31)]]
-
-        },
-
-        properties: {
-
-          LINK_ID: String(r.link_id || ""),
-
-          ROAD_NAME: String(r.road_name || ""),
-
-          DISTRICT: String(r.district || ""),
-
-          REGION: String(r.region || ""),
-
-          LENGTH_KM: Number(r.length_km || r.geometry_length_km || 0),
-
-          PAVEMENT: String(r.pavement_class || "Unpaved"),
-
-          SURFACE: String(r.surface || "Gravel"),
-
-          CONDITION: String(r.condition || "Fair"),
-
-          DEPT: String(r.governance_department || "DDUCAR MoWT")
-
-        }
-
-      }))
-
-    };
-
-    const blob = new Blob([JSON.stringify(geojson, null, 2)], { type: "application/geo+json;charset=utf-8" });
-
-    downloadBlob(blob, filename + "_spatial_shape.geojson");
-
-  }
-
-
-
-  function downloadBlob(blob, filename) {
-
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-
-    link.href = url;
-
-    link.download = filename;
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(url);
-
-  }
-
-
-
-
-
-  function exportKML(filename, rows) {
-
-    let kml = `<?xml version="1.0" encoding="UTF-8"?>
-
-<kml xmlns="http://www.opengis.net/kml/2.2">
-
-  <Document>
-
-    <name>${esc(filename)}</name>
-
-    <description>MoWT Uganda Classified Road Network Export</description>
-
-`;
-
-    rows.slice(0, 5000).forEach(r => {
-
-      if (typeof r.start_x === "number" && typeof r.start_y === "number" && typeof r.end_x === "number" && typeof r.end_y === "number") {
-
-        kml += `    <Placemark>
-
-      <name>${esc(r.road_name || r.link_id)}</name>
-
-      <description><![CDATA[
-
-        <b>Link ID:</b> ${esc(r.link_id)}<br/>
-
-        <b>District:</b> ${esc(r.district)} (${esc(r.region)})<br/>
-
-        <b>Length:</b> ${number(r.geometry_length_km || r.length_km || 0, 2)} km<br/>
-
-        <b>Pavement:</b> ${esc(r.pavement_class)}<br/>
-
-        <b>Surface:</b> ${esc(r.surface)}<br/>
-
-        <b>Condition:</b> ${esc(r.condition)}<br/>
-
-        <b>Governance:</b> ${esc(r.governance_department || r.governance_scope || "DDUCAR MoWT")}
-
-      ]]></description>
-
-      <LineString>
-
-        <coordinates>${r.start_x},${r.start_y},0 ${r.end_x},${r.end_y},0</coordinates>
-
-      </LineString>
-
-    </Placemark>
-
-`;
-
-      }
-
-    });
-
-    kml += `  </Document>
-
-</kml>`;
-
-    const blob = new Blob([kml], { type: "application/vnd.google-earth.kml+xml;charset=utf-8" });
-
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-
-    link.href = url;
-
-    link.download = filename + ".kml";
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(url);
-
-  }
-
-
-
-
-
   function toProperTitleCase(str) {
 
     if (!str) return "";
@@ -271,11 +29,9 @@
   }
 
 
-
 (function () {
 
   "use strict";
-
 
 
   const PAGE_SIZE = 50000;
@@ -409,7 +165,6 @@
   const root = document.getElementById("exhaustive-root");
 
   if (!root) return;
-
 
 
   function esc(value) { return String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -560,7 +315,7 @@
 
     relations: [{"region": "Central", "regional_office": "Kampala Regional Works HQ", "districts_count": 13, "total_length_km": 96140.22, "paved_km": 28842.06, "unpaved_km": 67298.16}, {"region": "Western", "regional_office": "Mbarara / Fort Portal Works HQ", "districts_count": 33, "total_length_km": 84210.15, "paved_km": 18526.23, "unpaved_km": 65683.92}, {"region": "Eastern", "regional_office": "Jinja / Mbale Works HQ", "districts_count": 29, "total_length_km": 62490.8, "paved_km": 11248.34, "unpaved_km": 51242.46}, {"region": "Northern", "regional_office": "Gulu / Lira Works HQ", "districts_count": 24, "total_length_km": 51320.45, "paved_km": 7698.07, "unpaved_km": 43622.38}, {"region": "Southern", "regional_office": "Masaka Regional Works HQ", "districts_count": 9, "total_length_km": 18240.18, "paved_km": 3465.63, "unpaved_km": 14774.55}, {"region": "Northeastern", "regional_office": "Moroto Works HQ (Karamoja)", "districts_count": 9, "total_length_km": 11033.28, "paved_km": 1120.44, "unpaved_km": 9912.84}],
 
-    database: {"total_roads": 305522, "total_km": 218953.47, "statutory_baseline_km": 159623.0, "paved_km": 56117.49, "unpaved_km": 162835.98, "governance": ["DNR MoWT", "DDUCAR MoWT"], "regions_count": 6, "districts_count": 135},
+    database: {"total_roads": 681678, "total_km": 323435.08, "statutory_baseline_km": 159623.0, "paved_km": 70900.77, "unpaved_km": 252534.3, "governance": ["DNR MoWT", "DDUCAR MoWT"], "regions_count": 6, "districts_count": 135},
 
     global: [
 
@@ -637,7 +392,6 @@
     structures: []
 
   };
-
 
 
   const PAVED_SURFACES = new Set(["Bituminous","Bitumen","Asphalt","Asphalt Concrete","Concrete","Rigid Concrete","Surface Dressing (ST)","Paved","Urban paved - verify","Sealed"]);
@@ -793,7 +547,7 @@
 
     if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap"), data("links"), data("database"), data("structures")]);
 
-    if (state.section === "socioeconomic") return Promise.all([data("socio"), data("geospatial")]);
+    if (state.section === "socioeconomic") return data("socio");
 
     if (state.section === "structures") return data("structures");
 
@@ -836,8 +590,6 @@
 
   }
 
-  
-  function fmtKm(v,d=1){return Number(v||0).toLocaleString(undefined,{maximumFractionDigits:d,minimumFractionDigits:d})+' km';}
   function aggregate(rows, category, metric) {
 
     const totals = new Map();
@@ -1014,22 +766,18 @@
 
   }
 
-  function conditionSurfaceChart() {
+  function conditionSurfaceChart(rows) {
 
     const CONDITION_COLOR = { Good: "#22c55e", Fair: "#f59e0b", Poor: "#ef4444" };
 
-    const groups = [
-      { label: "Paved", rows: [
-        { name: "Good", value: 8240 },
-        { name: "Fair", value: 28847 },
-        { name: "Poor", value: 12190 }
-      ]},
-      { label: "Unpaved", rows: [
-        { name: "Good", value: 27650 },
-        { name: "Fair", value: 89430 },
-        { name: "Poor", value: 31133 }
-      ]}
-    ];
+    const groups = ["Paved", "Unpaved"].map(pavement => ({
+      label: pavement,
+      rows: ["Good", "Fair", "Poor"].map(condition => ({
+        name: condition,
+        value: rows.filter(row => row.pavement_class === pavement && row.condition === condition)
+          .reduce((sum, row) => sum + Number(row.geometry_length_km || 0), 0)
+      }))
+    }));
 
     const width = 740, left = 200, right = 180, top = 24, rowH = 36, groupGap = 22, bottom = 48;
     const totalRows = groups.reduce((n, g) => n + g.rows.length, 0);
@@ -1246,12 +994,6 @@
 
   }
 
-  function completenessValues(rows, fields, unit="Affected Length (km)") {
-
-    return fields.map(field=>{const selected=rows.filter(row=>shown(row[field])!=="Not Supplied");return {name:label(field),value:selected.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0),count:selected.length,unit};});
-
-  }
-
   function roadInsightSeries(rows, section) {
 
     const missingKm=field=>rows.filter(row=>typeof row[field]!=="number").reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0);
@@ -1286,33 +1028,29 @@
 
       score:{name:"Planning-score band",values:bands(rows,"planning_priority_score",[["0–24.9",0,25],["25–49.9",25,50],["50–74.9",50,75],["75–100",75,101]]),unit:"Affected Length (km)"},
 
-      linkLength:{name:"Individual-link length band",values:bands(rows,"geometry_length_km",[["Below 1 km",0,1],["1–2.9 km",1,3],["3–4.9 km",3,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"Affected Length (km)"},
-
-      hierarchy:{name:"Administrative hierarchy",values:aggregate(rows,row=>shown(row.parish)==="Not Supplied"?"Parish not supplied":"Parish supplied"),unit:"Affected Length (km)"},
-
-      completeness:{name:"Governed parameter completeness",values:completenessValues(rows,["District","county","subcounty","parish","surface","pavement_class","condition","registry_aadt","priority_band","recommended_intervention"]),unit:"Affected Length (km)"}
+      hierarchy:{name:"Administrative hierarchy",values:aggregate(rows,row=>shown(row.parish)==="Not Supplied"?"Parish not supplied":"Parish supplied"),unit:"Affected Length (km)"}
 
     };
 
     const owned={
 
-      traffic:[catalog.aadt,catalog.pcu,catalog.speed,catalog.traffic,catalog.pavement,catalog.condition,catalog.linkLength,catalog.completeness],
+      traffic:[catalog.aadt,catalog.pcu,catalog.speed,catalog.traffic,catalog.pavement,catalog.condition],
 
-      condition:[catalog.condition,catalog.conditionRisk,catalog.surfaceRisk,catalog.intervention,catalog.surface,catalog.pavement,catalog.priority,catalog.linkLength,catalog.completeness],
+      condition:[catalog.condition,catalog.conditionRisk,catalog.surfaceRisk,catalog.intervention,catalog.surface,catalog.pavement,catalog.priority],
 
-      network:[catalog.surface,catalog.pavement,catalog.condition,catalog.linkLength,catalog.hierarchy,catalog.traffic,catalog.intervention,catalog.completeness],
+      network:[catalog.surface,catalog.pavement,catalog.condition,catalog.hierarchy,catalog.traffic,catalog.intervention],
 
-      pims:[catalog.priority,catalog.intervention,catalog.condition,catalog.pavement,catalog.surface,catalog.linkLength,catalog.traffic,catalog.completeness],
+      pims:[catalog.priority,catalog.intervention,catalog.condition,catalog.pavement,catalog.surface,catalog.traffic],
 
-      hdm4:[catalog.aadt,catalog.pcu,catalog.speed,catalog.traffic,catalog.pavement,catalog.condition,catalog.linkLength,catalog.completeness],
+      hdm4:[catalog.aadt,catalog.pcu,catalog.speed,catalog.traffic,catalog.pavement,catalog.condition],
 
-      framework:[catalog.hierarchy,catalog.completeness,catalog.traffic,catalog.condition,catalog.pavement,catalog.priority,catalog.intervention,catalog.linkLength],
+      framework:[catalog.hierarchy,catalog.traffic,catalog.condition,catalog.pavement,catalog.priority,catalog.intervention],
 
-      budgets:[catalog.priority,catalog.intervention,catalog.pavement,catalog.condition,catalog.surface,catalog.linkLength,catalog.completeness],
+      budgets:[catalog.priority,catalog.intervention,catalog.pavement,catalog.condition,catalog.surface],
 
-      ducar:[catalog.intervention,catalog.condition,catalog.pavement,catalog.priority,catalog.surface,catalog.traffic,catalog.linkLength,catalog.completeness],
+      ducar:[catalog.intervention,catalog.condition,catalog.pavement,catalog.priority,catalog.surface,catalog.traffic],
 
-      overview:[catalog.condition,catalog.pavement,catalog.priority,catalog.traffic,catalog.surface,catalog.intervention,catalog.linkLength,catalog.completeness]
+      overview:[catalog.condition,catalog.pavement,catalog.priority,catalog.traffic,catalog.surface,catalog.intervention]
 
     };
 
@@ -1534,7 +1272,7 @@
 
       charts.push(barChart("Surface condition coverage", "Complete link count by surface type.", aggregate(rows, "surface"), "link count", COLORS[5]));
 
-      charts.push(conditionSurfaceChart());
+      charts.push(conditionSurfaceChart(rows));
 
     } else if (state.section === "pims") {
 
@@ -1739,7 +1477,6 @@
     return metricCards(metrics) + unifiedFlow(leadCharts.concat(charts), rows, state.section) + `<div class="method-note">Every road chart uses cumulative geometry length and shows complete category frequency. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are modelling allowances, not bills of quantities.</div>`;
 
   }
-
 
 
   function genericPopulationFlow(rows, metrics, chartSpecs) {
@@ -2063,7 +1800,6 @@
   }
 
 
-
   function mapFilterPass(properties) {
     if (state.section !== "network") return true;
     if (state.roadClass && state.roadClass !== "all" && roadClassGroup(properties) !== state.roadClass) return false;
@@ -2079,7 +1815,6 @@
     return properties.pavement_class === "Paved" ? "#0a84ff" : properties.pavement_class === "Unpaved" ? "#ff9f0a" : "#8e8e93";
 
   }
-
 
 
   function initSectionMap() {
@@ -2198,7 +1933,6 @@
   }
 
 
-
   function legacyDistrictAnalytics(rows) {
 
     const groups = new Map();
@@ -2224,7 +1958,6 @@
   }
 
 
-
   function legacyStructureAnalytics(payload) {
 
     const rows=payload.rows||[], links=payload.link_summary||[];
@@ -2236,7 +1969,6 @@
     return `<div class="chart-grid">${barChart("Linked-road length by structure class","Allocated road exposure; no Link ID is double-counted in the complete total.",allocated("structure_class"),"Affected Length (km)",COLORS[5])}${barChart("Linked-road length by structure condition","Every supplied structure condition translated to affected road length.",allocated("current_condition"),"Affected Length (km)",COLORS[1])}${barChart("Linked-road length by linkage quality","Road length associated with high, moderate, low and spatial joins.",allocated("linkage_quality"),"Affected Length (km)",COLORS[0])}${barChart("Linked-road length by source register","Every district workbook and programme source retained.",allocated("source_file"),"Affected Length (km)",COLORS[2])}</div><div class="method-note">The structure-to-road relation is auditable through source file, source row, chainage, Link ID, match score, linkage quality and map-location method. ${number(payload.metadata.structure_occurrences-payload.metadata.linked_structure_occurrences)} unmatched occurrences remain in the exhaustive table and are never assigned fabricated road length.</div><div class="records-status"><strong>${number(links.length)}</strong> DUCAR Link IDs with linked structures · complete per-link structure matrix</div><div class="table-wrap analytics-table"><table class="data-table"><thead><tr>${fields.map(field=>`<th>${esc(label(field))}</th>`).join("")}</tr></thead><tbody>${links.map(row=>`<tr>${fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(field==="geometry_length_km"?number(row[field],4)+" km":shown(row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 
   }
-
 
 
   function legacyAnalyticsHtml() {
@@ -2484,7 +2216,6 @@
   }
 
 
-
   function districtSummaryTable(rows) {
 
     const groups=new Map();rows.forEach(row=>{const district=shown(row.district||row.admin_district),item=groups.get(district)||{district,records:0,total_length_km:0,paved_length_km:0,unpaved_length_km:0,good_length_km:0,fair_length_km:0,poor_length_km:0,traffic_length_km:0,coordinate_length_km:0,planning_cost_ugx:0};const length=analyticsLength(row);item.records++;item.total_length_km+=length;if(String(row.pavement_class).toLowerCase()==="Paved")item.paved_length_km+=length;if(String(row.pavement_class).toLowerCase()==="Unpaved")item.unpaved_length_km+=length;if(String(row.condition).toLowerCase()==="Good")item.good_length_km+=length;if(String(row.condition).toLowerCase()==="Fair")item.fair_length_km+=length;if(String(row.condition).toLowerCase()==="Poor")item.poor_length_km+=length;if(typeof row.registry_aadt==="number")item.traffic_length_km+=length;if(typeof row.x_coordinate_dd==="number")item.coordinate_length_km+=length;item.planning_cost_ugx+=Number(row.planning_cost_ugx||0);groups.set(district,item);});
@@ -2572,7 +2303,6 @@
   }
 
 
-
   // 2. Numerical Distribution Bands Summary Table
 
   function numericalDistributionBandsTable(rows) {
@@ -2628,7 +2358,6 @@
   }
 
 
-
   // 3. Quality Assurance & Spatial Integrity Register Table
 
   function qualityAssuranceRegisterTable(rows) {
@@ -2662,7 +2391,6 @@
     );
 
   }
-
 
 
 function analyticsHtml() {
@@ -3233,30 +2961,6 @@ function analyticsHtml() {
 })();
 
 
-
-
-
-  // Immediate Safe Initialization
-
-  window.addEventListener('DOMContentLoaded', () => {
-
-    try {
-
-      if (document.getElementById('exhaustive-root') && !document.getElementById('exhaustive-root').hasChildNodes()) {
-
-        renderApp();
-
-      }
-
-    } catch (e) {
-
-      console.warn("Auto-render triggered safely:", e);
-
-    }
-
-  });
-
-
 /* layout normaliser - delta correction against the fixed chrome, idempotent */
 (function(){
  function vis(sel){var e=document.querySelector(sel);if(!e)return null;var c=getComputedStyle(e);if(c.display==='none'||c.visibility==='hidden')return null;var r=e.getBoundingClientRect();return (r.width>0&&r.height>0)?r:null;}
@@ -3291,8 +2995,6 @@ function analyticsHtml() {
  new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
  [0,200,600,1200,2500,4000].forEach(function(d){setTimeout(schedule,d);});
 })();
-
-
 
 
 // ===== DUCAR UI OVERRIDES — v20260819-v3 =====
@@ -3410,142 +3112,11 @@ function applyConditionColors(){
   });
 }
 
-var KPIS={
-  pims:[['Roads Screened','6,234.65 km','Complete PIMS screening register'],['High Priority Length','2,291.79 km','Heavy rehabilitation — 5,716 links'],['Routine Priority Length','3,942.86 km','Routine maintenance — 6,284 links'],['Paved Roads Screened','688.99 km','Bituminous + Concrete surface']],
-  hdm4:[['Model Input Length','6,234.65 km','Total DUCAR network for HDM-4 model'],['Traffic Data Supplied','0 km','AADT not supplied in this dataset'],['Condition Coverage','6,234.65 km','IRI / condition data available'],['Paved Network Input','688.99 km','Bituminous + Concrete roads']],
-  traffic:[['AADT Coverage','275,447 km','31,106 links with model-imputed AADT'],['Average AADT','739 vpd','Model-imputed — field surveys pending'],['Peak Corridor AADT','46,682 vpd','Highest-volume road links'],['Paved AADT Coverage','49,277 km','4,169 bituminous links with AADT']],
-  condition:[['Network Condition Coverage','275,447 km · 31,106 links','Full DUCAR network — condition rated'],['Good Condition','12,070 km (4.4%)','Acceptable surface — minimal intervention'],['Fair Condition','131,747 km (47.8%)','Routine maintenance required'],['Poor Condition','131,630 km (47.8%)','Heavy rehabilitation required']],
-  structures:[['Structures Inventoried','Pending','Field survey not yet supplied'],['Bridge Inventory','Not Available','MoWT/UNRA survey required'],['Culvert Inventory','Not Available','Drainage survey required'],['Scour Risk Assessment','Pending','Hydraulic analysis not conducted']]
-};
-
-function fixSectionKpis(){
-  var sec=getSection();
-  var data=KPIS[sec];if(!data)return;
-  var mg=document.querySelector('.metric-grid');
-  if(!mg||mg.dataset['f'+sec])return;
-  var cards=mg.querySelectorAll('.metric-card');
-  if(!cards.length)return;
-  mg.dataset['f'+sec]='1';
-  Array.from(cards).forEach(function(c,i){
-    if(!data[i])return;
-    var sm=c.querySelector('small'),st=c.querySelector('strong'),em=c.querySelector('em');
-    if(sm){sm.textContent=data[i][0];sm.dataset.tc='1';sm.style.cssText='font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;';}
-    if(st)st.textContent=data[i][1];
-    if(em)em.textContent=data[i][2];
-  });
-}
-
-function injectPriorityStudio(){
-  if(getSection()!=='prioritystudio')return;
-  var studio=document.querySelector('.section-studio');if(!studio||studio.dataset.psi)return;
-  studio.dataset.psi='1';
-  var target=studio.querySelector('.chart-grid')||studio;
-  var panel=document.createElement('div');
-  panel.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 0 16px;';
-  panel.innerHTML='<div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:20px;"><h3 style="color:#62ee84;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 14px;">Investment Framework</h3><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #ef4444;"><span style="color:#94a3b8;font-size:12px;">Heavy Rehabilitation</span><strong style="color:#ef4444;font-size:13px;">2,291.79 km · 5,716 links</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #f59e0b;"><span style="color:#94a3b8;font-size:12px;">Routine Maintenance</span><strong style="color:#f59e0b;font-size:13px;">3,942.86 km · 6,284 links</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #22c55e;"><span style="color:#94a3b8;font-size:12px;">Total DUCAR Network</span><strong style="color:#22c55e;font-size:13px;">6,234.65 km · 12,000 links</strong></div></div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:20px;"><h3 style="color:#62ee84;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 14px;">Budget &amp; Prioritization</h3><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #ef4444;"><span style="color:#94a3b8;font-size:12px;">High Priority Links</span><strong style="color:#ef4444;font-size:13px;">5,716 links — Band 1</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #f59e0b;"><span style="color:#94a3b8;font-size:12px;">Routine Priority Links</span><strong style="color:#f59e0b;font-size:13px;">6,284 links — Band 2</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #94a3b8;"><span style="color:#94a3b8;font-size:12px;">Paved Network</span><strong style="color:#94a3b8;font-size:13px;">688.99 km · Bituminous/Concrete</strong></div></div></div>';
-  target.parentNode.insertBefore(panel,target);
-}
-
-function injectAdminTools(){
-  var sec=getSection();
-  if(sec!=='summaries'&&!sec.includes('admin')&&!sec.includes('summar'))return;
-  var h1=document.querySelector('.section-studio h1,.section-title');
-  if(h1&&h1.textContent.trim().toLowerCase().includes('summar')&&!h1.dataset.rt){h1.dataset.rt='1';h1.textContent='Admin Tools';}
-  var studio=document.querySelector('.section-studio');if(!studio||studio.dataset.se)return;
-  studio.dataset.se='1';
-  var target=studio.querySelector('.chart-grid')||studio;
-  var panel=document.createElement('div');
-  panel.style.cssText='padding:0 0 16px;';
-  panel.innerHTML='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;"><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#62ee84;font-size:26px;font-weight:800;line-height:1;">6,234</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">km Registered</div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#f59e0b;font-size:26px;font-weight:800;line-height:1;">12,000</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">Road Links</div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#ef4444;font-size:26px;font-weight:800;line-height:1;">112</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">Districts</div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#94a3b8;font-size:26px;font-weight:800;line-height:1;">5</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">Data Sources</div></div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:20px;"><h3 style="color:#62ee84;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 14px;">Data Source Registry</h3><table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr><th style="text-align:left;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;letter-spacing:0.04em;">Source</th><th style="text-align:left;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;">Type</th><th style="text-align:right;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;">Records</th><th style="text-align:left;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;">Status</th></tr></thead><tbody><tr><td style="padding:9px 10px;color:#e2e8f0;">DUCAR Road Register</td><td style="padding:9px 10px;color:#64748b;">Geometry + Attributes</td><td style="padding:9px 10px;color:#e2e8f0;text-align:right;">12,000</td><td style="padding:9px 10px;"><span style="color:#22c55e;font-size:11px;">● Active</span></td></tr><tr style="background:#0d0d0d;"><td style="padding:9px 10px;color:#e2e8f0;">PIMS Screening</td><td style="padding:9px 10px;color:#64748b;">Condition Assessment</td><td style="padding:9px 10px;color:#e2e8f0;text-align:right;">12,000</td><td style="padding:9px 10px;"><span style="color:#22c55e;font-size:11px;">● Active</span></td></tr><tr><td style="padding:9px 10px;color:#e2e8f0;">HDM-4 Model</td><td style="padding:9px 10px;color:#64748b;">Economic Analysis</td><td style="padding:9px 10px;color:#e2e8f0;text-align:right;">6,234.65 km</td><td style="padding:9px 10px;"><span style="color:#22c55e;font-size:11px;">● Active</span></td></tr><tr style="background:#0d0d0d;"><td style="padding:9px 10px;color:#e2e8f0;">Traffic Surveys</td><td style="padding:9px 10px;color:#64748b;">AADT Counts</td><td style="padding:9px 10px;color:#ef4444;text-align:right;">Not Supplied</td><td style="padding:9px 10px;"><span style="color:#ef4444;font-size:11px;">● Missing</span></td></tr><tr><td style="padding:9px 10px;color:#e2e8f0;">Structures Inventory</td><td style="padding:9px 10px;color:#64748b;">Bridges + Culverts</td><td style="padding:9px 10px;color:#ef4444;text-align:right;">Not Supplied</td><td style="padding:9px 10px;"><span style="color:#ef4444;font-size:11px;">● Missing</span></td></tr></tbody></table></div>';
-  target.parentNode.insertBefore(panel,target);
-}
-
 function fixScroll(){
   var st=document.querySelector('.section-studio');
   if(st&&!st.dataset.sf){st.dataset.sf='1';st.scrollTop=0;window.scrollTo(0,0);}
 }
 
-
-function injectExportDropdown(){
-  var btn=document.querySelector('[class*="export-btn"],button[class*="export"],button[class*="Export"],.export-button');
-  if(!btn){
-    // Try finding by text content
-    document.querySelectorAll('button').forEach(function(b){
-      if(b.textContent.trim()==='Export'||b.textContent.trim().startsWith('Export'))btn=b;
-    });
-  }
-  if(!btn||btn.dataset.ddx)return;
-  btn.dataset.ddx='1';
-  
-  var sec=getSection();
-  var opts={
-    ducar:[['Export Dashboard CSV','csv'],['Export Charts PNG','png'],['Export Full Table XLSX','xlsx'],['Export PDF Report','pdf']],
-    traffic:[['Export Traffic Data CSV','csv'],['Export AADT Table XLSX','xlsx']],
-    condition:[['Export Condition Data CSV','csv'],['Export IRI Report PDF','pdf']],
-    structures:[['Export Structures CSV','csv'],['Export Inspection Report PDF','pdf']],
-    pims:[['Export PIMS Data CSV','csv'],['Export PIMS Report PDF','pdf'],['Export PIMS XLSX','xlsx']],
-    hdm4:[['Export HDM-4 Inputs CSV','csv'],['Export Model Results XLSX','xlsx']],
-    prioritystudio:[['Export Priority List CSV','csv'],['Export Budget Report PDF','pdf'],['Export XLSX','xlsx']],
-    default:[['Export Data CSV','csv'],['Export Report PDF','pdf'],['Export XLSX','xlsx']]
-  };
-  var items=opts[sec]||opts.default;
-  
-  var wrap=document.createElement('div');
-  wrap.style.cssText='position:relative;display:inline-block;';
-  btn.parentNode.insertBefore(wrap,btn);
-  wrap.appendChild(btn);
-  btn.style.cssText+='border-radius:6px 0 0 6px;';
-  
-  var arrow=document.createElement('button');
-  arrow.textContent='▾';
-  arrow.style.cssText=btn.style.cssText+'border-radius:0 6px 6px 0;padding:0 10px;border-left:1px solid rgba(255,255,255,0.15);';
-  wrap.appendChild(arrow);
-  
-  var menu=document.createElement('div');
-  menu.style.cssText='display:none;position:absolute;top:100%;right:0;min-width:220px;background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.6);z-index:9999;margin-top:4px;overflow:hidden;';
-  items.forEach(function(item){
-    var opt=document.createElement('div');
-    var icons={csv:'📊',png:'🖼',xlsx:'📋',pdf:'📄'};
-    opt.innerHTML='<span style="margin-right:8px;">'+( icons[item[1]]||'📁')+'</span>'+item[0];
-    opt.style.cssText='padding:10px 16px;color:#e2e8f0;font-size:12px;cursor:pointer;display:flex;align-items:center;border-bottom:1px solid #1e293b;';
-    opt.onmouseenter=function(){this.style.background='#111';};
-    opt.onmouseleave=function(){this.style.background='';};
-    opt.onclick=function(){menu.style.display='none';console.log('Export:',item[0]);};
-    menu.appendChild(opt);
-  });
-  wrap.appendChild(menu);
-  
-  function toggleMenu(e){e.stopPropagation();menu.style.display=menu.style.display==='none'?'block':'none';}
-  arrow.onclick=toggleMenu;
-  document.addEventListener('click',function(){menu.style.display='none';});
-}
-
-function fixChartSubtitles(){
-  // Fix the "Paved and unpaved" chart which shows OSM total data but might be mislabeled
-  document.querySelectorAll('.chart-card').forEach(function(card){
-    var title=card.querySelector('h3,h4,[class*="title"],[class*="chart-title"]');
-    var sub=card.querySelector('p,[class*="subtitle"],[class*="description"]');
-    if(!title)return;
-    var ttext=title.textContent.trim().toLowerCase();
-    if(ttext.includes('paved and unpaved')&&sub&&!sub.dataset.fx){
-      sub.dataset.fx='1';
-      sub.textContent='Full OSM national road network composition; not limited to DUCAR 6,234 km screened subset.';
-      sub.style.color='#f59e0b';
-      sub.style.fontSize='11px';
-    }
-    // Remove "individual-link length band" anywhere
-    if(ttext.includes('link length')||ttext.includes('length band')){
-      card.style.display='none';
-    }
-  });
-  // Also hide any metric cards with "individual" or "link length band"
-  document.querySelectorAll('.metric-card small').forEach(function(el){
-    var t=el.textContent.trim().toLowerCase();
-    if(t.includes('link length')||t.includes('individual link')||t.includes('length band')){
-      var mc=el.closest('.metric-card');if(mc)mc.style.display='none';
-    }
-  });
-}
 
 function fixTables(){
   // Remove all pagination controls
@@ -3587,11 +3158,6 @@ function runAll(){
   syncNav();
   fixMetricLabels();
   applyConditionColors();
-  fixSectionKpis();
-  injectPriorityStudio();
-  injectAdminTools();
-  injectExportDropdown();
-  fixChartSubtitles();
   fixTables();
   fixScroll();
 }
@@ -3599,293 +3165,12 @@ function runAll(){
 runAll();
 window.addEventListener('hashchange',function(){
   var st=document.querySelector('.section-studio');
-  if(st){delete st.dataset.psi;delete st.dataset.se;delete st.dataset.sf;}
-  var mg=document.querySelector('.metric-grid');
-  if(mg){['fpims','fhdm4','ftraffic','fcondition','fstructures'].forEach(function(k){delete mg.dataset[k];});}
+  if(st){delete st.dataset.sf;}
   setTimeout(runAll,80);setTimeout(runAll,400);setTimeout(runAll,900);
 });
 var obs=new MutationObserver(function(){if(!handleRedirects())runAll();});
 obs.observe(document.body,{childList:true,subtree:true});
 })();
 // ===== END DUCAR UI OVERRIDES =====
-// ===== DUCAR HOTFIX v20260819-hf1 =====
-(function(){
-'use strict';
-if(window.__ducarHotfix1)return;
-window.__ducarHotfix1=true;
-
-function fixAdminLabel(){
-  var adminBtn=Array.from(document.querySelectorAll('a.nav-rail-btn'))
-    .find(function(a){return a.textContent.includes('Summaries');});
-  if(!adminBtn)return;
-  Array.from(adminBtn.children).forEach(function(c){c.remove();});
-  var sp=document.createElement('span');
-  sp.textContent='Admin Tools';
-  adminBtn.appendChild(sp);
-}
-
-function fixDashboardMetrics(){
-  var cm={
-    'ANALYZED ROAD LENGTH':    {v:'275,447 km',d:'Full DUCAR network · 31,106 links'},
-    'TRAFFIC-COVERED LENGTH':  {v:'275,447 km',d:'Model-imputed AADT · 31,106 links'},
-    'CRITICAL-PRIORITY LENGTH':{v:'2,292 km',  d:'High-volume + poor condition links'},
-    'PAVED ROAD LENGTH':       {v:'49,277 km', d:'4,169 bituminous + concrete links'}
-  };
-  document.querySelectorAll('.metric-card').forEach(function(card){
-    var sm=card.querySelector('small');
-    var label=sm?sm.innerText.trim().toUpperCase():'';
-    var fix=cm[label];
-    if(!fix)return;
-    var st=card.querySelector('strong');
-    var em=card.querySelector('em');
-    if(st)st.textContent=fix.v;
-    if(em)em.textContent=fix.d;
-  });
-}
-
-function runHotfix(){fixAdminLabel();fixDashboardMetrics();}
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(runHotfix,600);});
-}else{setTimeout(runHotfix,600);}
-window.addEventListener('hashchange',function(){setTimeout(runHotfix,400);});
-})();
-// ===== END DUCAR HOTFIX =====
-
-// ===== DUCAR HOTFIX v20260819-hf2 =====
-(function(){
-'use strict';
-if(window.__ducarHotfix2)return;
-window.__ducarHotfix2=true;
-var JUNK=['Individual-link length band','Governed parameter completeness'];
-function fixDropdown(){
-  document.querySelectorAll('select').forEach(function(sel){
-    Array.from(sel.options).forEach(function(opt){
-      if(JUNK.indexOf(opt.value)>=0)opt.remove();
-    });
-  });
-}
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(fixDropdown,800);});
-}else{setTimeout(fixDropdown,800);}
-window.addEventListener('hashchange',function(){setTimeout(fixDropdown,400);});
-})();
-// ===== END DUCAR HOTFIX hf2 =====
-
-// ===== DUCAR HOTFIX v20260819-hf3 =====
-(function(){
-'use strict';
-if(window.__ducarHotfix3)return;
-window.__ducarHotfix3=true;
-
-// Banner style
-var bannerStyle='background:#1a3a1a;border-left:3px solid #4caf50;padding:8px 12px;margin:0 0 16px 0;'+
-'font-size:11px;color:#9ccc9c;border-radius:0 4px 4px 0;line-height:1.5;';
-var warnStyle='background:#2a1a00;border-left:3px solid #ff9800;padding:8px 12px;margin:0 0 16px 0;'+
-'font-size:11px;color:#ffcc80;border-radius:0 4px 4px 0;line-height:1.5;';
-
-var BANNERS={
-  traffic:'<strong>KPI COVERAGE NOTE:</strong> KPI cards above reflect full DUCAR network (275,447 km · 31,106 links) with model-imputed AADT. '+
-          'Charts below reflect verified PIMS field register (6,234 km reference sample). Field AADT surveys pending for full network.',
-  condition:'<strong>CONDITION DATA NOTE:</strong> KPI cards reflect full network condition model (275,447 km). '+
-            'Charts reflect PIMS-registered links (6,234 km). Condition: Good 4.4% · Fair 47.8% · Poor 47.8% based on IRI model.',
-  pims:'<strong>PIMS SCOPE:</strong> PIMS (Priority Investment Management System) analyses the MoWT-registered screened sample '+
-       '(6,234 km · 12,000 links). This is the verified field-survey dataset used for investment prioritisation.',
-  hdm4:'<strong>HDM-4 SCOPE:</strong> HDM-4 model inputs use the PIMS-screened reference sample (6,234 km). '+
-       'Full network HDM-4 run requires field AADT surveys and pavement strength data (pending).',
-  structures:'<strong>STRUCTURES DATA:</strong> Bridge, culvert and drainage structure inventory is pending field survey. '+
-             'MoWT/UNRA structural survey required. Estimated 2,290 structures in network.'
-};
-
-function injectBanners(){
-  Object.keys(BANNERS).forEach(function(sec){
-    var id='ducar-banner-'+sec;
-    if(document.getElementById(id))return;
-    // Find section content area
-    var sectionEl=null;
-    // Look for active section or metric-grid in context
-    var allMetricGrids=document.querySelectorAll('.metric-grid');
-    // Find by checking nearest section heading or hash
-    var hash=location.hash;
-    if(hash.indexOf(sec)<0)return;
-    // Inject before first metric-grid
-    var mg=document.querySelector('.metric-grid');
-    if(!mg)return;
-    var banner=document.createElement('div');
-    banner.id=id;
-    var isWarn=sec==='traffic'||sec==='hdm4';
-    banner.setAttribute('style',isWarn?warnStyle:bannerStyle);
-    banner.innerHTML=BANNERS[sec];
-    mg.parentNode.insertBefore(banner,mg);
-  });
-}
-
-function runHf3(){injectBanners();}
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(runHf3,700);});
-}else{setTimeout(runHf3,700);}
-window.addEventListener('hashchange',function(){
-  // Remove old banners when navigating away
-  ['traffic','condition','pims','hdm4','structures'].forEach(function(s){
-    var el=document.getElementById('ducar-banner-'+s);
-    if(el)el.remove();
-  });
-  setTimeout(runHf3,700);
-});
-})();
-// ===== END DUCAR HOTFIX hf3 =====
 
 
-// ===== DUCAR HOTFIX v20260819-hf4 =====
-(function(){
-'use strict';
-if(window.__ducarHotfix4)return;
-window.__ducarHotfix4=true;
-
-function fixAdminSection(){
-  var ss=document.querySelector('.section-studio');
-  if(!ss)return;
-  if(location.hash.indexOf('admin')<0)return;
-  var kids=Array.from(ss.children);
-  var adminBlocks=kids.filter(function(k){
-    return !k.className&&!k.id&&k.children.length===2&&k.innerText&&k.innerText.indexOf('Registered')>=0;
-  });
-  // Remove duplicates — keep only first block
-  adminBlocks.slice(1).forEach(function(b){b.remove();});
-  var kept=adminBlocks[0];
-  if(!kept)return;
-  var statCont=kept.children[0];
-  if(!statCont)return;
-  var VALS=['275,447','31,106','135','5'];
-  Array.from(statCont.children).forEach(function(card,i){
-    if(i<VALS.length&&card.children[0]&&card.children[0].firstChild){
-      var v=card.children[0].firstChild.textContent.replace(/,/g,'');
-      if(!isNaN(Number(v))||v===''){
-        card.children[0].firstChild.textContent=VALS[i];
-      }
-    }
-  });
-}
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(fixAdminSection,850);});
-}else{setTimeout(fixAdminSection,850);}
-window.addEventListener('hashchange',function(){setTimeout(fixAdminSection,600);});
-})();
-// ===== END DUCAR HOTFIX hf4 =====
-
-// ===== DUCAR HOTFIX v20260819-hf5 =====
-(function(){
-'use strict';
-if(window.__ducarHotfix5)return;
-window.__ducarHotfix5=true;
-
-// Correct admin stat values (full DUCAR network)
-var ADMIN_VALS=['275,447','31,106','135','5'];
-
-function fixAdminSection(){
-  var ss=document.querySelector('.section-studio');
-  if(!ss)return;
-  if(location.hash.toUpperCase().indexOf('ADMIN')<0)return;
-  var kids=Array.from(ss.children);
-  // Case-insensitive detection of admin stat blocks
-  var adminBlocks=kids.filter(function(k){
-    return !k.className&&!k.id&&k.children.length===2&&k.innerText&&
-           k.innerText.toUpperCase().indexOf('REGISTERED')>=0;
-  });
-  // Remove duplicates — keep only first
-  adminBlocks.slice(1).forEach(function(b){b.remove();});
-  var kept=adminBlocks[0];
-  if(!kept)return;
-  var sc=kept.children[0];
-  if(!sc)return;
-  Array.from(sc.children).forEach(function(card,i){
-    if(i<ADMIN_VALS.length&&card.children[0]&&card.children[0].firstChild){
-      card.children[0].firstChild.textContent=ADMIN_VALS[i];
-    }
-  });
-}
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(fixAdminSection,900);});
-}else{setTimeout(fixAdminSection,900);}
-window.addEventListener('hashchange',function(){setTimeout(fixAdminSection,650);});
-})();
-// ===== END DUCAR HOTFIX hf5 =====
-
-// ===== DUCAR HOTFIX v20260819-hf6 =====
-(function(){
-'use strict';
-if(window.__ducarHotfix6)return;
-window.__ducarHotfix6=true;
-
-// Priority Studio KPI replacements
-var STUDIO_KPIS={
-  'ANALYZED ROAD LENGTH':    {l:'HIGH-PRIORITY CORRIDORS', v:'2,292 km',  d:'High-priority corridors · critical intervention scope'},
-  'TRAFFIC-COVERED LENGTH':  {l:'INVESTMENT-READY SCOPE',  v:'6,234 km',  d:'PIMS-screened investment-ready links · HDM-4 modelled'},
-  'CRITICAL-PRIORITY LENGTH':{l:'PRIORITY DISTRICTS',      v:'135',        d:'Districts ranked and scored for investment prioritisation'},
-  'PAVED ROAD LENGTH':       {l:'STRATEGIC NETWORK',       v:'49,277 km', d:'Paved strategic network · primary investment target'}
-};
-
-var STUDIO_BANNER_STYLE='background:#1a1a2e;border-left:3px solid #7c4dff;padding:8px 12px;margin:0 0 16px 0;font-size:11px;color:#b39ddb;border-radius:0 4px 4px 0;line-height:1.5;';
-var SOCIO_BANNER_STYLE='background:#1a2a1a;border-left:3px solid #66bb6a;padding:8px 12px;margin:0 0 16px 0;font-size:11px;color:#a5d6a7;border-radius:0 4px 4px 0;line-height:1.5;';
-
-function fixStudioKpis(){
-  var hash=location.hash;
-  if(hash.indexOf('studio')<0)return;
-  var cards=Array.from(document.querySelectorAll('.metric-card')).filter(function(c){return c.offsetParent!==null;});
-  cards.forEach(function(card){
-    var sm=card.querySelector('small');
-    var st=card.querySelector('strong');
-    var em=card.querySelector('em');
-    if(!sm)return;
-    var label=sm.innerText.trim().toUpperCase();
-    var fix=STUDIO_KPIS[label];
-    if(!fix)return;
-    if(st)st.textContent=fix.v;
-    if(em)em.textContent=fix.d;
-    sm.textContent=fix.l;
-  });
-  // Add Priority Studio banner
-  if(!document.getElementById('ducar-banner-studio')){
-    var mg=document.querySelector('.metric-grid');
-    if(mg){
-      var b=document.createElement('div');
-      b.id='ducar-banner-studio';
-      b.setAttribute('style',STUDIO_BANNER_STYLE);
-      b.innerHTML='<strong>PRIORITY STUDIO:</strong> Investment prioritisation based on MoWT/DUCAR scoring — traffic volume (AADT), pavement condition (IRI) and strategic importance. HDM-4 economic analysis applied to the 6,234 km PIMS-screened reference sample. KPIs reflect the full network prioritisation envelope.';
-      mg.parentNode.insertBefore(b,mg);
-    }
-  }
-}
-
-function fixSocioNote(){
-  var hash=location.hash;
-  if(hash.indexOf('socioeconomic')<0)return;
-  if(!document.getElementById('ducar-banner-socio')){
-    var mg=document.querySelector('.metric-grid');
-    if(!mg)return;
-    var b=document.createElement('div');
-    b.id='ducar-banner-socio';
-    b.setAttribute('style',SOCIO_BANNER_STYLE);
-    b.innerHTML='<strong>SOCIOECONOMIC COVERAGE NOTE:</strong> Current socioeconomic linkage analysis covers 495 km pilot survey area. Full 275,447 km network socioeconomic integration pending district-level census join and World Bank poverty index alignment (HDX data ingestion in progress).';
-    mg.parentNode.insertBefore(b,mg);
-  }
-}
-
-function runHf6(){fixStudioKpis();fixSocioNote();}
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(runHf6,950);});
-}else{setTimeout(runHf6,950);}
-window.addEventListener('hashchange',function(){
-  // Remove banners on navigation so they re-inject on correct sections
-  ['studio','socio'].forEach(function(s){
-    var el=document.getElementById('ducar-banner-'+s);
-    if(el)el.remove();
-  });
-  setTimeout(runHf6,700);
-});
-})();
-// ===== END DUCAR HOTFIX hf6 =====
