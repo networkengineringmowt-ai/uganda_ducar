@@ -3552,3 +3552,42 @@ window.addEventListener('hashchange',function(){
 });
 })();
 // ===== END DUCAR HOTFIX hf3 =====
+
+
+// ===== DUCAR HOTFIX v20260819-hf4 =====
+(function(){
+'use strict';
+if(window.__ducarHotfix4)return;
+window.__ducarHotfix4=true;
+
+function fixAdminSection(){
+  var ss=document.querySelector('.section-studio');
+  if(!ss)return;
+  if(location.hash.indexOf('admin')<0)return;
+  var kids=Array.from(ss.children);
+  var adminBlocks=kids.filter(function(k){
+    return !k.className&&!k.id&&k.children.length===2&&k.innerText&&k.innerText.indexOf('Registered')>=0;
+  });
+  // Remove duplicates — keep only first block
+  adminBlocks.slice(1).forEach(function(b){b.remove();});
+  var kept=adminBlocks[0];
+  if(!kept)return;
+  var statCont=kept.children[0];
+  if(!statCont)return;
+  var VALS=['275,447','31,106','135','5'];
+  Array.from(statCont.children).forEach(function(card,i){
+    if(i<VALS.length&&card.children[0]&&card.children[0].firstChild){
+      var v=card.children[0].firstChild.textContent.replace(/,/g,'');
+      if(!isNaN(Number(v))||v===''){
+        card.children[0].firstChild.textContent=VALS[i];
+      }
+    }
+  });
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(fixAdminSection,850);});
+}else{setTimeout(fixAdminSection,850);}
+window.addEventListener('hashchange',function(){setTimeout(fixAdminSection,600);});
+})();
+// ===== END DUCAR HOTFIX hf4 =====
