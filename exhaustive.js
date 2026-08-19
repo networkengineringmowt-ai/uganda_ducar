@@ -302,7 +302,9 @@
 
     structures: "./data/ducar_structure_analysis.json",
 
-    structureMap: "./data/ducar_structures.geojson"
+    structureMap: "./data/ducar_structures.geojson",
+
+    geospatial: "./data/geospatial_analysis.json"
 
   };
 
@@ -566,7 +568,67 @@
 
       {"country": "Uganda (July 2026 Baseline)", "network_km": 159623.00, "paved_pct": 30.1, "density_km_sqkm": 0.66},
 
-      {"country": "Kenya", "network_km": 161451.00, "paved_pct": 14.8, "density_km_sqkm": 0.28},
+      {"country": "India", "network_km": 6700000, "paved_pct": 67, "density_km_sqkm": 2.04},
+
+      {"country": "United States", "network_km": 6586610, "paved_pct": 65, "density_km_sqkm": 0.67},
+
+      {"country": "China", "network_km": 5490400, "paved_pct": 97, "density_km_sqkm": 0.57},
+
+      {"country": "Brazil", "network_km": 2000000, "paved_pct": 11, "density_km_sqkm": 0.23},
+
+      {"country": "Russia", "network_km": 1579291, "paved_pct": 71, "density_km_sqkm": 0.09},
+
+      {"country": "Japan", "network_km": 1218772, "paved_pct": 81, "density_km_sqkm": 3.22},
+
+      {"country": "France", "network_km": 1053215, "paved_pct": 100, "density_km_sqkm": 1.91},
+
+      {"country": "Canada", "network_km": 1042300, "paved_pct": 40, "density_km_sqkm": 0.1},
+
+      {"country": "Australia", "network_km": 977874, "paved_pct": 41, "density_km_sqkm": 0.13},
+
+      {"country": "Mexico", "network_km": 836603, "paved_pct": 21, "density_km_sqkm": 0.43},
+
+      {"country": "Germany", "network_km": 830000, "paved_pct": 100, "density_km_sqkm": 2.32},
+
+      {"country": "South Africa", "network_km": 750000, "paved_pct": 21, "density_km_sqkm": 0.61},
+
+      {"country": "Thailand", "network_km": 702989, "paved_pct": 0, "density_km_sqkm": 1.37},
+
+      {"country": "Spain", "network_km": 683175, "paved_pct": 100, "density_km_sqkm": 1.35},
+
+      {"country": "Malaysia", "network_km": 589320, "paved_pct": 71, "density_km_sqkm": 1.78},
+
+      {"country": "Sweden", "network_km": 573134, "paved_pct": 24, "density_km_sqkm": 1.27},
+
+      {"country": "Turkey", "network_km": 438633, "paved_pct": 79, "density_km_sqkm": 0.56},
+
+      {"country": "Egypt", "network_km": 325250, "paved_pct": 74, "density_km_sqkm": 0.32},
+
+      {"country": "Argentina", "network_km": 240000, "paved_pct": 34, "density_km_sqkm": 0.09},
+
+      {"country": "Nigeria", "network_km": 195000, "paved_pct": 31, "density_km_sqkm": 0.21},
+
+      {"country": "Kenya", "network_km": 177800.00, "paved_pct": 8, "density_km_sqkm": 0.3},
+
+      {"country": "DR Congo", "network_km": 152373, "paved_pct": 2, "density_km_sqkm": 0.06},
+
+      {"country": "Uganda", "network_km": 146000, "paved_pct": 3, "density_km_sqkm": 0.6},
+
+      {"country": "New Zealand", "network_km": 96817, "paved_pct": 67, "density_km_sqkm": 0.36},
+
+      {"country": "Czech Republic", "network_km": 55744, "paved_pct": 100, "density_km_sqkm": 0.71},
+
+      {"country": "Papua New Guinea", "network_km": 9349, "paved_pct": 32, "density_km_sqkm": 0.02},
+
+      {"country": "New Caledonia", "network_km": 5622, "paved_pct": 0, "density_km_sqkm": 0.3},
+
+      {"country": "West Bank", "network_km": 4686, "paved_pct": 100, "density_km_sqkm": 0.78},
+
+      {"country": "Fiji", "network_km": 3440, "paved_pct": 49, "density_km_sqkm": 0.19},
+
+      {"country": "U.S. Virgin Islands", "network_km": 1260, "paved_pct": 0, "density_km_sqkm": 3.63},
+
+      {"country": "Saint Helena", "network_km": 198, "paved_pct": 0, "density_km_sqkm": 1.62},
 
       {"country": "Tanzania", "network_km": 145204.00, "paved_pct": 9.7, "density_km_sqkm": 0.15}
 
@@ -646,7 +708,14 @@
         Region: row.Region || row.region || "Not Supplied",
         road_network_km: Number(row.road_network_km || row.network_km || 0),
         paved_share_pct: Number(row.paved_share_pct || row.paved_pct || 0),
+        unpaved_km: row.unpaved_km != null ? Number(row.unpaved_km) : null,
+        controlled_access_km: row.controlled_access_km != null ? Number(row.controlled_access_km) : null,
         density_km_sqkm: Number(row.density_km_sqkm || 0),
+        area_sqkm: row.area_sqkm != null ? Number(row.area_sqkm) : null,
+        x_coordinate_dd: typeof row.x_coordinate_dd === "number" ? row.x_coordinate_dd : (row.x_coordinate_dd != null ? Number(row.x_coordinate_dd) : undefined),
+        y_coordinate_dd: typeof row.y_coordinate_dd === "number" ? row.y_coordinate_dd : (row.y_coordinate_dd != null ? Number(row.y_coordinate_dd) : undefined),
+        source_year: row.source_year || "Not Supplied",
+        source: row.source || "Not Supplied",
         source_status: Number(row.road_network_km || row.network_km || 0) > 0 ? "Comparable source loaded" : "Not Supplied"
       })), regions: (value && value.regions) || {} };
     }
@@ -708,7 +777,7 @@
 
     if (state.tab === "map") {
 
-      if (state.section === "socioeconomic") return Promise.all([data("links"), data("socio"), data("alignments"), data("facilities")]);
+      if (state.section === "socioeconomic") return Promise.all([data("links"), data("socio"), data("alignments"), data("facilities"), data("geospatial")]);
 
       if (state.section === "structures") return Promise.all([data("links"), data("structures"), data("alignments"), data("structureMap")]);
 
@@ -1628,7 +1697,7 @@
 
       network: [["Surface composition","Complete geometry length by surface.","surface",COLORS[2]],["Pavement classification","Explicit paved/unpaved length.","pavement_class",COLORS[1]],["Condition coverage","Affected length by road condition.","condition",COLORS[3]],["Administrative coverage","Governed length by parish attribution.",r=>shown(r.parish)==="Not Supplied"?"Parish not supplied":"Parish supplied",COLORS[0]]],
 
-      condition: [["Condition by network length","Complete affected road length.","condition",COLORS[1]],["Condition risk","Affected length by condition-risk score.",r=>"Risk "+shown(r.condition_risk),COLORS[3]],["Recommended interventions","Cumulative length by treatment.","recommended_intervention",COLORS[2]],["Surface condition coverage","Complete length by surface.","surface",COLORS[5]]],
+      condition: [["Condition by surface type","Paved and unpaved road length split by Good / Fair / Poor condition.",r=>shown(r.pavement_class)+" — "+shown(r.condition),COLORS[6]],["Condition by network length","Complete affected road length.","condition",COLORS[1]],["Condition risk","Affected length by condition-risk score.",r=>"Risk "+shown(r.condition_risk),COLORS[3]],["Recommended interventions","Cumulative length by treatment.","recommended_intervention",COLORS[2]],["Surface condition coverage","Complete length by surface.","surface",COLORS[5]]],
 
       pims: [["Priority screening bands","Affected road length by priority.","priority_band",COLORS[4]],["Intervention pipeline","Cumulative treatment length.","recommended_intervention",COLORS[2]],["Screening by condition","Input length by condition.","condition",COLORS[0]],["Screening by pavement","Input length by pavement.","pavement_class",COLORS[1]]],
 
@@ -1682,7 +1751,7 @@
       `<div class="chart-grid unified-flow">${charts.join("")}${vizHtml.join("")}${cards.join("")}</div><div class="flow-empty" hidden>No view matches the current dimension or search text.</div>`;
   }
 
-  function socioeconomicDashboard(payload) {
+  function socioeconomicDashboard(payload, geospatial) {
     const rows = (payload && payload.rows) || [];
     const km = predicate => rows.filter(predicate).reduce((sum, row) => sum + Number(row.geometry_length_km || 0), 0);
     const exposureReady = rows.some(row => shown(row.exposure_band) !== "Not Supplied");
@@ -1698,7 +1767,48 @@
       ["Pavement class by road length", "Explicit paved and unpaved analysed length.", "pavement_class", null, "Affected Length (km)", COLORS[2]],
       ["Functional class by road length", "Complete analysed length by MoWT functional class.", "functional_class", null, "Affected Length (km)", COLORS[0]],
       ["Region by road length", "Complete analysed length by administrative region.", "region", null, "Affected Length (km)", COLORS[5]]
-    ]) + `<div class="method-note">Socioeconomic exposure fields are reported only where the supplied register carries them. Unsupplied attributes stay explicitly Not supplied and are never estimated.</div>`;
+    ]) + `<div class="method-note">Socioeconomic exposure fields are reported only where the supplied register carries them. Unsupplied attributes stay explicitly Not supplied and are never estimated.</div>`
+      + geospatialAnalysisBlock(geospatial);
+  }
+
+  function geospatialAnalysisBlock(geo) {
+    if (!geo || !Array.isArray(geo.districts) || !geo.districts.length) return "";
+    const totals = geo.national_totals || {};
+    const geoMetrics = [
+      { label: "Junction nodes (intersections)", value: number(totals.junction_nodes || 0), note: "Routable-network nodes with degree ≥ 3" },
+      { label: "Through-nodes (degree 2)", value: number(totals.through_nodes || 0), note: "Geometry vertices, not real junctions" },
+      { label: "Terminal / dead-end nodes", value: number(totals.terminal_nodes || 0), note: "Degree-1 network endpoints" },
+      { label: "Districts with density computed", value: number(geo.districts.length), note: "Km of mapped road per km² of district area" }
+    ];
+    const densityChartValues = geo.districts.slice(0, 15).map(d => ({ name: d.district, value: d.density_km_per_sqkm || 0 }));
+    const densityChart = barChart("Road density per district — top 15", "Kilometres of mapped road per square kilometre of district area (highest density first).", densityChartValues, "km per km²", COLORS[3]);
+    const intersectionChartValues = geo.districts.slice().sort((a, b) => (b.intersections || 0) - (a.intersections || 0)).slice(0, 15).map(d => ({ name: d.district, value: d.intersections || 0 }));
+    const intersectionChart = barChart("Road-network intersections per district — top 15", "Junction nodes (degree ≥ 3) located inside each district boundary.", intersectionChartValues, "intersections", COLORS[5]);
+    const densityValues = geo.districts.map(d => d.density_km_per_sqkm || 0).filter(v => v > 0);
+    const maxDensity = Math.max(...densityValues, 0.001);
+    const heatRows = geo.districts.map(d => {
+      const ratio = (d.density_km_per_sqkm || 0) / maxDensity;
+      const tone = ratio >= 0.5 ? "analytic-good" : ratio >= 0.15 ? "analytic-warn" : "analytic-bad";
+      return {
+        "District": d.district,
+        "Region": d.region,
+        "Total Road Length (km)": number(d.total_km, 1) + " km",
+        "Area (km²)": number(d.area_sqkm, 1),
+        "Density (km/km²)": { text: number(d.density_km_per_sqkm || 0, 3), tone },
+        "Intersections": number(d.intersections || 0)
+      };
+    });
+    const heatTable = analyticsTable(
+      "District road-density coverage heatmap",
+      "Every district ranked by road density (km of mapped road per km² of area). Green = highest density band, amber = mid, red = lowest — a genuine spatial heatmap of network coverage intensity, not a geographic overlay.",
+      ["District", "Region", "Total Road Length (km)", "Area (km²)", "Density (km/km²)", "Intersections"],
+      heatRows
+    );
+    return `<div class="section-head"><h2>Geospatial Analysis</h2><p>Intersection topology and per-district road density, computed directly from the routable-network node graph and district polygon boundaries — not modelled or estimated.</p></div>` +
+      metricCards(geoMetrics) +
+      `<div class="chart-grid">${densityChart}${intersectionChart}</div>` +
+      heatTable +
+      `<div class="method-note">${esc(geo.generated_note || "")}</div>`;
   }
 
   function structuresDashboard(payload) {
@@ -1764,7 +1874,7 @@
 
     if (state.section === "summaries") return summaryDashboard(cache.relations, cache.mindmap);
 
-    if (state.section === "socioeconomic") return socioeconomicDashboard(cache.socio);
+    if (state.section === "socioeconomic") return socioeconomicDashboard(cache.socio, cache.geospatial);
 
     if (state.section === "structures") return structuresDashboard(cache.structures);
 
