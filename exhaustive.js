@@ -793,7 +793,7 @@
 
     if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap"), data("links"), data("database"), data("structures")]);
 
-    if (state.section === "socioeconomic") return data("socio");
+    if (state.section === "socioeconomic") return Promise.all([data("socio"), data("geospatial")]);
 
     if (state.section === "structures") return data("structures");
 
