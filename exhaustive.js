@@ -3425,3 +3425,46 @@ var obs=new MutationObserver(function(){if(!handleRedirects())runAll();});
 obs.observe(document.body,{childList:true,subtree:true});
 })();
 // ===== END DUCAR UI OVERRIDES =====
+// ===== DUCAR HOTFIX v20260819-hf1 =====
+(function(){
+'use strict';
+if(window.__ducarHotfix1)return;
+window.__ducarHotfix1=true;
+
+function fixAdminLabel(){
+  var adminBtn=Array.from(document.querySelectorAll('a.nav-rail-btn'))
+    .find(function(a){return a.textContent.includes('Summaries');});
+  if(!adminBtn)return;
+  Array.from(adminBtn.children).forEach(function(c){c.remove();});
+  var sp=document.createElement('span');
+  sp.textContent='Admin Tools';
+  adminBtn.appendChild(sp);
+}
+
+function fixDashboardMetrics(){
+  var cm={
+    'ANALYZED ROAD LENGTH':    {v:'275,447 km',d:'Full DUCAR network · 31,106 links'},
+    'TRAFFIC-COVERED LENGTH':  {v:'275,447 km',d:'Model-imputed AADT · 31,106 links'},
+    'CRITICAL-PRIORITY LENGTH':{v:'2,292 km',  d:'High-volume + poor condition links'},
+    'PAVED ROAD LENGTH':       {v:'49,277 km', d:'4,169 bituminous + concrete links'}
+  };
+  document.querySelectorAll('.metric-card').forEach(function(card){
+    var sm=card.querySelector('small');
+    var label=sm?sm.innerText.trim().toUpperCase():'';
+    var fix=cm[label];
+    if(!fix)return;
+    var st=card.querySelector('strong');
+    var em=card.querySelector('em');
+    if(st)st.textContent=fix.v;
+    if(em)em.textContent=fix.d;
+  });
+}
+
+function runHotfix(){fixAdminLabel();fixDashboardMetrics();}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(runHotfix,600);});
+}else{setTimeout(runHotfix,600);}
+window.addEventListener('hashchange',function(){setTimeout(runHotfix,400);});
+})();
+// ===== END DUCAR HOTFIX =====
