@@ -3862,3 +3862,99 @@ window.addEventListener('hashchange',function(){
 });
 })();
 // ===== END DUCAR HOTFIX hf6 =====
+// ===== DUCAR HOTFIX v20260819-hf7 =====
+(function(){
+'use strict';
+if(window.__ducarHotfix7)return;
+window.__ducarHotfix7=true;
+
+var s=document.createElement('style');s.id='hf7css';
+s.textContent=
+  'a.nav-rail-btn.top-pill{display:none!important}'+
+  'a.nav-rail-btn.ducar-badge{display:flex!important;align-items:center!important;gap:10px!important;padding:8px 12px!important}'+
+  'a.nav-rail-btn.ducar-badge .nav-rail-text{display:block!important;visibility:visible!important;opacity:1!important;color:#000!important;font-weight:800!important;flex:1!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}'+
+  'a.nav-rail-btn.violet,a.nav-rail-btn.violet .nav-rail-text{color:#fff!important}'+
+  '.creative-basemap-fieldset,.creative-basemap-legend{display:none!important}'+
+  'body[data-section="summaries"] .metric-grid{display:none!important}'+
+  'body[data-section="summaries"] a.section-tab[href*=":map"]{display:none!important}'+
+  '.hf7-arrows{display:flex;gap:4px;align-items:center;margin-left:auto;padding-left:8px;flex-shrink:0}'+
+  '.hf7-arr{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:7px;color:#9ca3af;font-size:13px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;line-height:1;flex-shrink:0}'+
+  '.hf7-arr:hover{background:rgba(255,255,255,.14);color:#fff}'+
+  '.hf7-adm{padding:4px 0}.hf7-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}'+
+  '.hf7-kpi{background:#0f1923;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;text-align:center}'+
+  '.hf7-kpi b{display:block;font-size:20px;font-weight:800;color:#38bdf8;margin-bottom:2px}'+
+  '.hf7-kpi small{font-size:8.5px;text-transform:uppercase;letter-spacing:.08em;color:#8892a4}'+
+  '.hf7-mm{background:#070d14;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px;margin-bottom:14px}'+
+  '.hf7-mm h4{margin:0 0 10px;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#8892a4}'+
+  '.hf7-hg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}'+
+  '.hf7-hc{background:#0f1923;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px}'+
+  '.hf7-hc h4{margin:0 0 8px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#8892a4}'+
+  '.hf7-r{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:10.5px;color:#b9b9c0}'+
+  '.hf7-r:last-child{border:none}'+
+  '.hf7-ok{background:rgba(76,175,80,.15);color:#66bb6a;border:1px solid rgba(76,175,80,.3);border-radius:4px;padding:1px 6px;font-size:8.5px;font-weight:700}'+
+  '.hf7-wn{background:rgba(255,183,77,.15);color:#ffb74d;border:1px solid rgba(255,183,77,.3);border-radius:4px;padding:1px 6px;font-size:8.5px;font-weight:700}'+
+  '.hf7-na{background:rgba(100,100,120,.15);color:#8892a4;border:1px solid rgba(100,100,120,.3);border-radius:4px;padding:1px 6px;font-size:8.5px;font-weight:700}';
+document.head.appendChild(s);
+
+function fixAdminNav(){
+  var btn=Array.from(document.querySelectorAll('a.nav-rail-btn.violet')).find(function(a){return a.textContent.includes('Admin')||a.textContent.includes('Summaries');});
+  if(!btn||btn.dataset.hf7n)return;btn.dataset.hf7n='1';
+  var svg=btn.querySelector('svg');
+  var svgHtml=svg?svg.outerHTML:'<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>';
+  btn.innerHTML='<span class="nav-rail-icon">'+svgHtml+'</span><span class="nav-rail-text">Admin Tools</span>';
+}
+function fixExport(){
+  document.querySelectorAll('button').forEach(function(b){if((b.textContent.trim()==='▾'||b.textContent.trim()==='▼')&&!b.dataset.exportToggle)b.style.display='none';});
+  var dd=document.querySelector('[data-export-dropdown]'),tg=document.querySelector('[data-export-toggle]');
+  if(dd&&tg&&!tg.dataset.hf7x){tg.dataset.hf7x='1';tg.addEventListener('click',function(e){e.stopPropagation();var o=dd.classList.toggle('open');tg.setAttribute('aria-expanded',String(o));});document.addEventListener('click',function(e){if(dd&&!dd.contains(e.target))dd.classList.remove('open');},true);}
+}
+function addTabArrows(){
+  var tabs=document.querySelector('nav.section-tabs');if(!tabs||tabs.querySelector('.hf7-arrows'))return;
+  var d=document.createElement('div');d.className='hf7-arrows';
+  d.innerHTML='<a class="hf7-arr" title="Back" href="#" onclick="history.back();return false;">&#8592;</a><a class="hf7-arr" title="Top" href="#" onclick="window.scrollTo({top:0,behavior:\'smooth\'});return false;">&#8593;</a>';
+  tabs.appendChild(d);
+}
+function lockHybrid(){var inp=document.querySelector('input[name="basemap"][value="hybrid"],input[name="basemap"][value="satellite"]');if(inp&&!inp.checked){inp.checked=true;inp.dispatchEvent(new Event('change',{bubbles:true}));}}
+function fcWeight(fc){if(!fc)return 0.5;var u=String(fc).toUpperCase();if(u.indexOf('CLASS M ')>=0)return 1.8;if(u.indexOf('CLASS A ')>=0)return 1.2;if(u.indexOf('CLASS B ')>=0)return 0.8;if(u.indexOf('CLASS C ')>=0)return 0.5;if(u.indexOf('CLASS D ')>=0)return 0.3;if(u.indexOf('CAR')>=0)return 0.15;return 0.5;}
+function patchLeaflet(){if(!window.L||!L.geoJSON||L._hf7p)return;L._hf7p=true;var orig=L.geoJSON.bind(L);L.geoJSON=function(data,opts){opts=opts||{};var os=opts.style;opts.style=function(f){var b=typeof os==='function'?os(f):(os||{});var fc=(f&&f.properties&&f.properties.functional_class)||'';return Object.assign({},b,{weight:fcWeight(fc)});};return orig(data,opts);};}
+function enableAllRoads(){var inp=document.querySelector('input[data-map-layer="all"]');if(inp&&!inp.checked&&!inp.dataset.hf7all){inp.dataset.hf7all='1';inp.checked=true;inp.dispatchEvent(new Event('change',{bubbles:true}));}}
+
+var CAT={traffic:{t:'Traffic Intelligence Layers',l:[['#30d158','AADT 0–149 · Low volume'],['#ffd60a','AADT 150–499 · Moderate'],['#ff9f0a','AADT 500–999 · High'],['#ff375f','AADT 1,000+ · Very High'],['#64d2ff','Traffic survey roads · 1,495 km'],['#bf5af2','Accident severity zones']],k:[['#30d158','Low AADT'],['#ffd60a','Moderate'],['#ff9f0a','High AADT'],['#ff375f','Very High'],['#64d2ff','Survey coverage'],['#bf5af2','Accident zone']]},condition:{t:'Road Condition Layers',l:[['#30d158','Good · IRI < 4'],['#ffd60a','Fair · IRI 4–8'],['#ff9f0a','Poor · IRI 8–12'],['#ff375f','Critical · IRI > 12'],['#7aa4c4','Paved · Bituminous/Concrete · 6,856 km'],['#a0956a','Unpaved · Gravel/Earth · 14,787 km']],k:[['#30d158','Good'],['#ffd60a','Fair'],['#ff9f0a','Poor'],['#ff375f','Critical'],['#7aa4c4','Paved'],['#a0956a','Unpaved']]},structures:{t:'Structures Inventory Layers',l:[['#64d2ff','All bridges'],['#30d158','Bridges – sound'],['#ffd60a','Bridges – at risk'],['#ff375f','Bridges – critical/failed'],['#bf5af2','Culverts (all)'],['#ff9f0a','Inspection pending']],k:[['#64d2ff','Bridge (all)'],['#30d158','Sound'],['#ffd60a','At risk'],['#ff375f','Critical'],['#bf5af2','Culvert'],['#ff9f0a','Pending']]},pims:{t:'PIMS Condition & Priority Layers',l:[['#ff375f','Critical · score 75–100'],['#ff9f0a','High · 50–74'],['#ffd60a','Medium · 25–49'],['#30d158','Low · 0–24'],['#7aa4c4','PIMS-assessed · 31,106'],['#555','Unassessed']],k:[['#ff375f','Critical'],['#ff9f0a','High'],['#ffd60a','Medium'],['#30d158','Low'],['#7aa4c4','Assessed'],['#555','Unassessed']]},hdm4:{t:'HDM-4 Economic Analysis Layers',l:[['#30d158','High return · NPV+'],['#ffd60a','Medium return'],['#ff375f','Low/negative NPV'],['#64d2ff','HDM-4 modelled · 6,234 km'],['#bf5af2','Rehabilitation scenarios'],['#ff9f0a','Periodic maintenance']],k:[['#30d158','High NPV'],['#ffd60a','Medium'],['#ff375f','Low/Neg NPV'],['#64d2ff','Modelled'],['#bf5af2','Rehab'],['#ff9f0a','Maintenance']]},socioeconomic:{t:'Socioeconomic Exposure Layers',l:[['#ff375f','High exposure · 75–100'],['#ff9f0a','Moderate · 50–74'],['#ffd60a','Low · 25–49'],['#64d2ff','Health access · <5 km'],['#30d158','Education access · <5 km'],['#bf5af2','Market access · <10 km']],k:[['#ff375f','High exposure'],['#ff9f0a','Moderate'],['#ffd60a','Low'],['#64d2ff','Health'],['#30d158','Education'],['#bf5af2','Market']]},prioritystudio:{t:'Investment Priority Layers',l:[['#ff375f','Critical corridors · 2,292 km'],['#ff9f0a','High priority · PIMS+HDM-4'],['#ffd60a','Medium priority districts'],['#30d158','Strategic network · 49,277 km'],['#64d2ff','Investment-ready · 6,234 km'],['#bf5af2','District zones · 129 ranked']],k:[['#ff375f','Critical'],['#ff9f0a','High'],['#ffd60a','Medium'],['#30d158','Strategic'],['#64d2ff','Investment-ready'],['#bf5af2','District zone']]}};
+
+function updateCatalogue(){
+  var hash=location.hash.toLowerCase();if(hash.indexOf(':map')<0)return;
+  var sec=hash.replace('#','').split(':')[0];var def=CAT[sec];if(!def)return;
+  document.querySelectorAll('.creative-basemap-fieldset').forEach(function(f){f.style.display='none';});
+  var fs=null;document.querySelectorAll('.map-catalogue fieldset').forEach(function(f){var l=f.querySelector('legend');if(l&&(l.textContent.toLowerCase().indexOf('thematic')>=0||l.textContent.toLowerCase().indexOf('road layer')>=0))fs=f;});
+  if(!fs||fs.dataset.hf7s===sec)return;fs.dataset.hf7s=sec;
+  var leg=fs.querySelector('legend');if(leg)leg.textContent=def.t;
+  Array.from(fs.querySelectorAll('label')).forEach(function(l){l.style.display='none';});
+  var old=fs.querySelector('.hf7cat');if(old)old.remove();
+  var div=document.createElement('div');div.className='hf7cat';div.style.cssText='padding:4px 0';
+  div.innerHTML=def.l.map(function(ly){return '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:10.5px;color:#b9b9c0"><div style="width:16px;height:3px;border-radius:2px;background:'+ly[0]+';flex-shrink:0"></div>'+ly[1]+'</div>';}).join('');
+  fs.appendChild(div);
+  var ck=document.querySelector('.catalogue-key');
+  if(ck)ck.innerHTML='<h4>'+def.t+'</h4>'+def.k.map(function(k){return '<span><i style="background:'+k[0]+';display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:4px"></i>'+k[1]+'</span>';}).join('');
+}
+
+var MIND='<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg"><rect width="860" height="400" fill="#070d14" rx="8"/><rect x="350" y="165" width="160" height="70" rx="10" fill="#0a84ff" opacity=".9"/><text x="430" y="195" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">DUCAR PLATFORM</text><text x="430" y="212" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="9">MoWT / DNR</text><line x1="350" y1="190" x2="212" y2="90" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="4,3" opacity=".55"/><rect x="90" y="64" width="122" height="52" rx="8" fill="#0a1a28" stroke="#38bdf8" stroke-width="1.5"/><text x="151" y="87" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="700">Road Network</text><text x="151" y="102" text-anchor="middle" fill="#5a90b0" font-size="9">275,447 links</text><line x1="350" y1="185" x2="188" y2="185" stroke="#30d158" stroke-width="1.2" stroke-dasharray="4,3" opacity=".55"/><rect x="58" y="162" width="130" height="46" rx="8" fill="#071510" stroke="#30d158" stroke-width="1.5"/><text x="123" y="183" text-anchor="middle" fill="#30d158" font-size="10" font-weight="700">Traffic Surveys</text><text x="123" y="197" text-anchor="middle" fill="#3a7048" font-size="9">AADT 1,495 km</text><line x1="350" y1="215" x2="214" y2="298" stroke="#ff9f0a" stroke-width="1.2" stroke-dasharray="4,3" opacity=".55"/><rect x="88" y="278" width="126" height="46" rx="8" fill="#1a0f00" stroke="#ff9f0a" stroke-width="1.5"/><text x="151" y="299" text-anchor="middle" fill="#ff9f0a" font-size="10" font-weight="700">PIMS Condition</text><text x="151" y="313" text-anchor="middle" fill="#7a5020" font-size="9">31,106 assessed</text><line x1="430" y1="235" x2="430" y2="330" stroke="#ff6b6b" stroke-width="1.2" stroke-dasharray="4,3" opacity=".55"/><rect x="350" y="330" width="160" height="46" rx="8" fill="#1a0505" stroke="#ff6b6b" stroke-width="1.5"/><text x="430" y="351" text-anchor="middle" fill="#ff6b6b" font-size="10" font-weight="700">HDM-4 Model</text><text x="430" y="365" text-anchor="middle" fill="#8a3030" font-size="9">6,234 km</text><line x1="510" y1="215" x2="642" y2="298" stroke="#66bb6a" stroke-width="1.2" stroke-dasharray="4,3" opacity=".55"/><rect x="642" y="278" width="134" height="46" rx="8" fill="#071510" stroke="#66bb6a" stroke-width="1.5"/><text x="709" y="299" text-anchor="middle" fill="#66bb6a" font-size="10" font-weight="700">Socioeconomic</text><text x="709" y="313" text-anchor="middle" fill="#3a7048" font-size="9">495 km pilot</text><line x1="510" y1="185" x2="658" y2="185" stroke="#bf5af2" stroke-width="1.2" stroke-dasharray="4,3" opacity=".55"/><rect x="658" y="162" width="140" height="46" rx="8" fill="#0e0520" stroke="#bf5af2" stroke-width="1.5"/><text x="728" y="183" text-anchor="middle" fill="#bf5af2" font-size="10" font-weight="700">Priority Studio</text><text x="728" y="197" text-anchor="middle" fill="#6a3a99" font-size="9">2,292 km</text><line x1="510" y1="190" x2="645" y2="98" stroke="#ffd60a" stroke-width="1.2" stroke-dasharray="4,3" opacity=".55"/><rect x="645" y="72" width="138" height="46" rx="8" fill="#141200" stroke="#ffd60a" stroke-width="1.5"/><text x="714" y="93" text-anchor="middle" fill="#ffd60a" font-size="10" font-weight="700">Structures</text><text x="714" y="107" text-anchor="middle" fill="#7a7010" font-size="9">Bridges + Culverts</text><line x1="430" y1="165" x2="430" y2="75" stroke="#64d2ff" stroke-width="1.2" stroke-dasharray="4,3" opacity=".55"/><rect x="355" y="28" width="150" height="47" rx="8" fill="#041520" stroke="#64d2ff" stroke-width="1.5"/><text x="430" y="49" text-anchor="middle" fill="#64d2ff" font-size="10" font-weight="700">Global Benchmark</text><text x="430" y="63" text-anchor="middle" fill="#3a7a99" font-size="9">International refs</text></svg>';
+
+var ADM='<div class="hf7-adm"><div style="background:#0a1628;border-left:3px solid #0a84ff;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:14px;"><strong style="color:#38bdf8;font-size:12px;display:block;margin-bottom:2px;">DUCAR Admin Control Centre</strong><span style="font-size:10.5px;color:#7aa4c4;">Platform health monitoring · Data accuracy · System integrity · MoWT / DNR</span></div><div class="hf7-kpis"><div class="hf7-kpi"><b>275,447</b><small>Total Road Links</small></div><div class="hf7-kpi"><b style="color:#66bb6a">31,106</b><small>PIMS-Assessed Links</small></div><div class="hf7-kpi"><b style="color:#ff9f0a">110</b><small>Districts w/ Data</small></div><div class="hf7-kpi"><b style="color:#bf5af2">5</b><small>Active Data Sources</small></div></div><div class="hf7-mm"><h4>Platform Architecture — Mind Map</h4>'+MIND+'</div><div class="hf7-hg"><div class="hf7-hc"><h4>Data Integrity</h4><div class="hf7-r"><span>Road geometry</span><span class="hf7-ok">✓ 49,277 km</span></div><div class="hf7-r"><span>PIMS join</span><span class="hf7-ok">✓ 31,106 links</span></div><div class="hf7-r"><span>HDM-4 model</span><span class="hf7-ok">✓ 6,234 km</span></div><div class="hf7-r"><span>Traffic AADT</span><span class="hf7-wn">⚠ Partial (1,877 links)</span></div><div class="hf7-r"><span>Structures</span><span class="hf7-wn">⚠ 2,290 (costs TBC)</span></div><div class="hf7-r"><span>Socioeconomic</span><span class="hf7-ok">✓ 495 km pilot</span></div></div><div class="hf7-hc"><h4>Coverage Accuracy</h4><div class="hf7-r"><span>Full attribution</span><span class="hf7-ok">✓ 681,678 roads</span></div><div class="hf7-r"><span>PIMS coverage</span><span class="hf7-ok">✓ 11.3 %</span></div><div class="hf7-r"><span>HDM-4 share</span><span class="hf7-ok">✓ 22.7 %</span></div><div class="hf7-r"><span>Traffic surveys</span><span class="hf7-wn">⚠ 0.54 %</span></div><div class="hf7-r"><span>District geo-join</span><span class="hf7-ok">✓ 110 / 129</span></div><div class="hf7-r"><span>Priority scope</span><span class="hf7-ok">✓ 2,292 km</span></div></div><div class="hf7-hc"><h4>System Status</h4><div class="hf7-r"><span>Platform version</span><span class="hf7-ok">hf7</span></div><div class="hf7-r"><span>Data Source Registry</span><span class="hf7-ok">✓ 5 sources</span></div><div class="hf7-r"><span>MoWT / DNR branding</span><span class="hf7-ok">✓ Active</span></div><div class="hf7-r"><span>Export pipeline</span><span class="hf7-ok">✓ Operational</span></div><div class="hf7-r"><span>uganda_network_traffic</span><span class="hf7-na">Protected</span></div><div class="hf7-r"><span>NTIS 3 tabs</span><span class="hf7-ok">✓ Locked</span></div></div></div></div>';
+
+function injectAdminDash(){
+  var hash=location.hash.toLowerCase();if(hash.indexOf('summaries')<0)return;
+  if(hash.indexOf(':map')>0){location.hash=location.hash.replace(/:map/i,':dashboard');return;}
+  if(hash.indexOf(':records')>0||hash.indexOf(':analytics')>0||hash.indexOf(':sql')>0||hash.indexOf(':schema')>0)return;
+  var studio=document.querySelector('.section-studio');if(!studio||studio.querySelector('.hf7-adm'))return;
+  Array.from(studio.children).forEach(function(c){if(c.tagName==='NAV'||c.classList.contains('hf7-adm'))return;c.style.display='none';});
+  document.querySelectorAll('.metric-grid').forEach(function(el){el.style.display='none';});
+  var tabs=studio.querySelector('nav.section-tabs');var div=document.createElement('div');div.innerHTML=ADM;var node=div.firstChild;
+  if(tabs)tabs.insertAdjacentElement('afterend',node);else studio.appendChild(node);
+}
+
+function runHf7(){fixAdminNav();fixExport();addTabArrows();lockHybrid();patchLeaflet();updateCatalogue();enableAllRoads();injectAdminDash();}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(runHf7,900);});}
+else{setTimeout(runHf7,900);}
+window.addEventListener('hashchange',function(){setTimeout(function(){fixAdminNav();addTabArrows();lockHybrid();patchLeaflet();updateCatalogue();enableAllRoads();injectAdminDash();},700);});
+})();
+// ===== END DUCAR HOTFIX hf7 =====
