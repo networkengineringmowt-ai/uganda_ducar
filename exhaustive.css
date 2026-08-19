@@ -963,3 +963,27 @@ body:not(.network-map-mode) #root{height:0!important;min-height:0!important;over
 .map-toolrail button{display:flex!important;align-items:center;justify-content:center;color:#cfd6dd}
 .map-toolrail button svg{display:block}
 .map-toolrail button.active{background:#0a84ff!important;border-color:#0a84ff!important;color:#fff!important}
+
+
+/* ===== SCROLL BUG FIX — v20260819 ===== */
+/* Prevent blank black area when scrolling up on any section */
+.exhaustive-shell{min-height:100vh!important;overflow-y:auto!important;overflow-x:hidden!important}
+.section-studio{overflow:visible!important;min-height:0!important}
+/* Keep map workspace bounded so it can't bleed outside its container */
+.map-workspace{overflow:hidden!important}
+.map-stage{overflow:hidden!important}
+/* Ensure section tabs stay visible */
+.section-tabs{position:sticky;top:0;z-index:20;background:#000!important}
+
+/* ===== FLOW-CONTROLS: only on DUCAR Dashboard ===== */
+/* JS controls display:none; but ensure correct layout when visible */
+.flow-controls{display:grid;grid-template-columns:minmax(180px,.7fr) minmax(240px,1.3fr) auto auto auto;gap:8px;align-items:end;padding:10px 12px;margin:0 0 14px;background:#080810;border:1px solid #222228;border-radius:10px}
+.flow-controls label{display:grid;gap:3px;color:#9c9ca5;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.flow-controls select,.flow-controls input{height:36px;border:1px solid #333338;border-radius:8px;background:#111116;color:#f0f0f5;padding:0 10px;font-size:10px}
+.flow-controls button{height:36px;border:1px solid #3a3a40;border-radius:8px;background:#17171b;color:#64d2ff;padding:0 14px;font-size:10px;font-weight:850;cursor:pointer;white-space:nowrap}
+.flow-controls [data-view-count]{display:inline-block;padding:8px 12px;border:1px solid #26364a;border-radius:8px;background:#101820;color:#7ac9ff;font-size:11px;font-weight:700;align-self:end}
+
+/* ===== PRIORITY STUDIO NAV BUTTON ===== */
+[data-priority-studio-btn]{border-left:3px solid #62ee84!important}
+
+/* ===== END ADDITIONS ===== */

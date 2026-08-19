@@ -546,7 +546,7 @@
 
   function sectionFromTitle(title) {
 
-    const map = { TOP: "overview", "DUCAR Dashboard": "ducar", Network: "network", Traffic: "traffic", Condition: "condition", Structures: "structures", PIMS: "pims", "HDM-4": "hdm4", Framework: "framework", "Budgets & Prioritization": "budgets", Global: "global", "Socioeconomic Analysis": "socioeconomic", "Summaries & Admin Tools": "summaries" };
+    const map = { TOP: "overview", "DUCAR Dashboard": "ducar", Traffic: "traffic", Condition: "condition", Structures: "structures", PIMS: "pims", "HDM-4": "hdm4", Global: "global", "Socioeconomic Analysis": "socioeconomic", "Priority Studio": "prioritystudio", "Summaries & Admin Tools": "summaries" };
 
     return map[title] || null;
 
@@ -3109,3 +3109,133 @@ function analyticsHtml() {
  new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
  [0,200,600,1200,2500,4000].forEach(function(d){setTimeout(schedule,d);});
 })();
+
+
+// ===== DUCAR UI OVERRIDES — v20260819-nav =====
+(function(){
+  'use strict';
+  if(window.__ducarNavOverrides)return;
+  window.__ducarNavOverrides=true;
+
+  function getSection(){
+    return (location.hash.slice(1).split(':')[0]||'').toLowerCase();
+  }
+
+  // 1. Hide/show flow-controls based on section
+  function syncFlowControls(){
+    var fc=document.querySelector('.flow-controls');
+    if(!fc)return;
+    fc.style.display=getSection()==='ducar'?'':'none';
+  }
+
+  // 2. Hide Network/Framework/Budgets nav buttons; add Priority Studio
+  function syncNav(){
+    // Hide these titles
+    ['Network','Framework','Budgets & Prioritization'].forEach(function(title){
+      document.querySelectorAll('button,a,li').forEach(function(el){
+        var t=el.getAttribute('title')||el.getAttribute('aria-label')||'';
+        if(t===title||el.textContent.trim()===title){
+          if(el.tagName==='BUTTON'||el.tagName==='A'||el.tagName==='LI'){
+            el.style.display='none';
+          }
+        }
+      });
+    });
+
+    // Add Priority Studio button after Socioeconomic Analysis (once)
+    if(!document.querySelector('[data-priority-studio-btn]')){
+      var socio=null;
+      document.querySelectorAll('button,a').forEach(function(el){
+        var t=el.getAttribute('title')||el.getAttribute('aria-label')||'';
+        if(t==='Socioeconomic Analysis')socio=el;
+      });
+      if(socio){
+        var btn=socio.cloneNode(true);
+        btn.setAttribute('title','Priority Studio');
+        btn.setAttribute('aria-label','Priority Studio');
+        btn.setAttribute('data-priority-studio-btn','1');
+        // Update all text nodes inside
+        var walk=document.createTreeWalker(btn,NodeFilter.SHOW_TEXT);
+        var tn;
+        while((tn=walk.nextNode())){
+          if(tn.textContent.trim()==='Socioeconomic Analysis')
+            tn.textContent='Priority Studio';
+        }
+        btn.querySelectorAll('[class]').forEach(function(el){
+          if(el.textContent.trim()==='Socioeconomic Analysis')el.textContent='Priority Studio';
+        });
+        btn.classList.remove('codex-injected-active');
+        btn.addEventListener('click',function(e){
+          e.preventDefault();e.stopPropagation();
+          location.hash='#prioritystudio:dashboard';
+        });
+        socio.parentNode.insertBefore(btn,socio.nextSibling);
+      }
+    }
+
+    // Sync active class on Priority Studio button
+    var sec=getSection();
+    var psBtn=document.querySelector('[data-priority-studio-btn]');
+    if(psBtn){
+      var isActive=sec==='prioritystudio';
+      psBtn.classList.toggle('codex-injected-active',isActive);
+      psBtn.classList.toggle('active',isActive);
+    }
+  }
+
+  // 3. Redirect legacy sections
+  function handleRedirects(){
+    var sec=getSection();
+    if(sec==='network'){
+      location.replace('#ducar:'+(location.hash.split(':')[1]||'dashboard'));
+      return true;
+    }
+    if(sec==='framework'||sec==='budgets'){
+      location.replace('#prioritystudio:'+(location.hash.split(':')[1]||'dashboard'));
+      return true;
+    }
+    return false;
+  }
+
+  // 4. Priority Studio: inject combined content banner
+  function syncPriorityStudio(){
+    if(getSection()!=='prioritystudio')return;
+    var shell=document.querySelector('.exhaustive-shell,.section-studio');
+    if(!shell)return;
+    if(shell.querySelector('[data-ps-banner]'))return;
+    var banner=document.createElement('div');
+    banner.setAttribute('data-ps-banner','1');
+    banner.style.cssText='padding:14px 18px;margin:0 0 18px;background:#0a1e2e;border:1px solid #1a4a6e;border-radius:10px;color:#64d2ff;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase';
+    banner.textContent='Priority Studio · Data & Governance Framework + Budget & Prioritisation · Integrated Planning View';
+    shell.insertBefore(banner,shell.firstChild);
+  }
+
+  // 5. Scroll bug fix — ensure section containers are properly scrollable
+  function fixScroll(){
+    var shell=document.querySelector('.exhaustive-shell');
+    if(shell){shell.style.overflowY='auto';shell.style.minHeight='100vh';}
+    var studio=document.querySelector('.section-studio');
+    if(studio){studio.style.overflowY='visible';studio.style.minHeight='0';}
+    // Keep map workspace bounded so it doesn't bleed through on scroll
+    document.querySelectorAll('.map-workspace').forEach(function(el){
+      el.style.overflow='hidden';
+    });
+  }
+
+  function runAll(){
+    if(handleRedirects())return;
+    syncFlowControls();
+    syncNav();
+    syncPriorityStudio();
+    fixScroll();
+  }
+
+  runAll();
+  window.addEventListener('hashchange',function(){setTimeout(runAll,80);setTimeout(runAll,500);});
+
+  var obs=new MutationObserver(function(){
+    if(!handleRedirects()){syncFlowControls();syncNav();syncPriorityStudio();fixScroll();}
+  });
+  obs.observe(document.body,{childList:true,subtree:true});
+})();
+// ===== END DUCAR UI OVERRIDES =====
