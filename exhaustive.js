@@ -296,7 +296,7 @@
 
     facilities: "./data/uganda_socioeconomic_facilities.geojson",
 
-    mapRoads: "./data/ducar_socioeconomic_roads.geojson",
+    mapRoads: "./data/ducar_2025_routes_web.geojson",
 
     structures: "./data/ducar_structure_analysis.json",
 
@@ -1917,7 +1917,8 @@
 
     const linkById=new Map((cache.links||[]).map(row=>[row.link_id,row])), socioById=new Map((cache.socio?.rows||[]).map(row=>[row.link_id,row]));
 
-    const merged=feature=>({...feature.properties,...(linkById.get(feature.properties.link_id)||{}),...(socioById.get(feature.properties.link_id)||{})});
+    const normP=p=>p.c!==undefined&&p.link_id===undefined?{...p,link_id:p.c,road_name:p.n,district:p.d,geometry_length_km:p.l,pavement_class:['Bituminous','Concrete'].includes(p.s)?'Paved':'Unpaved',condition:p.p,surface_type:p.s,priority_band:p.p==='Poor'?'Critical':p.p==='Fair'?'Moderate':'Low',registry_aadt:Number(p.a||0),registry_speed_kmh:Number(p.v||30)}:p;
+const merged=feature=>{const p=normP(feature.properties);return {...p,...(linkById.get(p.link_id)||{}),...(socioById.get(p.link_id)||{})};};
 
     const sectionTheme=p=>state.section==="socioeconomic"?({Low:"#30d158",Moderate:"#ffd60a",High:"#ff9f0a",Critical:"#ff375f"})[p.exposure_band]||"#8e8e93":state.section==="traffic"?(typeof p.registry_aadt!=="number"?"#65656d":p.registry_aadt>=1000?"#ff375f":p.registry_aadt>=500?"#ff9f0a":p.registry_aadt>=150?"#ffd60a":"#30d158"):mapColor(p);
 
