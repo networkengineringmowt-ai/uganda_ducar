@@ -296,7 +296,7 @@
 
     facilities: "./data/uganda_socioeconomic_facilities.geojson",
 
-    mapRoads: "./data/ducar_socioeconomic_roads.geojson",
+    mapRoads: "./data/ducar_2025_routes_web.geojson",
 
     alignments: "./data/uganda_unified_roads_web_2026-06-02.geojson",
 
