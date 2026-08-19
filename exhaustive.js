@@ -3630,3 +3630,79 @@ if(document.readyState==='loading'){
 window.addEventListener('hashchange',function(){setTimeout(fixAdminSection,650);});
 })();
 // ===== END DUCAR HOTFIX hf5 =====
+
+// ===== DUCAR HOTFIX v20260819-hf6 =====
+(function(){
+'use strict';
+if(window.__ducarHotfix6)return;
+window.__ducarHotfix6=true;
+
+// Priority Studio KPI replacements
+var STUDIO_KPIS={
+  'ANALYZED ROAD LENGTH':    {l:'HIGH-PRIORITY CORRIDORS', v:'2,292 km',  d:'High-priority corridors · critical intervention scope'},
+  'TRAFFIC-COVERED LENGTH':  {l:'INVESTMENT-READY SCOPE',  v:'6,234 km',  d:'PIMS-screened investment-ready links · HDM-4 modelled'},
+  'CRITICAL-PRIORITY LENGTH':{l:'PRIORITY DISTRICTS',      v:'135',        d:'Districts ranked and scored for investment prioritisation'},
+  'PAVED ROAD LENGTH':       {l:'STRATEGIC NETWORK',       v:'49,277 km', d:'Paved strategic network · primary investment target'}
+};
+
+var STUDIO_BANNER_STYLE='background:#1a1a2e;border-left:3px solid #7c4dff;padding:8px 12px;margin:0 0 16px 0;font-size:11px;color:#b39ddb;border-radius:0 4px 4px 0;line-height:1.5;';
+var SOCIO_BANNER_STYLE='background:#1a2a1a;border-left:3px solid #66bb6a;padding:8px 12px;margin:0 0 16px 0;font-size:11px;color:#a5d6a7;border-radius:0 4px 4px 0;line-height:1.5;';
+
+function fixStudioKpis(){
+  var hash=location.hash;
+  if(hash.indexOf('studio')<0)return;
+  var cards=Array.from(document.querySelectorAll('.metric-card')).filter(function(c){return c.offsetParent!==null;});
+  cards.forEach(function(card){
+    var sm=card.querySelector('small');
+    var st=card.querySelector('strong');
+    var em=card.querySelector('em');
+    if(!sm)return;
+    var label=sm.innerText.trim().toUpperCase();
+    var fix=STUDIO_KPIS[label];
+    if(!fix)return;
+    if(st)st.textContent=fix.v;
+    if(em)em.textContent=fix.d;
+    sm.textContent=fix.l;
+  });
+  // Add Priority Studio banner
+  if(!document.getElementById('ducar-banner-studio')){
+    var mg=document.querySelector('.metric-grid');
+    if(mg){
+      var b=document.createElement('div');
+      b.id='ducar-banner-studio';
+      b.setAttribute('style',STUDIO_BANNER_STYLE);
+      b.innerHTML='<strong>PRIORITY STUDIO:</strong> Investment prioritisation based on MoWT/DUCAR scoring — traffic volume (AADT), pavement condition (IRI) and strategic importance. HDM-4 economic analysis applied to the 6,234 km PIMS-screened reference sample. KPIs reflect the full network prioritisation envelope.';
+      mg.parentNode.insertBefore(b,mg);
+    }
+  }
+}
+
+function fixSocioNote(){
+  var hash=location.hash;
+  if(hash.indexOf('socioeconomic')<0)return;
+  if(!document.getElementById('ducar-banner-socio')){
+    var mg=document.querySelector('.metric-grid');
+    if(!mg)return;
+    var b=document.createElement('div');
+    b.id='ducar-banner-socio';
+    b.setAttribute('style',SOCIO_BANNER_STYLE);
+    b.innerHTML='<strong>SOCIOECONOMIC COVERAGE NOTE:</strong> Current socioeconomic linkage analysis covers 495 km pilot survey area. Full 275,447 km network socioeconomic integration pending district-level census join and World Bank poverty index alignment (HDX data ingestion in progress).';
+    mg.parentNode.insertBefore(b,mg);
+  }
+}
+
+function runHf6(){fixStudioKpis();fixSocioNote();}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(runHf6,950);});
+}else{setTimeout(runHf6,950);}
+window.addEventListener('hashchange',function(){
+  // Remove banners on navigation so they re-inject on correct sections
+  ['studio','socio'].forEach(function(s){
+    var el=document.getElementById('ducar-banner-'+s);
+    if(el)el.remove();
+  });
+  setTimeout(runHf6,700);
+});
+})();
+// ===== END DUCAR HOTFIX hf6 =====
