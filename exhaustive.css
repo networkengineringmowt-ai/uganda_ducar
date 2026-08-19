@@ -763,14 +763,16 @@ body {
 /* Hide the middle controls bar and right-side filter controls
    on every section except the Map / Network section          */
 
-body:not([data-section="map"]) .top-nav-middle {
+/* Section-scoped chrome: the middle nav, Filters and road-class controls belong to
+   the Network section only. Export stays available on every section. */
+body:not([data-section="network"]) .top-nav-middle {
   display: none !important;
 }
-body:not([data-section="map"]) .top-action-select,
-body:not([data-section="map"]) .top-export-dropdown,
-body:not([data-section="map"]) .top-action-btn:not(.export-btn) {
+body:not([data-section="network"]) .top-action-select,
+body:not([data-section="network"]) .top-action-btn:not(.export-btn) {
   display: none !important;
 }
+.top-export-dropdown { display: inline-block !important; }
 
 /* ── Count-up animation ──────────────────────────────────── */
 @keyframes countUp {
@@ -862,3 +864,87 @@ svg.recharts-surface,
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-deep, #0b141e); }
 ::-webkit-scrollbar-thumb { background: var(--border, rgba(241,159,11,0.3)); border-radius: 3px; }
+
+/* ==========================================================================
+   Unified dashboard flow, network filters, loading states — 2026-08-18
+   ========================================================================== */
+
+/* one continuous chart container: no chart-type headings, no nested panels */
+.chart-grid.unified-flow{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;margin:0 0 6px!important;align-items:stretch}
+.unified-flow>.chart-card{grid-column:span 2}
+.unified-flow>.dynamic-chart-card{grid-column:span 2;min-height:280px}
+.unified-flow>.insight-card{grid-column:span 1}
+.unified-flow>[hidden]{display:none!important}
+.viz-studio,.insight-wall,.chart-type-section{border:0!important;background:none!important;padding:0!important;margin:0!important;box-shadow:none!important}
+.viz-heading,.insight-heading,.complete-chart-stack>section>header,.chart-type-section>header{display:none!important}
+.dynamic-chart-card header span{color:#7b7b86!important;text-transform:none!important;letter-spacing:0!important;font-size:8px!important}
+
+.flow-controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px;margin:0 0 6px;padding:8px 10px;border:1px solid #2c2c32;border-radius:10px;background:#0f0f12}
+.flow-controls label{display:flex;flex-direction:column;gap:4px;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#8e8e98}
+.flow-controls .flow-search-label{flex:1;min-width:220px}
+.flow-controls select,.flow-controls input{height:30px;padding:0 9px;border:1px solid #3a3a40;border-radius:8px;background:#151518;color:#f1f1f4;font-size:11px}
+.flow-controls>strong{margin-left:auto;padding:7px 11px;border:1px solid #315573;border-radius:9px;background:#10283b;color:#7ac9ff;font-size:11px}
+.flow-empty{padding:22px;margin-bottom:6px;text-align:center;color:#a2a2aa;border:1px dashed #33333a;border-radius:10px}
+.flow-empty[hidden]{display:none}
+
+/* network-scoped filter panel */
+.network-filter-panel{margin:0 0 6px;padding:9px 10px;border:1px solid #2c2c32;border-radius:10px;background:#0f0f12}
+.network-filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.network-filter-grid label{display:flex;flex-direction:column;gap:4px;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#8e8e98}
+.network-filter-grid select{height:30px;padding:0 8px;border:1px solid #3a3a40;border-radius:8px;background:#151518;color:#f1f1f4;font-size:11px}
+.network-filter-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px;color:#7ac9ff;font-size:11px}
+
+/* export menu opens on click as well as hover */
+.top-export-dropdown.open .top-export-menu{display:flex!important;flex-direction:column!important;gap:4px!important}
+.top-action-btn.active{background:rgba(56,189,248,.2)!important;border-color:rgba(56,189,248,.55)!important;color:#bfe6ff!important}
+
+/* loading states */
+.data-loading-banner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 6px;padding:9px 12px;border:1px solid #2a4a63;border-radius:10px;background:#0d1e2c;color:#cfe9ff}
+.data-loading-banner strong{font-size:12px}
+.data-loading-banner small{color:#8fb6d4;font-size:10px}
+.data-loading-spinner{width:14px;height:14px;flex:none;border:2px solid rgba(122,201,255,.28);border-top-color:#7ac9ff;border-radius:50%;animation:ducarSpin .8s linear infinite}
+@keyframes ducarSpin{to{transform:rotate(360deg)}}
+.map-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:100%;min-height:340px;color:#cfe9ff;text-align:center}
+.map-loading small{color:#8fb6d4;font-size:10px;max-width:340px}
+
+/* density: no wasted space anywhere */
+#exhaustive-root{min-height:0!important}
+.exhaustive-shell{min-height:0!important;padding:4px 6px 8px!important}
+.app-content-wrapper{min-height:0!important}
+.section-studio{margin:0!important}
+.method-note{margin-top:6px!important;padding:8px 10px!important}
+.metric-grid{margin-bottom:6px!important}
+.benchmark-panel{margin-top:6px}
+.analytics-workbook>*+*{margin-top:6px}
+.chart-card .chart-subtitle{min-height:0!important;margin:0 0 6px!important}
+
+@media (max-width:1500px){
+  .chart-grid.unified-flow{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .network-filter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:1100px){
+  .chart-grid.unified-flow{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .unified-flow>.chart-card,.unified-flow>.dynamic-chart-card{grid-column:span 2}
+  .network-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+.section-empty-state,.section-pending{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:18px;border:1px solid #2c2c32;border-radius:11px;background:#0f0f12;color:#cfd6dd}
+.section-empty-state h3,.section-pending strong{margin:0;font-size:14px;color:#f1f1f4}
+.section-empty-state p,.section-pending small{margin:0;color:#8e8e98;font-size:11px;max-width:640px}
+.mind-map-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}
+.mind-branch{padding:9px 10px;border:1px solid #2c2c32;border-radius:9px;background:#121215}
+.mind-branch strong{display:block;font-size:12px;color:#f1f1f4;margin-bottom:4px}
+.mind-branch span{color:#8fb6d4;font-size:10px;line-height:1.5}
+
+/* ---- reclaim the dead gutter and the dead band under the fixed top nav ---- */
+body:not(.network-map-mode) #root{height:0!important;min-height:0!important;overflow:visible!important}
+.app-content-wrapper{margin-left:0!important;width:auto!important;max-width:none!important;box-sizing:border-box!important}
+.app-main-layout{margin-top:56px!important;min-height:0!important}
+.chart-grid.unified-flow{align-items:start!important}
+.unified-flow>.chart-card,.unified-flow>.dynamic-chart-card,.unified-flow>.insight-card{align-self:start}
+.chart-card .axis-title{font-size:8.5px!important;line-height:1.35!important;text-transform:none!important;margin:4px 0 0!important;color:#7b7b86!important}
+.chart-card .chart-legend{margin-top:4px!important}
+.chart-card h3{font-size:13px!important;margin:0 0 3px!important}
+.app-content-wrapper{flex:1 1 auto!important;min-width:0!important}
+.map-toolrail button{display:flex!important;align-items:center;justify-content:center;color:#cfd6dd}
+.map-toolrail button svg{display:block}
+.map-toolrail button.active{background:#0a84ff!important;border-color:#0a84ff!important;color:#fff!important}
