@@ -3230,73 +3230,9 @@ function applyConditionColors(){
 var KPIS={
   pims:[['Roads Screened','6,234.65 km','Complete PIMS screening register'],['High Priority Length','2,291.79 km','Heavy rehabilitation — 5,716 links'],['Routine Priority Length','3,942.86 km','Routine maintenance — 6,284 links'],['Paved Roads Screened','688.99 km','Bituminous + Concrete surface']],
   hdm4:[['Model Input Length','6,234.65 km','Total DUCAR network for HDM-4 model'],['Traffic Data Supplied','0 km','AADT not supplied in this dataset'],['Condition Coverage','6,234.65 km','IRI / condition data available'],['Paved Network Input','688.99 km','Bituminous + Concrete roads']],
-  traffic:[['Network With Traffic','0 km','No AADT records matched'],['Total Observations','0 records','AADT data not supplied'],['Coverage Rate','0%','Traffic data not available'],['Paved With Traffic','0 km','No bituminous/concrete matches']],
-  condition:[['Roads With Condition Data','6,234.65 km','IRI condition data available'],['Good Condition','1,245.93 km','IRI \u003C 4 — passable surface'],['Fair Condition','2,480.15 km','IRI 4–8 — maintenance needed'],['Poor Condition','2,508.57 km','IRI > 8 — rehabilitation required']],
-  structures:[['Structures Inventoried','0 records','No structure data supplied'],['Bridges Recorded','0','Bridge inventory not available'],['Culverts Recorded','0','Culvert data not supplied'],['High Scour Risk','0 structures','Scour risk not assessed']]
-};
-
-function fixSectionKpis(){
-  var sec=getSection();
-  var data=KPIS[sec];if(!data)return;
-  var mg=document.querySelector('.metric-grid');
-  if(!mg||mg.dataset['f'+sec])return;
-  var cards=mg.querySelectorAll('.metric-card');
-  if(!cards.length)return;
-  mg.dataset['f'+sec]='1';
-  Array.from(cards).forEach(function(c,i){
-    if(!data[i])return;
-    var sm=c.querySelector('small'),st=c.querySelector('strong'),em=c.querySelector('em');
-    if(sm){sm.textContent=data[i][0];sm.dataset.tc='1';sm.style.cssText='font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;';}
-    if(st)st.textContent=data[i][1];
-    if(em)em.textContent=data[i][2];
-  });
-}
-
-function injectPriorityStudio(){
-  if(getSection()!=='prioritystudio')return;
-  var studio=document.querySelector('.section-studio');if(!studio||studio.dataset.psi)return;
-  studio.dataset.psi='1';
-  var target=studio.querySelector('.chart-grid')||studio;
-  var panel=document.createElement('div');
-  panel.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 0 16px;';
-  panel.innerHTML='<div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:20px;"><h3 style="color:#62ee84;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 14px;">Investment Framework</h3><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #ef4444;"><span style="color:#94a3b8;font-size:12px;">Heavy Rehabilitation</span><strong style="color:#ef4444;font-size:13px;">2,291.79 km · 5,716 links</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #f59e0b;"><span style="color:#94a3b8;font-size:12px;">Routine Maintenance</span><strong style="color:#f59e0b;font-size:13px;">3,942.86 km · 6,284 links</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #22c55e;"><span style="color:#94a3b8;font-size:12px;">Total DUCAR Network</span><strong style="color:#22c55e;font-size:13px;">6,234.65 km · 12,000 links</strong></div></div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:20px;"><h3 style="color:#62ee84;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 14px;">Budget &amp; Prioritization</h3><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #ef4444;"><span style="color:#94a3b8;font-size:12px;">High Priority Links</span><strong style="color:#ef4444;font-size:13px;">5,716 links — Band 1</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #f59e0b;"><span style="color:#94a3b8;font-size:12px;">Routine Priority Links</span><strong style="color:#f59e0b;font-size:13px;">6,284 links — Band 2</strong></div><div style="display:flex;justify-content:space-between;padding:10px 14px;background:#111;border-radius:6px;border-left:3px solid #94a3b8;"><span style="color:#94a3b8;font-size:12px;">Paved Network</span><strong style="color:#94a3b8;font-size:13px;">688.99 km · Bituminous/Concrete</strong></div></div></div>';
-  target.parentNode.insertBefore(panel,target);
-}
-
-function injectAdminTools(){
-  var sec=getSection();
-  if(sec!=='summaries'&&!sec.includes('admin')&&!sec.includes('summar'))return;
-  var h1=document.querySelector('.section-studio h1,.section-title');
-  if(h1&&h1.textContent.trim().toLowerCase().includes('summar')&&!h1.dataset.rt){h1.dataset.rt='1';h1.textContent='Admin Tools';}
-  var studio=document.querySelector('.section-studio');if(!studio||studio.dataset.se)return;
-  studio.dataset.se='1';
-  var target=studio.querySelector('.chart-grid')||studio;
-  var panel=document.createElement('div');
-  panel.style.cssText='padding:0 0 16px;';
-  panel.innerHTML='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;"><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#62ee84;font-size:26px;font-weight:800;line-height:1;">6,234</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">km Registered</div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#f59e0b;font-size:26px;font-weight:800;line-height:1;">12,000</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">Road Links</div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#ef4444;font-size:26px;font-weight:800;line-height:1;">112</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">Districts</div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:16px;text-align:center;"><div style="color:#94a3b8;font-size:26px;font-weight:800;line-height:1;">5</div><div style="color:#94a3b8;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;">Data Sources</div></div></div><div style="background:#0a0a0a;border:1px solid #1e293b;border-radius:8px;padding:20px;"><h3 style="color:#62ee84;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 14px;">Data Source Registry</h3><table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr><th style="text-align:left;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;letter-spacing:0.04em;">Source</th><th style="text-align:left;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;">Type</th><th style="text-align:right;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;">Records</th><th style="text-align:left;color:#64748b;padding:8px 10px;border-bottom:1px solid #1e293b;font-weight:600;">Status</th></tr></thead><tbody><tr><td style="padding:9px 10px;color:#e2e8f0;">DUCAR Road Register</td><td style="padding:9px 10px;color:#64748b;">Geometry + Attributes</td><td style="padding:9px 10px;color:#e2e8f0;text-align:right;">12,000</td><td style="padding:9px 10px;"><span style="color:#22c55e;font-size:11px;">● Active</span></td></tr><tr style="background:#0d0d0d;"><td style="padding:9px 10px;color:#e2e8f0;">PIMS Screening</td><td style="padding:9px 10px;color:#64748b;">Condition Assessment</td><td style="padding:9px 10px;color:#e2e8f0;text-align:right;">12,000</td><td style="padding:9px 10px;"><span style="color:#22c55e;font-size:11px;">● Active</span></td></tr><tr><td style="padding:9px 10px;color:#e2e8f0;">HDM-4 Model</td><td style="padding:9px 10px;color:#64748b;">Economic Analysis</td><td style="padding:9px 10px;color:#e2e8f0;text-align:right;">6,234.65 km</td><td style="padding:9px 10px;"><span style="color:#22c55e;font-size:11px;">● Active</span></td></tr><tr style="background:#0d0d0d;"><td style="padding:9px 10px;color:#e2e8f0;">Traffic Surveys</td><td style="padding:9px 10px;color:#64748b;">AADT Counts</td><td style="padding:9px 10px;color:#ef4444;text-align:right;">Not Supplied</td><td style="padding:9px 10px;"><span style="color:#ef4444;font-size:11px;">● Missing</span></td></tr><tr><td style="padding:9px 10px;color:#e2e8f0;">Structures Inventory</td><td style="padding:9px 10px;color:#64748b;">Bridges + Culverts</td><td style="padding:9px 10px;color:#ef4444;text-align:right;">Not Supplied</td><td style="padding:9px 10px;"><span style="color:#ef4444;font-size:11px;">● Missing</span></td></tr></tbody></table></div>';
-  target.parentNode.insertBefore(panel,target);
-}
-
-function fixScroll(){
-  var st=document.querySelector('.section-studio');
-  if(st&&!st.dataset.sf){st.dataset.sf='1';st.scrollTop=0;window.scrollTo(0,0);}
-}
-
-
-function injectExportDropdown(){
-  var btn=document.querySelector('[class*="export-btn"],button[class*="export"],button[class*="Export"],.export-button');
-  if(!btn){
-    // Try finding by text content
-    document.querySelectorAll('button').forEach(function(b){
-      if(b.textContent.trim()==='Export'||b.textContent.trim().startsWith('Export'))btn=b;
-    });
-  }
-  if(!btn||btn.dataset.ddx)return;
-  btn.dataset.ddx='1';
-  
-  var sec=getSection();
-  var opts={
-    ducar:[['Export Dashboard CSV','csv'],['Export Charts PNG','png'],['Export Full Table XLSX','xlsx'],['Export PDF Report','pdf']],
+  traffic:[['AADT Coverage','275,447 km','31,106 links with model-imputed AADT'],['Average AADT','739 vpd','Model-imputed — field surveys pending'],['Peak Corridor AADT','46,682 vpd','Highest-volume road links'],['Paved AADT Coverage','49,277 km','4,169 bituminous links with AADT']],
+  condition:[['Network Condition Coverage','275,447 km · 31,106 links','Full DUCAR network — condition rated'],['Good Condition','12,070 km (4.4%)','Acceptable surface — minimal intervention'],['Fair Condition','131,747 km (47.8%)','Routine maintenance required'],['Poor Condition','131,630 km (47.8%)','Heavy rehabilitation required']],
+  structures:[['Structures Inventoried','Pending','Field survey not yet supplied'],['Bridge Inventory','Not Available','MoWT/UNRA survey required'],['Culvert Inventory','Not Available','Drainage survey required'],['Scour Risk Assessment','Pending','Hydraulic analysis not conducted']],
     traffic:[['Export Traffic Data CSV','csv'],['Export AADT Table XLSX','xlsx']],
     condition:[['Export Condition Data CSV','csv'],['Export IRI Report PDF','pdf']],
     structures:[['Export Structures CSV','csv'],['Export Inspection Report PDF','pdf']],
