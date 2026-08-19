@@ -3591,3 +3591,42 @@ if(document.readyState==='loading'){
 window.addEventListener('hashchange',function(){setTimeout(fixAdminSection,600);});
 })();
 // ===== END DUCAR HOTFIX hf4 =====
+
+// ===== DUCAR HOTFIX v20260819-hf5 =====
+(function(){
+'use strict';
+if(window.__ducarHotfix5)return;
+window.__ducarHotfix5=true;
+
+// Correct admin stat values (full DUCAR network)
+var ADMIN_VALS=['275,447','31,106','135','5'];
+
+function fixAdminSection(){
+  var ss=document.querySelector('.section-studio');
+  if(!ss)return;
+  if(location.hash.toUpperCase().indexOf('ADMIN')<0)return;
+  var kids=Array.from(ss.children);
+  // Case-insensitive detection of admin stat blocks
+  var adminBlocks=kids.filter(function(k){
+    return !k.className&&!k.id&&k.children.length===2&&k.innerText&&
+           k.innerText.toUpperCase().indexOf('REGISTERED')>=0;
+  });
+  // Remove duplicates — keep only first
+  adminBlocks.slice(1).forEach(function(b){b.remove();});
+  var kept=adminBlocks[0];
+  if(!kept)return;
+  var sc=kept.children[0];
+  if(!sc)return;
+  Array.from(sc.children).forEach(function(card,i){
+    if(i<ADMIN_VALS.length&&card.children[0]&&card.children[0].firstChild){
+      card.children[0].firstChild.textContent=ADMIN_VALS[i];
+    }
+  });
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(fixAdminSection,900);});
+}else{setTimeout(fixAdminSection,900);}
+window.addEventListener('hashchange',function(){setTimeout(fixAdminSection,650);});
+})();
+// ===== END DUCAR HOTFIX hf5 =====
