@@ -3488,3 +3488,67 @@ if(document.readyState==='loading'){
 window.addEventListener('hashchange',function(){setTimeout(fixDropdown,400);});
 })();
 // ===== END DUCAR HOTFIX hf2 =====
+
+// ===== DUCAR HOTFIX v20260819-hf3 =====
+(function(){
+'use strict';
+if(window.__ducarHotfix3)return;
+window.__ducarHotfix3=true;
+
+// Banner style
+var bannerStyle='background:#1a3a1a;border-left:3px solid #4caf50;padding:8px 12px;margin:0 0 16px 0;'+
+'font-size:11px;color:#9ccc9c;border-radius:0 4px 4px 0;line-height:1.5;';
+var warnStyle='background:#2a1a00;border-left:3px solid #ff9800;padding:8px 12px;margin:0 0 16px 0;'+
+'font-size:11px;color:#ffcc80;border-radius:0 4px 4px 0;line-height:1.5;';
+
+var BANNERS={
+  traffic:'<strong>KPI COVERAGE NOTE:</strong> KPI cards above reflect full DUCAR network (275,447 km · 31,106 links) with model-imputed AADT. '+
+          'Charts below reflect verified PIMS field register (6,234 km reference sample). Field AADT surveys pending for full network.',
+  condition:'<strong>CONDITION DATA NOTE:</strong> KPI cards reflect full network condition model (275,447 km). '+
+            'Charts reflect PIMS-registered links (6,234 km). Condition: Good 4.4% · Fair 47.8% · Poor 47.8% based on IRI model.',
+  pims:'<strong>PIMS SCOPE:</strong> PIMS (Priority Investment Management System) analyses the MoWT-registered screened sample '+
+       '(6,234 km · 12,000 links). This is the verified field-survey dataset used for investment prioritisation.',
+  hdm4:'<strong>HDM-4 SCOPE:</strong> HDM-4 model inputs use the PIMS-screened reference sample (6,234 km). '+
+       'Full network HDM-4 run requires field AADT surveys and pavement strength data (pending).',
+  structures:'<strong>STRUCTURES DATA:</strong> Bridge, culvert and drainage structure inventory is pending field survey. '+
+             'MoWT/UNRA structural survey required. Estimated 2,290 structures in network.'
+};
+
+function injectBanners(){
+  Object.keys(BANNERS).forEach(function(sec){
+    var id='ducar-banner-'+sec;
+    if(document.getElementById(id))return;
+    // Find section content area
+    var sectionEl=null;
+    // Look for active section or metric-grid in context
+    var allMetricGrids=document.querySelectorAll('.metric-grid');
+    // Find by checking nearest section heading or hash
+    var hash=location.hash;
+    if(hash.indexOf(sec)<0)return;
+    // Inject before first metric-grid
+    var mg=document.querySelector('.metric-grid');
+    if(!mg)return;
+    var banner=document.createElement('div');
+    banner.id=id;
+    var isWarn=sec==='traffic'||sec==='hdm4';
+    banner.setAttribute('style',isWarn?warnStyle:bannerStyle);
+    banner.innerHTML=BANNERS[sec];
+    mg.parentNode.insertBefore(banner,mg);
+  });
+}
+
+function runHf3(){injectBanners();}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(runHf3,700);});
+}else{setTimeout(runHf3,700);}
+window.addEventListener('hashchange',function(){
+  // Remove old banners when navigating away
+  ['traffic','condition','pims','hdm4','structures'].forEach(function(s){
+    var el=document.getElementById('ducar-banner-'+s);
+    if(el)el.remove();
+  });
+  setTimeout(runHf3,700);
+});
+})();
+// ===== END DUCAR HOTFIX hf3 =====
