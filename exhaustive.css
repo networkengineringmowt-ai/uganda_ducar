@@ -990,3 +990,71 @@ body:not(.network-map-mode) #root{height:0!important;min-height:0!important;over
 
 /* ===== NAV HIDE CLASS — v20260819-audit ===== */
 .ducar-nav-hidden{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;pointer-events:none!important;margin:0!important;padding:0!important;border:0!important}
+
+/* ===== UNIFORM NAV RAIL + BLACK KPI CARDS — v20260819-uniform ===== */
+/* Kill the per-item gradient backgrounds (top-pill=red/pink, ducar-badge=yellow)
+   from the React bundle's own CSS. All rail items get one flat dark background;
+   only the active item gets the amber accent. */
+.nav-rail-item,
+.nav-rail-item.top-pill,
+.nav-rail-item.ducar-badge,
+.nav-rail-item.gold,
+.nav-rail-item.pink,
+.nav-rail-item.amber,
+.nav-rail-item.cyan,
+.nav-rail-item.emerald,
+.nav-rail-item.green,
+.nav-rail-item.magenta,
+.nav-rail-item.sky,
+.nav-rail-item.top-pill:hover,
+.nav-rail-item.ducar-badge:hover {
+  background: #0f1923 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+.nav-rail-item .nav-rail-icon-wrap,
+.nav-rail-item.ducar-badge .nav-rail-icon-wrap,
+.nav-rail-item.top-pill .nav-rail-icon-wrap {
+  color: #ffffff !important;
+}
+.nav-rail-item .nav-rail-label,
+.nav-rail-item.ducar-badge .nav-rail-label,
+.nav-rail-item.top-pill .nav-rail-label {
+  color: #ffffff !important;
+}
+.nav-rail-item.active,
+.nav-rail-item.active.top-pill,
+.nav-rail-item.active.ducar-badge {
+  background: #f59e0b !important;
+  background-image: none !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 4px 16px rgba(245,158,11,.4) !important;
+}
+.nav-rail-item.active .nav-rail-icon-wrap,
+.nav-rail-item.active .nav-rail-label {
+  color: #0f1923 !important;
+}
+/* codex-injected scroll-spy highlight (exhaustive.js extra rail items) gets the
+   same amber accent instead of its own ad-hoc styling */
+.nav-rail-item.codex-injected-active {
+  background: #f59e0b !important;
+  border-color: #f59e0b !important;
+}
+.nav-rail-item.codex-injected-active .nav-rail-icon-wrap,
+.nav-rail-item.codex-injected-active .nav-rail-label {
+  color: #0f1923 !important;
+}
+
+/* KPI / metric cards: flat dark background, no gradient, no amber bleed */
+.metric-card,
+.kpi-card,
+[class*="metric-card"] {
+  background: #1c2a3a !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+.metric-card small { color: #b8c4d0 !important; }
+.metric-card strong { color: #ffffff !important; }
+.metric-card em { color: #64d2ff !important; }
