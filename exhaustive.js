@@ -3468,3 +3468,23 @@ if(document.readyState==='loading'){
 window.addEventListener('hashchange',function(){setTimeout(runHotfix,400);});
 })();
 // ===== END DUCAR HOTFIX =====
+
+// ===== DUCAR HOTFIX v20260819-hf2 =====
+(function(){
+'use strict';
+if(window.__ducarHotfix2)return;
+window.__ducarHotfix2=true;
+var JUNK=['Individual-link length band','Governed parameter completeness'];
+function fixDropdown(){
+  document.querySelectorAll('select').forEach(function(sel){
+    Array.from(sel.options).forEach(function(opt){
+      if(JUNK.indexOf(opt.value)>=0)opt.remove();
+    });
+  });
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(fixDropdown,800);});
+}else{setTimeout(fixDropdown,800);}
+window.addEventListener('hashchange',function(){setTimeout(fixDropdown,400);});
+})();
+// ===== END DUCAR HOTFIX hf2 =====
