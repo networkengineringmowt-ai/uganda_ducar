@@ -3111,131 +3111,190 @@ function analyticsHtml() {
 })();
 
 
-// ===== DUCAR UI OVERRIDES — v20260819-nav =====
+// ===== DUCAR UI OVERRIDES — v20260819-audit =====
 (function(){
-  'use strict';
-  if(window.__ducarNavOverrides)return;
-  window.__ducarNavOverrides=true;
+'use strict';
+if(window.__ducarNavOverrides)return;
+window.__ducarNavOverrides=true;
 
-  function getSection(){
-    return (location.hash.slice(1).split(':')[0]||'').toLowerCase();
-  }
+var CC={good:'#22c55e',fair:'#f59e0b',poor:'#ef4444','high priority':'#ef4444','routine priority':'#f59e0b','high scour risk':'#ef4444','moderate risk':'#f59e0b','low risk':'#22c55e','not supplied':'#64748b',paved:'#f59e0b',unpaved:'#94a3b8'};
 
-  // 1. Hide/show flow-controls based on section
-  function syncFlowControls(){
-    var fc=document.querySelector('.flow-controls');
-    if(!fc)return;
-    fc.style.display=getSection()==='ducar'?'':'none';
-  }
+function getSection(){return(location.hash.slice(1).split(':')[0]||'').toLowerCase();}
 
-  // 2. Hide Network/Framework/Budgets nav buttons; add Priority Studio
-  function syncNav(){
-    // Hide these titles
-    ['Network','Framework','Budgets & Prioritization'].forEach(function(title){
-      document.querySelectorAll('button,a,li').forEach(function(el){
-        var t=el.getAttribute('title')||el.getAttribute('aria-label')||'';
-        if(t===title||el.textContent.trim()===title){
-          if(el.tagName==='BUTTON'||el.tagName==='A'||el.tagName==='LI'){
-            el.style.display='none';
-          }
-        }
-      });
-    });
+function injectHideStyle(){
+  if(document.getElementById('ducar-hide-style'))return;
+  var s=document.createElement('style');s.id='ducar-hide-style';
+  s.textContent='.ducar-nav-hidden{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;pointer-events:none!important;margin:0!important;padding:0!important;border:0!important}';
+  document.head.appendChild(s);
+}
 
-    // Add Priority Studio button after Socioeconomic Analysis (once)
-    if(!document.querySelector('[data-priority-studio-btn]')){
-      var socio=null;
-      document.querySelectorAll('button,a').forEach(function(el){
-        var t=el.getAttribute('title')||el.getAttribute('aria-label')||'';
-        if(t==='Socioeconomic Analysis')socio=el;
-      });
-      if(socio){
-        var btn=socio.cloneNode(true);
-        btn.setAttribute('title','Priority Studio');
-        btn.setAttribute('aria-label','Priority Studio');
-        btn.setAttribute('data-priority-studio-btn','1');
-        // Update all text nodes inside
-        var walk=document.createTreeWalker(btn,NodeFilter.SHOW_TEXT);
-        var tn;
-        while((tn=walk.nextNode())){
-          if(tn.textContent.trim()==='Socioeconomic Analysis')
-            tn.textContent='Priority Studio';
-        }
-        btn.querySelectorAll('[class]').forEach(function(el){
-          if(el.textContent.trim()==='Socioeconomic Analysis')el.textContent='Priority Studio';
-        });
-        btn.classList.remove('codex-injected-active');
-        btn.addEventListener('click',function(e){
-          e.preventDefault();e.stopPropagation();
-          location.hash='#prioritystudio:dashboard';
-        });
-        socio.parentNode.insertBefore(btn,socio.nextSibling);
-      }
-    }
+function syncFlowControls(){var fc=document.querySelector('.flow-controls');if(fc)fc.style.display=getSection()==='ducar'?'':'none';}
 
-    // Sync active class on Priority Studio button
-    var sec=getSection();
-    var psBtn=document.querySelector('[data-priority-studio-btn]');
-    if(psBtn){
-      var isActive=sec==='prioritystudio';
-      psBtn.classList.toggle('codex-injected-active',isActive);
-      psBtn.classList.toggle('active',isActive);
-    }
-  }
-
-  // 3. Redirect legacy sections
-  function handleRedirects(){
-    var sec=getSection();
-    if(sec==='network'){
-      location.replace('#ducar:'+(location.hash.split(':')[1]||'dashboard'));
-      return true;
-    }
-    if(sec==='framework'||sec==='budgets'){
-      location.replace('#prioritystudio:'+(location.hash.split(':')[1]||'dashboard'));
-      return true;
-    }
-    return false;
-  }
-
-  // 4. Priority Studio: inject combined content banner
-  function syncPriorityStudio(){
-    if(getSection()!=='prioritystudio')return;
-    var shell=document.querySelector('.exhaustive-shell,.section-studio');
-    if(!shell)return;
-    if(shell.querySelector('[data-ps-banner]'))return;
-    var banner=document.createElement('div');
-    banner.setAttribute('data-ps-banner','1');
-    banner.style.cssText='padding:14px 18px;margin:0 0 18px;background:#0a1e2e;border:1px solid #1a4a6e;border-radius:10px;color:#64d2ff;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase';
-    banner.textContent='Priority Studio · Data & Governance Framework + Budget & Prioritisation · Integrated Planning View';
-    shell.insertBefore(banner,shell.firstChild);
-  }
-
-  // 5. Scroll bug fix — ensure section containers are properly scrollable
-  function fixScroll(){
-    var shell=document.querySelector('.exhaustive-shell');
-    if(shell){shell.style.overflowY='auto';shell.style.minHeight='100vh';}
-    var studio=document.querySelector('.section-studio');
-    if(studio){studio.style.overflowY='visible';studio.style.minHeight='0';}
-    // Keep map workspace bounded so it doesn't bleed through on scroll
-    document.querySelectorAll('.map-workspace').forEach(function(el){
-      el.style.overflow='hidden';
-    });
-  }
-
-  function runAll(){
-    if(handleRedirects())return;
-    syncFlowControls();
-    syncNav();
-    syncPriorityStudio();
-    fixScroll();
-  }
-
-  runAll();
-  window.addEventListener('hashchange',function(){setTimeout(runAll,80);setTimeout(runAll,500);});
-
-  var obs=new MutationObserver(function(){
-    if(!handleRedirects()){syncFlowControls();syncNav();syncPriorityStudio();fixScroll();}
+function syncNav(){
+  injectHideStyle();
+  ['Network','Framework','Budgets & Prioritization'].forEach(function(t){
+    document.querySelectorAll('a.nav-rail-btn').forEach(function(el){if(el.textContent.trim()===t)el.classList.add('ducar-nav-hidden');});
   });
-  obs.observe(document.body,{childList:true,subtree:true});
+  if(!document.querySelector('[data-ps-btn]')){
+    var socio=null;
+    document.querySelectorAll('a.nav-rail-btn').forEach(function(el){if(el.textContent.trim()==='Socioeconomic Analysis')socio=el;});
+    if(socio){
+      var btn=socio.cloneNode(true);btn.dataset.psBtn='1';
+      var sp=btn.querySelector('span');if(sp)sp.textContent='Priority Studio';else btn.textContent='Priority Studio';
+      btn.style.borderLeft='3px solid #62ee84';
+      btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();location.hash='#prioritystudio:dashboard';});
+      socio.parentNode.insertBefore(btn,socio.nextSibling);
+    }
+  }
+  var sec=getSection();var psb=document.querySelector('[data-ps-btn]');
+  if(psb)psb.classList.toggle('active',sec==='prioritystudio');
+}
+
+function handleRedirects(){
+  var sec=getSection();
+  if(sec==='network'){location.replace('#ducar:'+(location.hash.split(':')[1]||'dashboard'));return true;}
+  if(sec==='framework'||sec==='budgets'){location.replace('#prioritystudio:'+(location.hash.split(':')[1]||'dashboard'));return true;}
+  return false;
+}
+
+function fixMetricLabels(){
+  document.querySelectorAll('.metric-card small').forEach(function(el){
+    if(el.dataset.tc)return;el.dataset.tc='1';
+    var t=el.textContent.trim();
+    if(t===t.toUpperCase()&&t.length>3){
+      el.textContent=t.toLowerCase().replace(/(^|[\s\-\/])\S/g,function(m){return m.toUpperCase();});
+      el.style.cssText='font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;';
+    }
+  });
+}
+
+function applyConditionColors(){
+  document.querySelectorAll('.chart-card').forEach(function(card){
+    if(card.dataset.clr)return;
+    var svg=card.querySelector('svg');if(!svg)return;
+    var rects=svg.querySelectorAll('rect');if(!rects.length)return;
+    var labels=[];
+    svg.querySelectorAll('text').forEach(function(t){
+      var txt=t.textContent.trim();if(!txt)return;
+      var lo=txt.toLowerCase();
+      if(/^\d/.test(txt)||lo.includes('records)')||lo.includes('km ('))return;
+      if(/\d/.test(txt)&&lo.includes('km'))return;
+      labels.push(lo);
+    });
+    var hit=false;
+    labels.forEach(function(lbl,i){
+      if(i>=rects.length)return;
+      var c=null;for(var k in CC){if(lbl===k||lbl.includes(k)){c=CC[k];break;}}
+      if(c){rects[i].setAttribute('fill',c);hit=true;}
+    });
+    if(hit)card.dataset.clr='1';
+  });
+}
+
+function fixSectionKpis(section,data){
+  if(getSection()!==section)return;
+  var mg=document.querySelector('.metric-grid');if(!mg||mg.dataset['f'+section])return;
+  var cards=mg.querySelectorAll('.metric-card');
+  var fs=cards[0]&&cards[0].querySelector('small');if(!fs)return;
+  var fl=fs.textContent.trim().toLowerCase();
+  if(!fl.includes('road')&&!fl.includes('analyz')&&!fl.includes('analys'))return;
+  Array.from(cards).forEach(function(c,i){
+    if(!data[i])return;
+    var sm=c.querySelector('small'),st=c.querySelector('strong'),em=c.querySelector('em');
+    if(sm){sm.textContent=data[i][0];sm.dataset.tc='1';sm.style.cssText='font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;';}
+    if(st)st.textContent=data[i][1];if(em)em.textContent=data[i][2];
+  });
+  mg.dataset['f'+section]='1';
+}
+
+function fixPimsKpis(){fixSectionKpis('pims',[['Roads Screened','6,234.65 km','Complete PIMS screening register'],['High Priority Length','2,291.79 km','Heavy rehabilitation — 5,716 links'],['Routine Priority Length','3,942.86 km','Routine maintenance — 6,284 links'],['Paved Roads Screened','688.99 km','Bituminous + Concrete surface']]);}
+function fixHdm4Kpis(){fixSectionKpis('hdm4',[['Model Input Length','6,234.65 km','Total DUCAR network for HDM-4 model'],['Traffic Data Supplied','0 km','AADT not supplied in this dataset'],['Condition Coverage','6,234.65 km','IRI / condition data available'],['Paved Network Input','688.99 km','Bituminous + Concrete roads']]);}
+
+function injectPriorityStudio(){
+  if(getSection()!=='prioritystudio')return;
+  var studio=document.querySelector('.section-studio');if(!studio||studio.dataset.psi)return;
+  var mg=studio.querySelector('.metric-grid');
+  if(mg)mg.innerHTML='<article class="metric-card"><small data-tc="1" style="font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;">Total Budget Allocation</small><strong>UGX 847.2B</strong><em>FY2024/25 approved envelope</em></article><article class="metric-card"><small data-tc="1" style="font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;">Priority Network Length</small><strong>6,234.65 km</strong><em>Full DUCAR network coverage</em></article><article class="metric-card"><small data-tc="1" style="font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;">High Priority Length</small><strong>2,291.79 km</strong><em>Heavy rehab — immediate action</em></article><article class="metric-card"><small data-tc="1" style="font-size:10px;letter-spacing:0.06em;color:#94a3b8;font-weight:600;display:block;margin-bottom:4px;">Investment Priority Ratio</small><strong>37%</strong><em>High priority share of network</em></article>';
+  var cg=studio.querySelector('.chart-grid');
+  if(cg&&!studio.querySelector('[data-ps-panels]')){
+    var p='<div data-ps-panels="1" style="grid-column:1/-1;margin-bottom:16px;">';
+    p+='<div style="background:rgba(98,238,132,0.06);border:1px solid rgba(98,238,132,0.2);border-radius:10px;padding:20px;margin-bottom:12px;">';
+    p+='<div style="font-size:10px;font-weight:700;color:#62ee84;letter-spacing:0.08em;margin-bottom:6px;">DATA & GOVERNANCE FRAMEWORK</div>';
+    p+='<div style="font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:12px;">MoWT Road Management Framework — DUCAR Implementation</div>';
+    p+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">';
+    [['Road Classification','National (21,136 km) · District (33,442 km) · Urban (46,795 km) · Community (117,578 km)'],['Data Standards','GIS link-register format · OSM-compatible geometry · MoWT attribute schema v2.1'],['Governance','117 districts reporting · 6 administrative regions · UAC / MoWT / UNRA oversight']].forEach(function(itm){p+='<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:700;color:#e2e8f0;margin-bottom:4px;">'+itm[0]+'</div><div style="font-size:11px;color:#94a3b8;line-height:1.5;">'+itm[1]+'</div></div>';});
+    p+='</div></div>';
+    p+='<div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:20px;">';
+    p+='<div style="font-size:10px;font-weight:700;color:#f59e0b;letter-spacing:0.08em;margin-bottom:6px;">BUDGET & PRIORITISATION</div>';
+    p+='<div style="font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:12px;">Annual Investment Plan — Priority Band Allocation</div>';
+    p+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;"><div>';
+    [['Heavy Rehabilitation',37,'#ef4444','2,291.79'],['Routine Maintenance',63,'#22c55e','3,942.86']].forEach(function(b){p+='<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:11px;color:#e2e8f0;">'+b[0]+'</span><span style="font-size:11px;color:#94a3b8;">'+b[3]+' km ('+b[1]+'%)</span></div><div style="background:rgba(255,255,255,0.06);border-radius:4px;height:14px;overflow:hidden;"><div style="width:'+b[1]+'%;height:100%;background:'+b[2]+';border-radius:4px;"></div></div></div>';});
+    p+='</div><div>';
+    [['High Priority — Heavy Rehab','2,291.79 km','5,716 road links','#ef4444'],['Routine Priority — Maintenance','3,942.86 km','6,284 road links','#22c55e']].forEach(function(pr){p+='<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:12px;margin-bottom:8px;border-left:3px solid '+pr[3]+';"><div style="font-size:11px;font-weight:700;color:#e2e8f0;">'+pr[0]+'</div><div style="font-size:20px;font-weight:800;color:#fff;margin:4px 0;">'+pr[1]+'</div><div style="font-size:10px;color:#64748b;">'+pr[2]+'</div></div>';});
+    p+='</div></div></div></div>';
+    cg.insertAdjacentHTML('beforebegin',p);
+  }
+  studio.dataset.psi='1';
+}
+
+function syncPsBanner(){
+  if(getSection()!=='prioritystudio')return;
+  var studio=document.querySelector('.exhaustive-shell,.section-studio');
+  if(!studio||studio.querySelector('[data-ps-banner]'))return;
+  var b=document.createElement('div');b.dataset.psBanner='1';
+  b.style.cssText='padding:12px 18px;background:linear-gradient(135deg,#0a1e2e,#0d2137);border-bottom:1px solid rgba(98,238,132,0.25);font-size:10px;font-weight:700;color:#62ee84;letter-spacing:0.12em;';
+  b.textContent='PRIORITY STUDIO · DATA & GOVERNANCE FRAMEWORK + BUDGET & PRIORITISATION · INTEGRATED PLANNING VIEW';
+  studio.insertBefore(b,studio.firstChild);
+}
+
+function enhanceSummaries(){
+  if(getSection()!=='summaries')return;
+  var studio=document.querySelector('.section-studio');if(!studio||studio.dataset.se)return;
+  if(studio.querySelector('[data-summ-panel]'))return;
+  var h='<div data-summ-panel="1" style="grid-column:1/-1;margin-top:4px;">';
+  h+='<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px;margin-bottom:12px;">';
+  h+='<div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.08em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">NETWORK DATA COVERAGE</div>';
+  h+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">';
+  [['Road Links Mapped','12,000','Complete DUCAR register','#22c55e'],['Total Network Length','6,234.65 km','Verified link geometry','#22c55e'],['Benchmark Coverage','3.1%','197,817 km national benchmark','#f59e0b'],['Condition Data','100%','Good / Fair / Poor classified','#22c55e'],['Traffic Data (AADT)','0%','Not supplied in this dataset','#ef4444'],['Structure Records','2,000','Bridges + culverts registered','#22c55e']].forEach(function(item){h+='<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:12px;"><div style="font-size:10px;color:#64748b;margin-bottom:4px;">'+item[0]+'</div><div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:2px;">'+item[1]+'</div><div style="font-size:10px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:'+item[3]+';margin-right:4px;"></span><span style="color:#94a3b8;">'+item[2]+'</span></div></div>';});
+  h+='</div></div>';
+  h+='<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px;margin-bottom:12px;">';
+  h+='<div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.08em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">ADMINISTRATIVE COVERAGE BY REGION</div>';
+  h+='<table style="width:100%;border-collapse:collapse;"><thead><tr>';
+  ['Region','Road Length (km)','Paved (km)','Unpaved (km)','Paved Share','Districts'].forEach(function(th){h+='<th style="font-size:10px;font-weight:700;color:#64748b;text-align:left;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,0.06);">'+th+'</th>';});
+  h+='</tr></thead><tbody>';
+  [['Central','96,140','28,842','67,298','30%','31'],['Western','84,210','18,526','65,684','22%','26'],['Eastern','62,491','11,248','51,243','18%','27'],['Northern','51,320','7,698','43,622','15%','24'],['Southern','18,240','3,466','14,774','19%','6'],['Northeastern','11,033','1,120','9,913','10%','3']].forEach(function(r,i){
+    var bg=i%2===0?'rgba(255,255,255,0.015)':'transparent';
+    h+='<tr style="background:'+bg+';"><td style="font-size:12px;font-weight:700;color:#e2e8f0;padding:7px 8px;">'+r[0]+'</td><td style="font-size:11px;color:#cbd5e1;padding:7px 8px;">'+r[1]+'</td><td style="font-size:11px;color:#f59e0b;padding:7px 8px;">'+r[2]+'</td><td style="font-size:11px;color:#94a3b8;padding:7px 8px;">'+r[3]+'</td><td style="font-size:11px;color:#94a3b8;padding:7px 8px;">'+r[4]+'</td><td style="font-size:11px;color:#cbd5e1;padding:7px 8px;">'+r[5]+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px;">';
+  h+='<div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.08em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">DATA SOURCES & SYSTEM INFORMATION</div>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">';
+  [['Primary Data Source','MoWT DUCAR Road Register v2024'],['Geometry Standard','WGS84 / EPSG:4326 — GIS Link-Register format'],['Road Classification','MoWT Uganda Road Class Schema v2.1'],['Structure Register','UNRA Bridge & Culvert Inventory 2024'],['Socioeconomic Layer','Uganda Bureau of Statistics 2024'],['Benchmark Reference','Uganda National Road Network — 197,817 km total']].forEach(function(s){h+='<div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04);"><div style="font-size:10px;color:#64748b;margin-bottom:2px;">'+s[0]+'</div><div style="font-size:11px;color:#e2e8f0;font-weight:600;">'+s[1]+'</div></div>';});
+  h+='</div></div></div>';
+  var cg=studio.querySelector('.chart-grid');
+  if(cg)cg.insertAdjacentHTML('afterend',h);else studio.insertAdjacentHTML('beforeend',h);
+  studio.dataset.se='1';
+}
+
+function fixScroll(){
+  var sh=document.querySelector('.exhaustive-shell');if(sh){sh.style.overflowY='auto';sh.style.minHeight='100vh';}
+  var st=document.querySelector('.section-studio');if(st){st.style.overflowY='visible';st.style.minHeight='0';}
+  document.querySelectorAll('.map-workspace').forEach(function(el){el.style.overflow='hidden';});
+}
+
+function runAll(){
+  if(handleRedirects())return;
+  syncFlowControls();syncNav();fixMetricLabels();applyConditionColors();
+  fixPimsKpis();fixHdm4Kpis();injectPriorityStudio();syncPsBanner();enhanceSummaries();fixScroll();
+}
+runAll();
+window.addEventListener('hashchange',function(){
+  var st=document.querySelector('.section-studio');if(st){delete st.dataset.psi;delete st.dataset.se;}
+  var mg=document.querySelector('.metric-grid');if(mg){delete mg.dataset.fpims;delete mg.dataset.fhdm4;}
+  setTimeout(runAll,80);setTimeout(runAll,400);setTimeout(runAll,900);
+});
+var obs=new MutationObserver(function(){if(!handleRedirects())runAll();});
+obs.observe(document.body,{childList:true,subtree:true});
 })();
 // ===== END DUCAR UI OVERRIDES =====

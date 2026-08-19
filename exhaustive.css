@@ -987,3 +987,6 @@ body:not(.network-map-mode) #root{height:0!important;min-height:0!important;over
 [data-priority-studio-btn]{border-left:3px solid #62ee84!important}
 
 /* ===== END ADDITIONS ===== */
+
+/* ===== NAV HIDE CLASS — v20260819-audit ===== */
+.ducar-nav-hidden{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;pointer-events:none!important;margin:0!important;padding:0!important;border:0!important}
