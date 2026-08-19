@@ -945,6 +945,76 @@
 
   }
 
+  function conditionSurfaceChart() {
+
+    const CONDITION_COLOR = { Good: "#22c55e", Fair: "#f59e0b", Poor: "#ef4444" };
+
+    const groups = [
+      { label: "Paved", rows: [
+        { name: "Good", value: 8240 },
+        { name: "Fair", value: 28847 },
+        { name: "Poor", value: 12190 }
+      ]},
+      { label: "Unpaved", rows: [
+        { name: "Good", value: 27650 },
+        { name: "Fair", value: 89430 },
+        { name: "Poor", value: 31133 }
+      ]}
+    ];
+
+    const width = 740, left = 200, right = 180, top = 24, rowH = 36, groupGap = 22, bottom = 48;
+    const totalRows = groups.reduce((n, g) => n + g.rows.length, 0);
+    const height = top + totalRows * rowH + (groups.length - 1) * groupGap + bottom;
+    const rawMax = Math.max(...groups.flatMap(g => g.rows.map(r => r.value)), 1);
+    const max = getNiceMax(rawMax);
+    const plotW = width - left - right;
+    const axisUnit = " km";
+
+    const ticks = [0, 0.25, 0.5, 0.75, 1.0];
+    const svgGridAndTicks = ticks.map(tick => {
+      const x = left + plotW * tick;
+      const tickVal = max * tick;
+      const label = tickVal >= 1000 ? number(tickVal / 1000, 1) + "k" + axisUnit : number(tickVal, 0) + axisUnit;
+      return `<line class="chart-gridline" x1="${x}" y1="${top-6}" x2="${x}" y2="${height-bottom+4}" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3,3"/><line class="chart-tick-x" x1="${x}" y1="${height-bottom+4}" x2="${x}" y2="${height-bottom+10}" stroke="#718096" stroke-width="1.5"/><text class="chart-tick" x="${x}" y="${height-bottom+24}" text-anchor="middle" fill="#94a3b8" font-size="10.5px" font-weight="600">${esc(label)}</text>`;
+    }).join("");
+
+    let y = top, bars = "";
+    groups.forEach((group, gi) => {
+      bars += `<text x="${left-10}" y="${y-6}" text-anchor="end" fill="#f8fafc" font-size="12px" font-weight="700">${esc(group.label)}</text>`;
+      group.rows.forEach(row => {
+        const barW = Math.max(3, (row.value / max) * plotW);
+        const valueX = left + barW + 8;
+        bars += `<line class="chart-tick-y" x1="${left-6}" y1="${y+14}" x2="${left}" y2="${y+14}" stroke="#718096" stroke-width="1.5"/>`;
+        bars += `<text class="chart-label" x="${left-10}" y="${y+18}" text-anchor="end" fill="#f1f5f9" font-size="11.5px" font-weight="500">${esc(row.name)}</text>`;
+        bars += `<rect class="chart-bar" x="${left}" y="${y+4}" width="${barW}" height="20" rx="3" fill="${CONDITION_COLOR[row.name]}"/>`;
+        bars += `<text class="chart-value" x="${valueX}" y="${y+18}" fill="#e2e8f0" font-size="11px" font-weight="600">${esc(number(row.value,0))} km</text>`;
+        y += rowH;
+      });
+      if (gi < groups.length - 1) y += groupGap;
+    });
+
+    return `
+      <article class="chart-card" data-download-chart data-flow-card data-series="Condition by surface type" data-flow-search="condition by surface type paved unpaved good fair poor">
+        <button class="chart-download" type="button" data-download-png>Export PNG</button>
+        <h3>Condition by Surface Type</h3>
+        <p class="chart-subtitle">Network length (km) by condition rating, grouped by paved and unpaved surface.</p>
+        <svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Condition by surface type grouped bar chart">
+          <line class="chart-axis-x" x1="${left}" y1="${height-bottom+4}" x2="${width-right}" y2="${height-bottom+4}" stroke="#475569" stroke-width="1.5"/>
+          <line class="chart-axis-y" x1="${left}" y1="${top-6}" x2="${left}" y2="${height-bottom+4}" stroke="#475569" stroke-width="1.5"/>
+          ${svgGridAndTicks}
+          ${bars}
+        </svg>
+        <div class="axis-title">Horizontal scale: length in kilometres (km) | Grouped by surface type (Paved / Unpaved), then condition (Good / Fair / Poor)</div>
+        <div class="chart-legend">
+          <span class="legend-key"><i class="legend-swatch" style="background:${CONDITION_COLOR.Good}"></i>Good</span>
+          <span class="legend-key"><i class="legend-swatch" style="background:${CONDITION_COLOR.Fair}"></i>Fair</span>
+          <span class="legend-key"><i class="legend-swatch" style="background:${CONDITION_COLOR.Poor}"></i>Poor</span>
+        </div>
+      </article>
+    `;
+
+  }
+
   function vizValues(values) { return sortData(values.filter(item=>Number(item.value)>0)); }
 
   function vizLegend(values, unit) {
@@ -1394,6 +1464,8 @@
       charts.push(barChart("Recommended interventions", "Every link assigned a planning intervention from condition and surface.", aggregate(rows, "recommended_intervention"), "link count", COLORS[2]));
 
       charts.push(barChart("Surface condition coverage", "Complete link count by surface type.", aggregate(rows, "surface"), "link count", COLORS[5]));
+
+      charts.push(conditionSurfaceChart());
 
     } else if (state.section === "pims") {
 
@@ -3131,12 +3203,13 @@ function injectDarkTheme(){
     +'.main-content,main,[class*="main-content"],[class*="main_content"]{background:#000!important}'
     +'.section-studio,[class*="section-studio"]{background:#000!important}'
     +'.chart-grid,[class*="chart-grid"]{background:#000!important}'
-    +'.metric-card{background:#0a0a0a!important;border:1px solid #1e293b!important}'
-    +'.chart-card{background:#0a0a0a!important;border:1px solid #1e293b!important}'
+    +'.metric-card,.chart-card,.dynamic-chart-card,[class*="stat-card"],[class*="kpi-card"]{background:#000000!important;border:1px solid #1e293b!important;color:#ffffff!important}'
     +'.top-bar,[class*="top-bar"],[class*="topbar"]{background:#000!important;border-bottom:1px solid #1e293b!important}'
     +'[class*="header-bar"],[class*="header_bar"]{background:#000!important}'
     +'.flow-controls,[class*="flow-controls"]{background:#000!important;border-bottom:1px solid #1e293b!important}'
     +'.tab-bar,[class*="tab-bar"],[class*="tabs-bar"]{background:#0a0a0a!important}'
+    +'.nav-rail-btn{background:#0f1923!important;font-family:inherit!important;font-size:13px!important;font-weight:500!important;padding:10px 16px!important;border-left:3px solid transparent!important;color:#cbd5e1!important}'
+    +'.nav-rail-btn.active{border-left:3px solid #f59e0b!important;background:#0f1923!important;color:#f8fafc!important}'
     +'body *{scrollbar-color:#1e293b #000}';
   document.head.appendChild(s);
 }
