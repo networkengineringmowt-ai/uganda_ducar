@@ -1049,8 +1049,13 @@ body:not(.network-map-mode) #root{height:0!important;min-height:0!important;over
 /* KPI / metric cards: flat dark background, no gradient, no amber bleed */
 .metric-card,
 .kpi-card,
-[class*="metric-card"] {
-  background: #1c2a3a !important;
+.stat-card,
+.chart-card,
+[class*="metric-card"],
+[class*="kpi-card"],
+[class*="stat-card"] {
+  background: #000000 !important;
+  background-color: #000000 !important;
   background-image: none !important;
   color: #ffffff !important;
   border: 1px solid rgba(255,255,255,0.08) !important;
@@ -1058,3 +1063,43 @@ body:not(.network-map-mode) #root{height:0!important;min-height:0!important;over
 .metric-card small { color: #b8c4d0 !important; }
 .metric-card strong { color: #ffffff !important; }
 .metric-card em { color: #64d2ff !important; }
+.kpi-card:hover { background: #000000 !important; }
+.kpi-icon,
+.kpi-icon.blue,
+.kpi-icon.green,
+[class*="kpi-icon"] {
+  background: rgba(255,255,255,0.08) !important;
+}
+.kpi-value { color: #ffffff !important; }
+.kpi-label { color: #b8c4d0 !important; }
+
+/* ===== NAV RAIL — TRUE UNIFORMITY (font + layout), urgent follow-up ===== */
+.nav-rail-item,
+.nav-rail-item.top-pill,
+.nav-rail-item.ducar-badge,
+.nav-rail-item.gold,
+.nav-rail-item.pink,
+.nav-rail-item.amber,
+.nav-rail-item.cyan,
+.nav-rail-item.emerald,
+.nav-rail-item.green,
+.nav-rail-item.magenta,
+.nav-rail-item.sky {
+  font-family: inherit !important;
+  padding: .5rem .75rem !important;
+  gap: .65rem !important;
+  border-radius: 12px !important;
+}
+.nav-rail-item .nav-rail-label,
+.nav-rail-item.top-pill .nav-rail-label,
+.nav-rail-item.ducar-badge .nav-rail-label {
+  font-size: .78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -.2px !important;
+  color: #ffffff !important;
+}
+.nav-rail-item.active .nav-rail-label,
+.nav-rail-item.codex-injected-active .nav-rail-label {
+  color: #0f1923 !important;
+  font-weight: 700 !important;
+}
