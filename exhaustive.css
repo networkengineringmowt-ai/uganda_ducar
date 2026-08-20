@@ -1,6 +1,7 @@
 :root{color-scheme:dark}
 html{min-height:100%;height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;scrollbar-gutter:stable}
 body{min-height:100%;height:auto!important;overflow-x:hidden!important;overflow-y:visible!important}
+.ducar-nav-hidden{display:none!important}
 html,body,#root{background:#050506!important}
 #root{height:64px!important;min-height:64px!important;overflow:visible!important;position:relative;z-index:20}
 #exhaustive-root{min-height:calc(100vh - 64px);overflow:visible!important}

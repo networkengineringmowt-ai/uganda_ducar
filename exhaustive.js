@@ -957,8 +957,8 @@
     all.forEach(button=>{const route=button.dataset.ducarSection||sectionFromTitle(button.title);if(route)button.dataset.ducarSection=route;});
     const byRoute=new Map(all.filter(button=>button.dataset.ducarSection).map(button=>[button.dataset.ducarSection,button]));
     const dashboard=byRoute.get("ducar"),nav=dashboard?.parentElement;if(!nav)return false;
-    [...byRoute].forEach(([route,button])=>{if(!PRIMARY_NAV.some(([id])=>id===route))button.hidden=true;});
-    PRIMARY_NAV.forEach(([route,label])=>{const button=byRoute.get(route);if(!button)return;button.hidden=false;button.title=label;button.setAttribute("aria-label",label);replaceNavLabel(button,label);nav.appendChild(button);});
+    [...byRoute].forEach(([route,button])=>{const retained=PRIMARY_NAV.some(([id])=>id===route);button.hidden=!retained;button.classList.toggle("ducar-nav-hidden",!retained);});
+    PRIMARY_NAV.forEach(([route,label])=>{const button=byRoute.get(route);if(!button)return;button.hidden=false;button.classList.remove("ducar-nav-hidden");button.title=label;button.setAttribute("aria-label",label);replaceNavLabel(button,label);nav.appendChild(button);});
     nav.dataset.ducarPrimaryNav="10";syncInjectedNav();return PRIMARY_NAV.every(([route])=>byRoute.has(route));
   }
   function syncInjectedNav(){document.querySelectorAll("button[data-ducar-section]").forEach(button=>button.classList.toggle("codex-injected-active",button.dataset.ducarSection===state.section));}
