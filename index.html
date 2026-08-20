@@ -9,35 +9,39 @@
 <script>
 /* Compatibility values required by the preserved Priority Studio bundle. */
 var ducar2025Data = {
-  total_links: 31106,
-  total_length_km: 401112.27,
-  districts_count: 110
+  total_links: 7733,
+  total_length_km: 22323.109,
+  districts_count: 107,
+  national_km: 21292,
+  ducar_benchmark_km: 138503,
+  paved_km: 3992.939,
+  unpaved_km: 18330.170
 };
 var kccaData = {
-  total_links: 9431,
-  total_length_km: 2829.33
+  total_links: 1089,
+  total_length_km: 309.591
 };
 var verifiedConditionData = {
-  total_length_km: 22323.12,
+  total_length_km: 22323.109,
   traffic_links: 1877,
   conditions: [
-    { name: "Fair", count: 2983, length_km: 13007.89 },
-    { name: "Poor", count: 1791, length_km: 5878.41 },
-    { name: "Good", count: 542, length_km: 2539.72 },
-    { name: "Unclassified", count: 2417, length_km: 897.08 }
+    { name: "Fair", count: 2983, length_km: 13007.892 },
+    { name: "Poor", count: 1791, length_km: 5878.409 },
+    { name: "Good", count: 542, length_km: 2539.724 },
+    { name: "Unclassified", count: 2417, length_km: 897.084 }
   ]
 };
 function setDucar2025Data(value) {
-  if (value && typeof value === "object") ducar2025Data = Object.assign({}, ducar2025Data, value);
+  if (value && typeof value === "object") ducar2025Data = Object.assign({}, value, ducar2025Data);
 }
 function setKccaData(value) {
-  if (value && typeof value === "object") kccaData = value;
+  if (value && typeof value === "object") kccaData = Object.assign({}, value, kccaData);
 }
 </script>
-<script type="module" crossorigin src="./assets/index-gYbOrP4D.js?v=20260820-nav-lock-2"></script>
+<script type="module" crossorigin src="./assets/index-gYbOrP4D.js?v=20260820-consistency-1"></script>
 <link rel="stylesheet" crossorigin href="./assets/index-ByMP9Ldu.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-<link rel="stylesheet" href="./exhaustive.css?v=20260820-nav-lock-2" />
+<link rel="stylesheet" href="./exhaustive.css?v=20260820-consistency-1" />
 <style>
 .verified-reporting-link{position:fixed;right:18px;bottom:18px;z-index:9999;padding:12px 16px;border:1px solid #2f663d;border-radius:12px;background:rgba(12,24,16,.94);color:#56e879;text-decoration:none;font:700 12px/1.2 Inter,"Segoe UI",sans-serif;box-shadow:0 12px 38px rgba(0,0,0,.45);backdrop-filter:blur(14px)}
 .verified-reporting-link:hover{background:#16331f;color:#fff}
@@ -54,6 +58,6 @@ function setKccaData(value) {
 <script defer src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script defer src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script defer src="https://unpkg.com/leaflet-image@0.4.0/leaflet-image.js"></script>
-<script defer src="./exhaustive.js?v=20260820-full-network-ref"></script>
+<script defer src="./exhaustive.js?v=20260820-consistency-1"></script>
 </body>
 </html>
