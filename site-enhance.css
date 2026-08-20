@@ -1,0 +1,101 @@
+/* site-enhance.css — conditional formatting + interactive dashboard layer (generic, DOM-based) */
+:root{
+  --se-good:#22c55e; --se-good-bg:rgba(34,197,94,.14); --se-good-bd:rgba(34,197,94,.55);
+  --se-fair:#f59e0b; --se-fair-bg:rgba(245,158,11,.14); --se-fair-bd:rgba(245,158,11,.55);
+  --se-poor:#ef4444; --se-poor-bg:rgba(239,68,68,.14); --se-poor-bd:rgba(239,68,68,.55);
+  --se-crit:#7f1d1d; --se-crit-bg:rgba(127,29,29,.32); --se-crit-bd:#b91c1c;
+  --se-missing-bg:rgba(255,159,10,.12); --se-missing-fg:#ffb454;
+  --se-bg:#141416; --se-panel:#18181b; --se-border:#34343a; --se-text:#f5f5f7; --se-muted:#96969e; --se-accent:#0a84ff;
+}
+
+/* ---------- Skeleton loader ---------- */
+#se-skeleton-overlay{position:fixed;inset:0;z-index:99998;background:#050506;display:flex;flex-direction:column;gap:10px;padding:24px;opacity:1;transition:opacity .35s ease;pointer-events:none}
+#se-skeleton-overlay.se-hidden{opacity:0}
+.se-skel-row{border-radius:10px;background:linear-gradient(90deg,#151517 25%,#1f1f23 37%,#151517 63%);background-size:400% 100%;animation:se-shimmer 1.3s ease infinite}
+@keyframes se-shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+.se-skel-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+.se-skel-kpis .se-skel-row{height:78px}
+.se-skel-table .se-skel-row{height:34px;margin-bottom:6px}
+
+/* ---------- Toasts ---------- */
+#se-toast-stack{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.se-toast{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;background:rgba(18,18,20,.97);border:1px solid var(--se-border);color:var(--se-text);font:600 12px/1.3 Inter,"Segoe UI",sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.5);backdrop-filter:blur(12px);opacity:0;transform:translateY(8px);transition:opacity .22s ease,transform .22s ease;max-width:320px}
+.se-toast.se-in{opacity:1;transform:translateY(0)}
+.se-toast.se-success{border-color:var(--se-good-bd)}
+.se-toast.se-success::before{content:"✓";color:var(--se-good);font-weight:900}
+.se-toast.se-error{border-color:var(--se-poor-bd)}
+.se-toast.se-error::before{content:"!";color:var(--se-poor);font-weight:900}
+
+/* ---------- Table toolbar / search / export ---------- */
+.se-table-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 8px}
+.se-table-search{flex:1 1 220px;min-width:160px;padding:7px 10px;border:1px solid var(--se-border);border-radius:8px;background:#141416;color:var(--se-text);font:500 11px/1.3 Inter,"Segoe UI",sans-serif}
+.se-table-search::placeholder{color:var(--se-muted)}
+.se-table-search:focus{outline:none;border-color:var(--se-accent);box-shadow:0 0 0 3px rgba(10,132,255,.15)}
+.se-table-export{padding:7px 12px;border:1px solid #236b34;border-radius:8px;background:#0d2b14;color:#f3fff5;font:700 11px/1.3 Inter,"Segoe UI",sans-serif;cursor:pointer;white-space:nowrap}
+.se-table-export:hover{background:#153e20;border-color:var(--se-good)}
+.se-table-meta{color:var(--se-muted);font:600 10px/1.3 Inter,"Segoe UI",sans-serif;white-space:nowrap}
+
+/* ---------- Sortable headers ---------- */
+.se-sortable{cursor:pointer;user-select:none;position:relative;padding-right:16px!important}
+.se-sortable:hover{color:var(--se-text)!important}
+.se-sortable::after{content:"↕";position:absolute;right:4px;opacity:.35;font-size:9px}
+.se-sortable.se-sort-asc::after{content:"▲";opacity:1;color:var(--se-accent)}
+.se-sortable.se-sort-desc::after{content:"▼";opacity:1;color:var(--se-accent)}
+
+/* ---------- Pagination ---------- */
+.se-pagination{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:8px;flex-wrap:wrap}
+.se-page-btn{padding:5px 10px;border:1px solid var(--se-border);border-radius:7px;background:#141416;color:var(--se-text);font:700 10px/1.3 Inter,"Segoe UI",sans-serif;cursor:pointer}
+.se-page-btn:hover:not(:disabled){border-color:var(--se-accent);color:#64d2ff}
+.se-page-btn:disabled{opacity:.35;cursor:not-allowed}
+.se-page-info{color:var(--se-muted);font:600 10px/1.3 Inter,"Segoe UI",sans-serif;margin:0 4px;white-space:nowrap}
+tr.se-row-hidden{display:none!important}
+
+/* ---------- Conditional row/cell formatting ---------- */
+td.se-cond-good,li.se-cond-good{background:var(--se-good-bg)!important;color:#bdf7cf}
+td.se-cond-fair,li.se-cond-fair{background:var(--se-fair-bg)!important;color:#ffe1ae}
+td.se-cond-poor,li.se-cond-poor{background:var(--se-poor-bg)!important;color:#ffc1c1}
+td.se-cond-critical,li.se-cond-critical{background:var(--se-crit-bg)!important;color:#ffb3b3;font-weight:700}
+td.se-pct-good{color:var(--se-good);font-weight:700}
+td.se-pct-fair{color:var(--se-fair);font-weight:700}
+td.se-pct-poor{color:var(--se-poor);font-weight:700}
+.se-missing{background:var(--se-missing-bg)!important;color:var(--se-missing-fg)!important;font-style:italic}
+
+/* ---------- Road class badges ---------- */
+.se-badge{display:inline-block;padding:2px 8px;border-radius:999px;font:800 9px/1.6 Inter,"Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.se-badge-national{background:rgba(10,132,255,.16);color:#5eb3ff;border:1px solid rgba(10,132,255,.4)}
+.se-badge-district{background:rgba(20,184,166,.16);color:#5ce8d6;border:1px solid rgba(20,184,166,.4)}
+.se-badge-urban{background:rgba(168,85,247,.18);color:#d1a3ff;border:1px solid rgba(168,85,247,.42)}
+.se-badge-community{background:rgba(249,115,22,.18);color:#ffb877;border:1px solid rgba(249,115,22,.42)}
+.se-badge-earth{background:rgba(148,148,158,.18);color:#c4c4cc;border:1px solid rgba(148,148,158,.4)}
+
+/* ---------- AADT / traffic heat scale ---------- */
+td.se-heat-low{background:rgba(59,130,246,.14)!important;color:#8fc4ff}
+td.se-heat-med{background:rgba(34,197,94,.14)!important;color:#8fe3ac}
+td.se-heat-high{background:rgba(245,158,11,.16)!important;color:#ffcf82}
+td.se-heat-vhigh{background:rgba(239,68,68,.18)!important;color:#ffa3a3;font-weight:700}
+
+/* ---------- KPI cards ---------- */
+.se-kpi-good{border-color:var(--se-good-bd)!important;box-shadow:0 0 0 1px rgba(34,197,94,.15) inset}
+.se-kpi-warn{border-color:var(--se-fair-bd)!important;box-shadow:0 0 0 1px rgba(245,158,11,.15) inset}
+.se-kpi-bad{border-color:var(--se-poor-bd)!important;box-shadow:0 0 0 1px rgba(239,68,68,.15) inset}
+
+/* ---------- Collapsible cards ---------- */
+.se-collapse-toggle{display:inline-flex;align-items:center;gap:5px;margin-left:auto;padding:4px 9px;border:1px solid var(--se-border);border-radius:7px;background:#141416;color:var(--se-muted);font:700 9px/1.3 Inter,"Segoe UI",sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.05em}
+.se-collapse-toggle:hover{color:var(--se-text);border-color:var(--se-accent)}
+.se-collapse-toggle::before{content:"−";font-size:12px;line-height:1}
+.se-collapse-toggle.se-collapsed::before{content:"+"}
+.se-collapse-head{display:flex;align-items:center;gap:8px}
+.se-collapsible-body{transition:grid-template-rows .22s ease}
+.se-collapsible-body.se-collapsed-body{display:none}
+
+/* ---------- Chart tooltip ---------- */
+#se-chart-tooltip{position:fixed;z-index:99997;padding:7px 10px;border-radius:8px;background:rgba(15,15,18,.97);border:1px solid var(--se-border);color:var(--se-text);font:600 11px/1.35 Inter,"Segoe UI",sans-serif;box-shadow:0 12px 28px rgba(0,0,0,.5);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s ease,transform .12s ease;max-width:260px}
+#se-chart-tooltip.se-show{opacity:1;transform:translateY(0)}
+
+/* ---------- Legend interactivity ---------- */
+.dynamic-legend span{cursor:pointer;transition:opacity .15s ease}
+.dynamic-legend span.se-legend-off{opacity:.32}
+.se-dim{opacity:.15!important;transition:opacity .18s ease}
+
+/* ---------- KPI count-up ---------- */
+.metric-card strong.se-counting,[class*="kpi-card"] strong.se-counting,[class*="stat-card"] strong.se-counting{font-variant-numeric:tabular-nums}
