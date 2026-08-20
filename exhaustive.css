@@ -6,7 +6,10 @@ html,body,#root{background:#050506!important}
 #root{height:64px!important;min-height:64px!important;overflow:visible!important;position:relative;z-index:20}
 body:not(.network-map-mode) #root{position:fixed!important;inset:0 0 auto 0;z-index:320;background:#050506!important}
 body:not(.network-map-mode) #exhaustive-root{padding-top:64px;box-sizing:border-box}
-#exhaustive-root{min-height:calc(100vh - 64px);overflow:visible!important}
+#exhaustive-root{position:relative;z-index:400;min-height:calc(100vh - 64px);overflow:visible!important;pointer-events:none}
+#exhaustive-root .exhaustive-shell{pointer-events:auto}
+#root{z-index:500!important;pointer-events:none!important}
+#root .top-nav,#root .top-nav *,#root .nav-rail,#root .nav-rail *{pointer-events:auto!important}
 .exhaustive-shell{position:relative;z-index:30;overflow:visible!important}
 *{scrollbar-color:#55555d #111113}
 *::-webkit-scrollbar{width:10px;height:10px}
@@ -31,6 +34,7 @@ input,textarea{color-scheme:dark}
 .verified-reporting-link,.all-records-link{display:none!important}
 #root .top-nav .filter-toggle,#root .top-nav .color-toggle,#root .top-nav .ducar-source-export-hidden{display:none!important}
 .ducar-export-menu{position:relative;margin-left:auto;font-family:Inter,"Segoe UI",sans-serif}
+.ducar-header-navigation{display:flex;gap:5px;margin-left:auto}.ducar-header-navigation+ .ducar-export-menu{margin-left:0}.ducar-header-navigation button{display:grid;place-items:center;width:34px;height:34px;border:1px solid #34343a;border-radius:9px;background:#171719;color:#f5f5f7;font-size:17px;font-weight:900;cursor:pointer}.ducar-header-navigation button:hover{border-color:#0a84ff;background:#14283b;color:#64d2ff}
 .ducar-export-trigger{display:flex;align-items:center;gap:7px;min-height:34px;padding:7px 12px;border:1px solid #236b34;border-radius:9px;background:#0d2b14;color:#f3fff5;font-size:12px;font-weight:850;cursor:pointer;transition:border-color .18s ease,background .18s ease,box-shadow .18s ease}
 .ducar-export-trigger:hover,.ducar-export-menu.open .ducar-export-trigger{background:#153e20;border-color:#30d158;box-shadow:0 0 0 3px rgba(48,209,88,.12)}
 .ducar-export-trigger b{color:#74e890;font-size:11px}
@@ -97,6 +101,7 @@ body:not(.network-map-mode) .section-tabs{position:fixed;top:64px;left:225px;rig
 .data-table th:first-child{z-index:3;background:#202023}
 .not-supplied{color:#ff9f0a;font-weight:800}.cell-good,.cell-low,.cell-paved{background:#123b27!important;color:#5bf08a}.cell-fair,.cell-moderate{background:#42390e!important;color:#ffe370}.cell-poor,.cell-critical{background:#49191b!important;color:#ff7770}.cell-high,.cell-unpaved{background:#4a2c0b!important;color:#ffb340}
 .pages{display:none!important}
+.pages.virtual-window{display:flex!important;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;color:#a6a6ad;font-size:10px}
 .pages button{background:#1c1c1f;color:#fff;border:1px solid #3a3a40;border-radius:8px;padding:8px 12px}.pages button:disabled{opacity:.35}
 .sql-intro{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px;border:1px solid #303034;border-radius:12px;background:#141416;margin-bottom:8px}
 .sql-intro h2{margin:0 0 5px;font-size:19px}.sql-intro p{margin:0;color:#9c9ca5;font-size:10px;line-height:1.5}

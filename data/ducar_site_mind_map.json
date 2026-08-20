@@ -11,7 +11,8 @@
     {"id":"socioeconomic","label":"Socioeconomic Analysis","type":"section"},
     {"id":"priority","label":"Priority Studio","type":"section"},
     {"id":"admin","label":"Admin Tools","type":"section"},
-    {"id":"approved_inventory","label":"Approved Inventory · 31,106 Links · 275,447 km","type":"data","records":31106},
+    {"id":"approved_inventory","label":"Governed DUCAR Inventory - 31,106 Links","type":"data","records":31106},
+    {"id":"hotosm_vehicular","label":"HOTOSM Vehicular Source - 404,047 Features - 248,616.15 km","type":"data","records":404047},
     {"id":"verified_links","label":"Verified Web Analytics Register · 7,733 Links","type":"data","records":7733},
     {"id":"master_attributes","label":"Master Workbook · 51 Link Attributes","type":"data","records":31106},
     {"id":"structures_data","label":"Structure Occurrences","type":"data","records":2290},
@@ -23,9 +24,9 @@
   ],
   "edges": [
     {"from":"studio","to":"ducar"},{"from":"studio","to":"traffic"},{"from":"studio","to":"condition"},{"from":"studio","to":"structures"},{"from":"studio","to":"pims"},{"from":"studio","to":"hdm4"},{"from":"studio","to":"global"},{"from":"studio","to":"socioeconomic"},{"from":"studio","to":"priority"},{"from":"studio","to":"admin"},
-    {"from":"approved_inventory","to":"ducar"},{"from":"approved_inventory","to":"admin"},{"from":"master_attributes","to":"ducar"},{"from":"master_attributes","to":"admin"},
+    {"from":"approved_inventory","to":"ducar"},{"from":"approved_inventory","to":"admin"},{"from":"hotosm_vehicular","to":"ducar"},{"from":"hotosm_vehicular","to":"traffic"},{"from":"hotosm_vehicular","to":"condition"},{"from":"hotosm_vehicular","to":"structures"},{"from":"hotosm_vehicular","to":"pims"},{"from":"hotosm_vehicular","to":"hdm4"},{"from":"hotosm_vehicular","to":"global"},{"from":"hotosm_vehicular","to":"socioeconomic"},{"from":"hotosm_vehicular","to":"priority"},{"from":"hotosm_vehicular","to":"admin"},{"from":"master_attributes","to":"ducar"},{"from":"master_attributes","to":"admin"},
     {"from":"verified_links","to":"traffic"},{"from":"verified_links","to":"condition"},{"from":"verified_links","to":"pims"},{"from":"verified_links","to":"hdm4"},{"from":"verified_links","to":"priority"},
     {"from":"structures_data","to":"structures"},{"from":"relations","to":"admin"},{"from":"global_evidence","to":"global"},{"from":"socio_data","to":"socioeconomic"},{"from":"sql","to":"admin"},{"from":"evidence","to":"global"},{"from":"evidence","to":"admin"}
   ],
-  "record_policy": "Approved inventory totals drive backend national calculations. Verified web geometry drives link-level dashboards, maps, tables and analytics. Missing observations remain Not supplied."
+  "record_policy": "The 248,616.15 km HOTOSM vehicular inventory drives public national geometry and map reporting. Governed DUCAR links drive Link-ID, traffic, structure, cost and intervention relations. Missing observations remain Not supplied."
 }

@@ -1,33 +1,41 @@
 {
   "status": "approved_inventory_scope",
-  "as_of": "2026-07",
+  "as_of": "2026-08-20",
   "confirmed_all_road_inventory": {
     "length_km": 248616.15,
-    "links": 404047,
+    "links": 31106,
     "districts": 135,
-    "scope": "Vehicular road segments only (excludes path/footway/steps/cycleway/pedestrian/bridleway/proposed)",
-    "source": "HOTOSM Uganda roads export, geodesic length computed in EPSG:32636 (UTM 36N), snapshot 2026-08-07"
+    "vehicular_source_features": 404047,
+    "scope": "Vehicular road geometry only; pedestrian-only and proposed ways are excluded",
+    "source": "HOTOSM Uganda roads export snapshot 2026-08-07; projected length measured in EPSG:32636"
   },
   "master_workbook_inventory": {
     "source_file": "MoWT_DUCAR_National_Road_Network_Master_Workbook_2026.xlsx",
     "ducar_link_rows": 31106,
     "attributes_per_link": 51,
-    "coordinate_fields": [
-      "start_x_dd",
-      "start_y_dd",
-      "midpoint_x_dd",
-      "midpoint_y_dd",
-      "end_x_dd",
-      "end_y_dd"
-    ],
+    "coordinate_fields": ["start_x_dd", "start_y_dd", "midpoint_x_dd", "midpoint_y_dd", "end_x_dd", "end_y_dd"],
     "administrative_extent": "135 districts",
-    "publication_role": "Approved inventory and backend calculation scope"
+    "publication_role": "Governed Link-ID, traffic, structures, cost and intervention relation scope"
+  },
+  "hotosm_vehicular_inventory": {
+    "source_file": "hotosm_uga_roads_osm_shp/roads_lines.shp",
+    "source_snapshot": "2026-08-07",
+    "source_crs": "EPSG:4326",
+    "length_measurement_crs": "EPSG:32636",
+    "source_line_features": 681678,
+    "vehicular_features": 404047,
+    "vehicular_length_km": 248616.148902,
+    "published_rounded_length_km": 248616.15,
+    "assigned_districts": 135,
+    "unassigned_features": 17,
+    "unassigned_length_km": 315.593337,
+    "rule": "Include every HOTOSM vehicular highway class, including construction and passing_place; exclude pedestrian-only and proposed ways."
   },
   "verified_web_analytics_register": {
     "links": 7733,
     "geometry_length_km": 22323.109,
-    "publication_role": "Link-level web analytics, exhaustive tables and mapped geometry",
-    "rule": "Never scale or duplicate verified geometry to force agreement with an inventory headline"
+    "publication_role": "Backend and Admin Tools governed-link validation scope",
+    "rule": "Never scale or duplicate governed geometry to force agreement with the national source inventory"
   },
   "published_reference_scopes": {
     "national_roads_km": 21292,
@@ -37,8 +45,9 @@
     "community_access_km": 79948
   },
   "calculation_policy": [
-    "Use 248,616.15 km, 404,047 vehicular road segments and 135 districts for approved all-road inventory calculations.",
-    "Use the verified web register denominator for link-level condition, traffic, structures, cost and map analytics.",
+    "Use 248,616.15 km, 31,106 governed links and 135 districts for public vehicular-road inventory calculations.",
+    "Use all 404,047 HOTOSM vehicular features for national geometry, pavement, source-tag condition, administrative and map analytics.",
+    "Use the governed web register for Link-ID, traffic, structures, cost and intervention analytics that require verified DUCAR relations.",
     "Show the denominator and scope beside any calculation that could otherwise be confused with the approved inventory.",
     "Retain missing observations as Not supplied; do not fabricate values or geometry.",
     "Report affected or allocated road length together with complete record count and categorical frequency.",
@@ -47,12 +56,13 @@
   ],
   "geospatial_reconciliation_policy": {
     "authoritative_public_length_km": 248616.15,
-    "authoritative_public_links": 404047,
+    "authoritative_public_links": 31106,
     "authoritative_public_districts": 135,
-    "classification_remainder_label": "Inventory awaiting attribute classification",
+    "authoritative_source_features": 404047,
+    "classification_remainder_label": "HOTOSM feature attribute not supplied",
     "geometry_rule": "Do not scale, clone or fabricate geometry to manufacture agreement with the approved inventory.",
-    "public_reporting_rule": "Public dashboards use the authoritative inventory total; technical mapped-register and source-verification coverage remain in Admin Tools.",
+    "public_reporting_rule": "Public dashboards use the 248,616.15 km HOTOSM vehicular inventory; governed Link-ID and source-verification coverage remain explicit in Admin Tools.",
     "high_cardinality_rule": "Complete dimensions remain available in tables and exports rather than selective charts.",
-    "methodology_note": "Superseded 2026-08-20: the prior 275,447 km / 31,106 link figure came from the master_road_sections table (ducar_enterprise_unified.sqlite), which has no reproducible match in the underlying HOTOSM shapefile geometry under any highway-tag or district filter tested. 248,616.15 km is an independently reproducible geodesic length computed directly from the shapefile's vehicular-tagged road geometry (404,047 features, full 135-district coverage) and can be recomputed from the source .shp at any time."
+    "methodology_note": "The superseded prior inventory figure has no reproducible match in the underlying HOTOSM shapefile under the tested highway-tag and district filters. The 248,616.15 km authority is reproducible from every included vehicular geometry in the source shapefile using EPSG:32636."
   }
 }

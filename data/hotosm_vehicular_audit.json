@@ -1,0 +1,705 @@
+{
+  "source": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\hotosm_uga_roads_osm_shp\\roads_lines.shp",
+  "crs": "EPSG:4326",
+  "length_method": "EPSG:32636 projected geometry length",
+  "all_line_features": 681678,
+  "all_line_length_km": 322692.247409,
+  "vehicular_highways": [
+    "busway",
+    "construction",
+    "escape",
+    "living_street",
+    "motorway",
+    "motorway_link",
+    "passing_place",
+    "primary",
+    "primary_link",
+    "raceway",
+    "residential",
+    "rest_area",
+    "road",
+    "secondary",
+    "secondary_link",
+    "service",
+    "services",
+    "tertiary",
+    "tertiary_link",
+    "track",
+    "trunk",
+    "trunk_link",
+    "unclassified"
+  ],
+  "vehicular_features": 404047,
+  "vehicular_length_km": 248616.148902,
+  "vehicular_geodesic_length_km": 248622.487512,
+  "highway_summary": {
+    "unclassified": {
+      "features": 121743,
+      "length_km": 114936.02117646529
+    },
+    "path": {
+      "features": 238170,
+      "length_km": 66400.86864110043
+    },
+    "residential": {
+      "features": 146727,
+      "length_km": 46722.63111822812
+    },
+    "track": {
+      "features": 97096,
+      "length_km": 46225.769770970335
+    },
+    "tertiary": {
+      "features": 6350,
+      "length_km": 22175.133873344595
+    },
+    "secondary": {
+      "features": 2344,
+      "length_km": 11267.86992090777
+    },
+    "footway": {
+      "features": 38766,
+      "length_km": 7585.8596889360015
+    },
+    "primary": {
+      "features": 1108,
+      "length_km": 3418.4051549465553
+    },
+    "service": {
+      "features": 27023,
+      "length_km": 2644.5922674143817
+    },
+    "trunk": {
+      "features": 415,
+      "length_km": 873.5582509210464
+    },
+    "motorway": {
+      "features": 191,
+      "length_km": 92.39030573146867
+    },
+    "road": {
+      "features": 341,
+      "length_km": 90.07232754787961
+    },
+    "construction": {
+      "features": 59,
+      "length_km": 68.51621997981034
+    },
+    "living_street": {
+      "features": 321,
+      "length_km": 67.16273125384991
+    },
+    "cycleway": {
+      "features": 296,
+      "length_km": 47.35865008255454
+    },
+    "pedestrian": {
+      "features": 142,
+      "length_km": 23.712320346972565
+    },
+    "motorway_link": {
+      "features": 65,
+      "length_km": 18.601358206077897
+    },
+    "proposed": {
+      "features": 18,
+      "length_km": 10.652724436727418
+    },
+    "steps": {
+      "features": 213,
+      "length_km": 5.003497118649762
+    },
+    "trunk_link": {
+      "features": 66,
+      "length_km": 3.931516649280502
+    },
+    "primary_link": {
+      "features": 87,
+      "length_km": 3.9266196583196322
+    },
+    "tertiary_link": {
+      "features": 55,
+      "length_km": 2.967744729322901
+    },
+    "passing_place": {
+      "features": 8,
+      "length_km": 2.9454155150749397
+    },
+    "bridleway": {
+      "features": 26,
+      "length_km": 2.6429858416714884
+    },
+    "secondary_link": {
+      "features": 48,
+      "length_km": 1.6531290808329602
+    }
+  },
+  "district_summary": {
+    "Abim": {
+      "features": 227,
+      "length_km": 598.0052530592874
+    },
+    "Adjumani": {
+      "features": 4323,
+      "length_km": 3157.67417276732
+    },
+    "Agago": {
+      "features": 3390,
+      "length_km": 2949.782722799955
+    },
+    "Alebtong": {
+      "features": 1074,
+      "length_km": 1571.0777653232265
+    },
+    "Amolatar": {
+      "features": 735,
+      "length_km": 917.5748721887396
+    },
+    "Amudat": {
+      "features": 227,
+      "length_km": 426.08605378463045
+    },
+    "Amuria": {
+      "features": 9712,
+      "length_km": 3537.143696023624
+    },
+    "Amuru": {
+      "features": 6097,
+      "length_km": 3730.409820263735
+    },
+    "Apac": {
+      "features": 607,
+      "length_km": 1066.8010698926332
+    },
+    "Arua": {
+      "features": 6860,
+      "length_km": 4073.453757225416
+    },
+    "Budaka": {
+      "features": 970,
+      "length_km": 883.9851203243145
+    },
+    "Bududa": {
+      "features": 1144,
+      "length_km": 400.5243535401664
+    },
+    "Bugiri": {
+      "features": 1220,
+      "length_km": 1271.4346843443632
+    },
+    "Bugweri": {
+      "features": 572,
+      "length_km": 637.1467831109937
+    },
+    "Buhweju": {
+      "features": 681,
+      "length_km": 793.7083155229708
+    },
+    "Buikwe": {
+      "features": 2768,
+      "length_km": 2237.4854293995136
+    },
+    "Bukedea": {
+      "features": 1277,
+      "length_km": 1157.984643953845
+    },
+    "Bukomansimbi": {
+      "features": 1260,
+      "length_km": 979.8021859860635
+    },
+    "Bukwo": {
+      "features": 1054,
+      "length_km": 608.2247562534512
+    },
+    "Bulambuli": {
+      "features": 519,
+      "length_km": 452.1692137827561
+    },
+    "Buliisa": {
+      "features": 516,
+      "length_km": 788.0933416945767
+    },
+    "Bundibugyo": {
+      "features": 713,
+      "length_km": 596.901623007423
+    },
+    "Bunyangabu": {
+      "features": 2032,
+      "length_km": 1106.6932165546878
+    },
+    "Bushenyi": {
+      "features": 3718,
+      "length_km": 1755.801672906583
+    },
+    "Busia": {
+      "features": 3733,
+      "length_km": 1541.755471329326
+    },
+    "Butaleja": {
+      "features": 4884,
+      "length_km": 1771.6264788069434
+    },
+    "Butambala": {
+      "features": 900,
+      "length_km": 789.1572018183444
+    },
+    "Butebo": {
+      "features": 362,
+      "length_km": 434.4931570856103
+    },
+    "Buvuma": {
+      "features": 825,
+      "length_km": 509.4281065190233
+    },
+    "Buyende": {
+      "features": 756,
+      "length_km": 1133.7520978499829
+    },
+    "Dokolo": {
+      "features": 693,
+      "length_km": 991.930694117852
+    },
+    "Gomba": {
+      "features": 1021,
+      "length_km": 1411.3805319401154
+    },
+    "Gulu": {
+      "features": 4366,
+      "length_km": 1957.810385406773
+    },
+    "Hoima": {
+      "features": 2961,
+      "length_km": 2317.097666184219
+    },
+    "Ibanda": {
+      "features": 3559,
+      "length_km": 2045.3467212605024
+    },
+    "Iganga": {
+      "features": 3033,
+      "length_km": 1703.38410334935
+    },
+    "Isingiro": {
+      "features": 4052,
+      "length_km": 4118.462316010286
+    },
+    "Jinja": {
+      "features": 2709,
+      "length_km": 1933.1261821615572
+    },
+    "Kaabong": {
+      "features": 977,
+      "length_km": 1430.3203342839092
+    },
+    "Kabale": {
+      "features": 1697,
+      "length_km": 1250.7352086248025
+    },
+    "Kabarole": {
+      "features": 3334,
+      "length_km": 1834.1766382220244
+    },
+    "Kaberamaido": {
+      "features": 242,
+      "length_km": 438.64224707915076
+    },
+    "Kagadi": {
+      "features": 3611,
+      "length_km": 2406.942611722992
+    },
+    "Kakumiro": {
+      "features": 3035,
+      "length_km": 2355.8094955424585
+    },
+    "Kalaki": {
+      "features": 336,
+      "length_km": 653.316479478922
+    },
+    "Kalangala": {
+      "features": 1164,
+      "length_km": 794.6058730061909
+    },
+    "Kaliro": {
+      "features": 1853,
+      "length_km": 1297.5901174850078
+    },
+    "Kalungu": {
+      "features": 1472,
+      "length_km": 1192.4011480214888
+    },
+    "Kampala": {
+      "features": 18627,
+      "length_km": 2544.7229192717455
+    },
+    "Kamuli": {
+      "features": 1751,
+      "length_km": 1790.089318974209
+    },
+    "Kamwenge": {
+      "features": 6853,
+      "length_km": 3114.297172796914
+    },
+    "Kanungu": {
+      "features": 3179,
+      "length_km": 2186.5105055312424
+    },
+    "Kapchorwa": {
+      "features": 632,
+      "length_km": 399.76429680329403
+    },
+    "Kapelebyong": {
+      "features": 4351,
+      "length_km": 2388.9022071379077
+    },
+    "Karenga": {
+      "features": 501,
+      "length_km": 847.0719079340845
+    },
+    "Kasese": {
+      "features": 7119,
+      "length_km": 4124.965680981665
+    },
+    "Kassanda": {
+      "features": 4847,
+      "length_km": 3448.288076435566
+    },
+    "Katakwi": {
+      "features": 748,
+      "length_km": 1252.9559518741667
+    },
+    "Kayunga": {
+      "features": 3300,
+      "length_km": 2900.9802463138685
+    },
+    "Kazo": {
+      "features": 1751,
+      "length_km": 1648.296561587194
+    },
+    "Kibaale": {
+      "features": 2494,
+      "length_km": 1693.6446338101846
+    },
+    "Kiboga": {
+      "features": 912,
+      "length_km": 1195.8747819853672
+    },
+    "Kibuku": {
+      "features": 1145,
+      "length_km": 764.3156548506306
+    },
+    "Kikuube": {
+      "features": 2288,
+      "length_km": 2325.8553407408895
+    },
+    "Kiruhura": {
+      "features": 1297,
+      "length_km": 2031.8156446250518
+    },
+    "Kiryandongo": {
+      "features": 1584,
+      "length_km": 2457.4749285736716
+    },
+    "Kisoro": {
+      "features": 1387,
+      "length_km": 1476.3628051508804
+    },
+    "Kitagwenda": {
+      "features": 2132,
+      "length_km": 1309.1069319619846
+    },
+    "Kitgum": {
+      "features": 5656,
+      "length_km": 3058.458990767628
+    },
+    "Koboko": {
+      "features": 2677,
+      "length_km": 1459.9101970847892
+    },
+    "Kole": {
+      "features": 1133,
+      "length_km": 1266.9857661348242
+    },
+    "Kotido": {
+      "features": 1047,
+      "length_km": 1382.9534624279627
+    },
+    "Kumi": {
+      "features": 1534,
+      "length_km": 1435.588818365088
+    },
+    "Kwania": {
+      "features": 2457,
+      "length_km": 1459.513948349439
+    },
+    "Kween": {
+      "features": 481,
+      "length_km": 518.5885770231348
+    },
+    "Kyankwanzi": {
+      "features": 1188,
+      "length_km": 1587.7418114044256
+    },
+    "Kyegegwa": {
+      "features": 3627,
+      "length_km": 2516.5977544719894
+    },
+    "Kyenjojo": {
+      "features": 14454,
+      "length_km": 4878.393125658615
+    },
+    "Kyotera": {
+      "features": 7669,
+      "length_km": 3811.8967775497304
+    },
+    "Lamwo": {
+      "features": 3004,
+      "length_km": 3532.467557281545
+    },
+    "Lira": {
+      "features": 5311,
+      "length_km": 2404.3150881520196
+    },
+    "Luuka": {
+      "features": 719,
+      "length_km": 977.9424651668467
+    },
+    "Luwero": {
+      "features": 5514,
+      "length_km": 3728.9175865659618
+    },
+    "Lwengo": {
+      "features": 3949,
+      "length_km": 2619.3488612123656
+    },
+    "Lyantonde": {
+      "features": 339,
+      "length_km": 678.3800101378987
+    },
+    "Madi Okollo": {
+      "features": 2780,
+      "length_km": 2271.921080569085
+    },
+    "Manafwa": {
+      "features": 789,
+      "length_km": 456.72872874125926
+    },
+    "Maracha": {
+      "features": 1005,
+      "length_km": 997.9410439827686
+    },
+    "Masaka": {
+      "features": 5839,
+      "length_km": 2474.855366673867
+    },
+    "Masindi": {
+      "features": 1573,
+      "length_km": 2287.937655317431
+    },
+    "Mayuge": {
+      "features": 2126,
+      "length_km": 1828.849792041156
+    },
+    "Mbale": {
+      "features": 4522,
+      "length_km": 1780.5621104743716
+    },
+    "Mbarara": {
+      "features": 3554,
+      "length_km": 2395.375789413728
+    },
+    "Mitooma": {
+      "features": 1689,
+      "length_km": 1204.7086624409621
+    },
+    "Mityana": {
+      "features": 6576,
+      "length_km": 3741.876750207899
+    },
+    "Moroto": {
+      "features": 626,
+      "length_km": 778.1111438018786
+    },
+    "Moyo": {
+      "features": 1180,
+      "length_km": 868.917391329686
+    },
+    "Mpigi": {
+      "features": 6739,
+      "length_km": 2791.8662821110956
+    },
+    "Mubende": {
+      "features": 7269,
+      "length_km": 4728.0795316852245
+    },
+    "Mukono": {
+      "features": 14806,
+      "length_km": 5593.081135971435
+    },
+    "Nabilatuk": {
+      "features": 66,
+      "length_km": 227.09152754618887
+    },
+    "Nakapiripirit": {
+      "features": 196,
+      "length_km": 358.2587141675873
+    },
+    "Nakaseke": {
+      "features": 5077,
+      "length_km": 4462.464866799848
+    },
+    "Nakasongola": {
+      "features": 1224,
+      "length_km": 1806.0163148293254
+    },
+    "Namayingo": {
+      "features": 1500,
+      "length_km": 924.0247140256753
+    },
+    "Namisindwa": {
+      "features": 2298,
+      "length_km": 869.2867055646698
+    },
+    "Namutumba": {
+      "features": 470,
+      "length_km": 706.2447636771678
+    },
+    "Napak": {
+      "features": 161,
+      "length_km": 485.2040771837522
+    },
+    "Nebbi": {
+      "features": 1952,
+      "length_km": 1645.7067160913534
+    },
+    "Ngora": {
+      "features": 1020,
+      "length_km": 751.9485054591246
+    },
+    "Not supplied": {
+      "features": 17,
+      "length_km": 315.59333664257184
+    },
+    "Ntoroko": {
+      "features": 1457,
+      "length_km": 1247.3434632233611
+    },
+    "Ntungamo": {
+      "features": 2731,
+      "length_km": 2711.537820171191
+    },
+    "Nwoya": {
+      "features": 3520,
+      "length_km": 2903.213668460755
+    },
+    "Obongi": {
+      "features": 1475,
+      "length_km": 875.6108863018995
+    },
+    "Omoro": {
+      "features": 3157,
+      "length_km": 1865.9080016663124
+    },
+    "Otuke": {
+      "features": 1203,
+      "length_km": 1502.750182781156
+    },
+    "Oyam": {
+      "features": 1915,
+      "length_km": 2042.6475942138609
+    },
+    "Pader": {
+      "features": 4208,
+      "length_km": 3492.8508205374123
+    },
+    "Pakwach": {
+      "features": 554,
+      "length_km": 657.0533728208142
+    },
+    "Pallisa": {
+      "features": 838,
+      "length_km": 831.3636160415936
+    },
+    "Rakai": {
+      "features": 7114,
+      "length_km": 3543.7460411621178
+    },
+    "Rubanda": {
+      "features": 988,
+      "length_km": 1127.9625032957733
+    },
+    "Rubirizi": {
+      "features": 855,
+      "length_km": 711.6392238917713
+    },
+    "Rukiga": {
+      "features": 481,
+      "length_km": 532.4707734728822
+    },
+    "Rukungiri": {
+      "features": 2620,
+      "length_km": 2289.620485368212
+    },
+    "Rwampara": {
+      "features": 610,
+      "length_km": 794.9751406204022
+    },
+    "Serere": {
+      "features": 802,
+      "length_km": 1241.1445070366956
+    },
+    "Sheema": {
+      "features": 1206,
+      "length_km": 1121.899831584648
+    },
+    "Sironko": {
+      "features": 800,
+      "length_km": 671.3098267113955
+    },
+    "Soroti": {
+      "features": 2860,
+      "length_km": 2077.83303907623
+    },
+    "Ssembabule": {
+      "features": 3227,
+      "length_km": 2673.9439579745294
+    },
+    "Tororo": {
+      "features": 2419,
+      "length_km": 1998.5386264986257
+    },
+    "Wakiso": {
+      "features": 45059,
+      "length_km": 9610.822351525221
+    },
+    "Yumbe": {
+      "features": 5938,
+      "length_km": 4363.9707223913765
+    },
+    "Zombo": {
+      "features": 2028,
+      "length_km": 1742.7875818607542
+    }
+  },
+  "region_summary": {
+    "Central": {
+      "features": 158685,
+      "length_km": 71857.16414650822
+    },
+    "Eastern": {
+      "features": 66181,
+      "length_km": 43522.281811502595
+    },
+    "Northern": {
+      "features": 83326,
+      "length_km": 65362.54834495241
+    },
+    "Not supplied": {
+      "features": 17,
+      "length_km": 315.59333664257184
+    },
+    "Western": {
+      "features": 95838,
+      "length_km": 67558.56126194418
+    }
+  }
+}
