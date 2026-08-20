@@ -21,7 +21,7 @@
     structureMap: "./data/ducar_structures.geojson"
   };
   const COLORS = ["#0a84ff", "#30d158", "#ff9f0a", "#ff375f", "#bf5af2", "#64d2ff", "#ffd60a", "#5e5ce6"];
-  const CONFIRMED_NETWORK_FALLBACK = { length_km: 275447, links: 31106, districts: 135 };
+  const CONFIRMED_NETWORK_FALLBACK = { length_km: 248616.15, links: 404047, districts: 135 };
   const SECTION_TABS = [["dashboard", "Dashboard"], ["map", "Map"], ["records", "Full Exhaustive Table"], ["analytics", "Deep Analytics"], ["sql", "SQL Tables"], ["schema", "SQL Schema"]];
   const SECTION_META = {
     overview: ["National DUCAR Overview", "Whole-register coverage, condition, pavement, traffic and planning status."],
