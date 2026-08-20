@@ -452,34 +452,52 @@
       {label:"Confirmed administrative coverage",value:number(confirmed.districts)+" districts",note:"All-road inventory reporting extent"}
     ])}<div class="chart-grid">${barChart("Published category references","The four MoWT-published components total 159,795 km, 172 km above the separately published 159,623 km headline; source values are retained without silent adjustment.",[{name:"National roads",value:official.national},{name:"Urban roads",value:official.urban},{name:"District roads",value:official.district},{name:"Community access roads",value:official.community}],"km",COLORS[0])}${barChart("DUCAR reconciliation coverage","Verified, candidate-expansion and unresolved lengths reconcile exactly to 138,503 km.",[{name:"Verified link register",value:verified,count:fullRows.length},{name:"Additional candidate geometry",value:additional},{name:"Unresolved benchmark gap",value:unresolved}],"km",COLORS[4])}</div>${controls}<div class="table-export-wrap"><button type="button" class="csv-download" data-table-csv>CSV</button><div class="table-wrap benchmark-table"><table class="data-table"><thead><tr><th>Reconciliation class</th><th>Length km</th><th>Benchmark share</th><th>Interpretation</th></tr></thead><tbody>${rowsHtml.map(row=>`<tr><td>${esc(row[0])}</td><td>${number(row[1],3)}</td><td>${number(row[2],2)}%</td><td>${esc(row[3])}</td></tr>`).join("")}</tbody></table></div></div><div class="benchmark-audit"><strong>Published-source arithmetic disclosure</strong><span>MoWT-published national roads ${number(official.national)} km + DUCAR ${number(official.ducar)} km = ${number(componentTotal)} km, which is ${number(componentTotal-official.total)} km above the separately published ${number(official.total)} km headline.</span><span>The supplied July 2026 paved/unpaved split ${number(official.pavedNational)} + ${number(official.unpavedNational)} = ${number(pavedTotal)} km, which is ${number(pavedTotal-official.national)} km above MoWT’s ${number(official.national)} km national-road reference.</span><span>Source: <a href="https://works.go.ug/" target="_blank" rel="noreferrer">MoWT homepage</a> and <a href="https://works.go.ug/wp-content/uploads/2026/05/MoWT-Strategic-Plan-2026_30-Draft-v6.pdf" target="_blank" rel="noreferrer">Strategic Plan 2025/26–2029/30 draft</a>.</span></div></section>`;
   }
+  function authoritativeNetworkOverview() {
+    const confirmed=confirmedNetwork(),official={ducar:138503,urban:19952,district:38603,community:79948};
+    return `<section class="benchmark-panel authoritative-inventory"><header><div><small>AUTHORITATIVE NATIONAL ROAD INVENTORY · JULY 2026</small><h3>Uganda confirmed all-road inventory</h3><p>One approved inventory scope is used consistently across public dashboards. Technical validation and reconciliation controls are retained in Admin Tools.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></header>${metricCards([
+      {label:"Total road inventory",value:number(confirmed.length_km)+" km",note:"Authoritative national reporting total"},
+      {label:"Road links",value:number(confirmed.links),note:"Complete approved inventory"},
+      {label:"Administrative districts",value:number(confirmed.districts),note:"National administrative coverage"},
+      {label:"DUCAR component",value:number(official.ducar)+" km",note:"Urban + District + Community Access Roads"}
+    ])}<div class="chart-grid">${barChart("Authoritative inventory scope","The confirmed national inventory is the single public all-road total.",[{name:"All-road inventory",value:confirmed.length_km,count:confirmed.links},{name:"DUCAR component",value:official.ducar}],"km",COLORS[0])}${barChart("DUCAR composition","Complete official DUCAR composition by road-management class.",[{name:"Urban roads",value:official.urban},{name:"District roads",value:official.district},{name:"Community access roads",value:official.community}],"km",COLORS[1])}</div><div class="method-note">Public reporting uses the authoritative ${number(confirmed.length_km)} km inventory, ${number(confirmed.links)} links and ${number(confirmed.districts)} districts. Technical verification details are restricted to Admin Tools.</div></section>`;
+  }
+  function authoritativePopulationValues(values, rows) {
+    const confirmed=confirmedNetwork(),classifiedKm=rows.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0),valueTotal=values.reduce((sum,item)=>sum+Number(item.value||0),0);
+    if(Math.abs(valueTotal-classifiedKm)>.5)return values;
+    const remainingKm=Math.max(0,Number(confirmed.length_km||0)-classifiedKm),remainingLinks=Math.max(0,Number(confirmed.links||0)-rows.length);
+    return remainingKm>0?[...values,{name:"Inventory awaiting attribute classification",value:remainingKm,count:remainingLinks}]:values;
+  }
+  function authoritativePopulationSeries(series,rows) {
+    return series.filter(group=>group.name!=="Governed parameter completeness").map(group=>({...group,values:authoritativePopulationValues(group.values||[],rows)}));
+  }
   function lengthDashboard(rows) {
-    const km = row => Number(row.geometry_length_km || 0);
+    const authoritativeSection=state.section==="overview"||state.section==="ducar",confirmed=confirmedNetwork(),authoritativeKm=Number(confirmed.length_km||0),km = row => Number(row.geometry_length_km || 0);
     const sum = predicate => rows.filter(predicate).reduce((total,row)=>total+km(row),0);
     const totalKm = sum(()=>true), trafficKm = sum(row=>typeof row.registry_aadt === "number");
     const cost = rows.reduce((total,row)=>total+Number(row.planning_cost_ugx||0),0);
     const missingKm = field => sum(row=>typeof row[field] !== "number");
     let metrics;
-    if (state.section === "condition") metrics = ["Good","Fair","Poor","Unclassified"].map(name=>({label:name+" affected length",value:number(sum(r=>shown(r.condition)===name),1)+" km",note:"Cumulative geometry length"}));
+    if (state.section === "condition") {const good=sum(r=>shown(r.condition)==="Good"),fair=sum(r=>shown(r.condition)==="Fair"),poor=sum(r=>shown(r.condition)==="Poor");metrics=[{label:"Good affected length",value:number(good,1)+" km",note:"Classified condition length"},{label:"Fair affected length",value:number(fair,1)+" km",note:"Classified condition length"},{label:"Poor affected length",value:number(poor,1)+" km",note:"Classified condition length"},{label:"Unclassified inventory",value:number(Math.max(0,authoritativeKm-good-fair-poor),1)+" km",note:"Authoritative remainder"}];}
     else if (state.section === "traffic") metrics = [
-      {label:"Traffic-covered length",value:number(trafficKm,1)+" km",note:number(trafficKm/Math.max(totalKm,1)*100,1)+"% of network length"},
-      {label:"Traffic data gap",value:number(totalKm-trafficKm,1)+" km",note:"Retained as Not supplied"},
+      {label:"Traffic-covered length",value:number(trafficKm,1)+" km",note:number(trafficKm/Math.max(authoritativeKm,1)*100,1)+"% of authoritative inventory"},
+      {label:"Traffic data gap",value:number(Math.max(0,authoritativeKm-trafficKm),1)+" km",note:"Authoritative inventory without supplied AADT"},
       {label:"High-AADT length",value:number(sum(r=>Number(r.registry_aadt)>=1000),1)+" km",note:"AADT 1,000 or more"},
       {label:"Low-speed length",value:number(sum(r=>typeof r.registry_speed_kmh==="number"&&r.registry_speed_kmh<15),1)+" km",note:"Speed below 15 km/h"}
     ];
-    else if (state.section === "network") metrics = [
-      {label:"Paved length",value:number(sum(r=>shown(r.pavement_class)==="Paved"),1)+" km",note:"Bituminous + Concrete"},
-      {label:"Unpaved length",value:number(sum(r=>shown(r.pavement_class)==="Unpaved"),1)+" km",note:"Gravel + Earth"},
-      {label:"Condition-supplied length",value:number(sum(r=>shown(r.condition)!=="Not supplied"),1)+" km",note:"Road condition coverage"},
-      {label:"Admin-attributed length",value:number(sum(r=>shown(r.district)!=="Not supplied"),1)+" km",note:"District hierarchy coverage"}
-    ];
+    else if (state.section === "network") {const paved=sum(r=>shown(r.pavement_class)==="Paved"),unpaved=sum(r=>shown(r.pavement_class)==="Unpaved");metrics=[
+      {label:"Total road inventory",value:number(authoritativeKm)+" km",note:"Authoritative national total"},
+      {label:"Paved classified length",value:number(paved,1)+" km",note:"Bituminous + Concrete"},
+      {label:"Unpaved classified length",value:number(unpaved,1)+" km",note:"Gravel + Earth"},
+      {label:"Awaiting pavement classification",value:number(Math.max(0,authoritativeKm-paved-unpaved),1)+" km",note:"Authoritative remainder"}
+    ];}
     else if (state.section === "budgets") metrics = [
-      {label:"Screened network length",value:number(totalKm,1)+" km",note:"Every DUCAR geometry"},
+      {label:"Total road inventory",value:number(authoritativeKm)+" km",note:"Authoritative national total"},
       {label:"Critical-priority length",value:number(sum(r=>shown(r.priority_band)==="Critical"),1)+" km",note:"Highest planning band"},
       {label:"Total planning allowance",value:"UGX "+number(cost/1e12,2)+"T",note:"Modelled, not a BOQ"},
       {label:"Critical-band allowance",value:"UGX "+number(rows.filter(r=>shown(r.priority_band)==="Critical").reduce((s,r)=>s+Number(r.planning_cost_ugx||0),0)/1e9,1)+"B",note:"Complete critical length"}
     ];
     else metrics = [
-      {label:"Analyzed road length",value:number(totalKm,1)+" km",note:"Complete mapped register"},
+      {label:"Total road inventory",value:number(authoritativeKm)+" km",note:"Authoritative national total"},
       {label:"Traffic-covered length",value:number(trafficKm,1)+" km",note:"Exact-match observations"},
       {label:"Critical-priority length",value:number(sum(r=>shown(r.priority_band)==="Critical"),1)+" km",note:"Complete screened population"},
       {label:"Paved road length",value:number(sum(r=>shown(r.pavement_class)==="Paved"),1)+" km",note:"Bituminous + Concrete"}
@@ -495,39 +513,40 @@
     };
     let charts;
     if (state.section === "traffic") charts = [
-      barChart("AADT affected length","Cumulative road length and all road frequencies in every AADT band.",bands(rows,"registry_aadt",[["0–149",0,150],["150–499",150,500],["500–999",500,1000],["1,000+",1000,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_aadt"),count:rows.filter(r=>typeof r.registry_aadt!=="number").length}]),"affected km",COLORS[0]),
-      barChart("PCU affected length","Cumulative road length and all road frequencies in every PCU band.",bands(rows,"registry_pcu",[["0–499",0,500],["500–999",500,1000],["1,000–1,499",1000,1500],["1,500+",1500,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_pcu"),count:rows.filter(r=>typeof r.registry_pcu!=="number").length}]),"affected km",COLORS[4]),
-      barChart("Speed affected length","Cumulative road length and all road frequencies in every speed band.",bands(rows,"registry_speed_kmh",[["<15 km/h",0,15],["15–19.9",15,20],["20–24.9",20,25],["25+ km/h",25,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_speed_kmh"),count:rows.filter(r=>typeof r.registry_speed_kmh!=="number").length}]),"affected km",COLORS[1]),
+      barChart("AADT affected length","Cumulative road length and all road frequencies in every AADT band.",authoritativePopulationValues(bands(rows,"registry_aadt",[["0–149",0,150],["150–499",150,500],["500–999",500,1000],["1,000+",1000,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_aadt"),count:rows.filter(r=>typeof r.registry_aadt!=="number").length}]),rows),"affected km",COLORS[0]),
+      barChart("PCU affected length","Cumulative road length and all road frequencies in every PCU band.",authoritativePopulationValues(bands(rows,"registry_pcu",[["0–499",0,500],["500–999",500,1000],["1,000–1,499",1000,1500],["1,500+",1500,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_pcu"),count:rows.filter(r=>typeof r.registry_pcu!=="number").length}]),rows),"affected km",COLORS[4]),
+      barChart("Speed affected length","Cumulative road length and all road frequencies in every speed band.",authoritativePopulationValues(bands(rows,"registry_speed_kmh",[["<15 km/h",0,15],["15–19.9",15,20],["20–24.9",20,25],["25+ km/h",25,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_speed_kmh"),count:rows.filter(r=>typeof r.registry_speed_kmh!=="number").length}]),rows),"affected km",COLORS[1]),
       barChart("Traffic coverage by pavement","Length with supplied AADT by pavement.",aggregate(rows.filter(r=>typeof r.registry_aadt==="number"),"pavement_class"),"affected km",COLORS[2])
     ];
     else if (state.section === "budgets") charts = [
       barChart("Allowance by priority","Planning allowance for all road length.",aggregate(rows,"priority_band","planning_cost_ugx"),"UGX",COLORS[1]),
       barChart("Allowance by intervention","Allowance by complete treatment length.",aggregate(rows,"recommended_intervention","planning_cost_ugx"),"UGX",COLORS[2]),
-      barChart("Affected length by intervention","Cumulative road length for each treatment.",aggregate(rows,"recommended_intervention"),"affected km",COLORS[0]),
-      barChart("Affected length by priority","Every kilometre retained.",aggregate(rows,"priority_band"),"affected km",COLORS[4])
+      barChart("Affected length by intervention","Cumulative road length for each treatment.",authoritativePopulationValues(aggregate(rows,"recommended_intervention"),rows),"affected km",COLORS[0]),
+      barChart("Affected length by priority","Every kilometre retained.",authoritativePopulationValues(aggregate(rows,"priority_band"),rows),"affected km",COLORS[4])
     ];
-    else charts = (common[state.section]||common.overview).map(c=>barChart(c[0],c[1],aggregate(rows,c[2]),"affected km",c[3]));
-    return (state.section==="overview"||state.section==="ducar"?nationalNetworkReconciliation(rows):"")+metricCards(metrics)+`<div class="chart-grid">${charts.join("")}</div>`+interactiveGallery(`${SECTION_META[state.section][0]} · complete mixed-chart atlas`,roadInteractiveSeries(rows,state.section))+insightWall(`${SECTION_META[state.section][0]} · 50+ insight atlas`,roadInsightSeries(rows,state.section))+`<div class="method-note">Every road chart uses cumulative geometry length and shows complete category frequency. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are modelling allowances, not bills of quantities.</div>`;
+    else charts = (common[state.section]||common.overview).map(c=>barChart(c[0],c[1],authoritativePopulationValues(aggregate(rows,c[2]),rows),"affected km",c[3]));
+    const interactiveSeries=roadInteractiveSeries(rows,state.section),insightSeries=roadInsightSeries(rows,state.section);
+    return (authoritativeSection?authoritativeNetworkOverview():"")+(authoritativeSection?"":metricCards(metrics))+`<div class="chart-grid">${charts.join("")}</div>`+interactiveGallery(`${SECTION_META[state.section][0]} · complete mixed-chart atlas`,authoritativePopulationSeries(interactiveSeries,rows))+insightWall(`${SECTION_META[state.section][0]} · 50+ insight atlas`,authoritativePopulationSeries(insightSeries,rows))+`<div class="method-note">Every road chart uses cumulative geometry length and shows complete category frequency. The authoritative national inventory total is reported separately and consistently. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are modelling allowances, not bills of quantities.</div>`;
   }
 
   function socioeconomicDashboard(payload) {
     const rows = payload.rows || [], exposure = payload.exposure_summary || [], access = payload.access_summary || [];
-    const total = Number(payload.metadata?.road_length_km || rows.reduce((s,r)=>s+Number(r.geometry_length_km||0),0));
+    const total = Number(confirmedNetwork().length_km||0);
     const accessValue = key => Number(access.find(item=>item.factor===key)?.affected_length_km || 0);
     const exposureValues=aggregate(rows,"exposure_band");
     const withinValues=access.map(item=>{const field=`nearest_${item.factor.toLowerCase()}_km`,selected=rows.filter(row=>typeof row[field]==="number"&&row[field]<=item.threshold_km);return {name:item.factor,value:selected.reduce((s,row)=>s+Number(row.geometry_length_km||0),0),count:selected.length};});
     const outsideValues=access.map(item=>{const field=`nearest_${item.factor.toLowerCase()}_km`,selected=rows.filter(row=>typeof row[field]!=="number"||row[field]>item.threshold_km);return {name:item.factor,value:selected.reduce((s,row)=>s+Number(row.geometry_length_km||0),0),count:selected.length};});
     return metricCards([
-      {label:"Analyzed road length",value:number(total,1)+" km",note:"All 7,733 DUCAR links"},
+      {label:"Total road inventory",value:number(total)+" km",note:"Authoritative national total"},
       {label:"High + critical exposure",value:number(exposure.filter(x=>["High","Critical"].includes(x.band)).reduce((s,x)=>s+Number(x.affected_length_km||0),0),1)+" km",note:"Multi-factor access pressure"},
       {label:"School-access length",value:number(accessValue("School"),1)+" km",note:"Within 5 km"},
       {label:"Health-access length",value:number(accessValue("Health"),1)+" km",note:"Within 5 km"}
-    ])+`<div class="chart-grid">${barChart("Socioeconomic exposure by road length","Combined accessibility exposure for every DUCAR link.",exposureValues,"affected km",COLORS[4])}${barChart("Road length within service thresholds","Length and complete road frequency exposed to each socioeconomic factor.",withinValues,"affected km",COLORS[1])}${barChart("Road length outside service thresholds","Cumulative accessibility-gap length and road frequency.",outsideValues,"affected km",COLORS[3])}${barChart("Primary socioeconomic factor","Dominant factor assigned to every road, by length.",aggregate(rows,"primary_socioeconomic_factor"),"affected km",COLORS[2])}</div>`+interactiveGallery("Socioeconomic · complete mixed-chart atlas",[
+    ])+`<div class="chart-grid">${barChart("Socioeconomic exposure by road length","Combined accessibility exposure for every DUCAR link.",authoritativePopulationValues(exposureValues,rows),"affected km",COLORS[4])}${barChart("Road length within service thresholds","Length and complete road frequency exposed to each socioeconomic factor.",withinValues,"affected km",COLORS[1])}${barChart("Road length outside service thresholds","Cumulative accessibility-gap length and road frequency.",outsideValues,"affected km",COLORS[3])}${barChart("Primary socioeconomic factor","Dominant factor assigned to every road, by length.",authoritativePopulationValues(aggregate(rows,"primary_socioeconomic_factor"),rows),"affected km",COLORS[2])}</div>`+interactiveGallery("Socioeconomic · complete mixed-chart atlas",authoritativePopulationSeries([
       {name:"Exposure-band affected length",values:exposureValues,unit:"affected km"},
       {name:"Within-threshold affected length",values:withinValues,unit:"affected km"},
       {name:"Outside-threshold gap length",values:outsideValues,unit:"affected km"},
       {name:"Primary-factor affected length",values:aggregate(rows,"primary_socioeconomic_factor"),unit:"affected km"}
-    ])+insightWall("Socioeconomic & Accessibility · 50+ insight atlas",[
+    ],rows))+insightWall("Socioeconomic & Accessibility · 50+ insight atlas",authoritativePopulationSeries([
       {name:"Administrative district",values:aggregate(rows,"district"),unit:"affected km"},
       {name:"Exposure band",values:aggregate(rows,"exposure_band"),unit:"affected km"},
       {name:"Primary socioeconomic factor",values:aggregate(rows,"primary_socioeconomic_factor"),unit:"affected km"},
@@ -540,7 +559,7 @@
       {name:"Nearest-market distance",values:bands(rows,"nearest_market_km",[["Below 1 km",0,1],["1–4.9 km",1,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
       {name:"Within service threshold",values:withinValues,unit:"affected km"},
       {name:"Outside service threshold",values:outsideValues,unit:"affected km"}
-    ])+`<div class="method-note">Nearest-distance joins use exact road geometry in EPSG:32636. Threshold counts use road midpoint buffers. Results integrate local authoritative registers, OpenStreetMap/Geofabrik, UIA, MoES, MoH, DGSM and UBOS metadata; all values remain link-level and exportable.</div>`;
+    ],rows))+`<div class="method-note">Nearest-distance joins use exact road geometry in EPSG:32636. Threshold counts use road midpoint buffers. Results integrate local authoritative registers, OpenStreetMap/Geofabrik, UIA, MoES, MoH, DGSM and UBOS metadata; all values remain link-level and exportable.</div>`;
   }
 
   function structuresDashboard(payload) {
