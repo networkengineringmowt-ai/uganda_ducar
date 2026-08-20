@@ -1,9 +1,11 @@
 (function () {
   "use strict";
 
-  // The full population remains searchable and exportable, but only a bounded
-  // page is mounted in the DOM so exhaustive tables never freeze the browser.
-  const PAGE_SIZE = 250;
+  // Charts are reserved for dimensions that remain legible without selecting
+  // or suppressing categories. High-cardinality dimensions stay complete in
+  // the exhaustive and deep-analytics tables; no Top-N view is generated.
+  const MAX_CHART_CATEGORIES = 12;
+  const PAGE_SIZE = Number.MAX_SAFE_INTEGER;
   const PATHS = {
     links: "./data/ducar_link_register.json",
     relations: "./data/ducar_link_admin_relations.json",
@@ -154,9 +156,18 @@
   }
   function sortData(values) { return [...values].sort((a, b) => b.value - a.value || a.name.localeCompare(b.name)); }
   function metricCards(items) {
+    if(state.section==="summaries"&&!items.some(item=>String(item.label).toLowerCase().includes("authoritative road inventory"))){const inventory=confirmedNetwork();items=[{label:"Authoritative road inventory",value:number(inventory.length_km,0)+" km",note:number(inventory.links)+" links across "+number(inventory.districts)+" districts"},...items];}
     return `<div class="metric-grid">${items.map(item => `<article class="metric-card"><small>${esc(item.label)}</small><strong>${esc(item.value)}</strong><em>${esc(item.note)}</em></article>`).join("")}</div>`;
   }
+  function chartable(values) {
+    return (values || []).filter(item => Number(item.value || 0) > 0).length <= MAX_CHART_CATEGORIES;
+  }
+  function tableRoutingCard(title, subtitle, values) {
+    const categories=(values||[]).filter(item=>Number(item.value||0)>0).length;
+    return `<article class="chart-card chart-routing-card"><small>COMPLETE-DIMENSION ROUTING</small><h3>${esc(title)}</h3><p>${esc(subtitle)}</p><strong>${number(categories)} categories</strong><span>All categories, affected length and record frequency are retained in Full Exhaustive Table and Deep Analytics. No category was selected, hidden or reduced to a Top-N chart.</span></article>`;
+  }
   function barChart(title, subtitle, values, unit, color = COLORS[0]) {
+    if (!chartable(values)) return tableRoutingCard(title,subtitle,values);
     const rows = sortData(values);
     const width = 720, left = 180, right = 225, top = 18, rowH = 34, bottom = 42;
     const height = top + Math.max(rows.length, 1) * rowH + bottom;
@@ -240,6 +251,10 @@
   }
   function interactiveGallery(title, series) {
     const types=[["donut","Donuts"],["pie","Pies"],["funnel","Funnels"],["clustered","Clustered columns"],["stacked","Stacked columns"],["sparkline","Sparklines"],["gauge","Gauges"],["radar","Radar profiles"],["treemap","Treemaps"],["scatter","Scatter and frequency bubbles"],["composed","Composed length and cumulative share"],["ranked","Complete ranked matrices"]];
+    const routed=series.filter(group=>!chartable(group.values));
+    const eligible=series.filter(group=>chartable(group.values));
+    if(routed.length) title+=` - ${routed.length} high-cardinality dimension${routed.length===1?"":"s"} retained intact in tables`;
+    series=eligible;
     return `<section class="viz-studio complete-chart-atlas"><div class="viz-heading"><div><small>ALL CHART FORMS · COMPLETE POPULATION · NO HIDDEN PANELS</small><h3>${esc(title)}</h3><p>Every chart form is visible in one continuous page. Each category reports cumulative affected length and complete record frequency together.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></div><div class="complete-chart-stack">${types.map(([id,text])=>`<section class="chart-type-section"><header><h4>${esc(text)}</h4><span>${number(series.length)} complete-population views</span></header><div class="dynamic-chart-grid">${series.map(item=>vizCard(item,id)).join("")}</div></section>`).join("")}</div></section>`;
   }
   function roadInteractiveSeries(rows, section) {
@@ -281,6 +296,12 @@
       hierarchy:{name:"Administrative hierarchy",values:aggregate(rows,row=>shown(row.parish)==="Not supplied"?"Parish not supplied":"Parish supplied"),unit:"affected km"},
       completeness:{name:"Governed parameter completeness",values:completenessValues(rows,["district","county","subcounty","parish","surface","pavement_class","condition","registry_aadt","priority_band","recommended_intervention"]),unit:"affected km"}
     };
+    const additional=[
+      {name:"Condition-risk numeric band",values:bands(rows,"condition_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"affected km"},
+      {name:"Surface-risk numeric band",values:bands(rows,"surface_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"affected km"},
+      {name:"Planning unit-cost band",values:bands(rows,"planning_unit_cost_ugx_km",[["Below UGX 100m/km",0,1e8],["UGX 100m to 299m/km",1e8,3e8],["UGX 300m to 599m/km",3e8,6e8],["UGX 600m+/km",6e8,Infinity]]),unit:"affected km"},
+      {name:"Link planning-cost band",values:bands(rows,"planning_cost_ugx",[["Below UGX 100m",0,1e8],["UGX 100m to 499m",1e8,5e8],["UGX 500m to 999m",5e8,1e9],["UGX 1b+",1e9,Infinity]]),unit:"affected km"}
+    ];
     const owned={
       traffic:[catalog.aadt,catalog.pcu,catalog.speed,catalog.traffic,catalog.pavement,catalog.condition,catalog.linkLength,catalog.completeness],
       condition:[catalog.condition,catalog.conditionRisk,catalog.surfaceRisk,catalog.intervention,catalog.surface,catalog.pavement,catalog.priority,catalog.linkLength,catalog.completeness],
@@ -292,7 +313,7 @@
       ducar:[catalog.intervention,catalog.condition,catalog.pavement,catalog.priority,catalog.surface,catalog.traffic,catalog.linkLength,catalog.completeness],
       overview:[catalog.condition,catalog.pavement,catalog.priority,catalog.traffic,catalog.surface,catalog.intervention,catalog.linkLength,catalog.completeness]
     };
-    return [district,...(owned[section]||owned.overview)];
+    return [district,...(owned[section]||owned.overview),...additional];
   }
   function insightMicro(type, share, meanShare, color) {
     const p=Math.max(0,Math.min(100,share)), mean=Math.max(0,Math.min(100,meanShare));
@@ -315,8 +336,13 @@
   }
   function insightWall(title, series) {
     const types=["bar","ring","column","lollipop","stacked","pie","funnel","heat","bullet","gauge","sparkline","radar","treemap","scatter","composed"];
-    const cards=[];
-    series.forEach((group,groupIndex)=>{
+    if(state.section==="global"&&series.some(group=>group.name==="Configured country")){const rows=globalRows();series=[...series,{name:"Governance model",values:aggregate(rows,"governance_model"),unit:"country count"},{name:"Local-road manager",values:aggregate(rows,"local_road_manager"),unit:"country count"},{name:"Asset-management principles",values:aggregate(rows,"asset_management_principles"),unit:"country count"},{name:"Performance measures",values:aggregate(rows,"performance_measures"),unit:"country count"},{name:"Tools and techniques",values:aggregate(rows,"tools_and_techniques"),unit:"country count"}];}
+    if(state.section==="summaries"){const rows=cache.links||[];series=[...series,{name:"Surface type health",values:aggregate(rows,"surface"),unit:"covered km"},{name:"Condition-risk bands",values:bands(rows,"condition_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"},{name:"Surface-risk bands",values:bands(rows,"surface_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"},{name:"Link-length bands",values:bands(rows,"geometry_length_km",[["Below 1 km",0,1],["1 to 2.9 km",1,3],["3 to 4.9 km",3,5],["5 to 9.9 km",5,10],["10+ km",10,Infinity]]),unit:"covered km"},{name:"Planning-score bands",values:bands(rows,"planning_priority_score",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"}];}
+    const routed=series.filter(group=>!chartable(group.values));
+    const eligible=series.filter(group=>chartable(group.values)), cards=[];
+    if(routed.length) title+=` - ${routed.length} high-cardinality dimension${routed.length===1?"":"s"} retained intact in tables`;
+    series=eligible;
+    eligible.forEach((group,groupIndex)=>{
       const values=(group.values||[]).map(item=>({name:shown(item.name),value:Number(item.value||0),count:item.count}));
       const total=values.reduce((sum,item)=>sum+item.value,0), mean=total/Math.max(values.length,1), meanShare=mean/Math.max(total,1)*100;
       values.forEach((item,itemIndex)=>{
@@ -502,6 +528,7 @@
       {label:"Critical-priority length",value:number(sum(r=>shown(r.priority_band)==="Critical"),1)+" km",note:"Complete screened population"},
       {label:"Paved road length",value:number(sum(r=>shown(r.pavement_class)==="Paved"),1)+" km",note:"Bituminous + Concrete"}
     ];
+    if(!metrics.some(item=>item.label==="Total road inventory"))metrics=[{label:"Total road inventory",value:number(authoritativeKm)+" km",note:"Authoritative national total"},...metrics];
     const common = {
       overview: [["Condition affected length","All mapped road length by condition.","condition",COLORS[1]],["Pavement affected length","Paved and unpaved cumulative length.","pavement_class",COLORS[2]],["Priority affected length","Planning bands by cumulative road length.","priority_band",COLORS[4]],["Traffic data coverage","Road length with or without exact traffic data.",r=>typeof r.registry_aadt==="number"?"Traffic supplied":"Not supplied",COLORS[5]]],
       ducar: [["Intervention coverage length","Cumulative length assigned to each treatment.","recommended_intervention",COLORS[2]],["Condition coverage length","Network condition by affected road length.","condition",COLORS[1]],["Pavement coverage length","Paved and unpaved road length.","pavement_class",COLORS[0]],["Priority coverage length","Screened length by priority band.","priority_band",COLORS[4]]],
@@ -569,6 +596,7 @@
     const highRisk=rows.filter(row=>["Critical","High"].includes(row.risk_band)).reduce((sum,row)=>sum+Number(row.allocated_road_length_km||0),0);
     const series=[{name:"Structure-class affected length",values:classValues,unit:"affected km"},{name:"Structure-condition affected length",values:conditionValues,unit:"affected km"},{name:"Structure-risk affected length",values:riskValues,unit:"affected km"},{name:"District structure exposure length",values:districtValues,unit:"affected km"}];
     return metricCards([
+      {label:"Authoritative road inventory",value:number(confirmedNetwork().length_km,0)+" km",note:number(confirmedNetwork().links)+" links across "+number(confirmedNetwork().districts)+" districts"},
       {label:"Road length with structures",value:number(payload.metadata.road_length_with_structures_km,1)+" km",note:number(payload.metadata.structure_occurrences)+" source occurrences retained"},
       {label:"High-risk exposed length",value:number(highRisk,1)+" km",note:number(rows.filter(row=>["Critical","High"].includes(row.risk_band)).length)+" Critical + High occurrences"},
       {label:"Bridge-carrying length",value:number(value(payload.class_summary,"Bridge"),1)+" km",note:number(rows.filter(row=>row.structure_class==="Bridge").length)+" bridge occurrences"},
@@ -612,6 +640,7 @@
     const rows=globalRows(), regions=aggregate(rows,"region");
     const reviewed=rows.filter(row=>row.governance_evidence_status!=="Not yet source-verified"), unreviewed=rows.length-reviewed.length;
     return metricCards([
+      {label:"Uganda authoritative inventory",value:number(confirmedNetwork().length_km,0)+" km",note:number(confirmedNetwork().links)+" links across "+number(confirmedNetwork().districts)+" districts"},
       {label:"Reviewed operating models",value:number(reviewed.length),note:"Official ministry and road-authority sources"},
       {label:"Configured countries",value:number(rows.length),note:"Complete sovereign-country matrix; no country omitted"},
       {label:"Configured regions",value:number(regions.length),note:"Complete global geographic coverage"},
@@ -677,7 +706,7 @@
   }
   function cellClass(field, raw) {
     const value = shown(raw).toLowerCase();
-    if (value === "not supplied" || value.includes("no comparable") || value.includes("not yet source-verified")) return "not-supplied";
+    if (value === "not supplied" || value.includes("no comparable") || value.includes("not yet source-verified") || value.includes("unmatched") || value.includes("missing")) return "not-supplied";
     if (field === "condition" && ["good","fair","poor"].includes(value)) return "cell-" + value;
     if (field === "current_condition") return value.includes("very poor") ? "cell-critical" : value.includes("poor") ? "cell-poor" : value.includes("fair") ? "cell-fair" : value.includes("good") ? "cell-good" : "";
     if (field === "priority_band" && ["low","moderate","high","critical"].includes(value)) return "cell-" + value;
@@ -686,6 +715,10 @@
     if (field === "pavement_class") return value === "paved" ? "cell-paved" : value === "unpaved" ? "cell-unpaved" : "";
     if (field === "registry_aadt" && typeof raw === "number") return raw >= 1000 ? "cell-critical" : raw >= 500 ? "cell-high" : raw >= 150 ? "cell-moderate" : "cell-low";
     if (typeof raw === "number") return raw < 0 ? "cell-poor cell-numeric" : raw === 0 ? "cell-zero cell-numeric" : "cell-numeric";
+    if (/critical|very poor|failed|severe/.test(value)) return "cell-critical";
+    if (/high risk|\bpoor\b/.test(value)) return "cell-poor";
+    if (/moderate|partial|pending|\bfair\b/.test(value)) return "cell-fair";
+    if (/verified|complete|supplied|aligned|\bgood\b|low risk/.test(value)) return "cell-good";
     return "";
   }
   function filtered(dataset) {
@@ -723,6 +756,13 @@
     const features=dataset.rows.map(row=>{const x=coordinate(row,["x_coordinate_dd","x_coordinate","longitude","lon","lng","x"]),y=coordinate(row,["y_coordinate_dd","y_coordinate","latitude","lat","y"]);return {type:"Feature",geometry:x!==null&&y!==null?{type:"Point",coordinates:[x,y]}:null,properties:{...row}};});
     const payload={type:"FeatureCollection",name:`ducar_${state.section}_complete_records`,crs:{type:"name",properties:{name:"urn:ogc:def:crs:OGC:1.3:CRS84"}},features};
     downloadBlob(new Blob([JSON.stringify(payload)],{type:"application/geo+json;charset=utf-8"}),`ducar_${state.section}_complete_records.geojson`);
+  }
+  function exportRowsKml(dataset) {
+    const xml=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[char]));
+    const coordinate=(row,names)=>{for(const name of names){const value=Number(row[name]);if(Number.isFinite(value))return value;}return null;};
+    const placemarks=dataset.rows.map(row=>{const x=coordinate(row,["x_coordinate_dd","x_coordinate","longitude","lon","lng","x"]),y=coordinate(row,["y_coordinate_dd","y_coordinate","latitude","lat","y"]);if(x===null||y===null)return "";const name=row.link_id||row.structure_id||row.road_name||"DUCAR record",extended=dataset.fields.map(field=>`<Data name="${xml(field)}"><value>${xml(shown(row[field]))}</value></Data>`).join("");return `<Placemark><name>${xml(name)}</name><ExtendedData>${extended}</ExtendedData><Point><coordinates>${x},${y},0</coordinates></Point></Placemark>`;}).join("");
+    const kml=`<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>DUCAR ${xml(state.section)} complete records</name>${placemarks}</Document></kml>`;
+    downloadBlob(new Blob([kml],{type:"application/vnd.google-earth.kml+xml;charset=utf-8"}),`ducar_${state.section}_complete_records.kml`);
   }
   function exportDataDictionary(dataset) {
     const rows=dataset.fields.map(field=>{const values=dataset.rows.map(row=>row[field]).filter(value=>value!==null&&value!==undefined&&String(value).trim()!==""),numeric=values.length>0&&values.every(value=>Number.isFinite(Number(value))),distinct=new Set(values.map(value=>String(value))).size;return {field_name:field,display_label:label(field),inferred_type:numeric?"NUMERIC":"TEXT",populated_records:values.length,missing_records:dataset.rows.length-values.length,distinct_values:distinct};});
@@ -1033,10 +1073,12 @@
     if(wrapper){source?.remove();return true;}if(!source)return false;
     wrapper=document.createElement("div");wrapper.className="ducar-export-menu";
     wrapper.innerHTML=`<button class="ducar-export-trigger" type="button" aria-haspopup="menu" aria-expanded="false"><span aria-hidden="true">⇩</span> Export <b aria-hidden="true">⌄</b></button><div class="ducar-export-panel" role="menu" hidden><header><strong>Full export centre</strong><small>Complete ${esc(SECTION_META[state.section]?.[0]||"DUCAR")} population</small></header><section><h3>Complete records</h3><button type="button" role="menuitem" data-header-export="csv-all"><b>CSV</b><span>All records · every field</span></button><button type="button" role="menuitem" data-header-export="csv-filtered"><b>CSV</b><span>Current filtered population</span></button><button type="button" role="menuitem" data-header-export="json"><b>JSON</b><span>Records + field metadata</span></button><button type="button" role="menuitem" data-header-export="geojson"><b>GEO</b><span>GeoJSON · WGS84 coordinates</span></button></section><section><h3>Database & schema</h3><button type="button" role="menuitem" data-header-export="sql"><b>SQL</b><span>DDL + every INSERT record</span></button><button type="button" role="menuitem" data-header-export="dictionary"><b>DICT</b><span>Data dictionary + completeness</span></button><button type="button" role="menuitem" data-header-export="inventory"><b>JSON</b><span>Approved network inventory</span></button></section><section><h3>Reports & graphics</h3><button type="button" role="menuitem" data-header-export="pdf"><b>PDF</b><span>Complete section report</span></button><button type="button" role="menuitem" data-header-export="png"><b>PNG</b><span>Current complete view</span></button><button type="button" role="menuitem" data-header-export="table"><b>TABLE</b><span>Visible exhaustive/analytics table</span></button><button type="button" role="menuitem" data-header-export="map"><b>MAP</b><span>Current interactive map PNG</span></button></section><footer>Exports use the active section; no Top-N sampling.</footer></div>`;
+    wrapper.querySelector('[data-header-export="geojson"]')?.insertAdjacentHTML("afterend",'<button type="button" role="menuitem" data-header-export="kml"><b>KML</b><span>KML points - WGS84 coordinates</span></button>');
     actions.appendChild(wrapper);source.remove();
     const trigger=wrapper.querySelector(".ducar-export-trigger"),panel=wrapper.querySelector(".ducar-export-panel"),close=()=>{panel.hidden=true;trigger.setAttribute("aria-expanded","false");wrapper.classList.remove("open");};
     trigger.addEventListener("click",event=>{event.stopPropagation();const opening=panel.hidden;document.querySelectorAll(".ducar-export-panel").forEach(menu=>menu.hidden=true);panel.hidden=!opening;trigger.setAttribute("aria-expanded",String(opening));wrapper.classList.toggle("open",opening);if(opening){panel.querySelector('[data-header-export="table"]').disabled=!root.querySelector("table");panel.querySelector('[data-header-export="map"]').disabled=!root.querySelector(".map-stage");panel.querySelector("header small").textContent=`Complete ${SECTION_META[state.section]?.[0]||"DUCAR"} population`;}});
     wrapper.addEventListener("keydown",event=>{if(event.key==="Escape"){close();trigger.focus();}});
+    wrapper.addEventListener("click",event=>{const option=event.target.closest?.('[data-header-export="kml"]');if(!option)return;const sectionDataset=recordDataset(),dataset={rows:sectionDataset.rows,fields:[...new Set(sectionDataset.rows.flatMap(row=>Object.keys(row)))]};close();exportRowsKml(dataset);});
     wrapper.addEventListener("click",async event=>{const option=event.target.closest?.("[data-header-export]");if(!option||option.disabled)return;const action=option.dataset.headerExport,sectionDataset=recordDataset(),dataset={rows:sectionDataset.rows,fields:[...new Set(sectionDataset.rows.flatMap(row=>Object.keys(row)))]};close();try{if(action==="csv-all")exportRowsCsv(dataset,dataset.rows,`ducar_${state.section}_complete_records.csv`);else if(action==="csv-filtered")exportRowsCsv(dataset,filtered(sectionDataset),`ducar_${state.section}_filtered_records.csv`);else if(action==="json")exportRowsJson(dataset);else if(action==="geojson")exportRowsGeoJson(dataset);else if(action==="sql")exportSqlDump(dataset);else if(action==="dictionary")exportDataDictionary(dataset);else if(action==="inventory"){const anchor=document.createElement("a");anchor.href=PATHS.inventory;anchor.download="approved_network_inventory_2026.json";anchor.click();}else if(action==="pdf")await sectionPdf();else if(action==="png")await downloadElementPng(root,`ducar_${state.section}_${state.tab}_complete_view.png`);else if(action==="table")tableCsv(root.querySelector("table"),`ducar_${state.section}_${state.tab}_visible_table.csv`);else if(action==="map")root.querySelector('[data-map-tool="download"]')?.click();}catch(error){console.error("DUCAR export failed",error);}});
     document.addEventListener("click",event=>{if(!wrapper.contains(event.target))close();});
     return true;
