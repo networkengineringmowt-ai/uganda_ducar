@@ -1,1 +1,31 @@
-{"nodes":[{"id":"studio","label":"DUCAR Priority Studio","type":"root"},{"id":"dashboard","label":"Executive Dashboard","type":"section"},{"id":"network","label":"Network GIS","type":"section"},{"id":"traffic","label":"Traffic","type":"section"},{"id":"condition","label":"Condition","type":"section"},{"id":"structures","label":"Structures · Bridges & Major Culverts","type":"section"},{"id":"pims","label":"PIMS","type":"section"},{"id":"hdm4","label":"HDM-4","type":"section"},{"id":"framework","label":"Framework","type":"section"},{"id":"budget","label":"Budget & Prioritization","type":"section"},{"id":"global","label":"Global Matrix","type":"section"},{"id":"admin","label":"Admin Tools","type":"section"},{"id":"links","label":"7,733 Link Records","type":"data","records":7733},{"id":"structures_data","label":"2,290 Structure Occurrences","type":"data","records":2290},{"id":"relations","label":"24,174 Admin Relations","type":"data","records":24174},{"id":"matrix","label":"District-to-Village Matrix","type":"data"},{"id":"sql","label":"SQLite Database & Schema","type":"data"},{"id":"evidence","label":"Evidence & Manuals","type":"data"}],"edges":[{"from":"studio","to":"dashboard"},{"from":"studio","to":"network"},{"from":"studio","to":"traffic"},{"from":"studio","to":"condition"},{"from":"studio","to":"structures"},{"from":"studio","to":"pims"},{"from":"studio","to":"hdm4"},{"from":"studio","to":"framework"},{"from":"studio","to":"budget"},{"from":"studio","to":"global"},{"from":"studio","to":"admin"},{"from":"links","to":"network"},{"from":"links","to":"traffic"},{"from":"links","to":"condition"},{"from":"links","to":"structures"},{"from":"structures_data","to":"structures"},{"from":"structures_data","to":"admin"},{"from":"links","to":"budget"},{"from":"relations","to":"admin"},{"from":"matrix","to":"admin"},{"from":"sql","to":"admin"},{"from":"evidence","to":"framework"}],"record_policy":"All available records; unavailable fields are labelled Not supplied."}
+{
+  "nodes": [
+    {"id":"studio","label":"DUCAR Priority Studio","type":"root"},
+    {"id":"ducar","label":"DUCAR Dashboard","type":"section"},
+    {"id":"traffic","label":"Traffic","type":"section"},
+    {"id":"condition","label":"Condition","type":"section"},
+    {"id":"structures","label":"Structures","type":"section"},
+    {"id":"pims","label":"PIMS","type":"section"},
+    {"id":"hdm4","label":"HDM-4","type":"section"},
+    {"id":"global","label":"Global","type":"section"},
+    {"id":"socioeconomic","label":"Socioeconomic Analysis","type":"section"},
+    {"id":"priority","label":"Priority Studio","type":"section"},
+    {"id":"admin","label":"Admin Tools","type":"section"},
+    {"id":"approved_inventory","label":"Approved Inventory · 31,106 Links · 275,447 km","type":"data","records":31106},
+    {"id":"verified_links","label":"Verified Web Analytics Register · 7,733 Links","type":"data","records":7733},
+    {"id":"master_attributes","label":"Master Workbook · 51 Link Attributes","type":"data","records":31106},
+    {"id":"structures_data","label":"Structure Occurrences","type":"data","records":2290},
+    {"id":"relations","label":"Administrative Relations","type":"data","records":24174},
+    {"id":"global_evidence","label":"Global Governance Evidence Register","type":"data","records":195},
+    {"id":"socio_data","label":"Socioeconomic Geospatial Joins","type":"data","records":7733},
+    {"id":"sql","label":"SQLite Database & Schema","type":"data"},
+    {"id":"evidence","label":"Evidence, Manuals & Source Register","type":"data"}
+  ],
+  "edges": [
+    {"from":"studio","to":"ducar"},{"from":"studio","to":"traffic"},{"from":"studio","to":"condition"},{"from":"studio","to":"structures"},{"from":"studio","to":"pims"},{"from":"studio","to":"hdm4"},{"from":"studio","to":"global"},{"from":"studio","to":"socioeconomic"},{"from":"studio","to":"priority"},{"from":"studio","to":"admin"},
+    {"from":"approved_inventory","to":"ducar"},{"from":"approved_inventory","to":"admin"},{"from":"master_attributes","to":"ducar"},{"from":"master_attributes","to":"admin"},
+    {"from":"verified_links","to":"traffic"},{"from":"verified_links","to":"condition"},{"from":"verified_links","to":"pims"},{"from":"verified_links","to":"hdm4"},{"from":"verified_links","to":"priority"},
+    {"from":"structures_data","to":"structures"},{"from":"relations","to":"admin"},{"from":"global_evidence","to":"global"},{"from":"socio_data","to":"socioeconomic"},{"from":"sql","to":"admin"},{"from":"evidence","to":"global"},{"from":"evidence","to":"admin"}
+  ],
+  "record_policy": "Approved inventory totals drive backend national calculations. Verified web geometry drives link-level dashboards, maps, tables and analytics. Missing observations remain Not supplied."
+}

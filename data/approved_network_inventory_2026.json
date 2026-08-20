@@ -1,0 +1,36 @@
+{
+  "status": "approved_inventory_scope",
+  "as_of": "2026-07",
+  "confirmed_all_road_inventory": {
+    "length_km": 275447,
+    "links": 31106,
+    "districts": 135
+  },
+  "master_workbook_inventory": {
+    "source_file": "MoWT_DUCAR_National_Road_Network_Master_Workbook_2026.xlsx",
+    "ducar_link_rows": 31106,
+    "attributes_per_link": 51,
+    "coordinate_fields": ["start_x_dd", "start_y_dd", "midpoint_x_dd", "midpoint_y_dd", "end_x_dd", "end_y_dd"],
+    "administrative_extent": "135 districts",
+    "publication_role": "Approved inventory and backend calculation scope"
+  },
+  "verified_web_analytics_register": {
+    "links": 7733,
+    "geometry_length_km": 22323.109,
+    "publication_role": "Link-level web analytics, exhaustive tables and mapped geometry",
+    "rule": "Never scale or duplicate verified geometry to force agreement with an inventory headline"
+  },
+  "published_reference_scopes": {
+    "national_roads_km": 21292,
+    "ducar_composition_km": 138503,
+    "urban_km": 19952,
+    "district_km": 38603,
+    "community_access_km": 79948
+  },
+  "calculation_policy": [
+    "Use 275,447 km, 31,106 links and 135 districts for approved all-road inventory calculations.",
+    "Use the verified web register denominator for link-level condition, traffic, structures, cost and map analytics.",
+    "Show the denominator and scope beside any calculation that could otherwise be confused with the approved inventory.",
+    "Retain missing observations as Not supplied; do not fabricate values or geometry."
+  ]
+}
