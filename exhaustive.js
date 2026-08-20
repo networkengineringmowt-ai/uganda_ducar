@@ -102,7 +102,7 @@
     return SECTION_TABS.some(([tab]) => tab === id) ? id : "dashboard";
   }
   function sectionFromTitle(title) {
-    const map = { TOP: "overview", "DUCAR Dashboard": "ducar", Network: "network", Traffic: "traffic", Condition: "condition", Structures: "structures", PIMS: "pims", "HDM-4": "hdm4", Framework: "framework", "Budgets & Prioritization": "budgets", Global: "global", "Socioeconomic Analysis": "socioeconomic", "Summaries & Admin Tools": "summaries" };
+    const map = { TOP: "overview", "DUCAR Dashboard": "ducar", Network: "network", Traffic: "traffic", Condition: "condition", Structures: "structures", PIMS: "pims", "HDM-4": "hdm4", Framework: "framework", "Budgets & Prioritization": "budgets", "Priority Studio": "budgets", Global: "global", "Socioeconomic Analysis": "socioeconomic", "Summaries & Admin Tools": "summaries", "Admin Tools": "summaries" };
     return map[title] || null;
   }
   async function data(key) {
@@ -910,7 +910,7 @@
   }
   document.addEventListener("click",event=>{
     const button=event.target.closest?.("button[title]");
-    if(button)setTimeout(()=>activateSection(sectionFromTitle(button.getAttribute("title"))),0);
+    if(button)setTimeout(()=>{activateSection(button.dataset.ducarSection||sectionFromTitle(button.getAttribute("title")));syncPrimaryNav();},0);
   },true);
   document.addEventListener("click",event=>{
     const button=event.target.closest?.("button");if(button?.textContent.trim()!=="Export")return;
@@ -935,7 +935,33 @@
     while((node=walker.nextNode()))if(node.nodeValue.trim()==="Condition")node.nodeValue=node.nodeValue.replace("Condition","Structures");
     conditionButton.insertAdjacentElement("afterend",button);syncInjectedNav();return true;
   }
-  function syncInjectedNav(){document.querySelectorAll('button[title="Structures"],button[title="Socioeconomic Analysis"]').forEach(button=>button.classList.toggle("codex-injected-active",sectionFromTitle(button.title)===state.section));}
+  const PRIMARY_NAV = [
+    ["ducar","DUCAR Dashboard"],
+    ["traffic","Traffic"],
+    ["condition","Condition"],
+    ["structures","Structures"],
+    ["pims","PIMS"],
+    ["hdm4","HDM-4"],
+    ["global","Global"],
+    ["socioeconomic","Socioeconomic Analysis"],
+    ["budgets","Priority Studio"],
+    ["summaries","Admin Tools"]
+  ];
+  const SOURCE_NAV_TITLES = {ducar:"DUCAR Dashboard",traffic:"Traffic",condition:"Condition",structures:"Structures",pims:"PIMS",hdm4:"HDM-4",global:"Global",socioeconomic:"Socioeconomic Analysis",budgets:"Budgets & Prioritization",summaries:"Summaries & Admin Tools"};
+  function replaceNavLabel(button,label) {
+    const known=new Set([...Object.values(SOURCE_NAV_TITLES),...PRIMARY_NAV.map(([,text])=>text)]),walker=document.createTreeWalker(button,NodeFilter.SHOW_TEXT);let node;
+    while((node=walker.nextNode()))if(known.has(node.nodeValue.trim())){node.nodeValue=node.nodeValue.replace(node.nodeValue.trim(),label);return;}
+  }
+  function syncPrimaryNav() {
+    const all=[...document.querySelectorAll("button[title]")];
+    all.forEach(button=>{const route=button.dataset.ducarSection||sectionFromTitle(button.title);if(route)button.dataset.ducarSection=route;});
+    const byRoute=new Map(all.filter(button=>button.dataset.ducarSection).map(button=>[button.dataset.ducarSection,button]));
+    const dashboard=byRoute.get("ducar"),nav=dashboard?.parentElement;if(!nav)return false;
+    [...byRoute].forEach(([route,button])=>{if(!PRIMARY_NAV.some(([id])=>id===route))button.hidden=true;});
+    PRIMARY_NAV.forEach(([route,label])=>{const button=byRoute.get(route);if(!button)return;button.hidden=false;button.title=label;button.setAttribute("aria-label",label);replaceNavLabel(button,label);nav.appendChild(button);});
+    nav.dataset.ducarPrimaryNav="10";syncInjectedNav();return PRIMARY_NAV.every(([route])=>byRoute.has(route));
+  }
+  function syncInjectedNav(){document.querySelectorAll("button[data-ducar-section]").forEach(button=>button.classList.toggle("codex-injected-active",button.dataset.ducarSection===state.section));}
   function syncHeaderFilterPanel() {
     if(!cache.links)return;
     const selects=[...document.querySelectorAll("#root select")],find=prefix=>selects.find(select=>select.options[0]?.textContent.trim().startsWith(prefix));
@@ -952,9 +978,9 @@
   document.addEventListener("change",event=>{const key=event.target?.dataset?.ducarHeaderFilter;if(!key||key==="search")return;state.headerFilters[key]=event.target.value;state.page=1;render();setTimeout(syncHeaderFilterPanel,80);},true);
   document.addEventListener("input",event=>{if(event.target?.dataset?.ducarHeaderFilter!=="search")return;state.headerFilters.search=event.target.value;state.page=1;clearTimeout(headerSearchTimer);headerSearchTimer=setTimeout(()=>{render();syncHeaderFilterPanel();},180);},true);
   document.addEventListener("click",event=>{if(event.target.closest?.("button")?.textContent.trim()!=="Filters")return;setTimeout(syncHeaderFilterPanel,60);setTimeout(syncHeaderFilterPanel,260);},true);
-  let navAttempts=0; const navTimer=setInterval(()=>{navAttempts++;const ready=ensureSocioeconomicNav()&&ensureStructuresNav();if(ready||navAttempts>40)clearInterval(navTimer);},250);
+  let navAttempts=0; const navTimer=setInterval(()=>{navAttempts++;const ready=ensureSocioeconomicNav()&&ensureStructuresNav()&&syncPrimaryNav();if(ready||navAttempts>40)clearInterval(navTimer);},250);
   window.addEventListener("hashchange",()=>{
-    state.section=sectionFromHash();state.tab=tabFromHash();state.page=1;state.search="";state.filterField="";state.filterValue="";state.sortField="";render();setTimeout(syncInjectedNav,0);
+    state.section=sectionFromHash();state.tab=tabFromHash();state.page=1;state.search="";state.filterField="";state.filterValue="";state.sortField="";render();setTimeout(syncPrimaryNav,0);
   });
   render();
 })();
