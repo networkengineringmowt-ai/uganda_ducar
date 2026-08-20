@@ -4,6 +4,8 @@ body{min-height:100%;height:auto!important;overflow-x:hidden!important;overflow-
 .ducar-nav-hidden{display:none!important}
 html,body,#root{background:#050506!important}
 #root{height:64px!important;min-height:64px!important;overflow:visible!important;position:relative;z-index:20}
+body:not(.network-map-mode) #root{position:fixed!important;inset:0 0 auto 0;z-index:320;background:#050506!important}
+body:not(.network-map-mode) #exhaustive-root{padding-top:64px;box-sizing:border-box}
 #exhaustive-root{min-height:calc(100vh - 64px);overflow:visible!important}
 .exhaustive-shell{position:relative;z-index:30;overflow:visible!important}
 *{scrollbar-color:#55555d #111113}
@@ -33,6 +35,8 @@ input,textarea{color-scheme:dark}
 }
 .section-studio{width:100%;max-width:100%;min-width:0;margin:0;overflow:visible}
 .section-tabs{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;border-bottom:1px solid #2e2e32;margin-bottom:10px;-webkit-overflow-scrolling:touch}
+body:not(.network-map-mode) .section-studio{padding-top:55px;box-sizing:border-box}
+body:not(.network-map-mode) .section-tabs{position:fixed;top:64px;left:225px;right:0;z-index:310;margin:0;padding:8px;background:rgba(5,5,6,.96);box-shadow:0 8px 18px rgba(0,0,0,.34);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .section-tab{white-space:nowrap;border:1px solid #3a3a3f;background:#171719;color:#b9b9c0;border-radius:10px;padding:11px 15px;font-size:11px;font-weight:850;cursor:pointer}
 .section-tab{text-decoration:none;display:inline-flex;align-items:center}
 .section-tab.active{background:#0a84ff;border-color:#0a84ff;color:#fff;box-shadow:0 7px 20px rgba(10,132,255,.25)}
@@ -136,6 +140,6 @@ input,textarea{color-scheme:dark}
 @media(max-width:1200px){.insight-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:1100px){.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.chart-grid,.schema-grid,.dynamic-chart-grid{grid-template-columns:1fr}.insight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.exhaustive-controls{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:1050px){.map-workspace{grid-template-columns:minmax(0,1fr) 320px}}
-@media(max-width:800px){#root main{display:none!important}.exhaustive-shell{margin-left:0;width:100%;max-width:100vw;padding:6px 5px 24px}.metric-grid{grid-template-columns:1fr 1fr}.records-toolbar,.sql-intro,.map-toolbar{align-items:stretch;flex-direction:column}.map-search{grid-template-columns:1fr auto}.map-search span{grid-column:1/-1}.map-workspace{display:flex;flex-direction:column;height:auto;max-height:none}.map-stage{height:70vh;min-height:440px}.map-catalogue{height:760px;grid-template-rows:420px 332px}.map-details.expanded{position:fixed;width:auto;left:8px}.map-filter{align-items:stretch;flex-direction:column}.map-filter select{min-width:0;width:100%}.section-map{min-height:440px}.chart-label,.chart-tick,.chart-value{font-size:9px}}
+@media(max-width:800px){#root main{display:none!important}.exhaustive-shell{margin-left:0;width:100%;max-width:100vw;padding:6px 5px 24px}body:not(.network-map-mode) .section-tabs{left:0;padding-left:5px;padding-right:5px}.metric-grid{grid-template-columns:1fr 1fr}.records-toolbar,.sql-intro,.map-toolbar{align-items:stretch;flex-direction:column}.map-search{grid-template-columns:1fr auto}.map-search span{grid-column:1/-1}.map-workspace{display:flex;flex-direction:column;height:auto;max-height:none}.map-stage{height:70vh;min-height:440px}.map-catalogue{height:760px;grid-template-rows:420px 332px}.map-details.expanded{position:fixed;width:auto;left:8px}.map-filter{align-items:stretch;flex-direction:column}.map-filter select{min-width:0;width:100%}.section-map{min-height:440px}.chart-label,.chart-tick,.chart-value{font-size:9px}}
 @media(max-width:700px){.viz-heading,.insight-heading,.benchmark-panel>header{align-items:stretch;flex-direction:column}.insight-controls,.exhaustive-controls{grid-template-columns:1fr}.insight-grid{grid-template-columns:1fr}.radial-layout,.stacked-layout,.mind-branches{grid-template-columns:1fr}.mind-branches section{grid-template-columns:1fr}.dynamic-chart-card{min-height:280px}.dynamic-legend span{grid-template-columns:9px minmax(70px,1fr)}.dynamic-legend small{grid-column:2;white-space:normal}.health-meter{width:110px}}
 @media(prefers-reduced-motion:reduce){.viz-panel.animate-in,.radial-chart,.column-track i,.stacked-column,.health-meter i,.chart-bar,.insight-card,.insight-card *{animation:none!important}.viz-autoplay,.viz-switcher button,.dynamic-legend span,.funnel-chart polygon{transition:none!important}}
