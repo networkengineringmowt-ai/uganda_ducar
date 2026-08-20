@@ -414,7 +414,8 @@
     return metricCards(baseMetrics) + `<div class="chart-grid">${charts.join("")}${state.section === "condition" ? matrix(rows) : ""}</div><div class="method-note">All dashboard values are derived from the complete section population. Charts do not select Top-N roads. Planning costs are modelling allowances and are not engineer’s estimates or bills of quantities.</div>`;
   }
   function nationalNetworkReconciliation(rows) {
-    const official={total:159623,national:21292,urban:19952,district:38603,community:79948,ducar:138503,pavedNational:6405,unpavedNational:14897,candidateDucar:67551.55};
+    const fullNetwork={total:275447,links:31106,districts:135};
+    const official={total:159623,national:21302,urban:19952,district:38603,community:79948,ducar:138503,pavedNational:6405,unpavedNational:14897,candidateDucar:67551.55};
     const verified=rows.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0), additional=Math.max(0,official.candidateDucar-verified), unresolved=Math.max(0,official.ducar-official.candidateDucar), componentTotal=official.national+official.ducar, pavedTotal=official.pavedNational+official.unpavedNational;
     const rowsHtml=[
       ["Official DUCAR benchmark",official.ducar,100,"Urban + District + Community Access Roads"],
@@ -423,7 +424,13 @@
       ["Candidate expansion beyond verified register",additional,additional/official.ducar*100,"Requires statutory ownership, duplication and district validation"],
       ["Unresolved benchmark gap",unresolved,unresolved/official.ducar*100,"No fabricated links or scaled geometry assigned"]
     ];
-    return `<section class="benchmark-panel"><header><div><small>NATIONAL NETWORK RECONCILIATION · JULY 2026 REFERENCE</small><h3>Path from verified DUCAR links toward the 138,503 km benchmark</h3><p>The national benchmark is retained separately from verified and candidate geometry. Lengths are never scaled to force agreement.</p></div><button class="pdf-download" data-section-pdf type="button">PDF reconciliation</button></header>${metricCards([
+    
+    const fullNetworkHtml=`<section class="benchmark-panel full-network-reference"><header><div><small>FULL NETWORK REFERENCE</small><h3>Total supplied road network — all classes and implementing agencies</h3><p>Broader than the MoWT DUCAR+National reconciliation below: covers every road class across every implementing agency and all ${number(fullNetwork.districts)} districts. Supplied as a top-level reference figure; the reconciliation panel below independently tracks the MoWT-cited DUCAR+National benchmark.</p></div></header>${metricCards([
+      {label:"Total network length",value:number(fullNetwork.total)+" km",note:"All road classes, all implementing agencies"},
+      {label:"Total road links",value:number(fullNetwork.links),note:"Catalogued network-wide"},
+      {label:"Districts covered",value:number(fullNetwork.districts),note:"Full district coverage"}
+    ])}</section>`;
+    return fullNetworkHtml+`<section class="benchmark-panel"><header><div><small>NATIONAL NETWORK RECONCILIATION · JULY 2026 REFERENCE</small><h3>Path from verified DUCAR links toward the 138,503 km benchmark</h3><p>The national benchmark is retained separately from verified and candidate geometry. Lengths are never scaled to force agreement.</p></div><button class="pdf-download" data-section-pdf type="button">PDF reconciliation</button></header>${metricCards([
       {label:"Official total road headline",value:number(official.total)+" km",note:"MoWT homepage and draft Strategic Plan"},
       {label:"Official DUCAR composition",value:number(official.ducar)+" km",note:"19,952 urban + 38,603 district + 79,948 community"},
       {label:"Candidate DUCAR geometry",value:number(official.candidateDucar,2)+" km",note:number(official.candidateDucar/official.ducar*100,2)+"% of benchmark pending validation"},
