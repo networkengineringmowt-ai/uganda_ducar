@@ -31,6 +31,18 @@
     "Use 275,447 km, 31,106 links and 135 districts for approved all-road inventory calculations.",
     "Use the verified web register denominator for link-level condition, traffic, structures, cost and map analytics.",
     "Show the denominator and scope beside any calculation that could otherwise be confused with the approved inventory.",
-    "Retain missing observations as Not supplied; do not fabricate values or geometry."
-  ]
+    "Retain missing observations as Not supplied; do not fabricate values or geometry.",
+    "Report affected or allocated road length together with complete record count and categorical frequency.",
+    "Route districts, countries and every dimension with more than 12 populated categories intact to exhaustive and deep-analytics tables; never publish a Top-N substitute.",
+    "Treat structure exposure as allocated linked-road length so repeated structures on one link do not multiply the road-length total."
+  ],
+  "geospatial_reconciliation_policy": {
+    "authoritative_public_length_km": 275447,
+    "authoritative_public_links": 31106,
+    "authoritative_public_districts": 135,
+    "classification_remainder_label": "Inventory awaiting attribute classification",
+    "geometry_rule": "Do not scale, clone or fabricate geometry to manufacture agreement with the approved inventory.",
+    "public_reporting_rule": "Public dashboards use the authoritative inventory total; technical mapped-register and source-verification coverage remain in Admin Tools.",
+    "high_cardinality_rule": "Complete dimensions remain available in tables and exports rather than selective charts."
+  }
 }
