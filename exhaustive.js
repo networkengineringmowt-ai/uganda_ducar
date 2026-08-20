@@ -8,6 +8,7 @@
     links: "./data/ducar_link_register.json",
     relations: "./data/ducar_link_admin_relations.json",
     global: "./data/global_country_matrix.json",
+    governance: "./data/global_local_road_governance.json",
     database: "./data/ducar_database_catalog.json",
     mindmap: "./data/ducar_site_mind_map.json",
     socio: "./data/ducar_socioeconomic_link_analysis.json",
@@ -17,6 +18,7 @@
     structureMap: "./data/ducar_structures.geojson"
   };
   const COLORS = ["#0a84ff", "#30d158", "#ff9f0a", "#ff375f", "#bf5af2", "#64d2ff", "#ffd60a", "#5e5ce6"];
+  const CONFIRMED_NETWORK = { length_km: 275447, links: 31106, districts: 135 };
   const SECTION_TABS = [["dashboard", "Dashboard"], ["map", "Map"], ["records", "Full Exhaustive Table"], ["analytics", "Deep Analytics"], ["sql", "SQL Tables"], ["schema", "SQL Schema"]];
   const SECTION_META = {
     overview: ["National DUCAR Overview", "Whole-register coverage, condition, pavement, traffic and planning status."],
@@ -29,7 +31,7 @@
     hdm4: ["HDM-4 Inputs", "Geometry, speed, traffic, pavement and planning-cost inputs prepared for economic analysis."],
     framework: ["Data & Governance Framework", "Record provenance, QA, coverage, hierarchy and modelling-basis controls."],
     budgets: ["Budget & Prioritisation", "Link-level planning allowances, priority bands and intervention allocation."],
-    global: ["Global Country Matrix", "All configured countries retained with explicit source-completeness status."],
+    global: ["Global Local-Road Governance", "How ministries and road authorities manage district, urban, rural and access roads: institutions, finance, principles, measures and techniques."],
     socioeconomic: ["Socioeconomic & Accessibility Analysis", "Road-length exposure to schools, health facilities, markets, industry, minerals, agriculture, energy and logistics."],
     summaries: ["Summaries & Admin Tools", "Administrative relations, site topology, SQLite tables and database schema."]
   };
@@ -118,11 +120,11 @@
     if (state.tab === "map") {
       if (state.section === "socioeconomic") return Promise.all([data("links"), data("socio"), data("mapRoads"), data("facilities")]);
       if (state.section === "structures") return Promise.all([data("links"), data("structures"), data("mapRoads"), data("structureMap")]);
-      if (state.section === "global") return Promise.all([data("global"), data("links"), data("mapRoads")]);
+      if (state.section === "global") return Promise.all([data("global"), data("governance"), data("links"), data("mapRoads")]);
       if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap"), data("links"), data("mapRoads")]);
       return Promise.all([data("links"), data("mapRoads")]);
     }
-    if (state.section === "global") return data("global");
+    if (state.section === "global") return Promise.all([data("global"), data("governance")]);
     if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap"), data("links"), data("database"), data("structures")]);
     if (state.section === "socioeconomic") return data("socio");
     if (state.section === "structures") return data("structures");
@@ -414,7 +416,8 @@
     return metricCards(baseMetrics) + `<div class="chart-grid">${charts.join("")}${state.section === "condition" ? matrix(rows) : ""}</div><div class="method-note">All dashboard values are derived from the complete section population. Charts do not select Top-N roads. Planning costs are modelling allowances and are not engineer’s estimates or bills of quantities.</div>`;
   }
   function nationalNetworkReconciliation(rows) {
-    const official={total:275447,national:21302,urban:19952,district:38603,community:79948,ducar:138503,pavedNational:6405,unpavedNational:14897,candidateDucar:67551.55};
+    const confirmed=CONFIRMED_NETWORK;
+    const official={total:159623,national:21292,urban:19952,district:38603,community:79948,ducar:138503,pavedNational:6405,unpavedNational:14897,candidateDucar:67551.55};
     const fullRows=Array.isArray(cache.links)&&cache.links.length?cache.links:rows;
     const km=list=>list.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0);
     const selectedKm=km(rows), verified=km(fullRows), additional=Math.max(0,official.candidateDucar-verified), unresolved=Math.max(0,official.ducar-official.candidateDucar), componentTotal=official.national+official.ducar, pavedTotal=official.pavedNational+official.unpavedNational;
@@ -439,11 +442,11 @@
     ];
     const filteredNotice=rows.length!==fullRows.length?`<div class="scope-notice"><strong>Active filtered selection</strong><span>${number(rows.length)} of ${number(fullRows.length)} links · ${number(selectedKm,3)} km. National benchmark and register reconciliation remain fixed to the complete register.</span></div>`:"";
     const controls=`<section class="consistency-controls"><header><div><small>REPORTING CONSISTENCY CONTROLS</small><h4>Every classification reconciles to one verified register</h4></div><span class="consistency-badge">5 / 5 checks pass</span></header><div class="table-wrap consistency-table"><table class="data-table"><thead><tr><th>Control</th><th>Classified km</th><th>Register km</th><th>Variance km</th><th>Basis</th></tr></thead><tbody>${controlRows.map(row=>`<tr><td>${esc(row[0])}</td><td>${number(row[1],3)}</td><td>${number(row[2],3)}</td><td class="${Math.abs(row[3])<.0005?"check-pass":"check-fail"}">${number(row[3],3)}</td><td>${esc(row[4])}</td></tr>`).join("")}</tbody></table></div><p>Official planning benchmarks are reference targets, not extra link records. They are never added to, substituted for, or used to scale the verified register.</p></section>`;
-    return `<section class="benchmark-panel"><header><div><small>NATIONAL NETWORK RECONCILIATION · JULY 2026 REFERENCE</small><h3>Path from verified DUCAR links toward the 138,503 km benchmark</h3><p>The official benchmark, candidate inventory and verified link register are separate scopes. Lengths are never scaled to force agreement.</p></div><button class="pdf-download" data-section-pdf type="button">PDF reconciliation</button></header>${filteredNotice}${metricCards([
-      {label:"Official total road headline",value:number(official.total)+" km",note:"MoWT-supplied network total, all classes and implementing agencies"},
+    return `<section class="benchmark-panel"><header><div><small>NATIONAL INVENTORY AND DUCAR RECONCILIATION · JULY 2026</small><h3>Confirmed all-road inventory and verified DUCAR analytical coverage</h3><p>The confirmed inventory, published category references, candidate geometry and verified register are separate scopes. Lengths are never scaled to force agreement.</p></div><button class="pdf-download" data-section-pdf type="button">PDF reconciliation</button></header>${filteredNotice}${metricCards([
+      {label:"Confirmed all-road inventory",value:number(confirmed.length_km)+" km",note:number(confirmed.links)+" links · "+number(confirmed.districts)+" districts"},
       {label:"Official DUCAR composition",value:number(official.ducar)+" km",note:"19,952 urban + 38,603 district + 79,948 community"},
-      {label:"Candidate DUCAR geometry",value:number(official.candidateDucar,2)+" km",note:number(official.candidateDucar/official.ducar*100,2)+"% of benchmark pending validation"},
-      {label:"Verified Link-ID geometry",value:number(verified,3)+" km",note:number(verified/official.ducar*100,2)+"% of benchmark"}
+      {label:"Verified Link-ID geometry",value:number(verified,3)+" km",note:number(fullRows.length)+" verified links · "+number(verified/official.ducar*100,2)+"% of DUCAR reference"},
+      {label:"Confirmed administrative coverage",value:number(confirmed.districts)+" districts",note:"All-road inventory reporting extent"}
     ])}<div class="chart-grid">${barChart("Published category references","The four MoWT-published components total 159,795 km, 172 km above the separately published 159,623 km headline; source values are retained without silent adjustment.",[{name:"National roads",value:official.national},{name:"Urban roads",value:official.urban},{name:"District roads",value:official.district},{name:"Community access roads",value:official.community}],"km",COLORS[0])}${barChart("DUCAR reconciliation coverage","Verified, candidate-expansion and unresolved lengths reconcile exactly to 138,503 km.",[{name:"Verified link register",value:verified,count:fullRows.length},{name:"Additional candidate geometry",value:additional},{name:"Unresolved benchmark gap",value:unresolved}],"km",COLORS[4])}</div>${controls}<div class="table-export-wrap"><button type="button" class="csv-download" data-table-csv>CSV</button><div class="table-wrap benchmark-table"><table class="data-table"><thead><tr><th>Reconciliation class</th><th>Length km</th><th>Benchmark share</th><th>Interpretation</th></tr></thead><tbody>${rowsHtml.map(row=>`<tr><td>${esc(row[0])}</td><td>${number(row[1],3)}</td><td>${number(row[2],2)}%</td><td>${esc(row[3])}</td></tr>`).join("")}</tbody></table></div></div><div class="benchmark-audit"><strong>Published-source arithmetic disclosure</strong><span>MoWT-published national roads ${number(official.national)} km + DUCAR ${number(official.ducar)} km = ${number(componentTotal)} km, which is ${number(componentTotal-official.total)} km above the separately published ${number(official.total)} km headline.</span><span>The supplied July 2026 paved/unpaved split ${number(official.pavedNational)} + ${number(official.unpavedNational)} = ${number(pavedTotal)} km, which is ${number(pavedTotal-official.national)} km above MoWT’s ${number(official.national)} km national-road reference.</span><span>Source: <a href="https://works.go.ug/" target="_blank" rel="noreferrer">MoWT homepage</a> and <a href="https://works.go.ug/wp-content/uploads/2026/05/MoWT-Strategic-Plan-2026_30-Draft-v6.pdf" target="_blank" rel="noreferrer">Strategic Plan 2025/26–2029/30 draft</a>.</span></div></section>`;
   }
   function lengthDashboard(rows) {
@@ -564,20 +567,42 @@
     ];})())+`<div class="method-note">All ${number(payload.metadata.structure_occurrences)} structure occurrences are retained from ${number(payload.metadata.source_workbooks)} district workbooks plus the programme bridge GeoJSON. Multi-chainage rows are expanded. Linked road length is divided across structures on the same Link ID, so dashboard totals are additive and do not count one road repeatedly. Low-confidence and unmatched joins remain explicit in the exhaustive table.</div>`;
   }
 
+  function globalRows() {
+    const evidence=new Map((cache.governance?.records||[]).map(row=>[row.country,row]));
+    return (cache.global?.rows||[]).map(row=>{
+      const matched=evidence.get(row.country);
+      return {...row,
+        governance_model:matched?.governance_model||"Not yet source-verified",
+        lead_institution:matched?.lead_institution||"Not yet source-verified",
+        local_road_manager:matched?.local_road_manager||"Not yet source-verified",
+        financing_mechanism:matched?.financing_mechanism||"Not yet source-verified",
+        asset_management_principles:matched?.asset_management_principles||"Not yet source-verified",
+        performance_measures:matched?.performance_measures||"Not yet source-verified",
+        tools_and_techniques:matched?.tools_and_techniques||"Not yet source-verified",
+        governance_evidence_status:matched?.evidence_status||"Not yet source-verified",
+        governance_source_title:matched?.source_title||"Not yet source-verified",
+        governance_source_url:matched?.source_url||"Not yet source-verified",
+        governance_evidence_as_of:matched?cache.governance.evidence_as_of:"Not yet source-verified"
+      };
+    });
+  }
   function globalDashboard(payload) {
-    const rows = payload.rows;
-    const regions = aggregate(rows, "region");
-    const sourced = rows.filter(row => row.source_status !== "No comparable country-level source supplied in the repository").length;
+    const rows=globalRows(), principles=cache.governance?.principles||[], regions=aggregate(rows,"region");
+    const reviewed=rows.filter(row=>row.governance_evidence_status!=="Not yet source-verified"), unreviewed=rows.length-reviewed.length;
+    const governanceFields=["country","region","governance_model","lead_institution","local_road_manager","financing_mechanism","asset_management_principles","performance_measures","tools_and_techniques","governance_evidence_status","governance_source_title","governance_source_url"];
+    const principleFields=["principle","measure","technique","source_title"];
+    const table=(title,description,fields,tableRows)=>`<article class="matrix-card global-governance"><h3>${esc(title)}</h3><p>${esc(description)}</p><div class="table-wrap"><table class="data-table"><thead><tr>${fields.map(field=>`<th>${esc(label(field))}</th>`).join("")}</tr></thead><tbody>${tableRows.map(row=>`<tr>${fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(shown(row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div></article>`;
     return metricCards([
-      {label:"Configured countries",value:number(rows.length),note:"No country omitted"},
-      {label:"Regions",value:number(Object.keys(payload.regions).length),note:"Complete configured geography"},
-      {label:"Comparable sourced rows",value:number(sourced),note:"Repository evidence only"},
-      {label:"Explicitly not supplied",value:number(rows.length-sourced),note:"No fabricated scores"}
-    ]) + `<div class="chart-grid">${barChart("Countries by configured region", "All countries retained and grouped by region.", regions, "country count", COLORS[0])}${barChart("Comparative source completeness", "Country metrics remain Not supplied until comparable sources are loaded.", [{name:"Comparable source supplied",value:sourced},{name:"Not supplied",value:rows.length-sourced}], "country count", COLORS[2])}</div>`+interactiveGallery("Global matrix · animated chart gallery",[{name:"Countries by region",values:regions,unit:"country count"},{name:"Source completeness",values:[{name:"Comparable source supplied",value:sourced},{name:"Not supplied",value:rows.length-sourced}],unit:"country count"}])+insightWall("Global country matrix · 50+ insight atlas",[
-      {name:"Configured country",values:rows.map(row=>({name:row.country,value:1,count:1})),unit:"country"},
-      {name:"Geographic region",values:regions,unit:"country count"},
-      {name:"Comparable-source status",values:aggregate(rows,"source_status"),unit:"country count"}
-    ])+`<div class="method-note">The Global dashboard reports matrix completeness, not invented performance rankings. All unsourced country metrics remain explicitly “Not supplied”.</div>`;
+      {label:"Confirmed Uganda all-road inventory",value:number(CONFIRMED_NETWORK.length_km)+" km",note:number(CONFIRMED_NETWORK.links)+" links across "+number(CONFIRMED_NETWORK.districts)+" districts"},
+      {label:"Configured countries",value:number(rows.length),note:"Complete sovereign-country matrix; no country omitted"},
+      {label:"Official governance reviews",value:number(reviewed.length),note:"Primary-source operating models loaded"},
+      {label:"Evidence queue",value:number(unreviewed),note:"Not yet source-verified; no invented practice scores"}
+    ])+`<div class="chart-grid">${barChart("Countries by configured region","All 195 countries retained and grouped by region.",regions,"country count",COLORS[0])}${barChart("Local-road governance evidence coverage","Reviewed official records are separated from the evidence queue.",[{name:"Official source reviewed",value:reviewed.length},{name:"Not yet source-verified",value:unreviewed}],"country count",COLORS[2])}${barChart("Reviewed governance models by region","Officially reviewed ministry and road-authority models.",aggregate(reviewed,"region"),"country count",COLORS[4])}${barChart("Reviewed management responsibility","Every sourced model grouped by responsible local-road manager.",aggregate(reviewed,"local_road_manager"),"country count",COLORS[1])}</div>`+
+      table("Transferable road-asset-management control framework","Principles, measures and implementation techniques grounded in PIARC and World Bank guidance.",principleFields,principles)+
+      table("Officially sourced local-road operating models","Ministry and road-authority evidence for district, urban, rural and access roads. The exhaustive table retains all 195 countries.",governanceFields,reviewed)+
+      interactiveGallery("Global local-road governance · complete evidence views",[{name:"All countries by region",values:regions,unit:"country count"},{name:"Governance evidence status",values:aggregate(rows,"governance_evidence_status"),unit:"country count"},{name:"Reviewed models by region",values:aggregate(reviewed,"region"),unit:"country count"}])+
+      insightWall("Global local-road management · complete country atlas",[{name:"Configured country",values:rows.map(row=>({name:row.country,value:1,count:1})),unit:"country"},{name:"Geographic region",values:regions,unit:"country count"},{name:"Governance evidence status",values:aggregate(rows,"governance_evidence_status"),unit:"country count"},{name:"Lead institution",values:aggregate(rows,"lead_institution"),unit:"country count"},{name:"Financing mechanism",values:aggregate(rows,"financing_mechanism"),unit:"country count"}])+
+      `<div class="method-note">The Global section compares institutional responsibility, finance, asset-management principles, performance measures, and tools for district, urban, rural and access roads. All 195 countries remain reportable; only official evidence is populated, and the remainder stay explicitly Not yet source-verified.</div>`;
   }
   function summaryDashboard(relations, mindmap) {
     const relKm = predicate => relations.filter(predicate).reduce((s,r)=>s+Number(r.covered_length_km||0),0);
@@ -628,7 +653,7 @@
     return lengthDashboard(activeLinkRows());
   }
   function recordDataset() {
-    if (state.section === "global") return { rows: cache.global.rows, fields: Object.keys(cache.global.rows[0]) };
+    if (state.section === "global") { const rows=globalRows(); return { rows, fields: Object.keys(rows[0]) }; }
     if (state.section === "summaries") return { rows: applyHeaderFilters(cache.relations), fields: Object.keys(cache.relations[0]) };
     if (state.section === "socioeconomic") return { rows: applyHeaderFilters(cache.socio.rows), fields: RECORD_FIELDS.socioeconomic };
     if (state.section === "structures") return { rows: applyHeaderFilters(cache.structures.rows), fields: RECORD_FIELDS.structures };
@@ -638,7 +663,7 @@
   }
   function cellClass(field, raw) {
     const value = shown(raw).toLowerCase();
-    if (value === "not supplied" || value.includes("no comparable")) return "not-supplied";
+    if (value === "not supplied" || value.includes("no comparable") || value.includes("not yet source-verified")) return "not-supplied";
     if (field === "condition" && ["good","fair","poor"].includes(value)) return "cell-" + value;
     if (field === "current_condition") return value.includes("very poor") ? "cell-critical" : value.includes("poor") ? "cell-poor" : value.includes("fair") ? "cell-fair" : value.includes("good") ? "cell-good" : "";
     if (field === "priority_band" && ["low","moderate","high","critical"].includes(value)) return "cell-" + value;
@@ -858,7 +883,7 @@
   }
   function analyticsHtml() {
     if(state.section==="structures")return structureAnalytics(cache.structures);
-    if(state.section==="global"){const rows=(cache.global.rows||[]).map(row=>({...row,geometry_length_km:1}));return `<div class="analytics-workbook"><div class="analytics-intro"><div><small>CHART-FREE ANALYTICAL WORKBOOK</small><h2>Global matrix formulas and relations</h2><p>All configured countries retained; unavailable metrics remain explicitly Not supplied.</p></div><strong>${number(rows.length)} countries</strong></div>${formulaTable(rows,[coverageFormula("Coordinate country coverage","x_coordinate_dd","Countries with representative WGS84 coordinates."),coverageFormula("Comparable network coverage","road_network_km","Countries with sourced road-network length."),coverageFormula("Comparable pavement coverage","paved_share_pct","Countries with sourced paved share.")])}${crossTab(rows,"region","source_status","Region × source status")}${analyticsTable("Complete region summary","All countries by configured region.",["category","records","affected_length_km","length_share_pct","mean_record_length_km"],categorySummary(rows,"region"))}</div>`;}
+    if(state.section==="global"){const rows=globalRows().map(row=>({...row,geometry_length_km:1})),evidenceFormula={name:"Official governance evidence coverage",expression:"Officially reviewed countries ÷ all configured countries × 100",numerator:items=>items.filter(row=>row.governance_evidence_status!=="Not yet source-verified").length,denominator:(_,__,count)=>count,result:items=>items.filter(row=>row.governance_evidence_status!=="Not yet source-verified").length/Math.max(items.length,1)*100,unit:"% countries",note:"Countries with reviewed official governance sources."};return `<div class="analytics-workbook"><div class="analytics-intro"><div><small>CHART-FREE ANALYTICAL WORKBOOK</small><h2>Global local-road governance formulas and relations</h2><p>All configured countries retained; ministry and road-authority evidence is never inferred where an official source has not been reviewed.</p></div><strong>${number(rows.length)} countries · ${number(rows.filter(row=>row.governance_evidence_status!=="Not yet source-verified").length)} reviewed</strong></div>${formulaTable(rows,[evidenceFormula,coverageFormula("Coordinate country coverage","x_coordinate_dd","Countries with representative WGS84 coordinates."),coverageFormula("Comparable network coverage","road_network_km","Countries with sourced road-network length.")])}${crossTab(rows,"region","governance_evidence_status","Region × governance evidence status")}${crossTab(rows,"governance_evidence_status","lead_institution","Evidence status × lead institution")}${analyticsTable("Complete region summary","All countries by configured region.",["category","records","affected_length_km","length_share_pct","mean_record_length_km"],categorySummary(rows,"region"))}</div>`;}
     const rows=state.section==="summaries"?applyHeaderFilters(cache.relations).map(row=>({...row,district:row.admin_district,geometry_length_km:row.covered_length_km})):state.section==="socioeconomic"?applyHeaderFilters(cache.socio.rows):activeLinkRows();
     const pairs={traffic:[["pavement_class","condition"],["priority_band","recommended_intervention"]],condition:[["condition","pavement_class"],["condition","recommended_intervention"]],network:[["surface","pavement_class"],["condition","surface"]],pims:[["priority_band","recommended_intervention"],["priority_band","condition"]],hdm4:[["pavement_class","condition"],["priority_band","recommended_intervention"]],framework:[["admin_coverage","condition"],["pavement_class","priority_band"]],budgets:[["priority_band","recommended_intervention"],["condition","pavement_class"]],socioeconomic:[["exposure_band","primary_socioeconomic_factor"],["exposure_band","pavement_class"]],summaries:[["relation_basis","pavement_class"],["condition","priority_band"]],overview:[["condition","pavement_class"],["priority_band","recommended_intervention"]],ducar:[["condition","pavement_class"],["surface","recommended_intervention"]]};
     const selected=pairs[state.section]||pairs.overview,category=state.section==="traffic"?"condition":state.section==="socioeconomic"?"exposure_band":state.section==="summaries"?"relation_basis":state.section==="network"?"surface":state.section==="budgets"||state.section==="pims"?"priority_band":"condition", numeric=state.section==="traffic"?["registry_aadt",[["0–149",0,150],["150–499",150,500],["500–999",500,1000],["1,000+",1000,Infinity]]]:state.section==="socioeconomic"?["socioeconomic_exposure_score",[["0–24.9",0,25],["25–49.9",25,50],["50–74.9",50,75],["75–100",75,101]]]:["planning_priority_score",[["0–24.9",0,25],["25–49.9",25,50],["50–74.9",50,75],["75–100",75,101]]];
@@ -891,7 +916,8 @@
   }
   function shell(body) {
     document.body.classList.remove("network-map-mode");
-    root.innerHTML = `<section class="exhaustive-shell"><div class="section-studio"><nav class="section-tabs" aria-label="Section reporting views">${SECTION_TABS.map(([id,text])=>`<a class="section-tab ${state.tab===id?"active":""}" href="#${state.section}:${id}">${esc(text)}</a>`).join("")}</nav>${body}</div></section>`;
+    const confirmed=`<aside class="confirmed-network-ribbon" aria-label="Confirmed all-road inventory"><strong>Confirmed all-road inventory</strong><span>${number(CONFIRMED_NETWORK.length_km)} km</span><span>${number(CONFIRMED_NETWORK.links)} links</span><span>${number(CONFIRMED_NETWORK.districts)} districts</span><small>Section analytics use their stated verified or linked denominator.</small></aside>`;
+    root.innerHTML = `<section class="exhaustive-shell"><div class="section-studio"><nav class="section-tabs" aria-label="Section reporting views">${SECTION_TABS.map(([id,text])=>`<a class="section-tab ${state.tab===id?"active":""}" href="#${state.section}:${id}">${esc(text)}</a>`).join("")}</nav>${confirmed}${body}</div></section>`;
   }
   function bind() {
     root.querySelectorAll(".table-wrap").forEach((wrap,index)=>{if(wrap.classList.contains("all-records-table")||wrap.closest(".table-export-wrap"))return;const button=document.createElement("button");button.type="button";button.className="csv-download floating";button.dataset.tableCsv="";button.textContent="CSV · complete table";button.dataset.tableIndex=String(index);wrap.before(button);});
