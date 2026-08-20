@@ -1,0 +1,235 @@
+{
+  "generated_by": "UNRA DUCAR local geospatial+ML pipeline",
+  "data_vintage": "DUCAR_Master_Workbook.xlsx All Records (audited, 31106 links) + Uganda district admin shapefile (UBOS-derived)",
+  "n_links_analyzed": 30932,
+  "n_districts": 135,
+  "road_density": {
+    "method": "sum(length_km) / area_sqkm per district, link assigned by midpoint spatial join to real district polygons",
+    "top5_densest": [
+      {
+        "district_geo": "Kampala",
+        "road_density_km_per_sqkm": 6.299865195387523
+      },
+      {
+        "district_geo": "Budaka",
+        "road_density_km_per_sqkm": 1.9477154250686977
+      },
+      {
+        "district_geo": "Butambala",
+        "road_density_km_per_sqkm": 1.7057955658277242
+      },
+      {
+        "district_geo": "Sironko",
+        "road_density_km_per_sqkm": 1.5082057111405662
+      },
+      {
+        "district_geo": "Kalungu",
+        "road_density_km_per_sqkm": 1.4706954002134325
+      }
+    ],
+    "bottom5_sparsest": [
+      {
+        "district_geo": "Rakai",
+        "road_density_km_per_sqkm": 0.019120530452887006
+      },
+      {
+        "district_geo": "Masaka",
+        "road_density_km_per_sqkm": 0.012518631403512028
+      },
+      {
+        "district_geo": "Kalangala",
+        "road_density_km_per_sqkm": 0.01067526125758781
+      },
+      {
+        "district_geo": "Kitgum",
+        "road_density_km_per_sqkm": 0.004761215326290499
+      },
+      {
+        "district_geo": "Amuru",
+        "road_density_km_per_sqkm": 0.002052468562238352
+      }
+    ]
+  },
+  "connectivity_index": {
+    "method": "n_links / area_sqkm per district"
+  },
+  "morans_i_condition": {
+    "value": 0.1938,
+    "n_districts": 125,
+    "weights": "row-standardized k=8 nearest-neighbor (district centroids)",
+    "condition_encoding": {
+      "Very Poor": 0,
+      "Poor": 1,
+      "Fair": 2,
+      "Good": 3
+    },
+    "interpretation": "positive = spatially clustered condition (neighboring districts have similar road quality); near zero = spatially random; negative = dispersed/checkerboard pattern"
+  },
+  "dbscan_hotspots": {
+    "method": "DBSCAN on poor/very-poor link midpoints, eps=3000m, min_samples=8",
+    "n_clusters": 346,
+    "n_noise_points": 5043,
+    "n_poor_links_considered": 11482,
+    "top_clusters": [
+      {
+        "cluster_id": 216,
+        "n_links": 210,
+        "center_lon": 33.52948,
+        "center_lat": 1.04498,
+        "top_districts": {
+          "Kaliro": 210
+        }
+      },
+      {
+        "cluster_id": 108,
+        "n_links": 144,
+        "center_lon": 33.05746,
+        "center_lat": 1.84634,
+        "top_districts": {
+          "Dokolo": 144
+        }
+      },
+      {
+        "cluster_id": 9,
+        "n_links": 132,
+        "center_lon": 32.13734,
+        "center_lat": 0.23374,
+        "top_districts": {
+          "Butambala": 66,
+          "Gomba": 60,
+          "Mityana": 6
+        }
+      },
+      {
+        "cluster_id": 6,
+        "n_links": 127,
+        "center_lon": 31.94824,
+        "center_lat": 0.13586,
+        "top_districts": {
+          "Butambala": 53,
+          "Gomba": 41,
+          "Mityana": 23
+        }
+      },
+      {
+        "cluster_id": 182,
+        "n_links": 117,
+        "center_lon": 30.16871,
+        "center_lat": -0.21955,
+        "top_districts": {
+          "Rubirizi": 117
+        }
+      },
+      {
+        "cluster_id": 256,
+        "n_links": 102,
+        "center_lon": 34.00006,
+        "center_lat": 0.38566,
+        "top_districts": {
+          "Busia": 102
+        }
+      },
+      {
+        "cluster_id": 75,
+        "n_links": 99,
+        "center_lon": 30.31966,
+        "center_lat": -0.35427,
+        "top_districts": {
+          "Buhweju": 99
+        }
+      },
+      {
+        "cluster_id": 59,
+        "n_links": 96,
+        "center_lon": 34.7175,
+        "center_lat": 1.30075,
+        "top_districts": {
+          "Bukwo": 90,
+          "Kween": 6
+        }
+      },
+      {
+        "cluster_id": 159,
+        "n_links": 93,
+        "center_lon": 31.39175,
+        "center_lat": -0.48605,
+        "top_districts": {
+          "Lwengo": 90,
+          "Rakai": 3
+        }
+      },
+      {
+        "cluster_id": 255,
+        "n_links": 64,
+        "center_lon": 30.23032,
+        "center_lat": 0.5782,
+        "top_districts": {
+          "Bunyangabu": 38,
+          "Kabarole": 26
+        }
+      }
+    ]
+  },
+  "cross_district_links": {
+    "n_cross_district": 1525,
+    "n_total_matched": 30932,
+    "top_district_pairs": {
+      "Kampala -> Wakiso": 68,
+      "Wakiso -> Kampala": 45,
+      "Gomba -> Butambala": 33,
+      "Karenga -> Kaabong": 27,
+      "Butambala -> Mpigi": 21,
+      "Lwengo -> Rakai": 18,
+      "Ngora -> Kumi": 18,
+      "Maracha -> Arua": 18,
+      "Koboko -> Yumbe": 18,
+      "Kumi -> Bukedea": 18
+    }
+  },
+  "population_accessibility": {
+    "method": "PROXY: 2km road buffer area-coverage ratio per district x district population, assuming uniform intra-district population density (no population grid/raster available). Not a precision measurement -- treat as a coarse relative indicator only.",
+    "national_pct_within_2km_estimate": 57.1,
+    "least_accessible_10": [
+      {
+        "district": "Lamwo",
+        "pct_area_within_2km_of_road": 0.0
+      },
+      {
+        "district": "Pader",
+        "pct_area_within_2km_of_road": 0.37
+      },
+      {
+        "district": "Kitgum",
+        "pct_area_within_2km_of_road": 0.52
+      },
+      {
+        "district": "Nwoya",
+        "pct_area_within_2km_of_road": 0.56
+      },
+      {
+        "district": "Kyotera",
+        "pct_area_within_2km_of_road": 0.63
+      },
+      {
+        "district": "Kalangala",
+        "pct_area_within_2km_of_road": 2.11
+      },
+      {
+        "district": "Kabale",
+        "pct_area_within_2km_of_road": 4.03
+      },
+      {
+        "district": "Buvuma",
+        "pct_area_within_2km_of_road": 4.04
+      },
+      {
+        "district": "Masaka",
+        "pct_area_within_2km_of_road": 4.52
+      },
+      {
+        "district": "Rubanda",
+        "pct_area_within_2km_of_road": 4.94
+      }
+    ]
+  }
+}
