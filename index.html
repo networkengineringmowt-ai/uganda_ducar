@@ -5,33 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
 <title>DUCAR Priority Studio</title>
-<meta name="description" content="DUCAR maintenance prioritisation, budget scenario analysis and GIS decision support tool for Uganda district, urban and Community Access Roads." />
+<meta name="description" content="DUCAR maintenance prioritisation, budget scenario analysis and GIS decision support tool for Uganda district, urban and community access roads." />
 <script>
 /* Compatibility values required by the preserved Priority Studio bundle. */
 var ducar2025Data = {
-  total_links: 305522,
-  total_length_km: 218953.47,
-  districts_count: 135,
-  national_links: 1014,
-  national_km: 21136.75,
-  ducar_links: 304508,
-  ducar_km: 197816.72,
-  paved_km: 56117.49,
-  unpaved_km: 162835.98,
-  baseline_km: 159623
+  total_links: 31106,
+  total_length_km: 401112.27,
+  districts_count: 110
 };
 var kccaData = {
   total_links: 9431,
   total_length_km: 2829.33
 };
 var verifiedConditionData = {
-  total_length_km: 218953.47,
-  traffic_links: 305522,
+  total_length_km: 22323.12,
+  traffic_links: 1877,
   conditions: [
-    { name: "Good", count: 12628, length_km: 56117.49 },
-    { name: "Fair", count: 89234, length_km: 98523.11 },
-    { name: "Poor", count: 142876, length_km: 52189.34 },
-    { name: "Unpaved", count: 60784, length_km: 12123.53 }
+    { name: "Fair", count: 2983, length_km: 13007.89 },
+    { name: "Poor", count: 1791, length_km: 5878.41 },
+    { name: "Good", count: 542, length_km: 2539.72 },
+    { name: "Unclassified", count: 2417, length_km: 897.08 }
   ]
 };
 function setDucar2025Data(value) {
@@ -41,10 +34,10 @@ function setKccaData(value) {
   if (value && typeof value === "object") kccaData = value;
 }
 </script>
-<script type="module" crossorigin src="./assets/index-gYbOrP4D.js?v=20260819-header-scope"></script>
+<script type="module" crossorigin src="./assets/index-gYbOrP4D.js?v=20260820-system-audit-4"></script>
 <link rel="stylesheet" crossorigin href="./assets/index-ByMP9Ldu.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-<link rel="stylesheet" href="./exhaustive.css?v=20260819-v3" />
+<link rel="stylesheet" href="./exhaustive.css?v=20260820-system-audit-4" />
 <style>
 .verified-reporting-link{position:fixed;right:18px;bottom:18px;z-index:9999;padding:12px 16px;border:1px solid #2f663d;border-radius:12px;background:rgba(12,24,16,.94);color:#56e879;text-decoration:none;font:700 12px/1.2 Inter,"Segoe UI",sans-serif;box-shadow:0 12px 38px rgba(0,0,0,.45);backdrop-filter:blur(14px)}
 .verified-reporting-link:hover{background:#16331f;color:#fff}
@@ -55,12 +48,12 @@ function setKccaData(value) {
 <body>
 <div id="root"></div>
 <div id="exhaustive-root"></div>
-<a class="all-records-link" href="#exhaustive-root">Section Studio </a>
-<a class="verified-reporting-link" href="./reporting.html">Verified Link &amp; Admin Matrix </a>
+<a class="all-records-link" href="#exhaustive-root">Section studio ↓</a>
+<a class="verified-reporting-link" href="./reporting.html">Verified Link &amp; Admin Matrix ↗</a>
 <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script defer src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script defer src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script defer src="https://unpkg.com/leaflet-image@0.4.0/leaflet-image.js"></script>
-<script defer src="./exhaustive.js?v=20260819-hf6"></script>
+<script defer src="./exhaustive.js?v=20260820-system-audit-4"></script>
 </body>
 </html>
