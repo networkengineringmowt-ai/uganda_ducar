@@ -20,13 +20,14 @@
     {"id":"global_evidence","label":"Global Governance Evidence Register","type":"data","records":195},
     {"id":"socio_data","label":"Socioeconomic Geospatial Joins","type":"data","records":7733},
     {"id":"sql","label":"SQLite Database & Schema","type":"data"},
-    {"id":"evidence","label":"Evidence, Manuals & Source Register","type":"data"}
+    {"id":"evidence","label":"Evidence, Manuals & Source Register","type":"data"},
+    {"id":"ml_registry","label":"Road Attribute Model Registry - 404,047 Features","type":"data","records":404047}
   ],
   "edges": [
     {"from":"studio","to":"ducar"},{"from":"studio","to":"traffic"},{"from":"studio","to":"condition"},{"from":"studio","to":"structures"},{"from":"studio","to":"pims"},{"from":"studio","to":"hdm4"},{"from":"studio","to":"global"},{"from":"studio","to":"socioeconomic"},{"from":"studio","to":"priority"},{"from":"studio","to":"admin"},
     {"from":"approved_inventory","to":"ducar"},{"from":"approved_inventory","to":"admin"},{"from":"hotosm_vehicular","to":"ducar"},{"from":"hotosm_vehicular","to":"traffic"},{"from":"hotosm_vehicular","to":"condition"},{"from":"hotosm_vehicular","to":"structures"},{"from":"hotosm_vehicular","to":"pims"},{"from":"hotosm_vehicular","to":"hdm4"},{"from":"hotosm_vehicular","to":"global"},{"from":"hotosm_vehicular","to":"socioeconomic"},{"from":"hotosm_vehicular","to":"priority"},{"from":"hotosm_vehicular","to":"admin"},{"from":"master_attributes","to":"ducar"},{"from":"master_attributes","to":"admin"},
     {"from":"verified_links","to":"traffic"},{"from":"verified_links","to":"condition"},{"from":"verified_links","to":"pims"},{"from":"verified_links","to":"hdm4"},{"from":"verified_links","to":"priority"},
-    {"from":"structures_data","to":"structures"},{"from":"relations","to":"admin"},{"from":"global_evidence","to":"global"},{"from":"socio_data","to":"socioeconomic"},{"from":"sql","to":"admin"},{"from":"evidence","to":"global"},{"from":"evidence","to":"admin"}
+    {"from":"structures_data","to":"structures"},{"from":"relations","to":"admin"},{"from":"global_evidence","to":"global"},{"from":"socio_data","to":"socioeconomic"},{"from":"sql","to":"admin"},{"from":"evidence","to":"global"},{"from":"evidence","to":"admin"},{"from":"ml_registry","to":"traffic"},{"from":"ml_registry","to":"hdm4"},{"from":"ml_registry","to":"admin"}
   ],
-  "record_policy": "The 248,616.15 km HOTOSM vehicular inventory drives public national geometry and map reporting. Governed DUCAR links drive Link-ID, traffic, structure, cost and intervention relations. Missing observations remain Not supplied."
+  "record_policy": "The 248,616.15 km HOTOSM vehicular inventory drives public national geometry and map reporting. Governed DUCAR links drive Link-ID, structure, cost and intervention relations. Supplied traffic remains Observed; gaps are explicitly Model estimated with confidence and percentile bounds."
 }
