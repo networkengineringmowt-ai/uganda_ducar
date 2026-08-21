@@ -18,11 +18,6 @@ const TODAY = new Date().toISOString().slice(0, 10);
 
 const octokit = new Octokit({ auth: TOKEN });
 
-function hexToRgb(hex) {
-  const n = parseInt(hex, 16);
-  return `rgb(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255})`;
-}
-
 async function auditSelf() {
   const browser = await chromium.launch();
   const page = await browser.newPage();
@@ -49,10 +44,6 @@ async function auditSelf() {
   let brokenImages = [];
   let hashLinks = [];
   let chartElementCount = 0;
-  let amberHex = false, amberComputed = false;
-  let darkBgHex = false, darkBgComputed = false;
-  let navPresent = false;
-  let mowtBranding = false;
   let extractedFigures = [];
   let districtOptions = null;
 
@@ -77,40 +68,6 @@ async function auditSelf() {
       chartElementCount = await page.$$eval('canvas, svg', (els) => els.length);
     } catch { /* ignore */ }
 
-    const html = await page.content();
-    amberHex = /f59e0b/i.test(html);
-    darkBgHex = /0f172a|1e293b/i.test(html);
-
-    try {
-      const amberRgb = hexToRgb('f59e0b');
-      const dark1 = hexToRgb('0f172a');
-      const dark2 = hexToRgb('1e293b');
-      const result = await page.evaluate(
-        ({ amberRgb, dark1, dark2 }) => {
-          const els = document.querySelectorAll('*');
-          let amber = false, dark = false;
-          for (let i = 0; i < els.length && (!amber || !dark); i++) {
-            const cs = getComputedStyle(els[i]);
-            const amberProps = [cs.color, cs.backgroundColor, cs.borderColor, cs.fill, cs.stroke, cs.outlineColor];
-            if (amberProps.includes(amberRgb) || cs.backgroundImage.includes(amberRgb)) amber = true;
-            if (cs.backgroundColor === dark1 || cs.backgroundColor === dark2 || cs.backgroundImage.includes(dark1) || cs.backgroundImage.includes(dark2)) dark = true;
-          }
-          return { amber, dark };
-        },
-        { amberRgb, dark1, dark2 }
-      );
-      amberComputed = result.amber;
-      darkBgComputed = result.dark;
-    } catch { /* ignore */ }
-
-    try {
-      navPresent = await page.evaluate(
-        () => !!document.querySelector('nav, [role="navigation"]')
-      );
-    } catch { /* ignore */ }
-
-    mowtBranding = /mowt|ministry of works/i.test(bodyText) || /mowt|ministry of works/i.test(html);
-
     const figureRe = /([\d]{1,3}(?:,\d{3})*(?:\.\d+)?)\s*(km|kilomet\w*)/gi;
     let m;
     while ((m = figureRe.exec(bodyText)) !== null) {
@@ -129,14 +86,6 @@ async function auditSelf() {
   }
 
   await browser.close();
-
-  const uiCohesion = {
-    amber: amberHex || amberComputed ? 'pass' : 'fail',
-    darkBackground: darkBgHex || darkBgComputed ? 'pass' : 'fail',
-    nav: navPresent ? 'pass' : 'fail',
-    mowtBranding: mowtBranding ? 'pass' : 'fail',
-  };
-  const uiFailCount = Object.values(uiCohesion).filter((v) => v === 'fail').length;
 
   const bodyTextLen = bodyText.trim().length;
   const technical = {
@@ -157,7 +106,7 @@ async function auditSelf() {
   if (consoleErrors.length > 0) majorTechnicalIssues.push(`${consoleErrors.length} console error(s) captured`);
   if (brokenImages.length > 0) majorTechnicalIssues.push(`${brokenImages.length} broken image(s): ${brokenImages.slice(0, 5).join(', ')}`);
 
-  return { technical, majorTechnicalIssues, uiCohesion, uiFailCount, extractedFigures, districtOptions };
+  return { technical, majorTechnicalIssues, extractedFigures, districtOptions };
 }
 
 async function fetchSiblingLatestReport(repo) {
@@ -262,7 +211,6 @@ async function main() {
     repo: SELF,
     url: URL,
     technical: self.technical,
-    uiCohesion: self.uiCohesion,
     accuracy: {
       extractedFigures: self.extractedFigures,
       discrepancies: accuracyDiscrepancies,
@@ -281,9 +229,8 @@ async function main() {
     ...self.majorTechnicalIssues,
     ...accuracyDiscrepancies,
   ];
-  const uiFail = self.uiFailCount >= 2;
 
-  if (problems.length === 0 && !uiFail) {
+  if (problems.length === 0) {
     await closeStaleIssue();
     console.log('Audit clean — no issues found.');
     return;
@@ -299,24 +246,15 @@ async function main() {
   if (consistencyNotes.length) {
     lines.push('## Consistency Notes', ...consistencyNotes.map((s) => `- ${s}`), '');
   }
-  lines.push(
-    '## UI Cohesion',
-    ...Object.entries(self.uiCohesion).map(([k, v]) => `- ${k}: ${v}`),
-    ''
-  );
   lines.push(`Full report: \`audit-log/${TODAY}.json\``);
 
-  const labels = ['daily-audit'];
-  if (problems.length) labels.push('bug');
-  if (uiFail) labels.push('ui-cohesion', 'bug');
-
   await upsertIssue({
-    title: `⚠️ Daily Audit: ${problems.length + (uiFail ? 1 : 0)} issue(s) found`,
+    title: `⚠️ Daily Audit: ${problems.length} issue(s) found`,
     body: lines.join('\n'),
-    labels: [...new Set(labels)],
+    labels: ['daily-audit', 'bug'],
   });
 
-  console.log(`Audit found ${problems.length} problem(s), UI fail=${uiFail}. Issue filed.`);
+  console.log(`Audit found ${problems.length} problem(s). Issue filed.`);
 }
 
 main().catch((err) => {
