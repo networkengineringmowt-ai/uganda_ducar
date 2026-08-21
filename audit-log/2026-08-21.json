@@ -6,7 +6,7 @@
     "httpStatus": 200,
     "loadFailed": false,
     "pageRendered": true,
-    "bodyTextLength": 22278,
+    "bodyTextLength": 24146,
     "consoleErrors": [],
     "brokenImages": [],
     "hashLinksFound": [
@@ -33,9 +33,1874 @@
         "context": "ADM2 coverage\nSURFACE-CLASSIFIED LENGTH"
       },
       {
+        "value": 0,
+        "raw": "0 km",
+        "context": "e analytical, not statutory ownership."
+      },
+      {
+        "value": 40313,
+        "raw": "40,313 km",
+        "context": "lytical, not statutory ownership.\n\n0 km"
+      },
+      {
+        "value": 80625.9,
+        "raw": "80,625.9 km",
+        "context": "ot statutory ownership.\n\n0 km\n40,313 km"
+      },
+      {
+        "value": 120938.9,
+        "raw": "120,938.9 km",
+        "context": "ownership.\n\n0 km\n40,313 km\n80,625.9 km"
+      },
+      {
+        "value": 161251.9,
+        "raw": "161,251.9 km",
+        "context": "0 km\n40,313 km\n80,625.9 km\n120,938.9 km"
+      },
+      {
+        "value": 161251.9,
+        "raw": "161,251.9 km",
+        "context": "161,251.9 km\nCommunity-Access Candidate"
+      },
+      {
+        "value": 49434.4,
+        "raw": "49,434.4 km",
+        "context": ",180 records\nUrban/Local-Road Candidate"
+      },
+      {
+        "value": 33447.6,
+        "raw": "33,447.6 km",
+        "context": "174,071 records\nDistrict-Road Candidate"
+      },
+      {
+        "value": 4410.8,
+        "raw": "4,410.8 km",
+        "context": "· 8,797 records\nNational-Road Candidate"
+      },
+      {
+        "value": 71.5,
+        "raw": "71.5 km",
+        "context": "1,932 records\nOther Vehicular Candidate"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "ags; missing tags remain Unclassified."
+      },
+      {
+        "value": 43613.6,
+        "raw": "43,613.6 km",
+        "context": "missing tags remain Unclassified.\n\n0 km"
+      },
+      {
+        "value": 87227.2,
+        "raw": "87,227.2 km",
+        "context": "remain Unclassified.\n\n0 km\n43,613.6 km"
+      },
+      {
+        "value": 130840.9,
+        "raw": "130,840.9 km",
+        "context": "assified.\n\n0 km\n43,613.6 km\n87,227.2 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "km\n43,613.6 km\n87,227.2 km\n130,840.9 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "130,840.9 km\n174,454.5 km\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": "174,454.5 km · 315,281 records\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "aved\n68,818.2 km · 84,145 records\nPaved"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "ess; missing tags remain Unclassified."
+      },
+      {
+        "value": 61929.3,
+        "raw": "61,929.3 km",
+        "context": "missing tags remain Unclassified.\n\n0 km"
+      },
+      {
+        "value": 123858.6,
+        "raw": "123,858.6 km",
+        "context": "remain Unclassified.\n\n0 km\n61,929.3 km"
+      },
+      {
+        "value": 185787.9,
+        "raw": "185,787.9 km",
+        "context": "ssified.\n\n0 km\n61,929.3 km\n123,858.6 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "m\n61,929.3 km\n123,858.6 km\n185,787.9 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "185,787.9 km\n247,717.2 km\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "ied\n247,717.2 km · 402,774 records\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "ecords\nGood\n405.5 km · 363 records\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "ecords\nPoor\n344.4 km · 647 records\nFair"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "All mapped road length by condition."
+      },
+      {
+        "value": 61929.3,
+        "raw": "61,929.3 km",
+        "context": "mapped road length by condition.\n\n0 km"
+      },
+      {
+        "value": 123858.6,
+        "raw": "123,858.6 km",
+        "context": "length by condition.\n\n0 km\n61,929.3 km"
+      },
+      {
+        "value": 185787.9,
+        "raw": "185,787.9 km",
+        "context": "ndition.\n\n0 km\n61,929.3 km\n123,858.6 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "m\n61,929.3 km\n123,858.6 km\n185,787.9 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "185,787.9 km\n247,717.2 km\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "ied\n247,717.2 km · 402,774 records\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "ecords\nGood\n405.5 km · 363 records\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "ecords\nPoor\n344.4 km · 647 records\nFair"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "Paved and unpaved cumulative length."
+      },
+      {
+        "value": 43613.6,
+        "raw": "43,613.6 km",
+        "context": "ed and unpaved cumulative length.\n\n0 km"
+      },
+      {
+        "value": 87227.2,
+        "raw": "87,227.2 km",
+        "context": "ed cumulative length.\n\n0 km\n43,613.6 km"
+      },
+      {
+        "value": 130840.9,
+        "raw": "130,840.9 km",
+        "context": "e length.\n\n0 km\n43,613.6 km\n87,227.2 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "km\n43,613.6 km\n87,227.2 km\n130,840.9 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "130,840.9 km\n174,454.5 km\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": "174,454.5 km · 315,281 records\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "aved\n68,818.2 km · 84,145 records\nPaved"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "nning bands by cumulative road length."
+      },
+      {
+        "value": 56573.3,
+        "raw": "56,573.3 km",
+        "context": "bands by cumulative road length.\n\n0 km"
+      },
+      {
+        "value": 113146.5,
+        "raw": "113,146.5 km",
+        "context": "mulative road length.\n\n0 km\n56,573.3 km"
+      },
+      {
+        "value": 169719.8,
+        "raw": "169,719.8 km",
+        "context": "length.\n\n0 km\n56,573.3 km\n113,146.5 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "m\n56,573.3 km\n113,146.5 km\n169,719.8 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "226,293 km\nInventory Awaiting Attribu…"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": "u…\n226,293 km · 23,373 records\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "derate\n11,792.4 km · 4,963 records\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "cords\nHigh\n7,776 km · 2,077 records\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": "s\nLow\n1,792.8 km · 408 records\nCritical"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "th with or without exact traffic data."
+      },
+      {
+        "value": 56573.3,
+        "raw": "56,573.3 km",
+        "context": "th or without exact traffic data.\n\n0 km"
+      },
+      {
+        "value": 113146.5,
+        "raw": "113,146.5 km",
+        "context": "t exact traffic data.\n\n0 km\n56,573.3 km"
+      },
+      {
+        "value": 169719.8,
+        "raw": "169,719.8 km",
+        "context": "ic data.\n\n0 km\n56,573.3 km\n113,146.5 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "m\n56,573.3 km\n113,146.5 km\n169,719.8 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "226,293 km\nInventory Awaiting Attribu…"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "26,293 km · 23,373 records\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "9.1 km · 5,856 records\nTraffic Supplied"
+      },
+      {
         "value": 248616.15,
         "raw": "248,616.15 km",
-        "context": "op-N chart.\nAuthoritative public total:"
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "16.15 km\nTotal affected km\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "717.2 km · 402,774 records · 99.6%\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "Good\n405.5 km · 363 records · 0.2%\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "Poor\n344.4 km · 647 records · 0.1%\nFair"
+      },
+      {
+        "value": 248616.15,
+        "raw": "248,616.15 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "16.15 km\nTotal affected km\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": ".5 km · 315,281 records · 70.2%\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "818.2 km · 84,145 records · 27.7%\nPaved"
+      },
+      {
+        "value": 248616.15,
+        "raw": "248,616.15 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": ",293 km · 23,373 records · 91%\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "11,792.4 km · 4,963 records · 4.7%\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "igh\n7,776 km · 2,077 records · 3.1%\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": ",792.8 km · 408 records · 0.7%\nCritical"
+      },
+      {
+        "value": 248616.15,
+        "raw": "248,616.15 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "km · 23,373 records · 91%\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "· 5,856 records · 5.8%\nTraffic supplied"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "SE\nPNG\nAFFECTED KM + COUNT\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "717.2 km · 402,774 records · 99.6%\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "Good\n405.5 km · 363 records · 0.2%\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "Poor\n344.4 km · 647 records · 0.1%\nFair"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "SE\nPNG\nAFFECTED KM + COUNT\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": ".5 km · 315,281 records · 70.2%\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "818.2 km · 84,145 records · 27.7%\nPaved"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": ",293 km · 23,373 records · 91%\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "11,792.4 km · 4,963 records · 4.7%\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "igh\n7,776 km · 2,077 records · 3.1%\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": ",792.8 km · 408 records · 0.7%\nCritical"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "km · 23,373 records · 91%\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "· 5,856 records · 5.8%\nTraffic supplied"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "PNG\nAFFECTED KM + COUNT\nUnclassified ·"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "· 247,717.2 km · 402,774 records\nGood ·"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "ds\nGood · 405.5 km · 363 records\nPoor ·"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "ds\nPoor · 344.4 km · 647 records\nFair ·"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "PNG\nAFFECTED KM + COUNT\nUnclassified ·"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": "74,454.5 km · 315,281 records\nUnpaved ·"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "· 68,818.2 km · 84,145 records\nPaved ·"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "+ COUNT\nInventory awaiting attribut… ·"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": "226,293 km · 23,373 records\nModerate ·"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "te · 11,792.4 km · 4,963 records\nHigh ·"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "s\nHigh · 7,776 km · 2,077 records\nLow ·"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": "w · 1,792.8 km · 408 records\nCritical ·"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "+ COUNT\nInventory awaiting attribut… ·"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": ",293 km · 23,373 records\nNot supplied ·"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "1 km · 5,856 records\nTraffic supplied ·"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 123858.6,
+        "raw": "123,858.6 km",
+        "context": "SE\nPNG\nAFFECTED KM + COUNT\n247,717.2 km"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "ED KM + COUNT\n247,717.2 km\n123,858.6 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "+ COUNT\n247,717.2 km\n123,858.6 km\n0 km"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "247,717.2 km\n402,774 rec.\nUnclassified"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "ec.\nUnclassified\n405.5 km\n363 rec.\nGood"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "km\n363 rec.\nGood\n344.4 km\n647 rec.\nPoor"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 87227.2,
+        "raw": "87,227.2 km",
+        "context": "SE\nPNG\nAFFECTED KM + COUNT\n174,454.5 km"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "TED KM + COUNT\n174,454.5 km\n87,227.2 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "M + COUNT\n174,454.5 km\n87,227.2 km\n0 km"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": "174,454.5 km\n315,281 rec.\nUnclassified"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "ssified\n68,818.2 km\n84,145 rec.\nUnpaved"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 113146.5,
+        "raw": "113,146.5 km",
+        "context": "APSE\nPNG\nAFFECTED KM + COUNT\n226,293 km"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "CTED KM + COUNT\n226,293 km\n113,146.5 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "KM + COUNT\n226,293 km\n113,146.5 km\n0 km"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": "ntory Awaiting Attribute Classification"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "ication\n11,792.4 km\n4,963 rec.\nModerate"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "rec.\nModerate\n7,776 km\n2,077 rec.\nHigh"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": "2,077 rec.\nHigh\n1,792.8 km\n408 rec.\nLow"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 113146.5,
+        "raw": "113,146.5 km",
+        "context": "APSE\nPNG\nAFFECTED KM + COUNT\n226,293 km"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "CTED KM + COUNT\n226,293 km\n113,146.5 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "KM + COUNT\n226,293 km\n113,146.5 km\n0 km"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "ntory Awaiting Attribute Classification"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "ion\n14,489.1 km\n5,856 rec.\nNot supplied"
+      },
+      {
+        "value": 248616.15,
+        "raw": "248,616.15 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 124308.1,
+        "raw": "124,308.1 km",
+        "context": "E\nPNG\nAFFECTED KM + COUNT\n248,616.15 km"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "D KM + COUNT\n248,616.15 km\n124,308.1 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "Axis: Complete Composition\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "717.2 km · 402,774 records · 99.6%\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "Good\n405.5 km · 363 records · 0.2%\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "Poor\n344.4 km · 647 records · 0.1%\nFair"
+      },
+      {
+        "value": 248616.15,
+        "raw": "248,616.15 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 124308.1,
+        "raw": "124,308.1 km",
+        "context": "E\nPNG\nAFFECTED KM + COUNT\n248,616.15 km"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "D KM + COUNT\n248,616.15 km\n124,308.1 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "Axis: Complete Composition\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": ".5 km · 315,281 records · 70.2%\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "818.2 km · 84,145 records · 27.7%\nPaved"
+      },
+      {
+        "value": 248616.15,
+        "raw": "248,616.15 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 124308.1,
+        "raw": "124,308.1 km",
+        "context": "E\nPNG\nAFFECTED KM + COUNT\n248,616.15 km"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "D KM + COUNT\n248,616.15 km\n124,308.1 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": ",293 km · 23,373 records · 91%\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "11,792.4 km · 4,963 records · 4.7%\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "igh\n7,776 km · 2,077 records · 3.1%\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": ",792.8 km · 408 records · 0.7%\nCritical"
+      },
+      {
+        "value": 248616.15,
+        "raw": "248,616.15 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 124308.1,
+        "raw": "124,308.1 km",
+        "context": "E\nPNG\nAFFECTED KM + COUNT\n248,616.15 km"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "D KM + COUNT\n248,616.15 km\n124,308.1 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "km · 23,373 records · 91%\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "· 5,856 records · 5.8%\nTraffic supplied"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 61929.3,
+        "raw": "61,929.3 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 123858.6,
+        "raw": "123,858.6 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n61,929.3 km"
+      },
+      {
+        "value": 185787.9,
+        "raw": "185,787.9 km",
+        "context": "M + COUNT\n0 km\n61,929.3 km\n123,858.6 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "m\n61,929.3 km\n123,858.6 km\n185,787.9 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "Vertical Axis: affected km\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "717.2 km · 402,774 records · 99.6%\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "Good\n405.5 km · 363 records · 0.2%\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "Poor\n344.4 km · 647 records · 0.1%\nFair"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 43613.6,
+        "raw": "43,613.6 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 87227.2,
+        "raw": "87,227.2 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n43,613.6 km"
+      },
+      {
+        "value": 130840.9,
+        "raw": "130,840.9 km",
+        "context": "KM + COUNT\n0 km\n43,613.6 km\n87,227.2 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "km\n43,613.6 km\n87,227.2 km\n130,840.9 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "Vertical Axis: affected km\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": ".5 km · 315,281 records · 70.2%\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "818.2 km · 84,145 records · 27.7%\nPaved"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 56573.3,
+        "raw": "56,573.3 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 113146.5,
+        "raw": "113,146.5 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n56,573.3 km"
+      },
+      {
+        "value": 169719.8,
+        "raw": "169,719.8 km",
+        "context": "M + COUNT\n0 km\n56,573.3 km\n113,146.5 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "m\n56,573.3 km\n113,146.5 km\n169,719.8 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": ",293 km · 23,373 records · 91%\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "11,792.4 km · 4,963 records · 4.7%\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "igh\n7,776 km · 2,077 records · 3.1%\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": ",792.8 km · 408 records · 0.7%\nCritical"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 56573.3,
+        "raw": "56,573.3 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 113146.5,
+        "raw": "113,146.5 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n56,573.3 km"
+      },
+      {
+        "value": 169719.8,
+        "raw": "169,719.8 km",
+        "context": "M + COUNT\n0 km\n56,573.3 km\n113,146.5 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "m\n56,573.3 km\n113,146.5 km\n169,719.8 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "km · 23,373 records · 91%\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "· 5,856 records · 5.8%\nTraffic supplied"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "G\nAFFECTED KM + COUNT\n100%\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "47,717.2 km · 402,774 records\n0.2%\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "%\nGood\n405.5 km · 363 records\n0.1%\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "%\nPoor\n344.4 km · 647 records\n0.1%\nFair"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "G\nAFFECTED KM + COUNT\n100%\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": "54.5 km · 315,281 records\n39.4%\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "68,818.2 km · 84,145 records\n3.1%\nPaved"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": "6,293 km · 23,373 records\n5.2%\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "e\n11,792.4 km · 4,963 records\n3.4%\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "High\n7,776 km · 2,077 records\n0.8%\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": "1,792.8 km · 408 records\n0.4%\nCritical"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "3 km · 23,373 records\n6.4%\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "m · 5,856 records\n3.5%\nTraffic supplied"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "SE\nPNG\nAFFECTED KM + COUNT\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "717.2 km · 402,774 records · 99.6%\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "Good\n405.5 km · 363 records · 0.2%\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "Poor\n344.4 km · 647 records · 0.1%\nFair"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "SE\nPNG\nAFFECTED KM + COUNT\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": ".5 km · 315,281 records · 70.2%\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "818.2 km · 84,145 records · 27.7%\nPaved"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": ",293 km · 23,373 records · 91%\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "11,792.4 km · 4,963 records · 4.7%\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "igh\n7,776 km · 2,077 records · 3.1%\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": ",792.8 km · 408 records · 0.7%\nCritical"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "km · 23,373 records · 91%\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "· 5,856 records · 5.8%\nTraffic supplied"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "SE\nPNG\nAFFECTED KM + COUNT\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "247,717.2 km\n99.6% · 402,774 rec.\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "rec.\nGood\n405.5 km\n0.2% · 363 rec.\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "rec.\nPoor\n344.4 km\n0.1% · 647 rec.\nFair"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "SE\nPNG\nAFFECTED KM + COUNT\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": "4,454.5 km\n70.2% · 315,281 rec.\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "d\n68,818.2 km\n27.7% · 84,145 rec.\nPaved"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": "n\n226,293 km\n91% · 23,373 rec.\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "rate\n11,792.4 km\n4.7% · 4,963 rec.\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "ec.\nHigh\n7,776 km\n3.1% · 2,077 rec.\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": "Low\n1,792.8 km\n0.7% · 408 rec.\nCritical"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "6,293 km\n91% · 23,373 rec.\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "1 km\n5.8% · 5,856 rec.\nTraffic supplied"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 61929.3,
+        "raw": "61,929.3 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 123858.6,
+        "raw": "123,858.6 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n61,929.3 km"
+      },
+      {
+        "value": 185787.9,
+        "raw": "185,787.9 km",
+        "context": "M + COUNT\n0 km\n61,929.3 km\n123,858.6 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "m\n61,929.3 km\n123,858.6 km\n185,787.9 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "Vertical Axis: affected km\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "717.2 km · 402,774 records · 99.6%\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "Good\n405.5 km · 363 records · 0.2%\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "Poor\n344.4 km · 647 records · 0.1%\nFair"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 43613.6,
+        "raw": "43,613.6 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 87227.2,
+        "raw": "87,227.2 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n43,613.6 km"
+      },
+      {
+        "value": 130840.9,
+        "raw": "130,840.9 km",
+        "context": "KM + COUNT\n0 km\n43,613.6 km\n87,227.2 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "km\n43,613.6 km\n87,227.2 km\n130,840.9 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "Vertical Axis: affected km\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": ".5 km · 315,281 records · 70.2%\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "818.2 km · 84,145 records · 27.7%\nPaved"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 56573.3,
+        "raw": "56,573.3 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 113146.5,
+        "raw": "113,146.5 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n56,573.3 km"
+      },
+      {
+        "value": 169719.8,
+        "raw": "169,719.8 km",
+        "context": "M + COUNT\n0 km\n56,573.3 km\n113,146.5 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "m\n56,573.3 km\n113,146.5 km\n169,719.8 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": ",293 km · 23,373 records · 91%\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "11,792.4 km · 4,963 records · 4.7%\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "igh\n7,776 km · 2,077 records · 3.1%\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": ",792.8 km · 408 records · 0.7%\nCritical"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 56573.3,
+        "raw": "56,573.3 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 113146.5,
+        "raw": "113,146.5 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n56,573.3 km"
+      },
+      {
+        "value": 169719.8,
+        "raw": "169,719.8 km",
+        "context": "M + COUNT\n0 km\n56,573.3 km\n113,146.5 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "m\n56,573.3 km\n113,146.5 km\n169,719.8 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "km · 23,373 records · 91%\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "· 5,856 records · 5.8%\nTraffic supplied"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 61929.3,
+        "raw": "61,929.3 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 123858.6,
+        "raw": "123,858.6 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n61,929.3 km"
+      },
+      {
+        "value": 185787.9,
+        "raw": "185,787.9 km",
+        "context": "M + COUNT\n0 km\n61,929.3 km\n123,858.6 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "m\n61,929.3 km\n123,858.6 km\n185,787.9 km"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "Vertical Axis: affected km\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "717.2 km · 402,774 records · 99.6%\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "Good\n405.5 km · 363 records · 0.2%\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "Poor\n344.4 km · 647 records · 0.1%\nFair"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 43613.6,
+        "raw": "43,613.6 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 87227.2,
+        "raw": "87,227.2 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n43,613.6 km"
+      },
+      {
+        "value": 130840.9,
+        "raw": "130,840.9 km",
+        "context": "KM + COUNT\n0 km\n43,613.6 km\n87,227.2 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "km\n43,613.6 km\n87,227.2 km\n130,840.9 km"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "Vertical Axis: affected km\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": ".5 km · 315,281 records · 70.2%\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "818.2 km · 84,145 records · 27.7%\nPaved"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 56573.3,
+        "raw": "56,573.3 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 113146.5,
+        "raw": "113,146.5 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n56,573.3 km"
+      },
+      {
+        "value": 169719.8,
+        "raw": "169,719.8 km",
+        "context": "M + COUNT\n0 km\n56,573.3 km\n113,146.5 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "m\n56,573.3 km\n113,146.5 km\n169,719.8 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": ",293 km · 23,373 records · 91%\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "11,792.4 km · 4,963 records · 4.7%\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "igh\n7,776 km · 2,077 records · 3.1%\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": ",792.8 km · 408 records · 0.7%\nCritical"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "length\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT"
+      },
+      {
+        "value": 56573.3,
+        "raw": "56,573.3 km",
+        "context": "h\nCOLLAPSE\nPNG\nAFFECTED KM + COUNT\n0 km"
+      },
+      {
+        "value": 113146.5,
+        "raw": "113,146.5 km",
+        "context": "NG\nAFFECTED KM + COUNT\n0 km\n56,573.3 km"
+      },
+      {
+        "value": 169719.8,
+        "raw": "169,719.8 km",
+        "context": "M + COUNT\n0 km\n56,573.3 km\n113,146.5 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "m\n56,573.3 km\n113,146.5 km\n169,719.8 km"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "km · 23,373 records · 91%\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "· 5,856 records · 5.8%\nTraffic supplied"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "PNG\nAFFECTED KM + COUNT\n1\nUnclassified"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "sified\n247,717.2 km\n402,774 rec.\n2\nGood"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "74 rec.\n2\nGood\n405.5 km\n363 rec.\n3\nPoor"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "63 rec.\n3\nPoor\n344.4 km\n647 rec.\n4\nFair"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "PNG\nAFFECTED KM + COUNT\n1\nUnclassified"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": "ied\n174,454.5 km\n315,281 rec.\n2\nUnpaved"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "Unpaved\n68,818.2 km\n84,145 rec.\n3\nPaved"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": "ation\n226,293 km\n23,373 rec.\n2\nModerate"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "Moderate\n11,792.4 km\n4,963 rec.\n3\nHigh"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "3 rec.\n3\nHigh\n7,776 km\n2,077 rec.\n4\nLow"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": "c.\n4\nLow\n1,792.8 km\n408 rec.\n5\nCritical"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "n\n226,293 km\n23,373 rec.\n2\nNot supplied"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": ",489.1 km\n5,856 rec.\n3\nTraffic supplied"
+      },
+      {
+        "value": 149.1,
+        "raw": "149.1 km",
+        "context": "ause motion\nPNG\nROAD CONDITION\nBAR\nFair"
+      },
+      {
+        "value": 62005,
+        "raw": "62,005 km",
+        "context": "km\n263 records\n0.1%\n0.06% of dimension\n-"
+      },
+      {
+        "value": 405.5,
+        "raw": "405.5 km",
+        "context": "km vs mean\nPNG\nROAD CONDITION\nRING\nGood"
+      },
+      {
+        "value": 61748.5,
+        "raw": "61,748.5 km",
+        "context": "km\n363 records\n0.2%\n0.16% of dimension\n-"
+      },
+      {
+        "value": 344.4,
+        "raw": "344.4 km",
+        "context": "vs mean\nPNG\nROAD CONDITION\nCOLUMN\nPoor"
+      },
+      {
+        "value": 61809.7,
+        "raw": "61,809.7 km",
+        "context": "km\n647 records\n100%\n0.14% of dimension\n-"
+      },
+      {
+        "value": 247717.2,
+        "raw": "247,717.2 km",
+        "context": "NG\nROAD CONDITION\nLOLLIPOP\nUnclassified"
+      },
+      {
+        "value": 185563.2,
+        "raw": "185,563.2 km",
+        "context": "km\n402,774 records\n99.64% of dimension\n+"
+      },
+      {
+        "value": 5343.5,
+        "raw": "5,343.5 km",
+        "context": "km vs mean\nPNG\nPAVEMENT CLASS\nPIE\nPaved"
+      },
+      {
+        "value": 77528.6,
+        "raw": "77,528.6 km",
+        "context": "4,621 records\n2.1%\n2.15% of dimension\n-"
+      },
+      {
+        "value": 174454.5,
+        "raw": "174,454.5 km",
+        "context": "PNG\nPAVEMENT CLASS\nFUNNEL\nUnclassified"
+      },
+      {
+        "value": 91582.4,
+        "raw": "91,582.4 km",
+        "context": "km\n315,281 records\n70.17% of dimension\n+"
+      },
+      {
+        "value": 68818.2,
+        "raw": "68,818.2 km",
+        "context": "vs mean\nPNG\nPAVEMENT CLASS\nHEAT\nUnpaved"
+      },
+      {
+        "value": 14053.9,
+        "raw": "14,053.9 km",
+        "context": "ecords\n27.7% share\n27.68% of dimension\n-"
+      },
+      {
+        "value": 11792.4,
+        "raw": "11,792.4 km",
+        "context": "an\nPNG\nPLANNING PRIORITY\nGAUGE\nModerate"
+      },
+      {
+        "value": 37930.8,
+        "raw": "37,930.8 km",
+        "context": "4,963 records\n4.7%\n4.74% of dimension\n-"
+      },
+      {
+        "value": 7776,
+        "raw": "7,776 km",
+        "context": "an\nPNG\nPLANNING PRIORITY\nSPARKLINE\nHigh"
+      },
+      {
+        "value": 41947.2,
+        "raw": "41,947.2 km",
+        "context": "76 km\n2,077 records\n3.13% of dimension\n-"
+      },
+      {
+        "value": 961.9,
+        "raw": "961.9 km",
+        "context": "an\nPNG\nPLANNING PRIORITY\nRADAR\nCritical"
+      },
+      {
+        "value": 48761.4,
+        "raw": "48,761.4 km",
+        "context": "61.9 km\n285 records\n0.39% of dimension\n-"
+      },
+      {
+        "value": 1792.8,
+        "raw": "1,792.8 km",
+        "context": "mean\nPNG\nPLANNING PRIORITY\nTREEMAP\nLow"
+      },
+      {
+        "value": 47930.4,
+        "raw": "47,930.4 km",
+        "context": "km\n408 records\n0.7%\n0.72% of dimension\n-"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 176569.8,
+        "raw": "176,569.8 km",
+        "context": "km\n23,373 records\n91.02% of dimension\n+"
+      },
+      {
+        "value": 7834,
+        "raw": "7,834 km",
+        "context": "FFIC-DATA COVERAGE\nBAR\nTraffic supplied"
+      },
+      {
+        "value": 75038.1,
+        "raw": "75,038.1 km",
+        "context": "1,877 records\n3.2%\n3.15% of dimension\n-"
+      },
+      {
+        "value": 14489.1,
+        "raw": "14,489.1 km",
+        "context": "TRAFFIC-DATA COVERAGE\nRING\nNot supplied"
+      },
+      {
+        "value": 68382.9,
+        "raw": "68,382.9 km",
+        "context": "5,856 records\n5.8%\n5.83% of dimension\n-"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 143421,
+        "raw": "143,421 km",
+        "context": "3,373 records\n100%\n91.02% of dimension\n+"
+      },
+      {
+        "value": 10483.5,
+        "raw": "10,483.5 km",
+        "context": "TERVENTION\nSTACKED\nPeriodic maintenance"
+      },
+      {
+        "value": 25033.1,
+        "raw": "25,033.1 km",
+        "context": ".5 km\n2,352 records\n4.22% of dimension\n-"
+      },
+      {
+        "value": 5350.2,
+        "raw": "5,350.2 km",
+        "context": "NTERVENTION\nPIE\nUnsealed rehabilitation"
+      },
+      {
+        "value": 30166.4,
+        "raw": "30,166.4 km",
+        "context": "1,603 records\n2.2%\n2.15% of dimension\n-"
+      },
+      {
+        "value": 2524.4,
+        "raw": "2,524.4 km",
+        "context": "D INTERVENTION\nFUNNEL\nBituminous reseal"
+      },
+      {
+        "value": 32992.2,
+        "raw": "32,992.2 km",
+        "context": "24.4 km\n631 records\n1.02% of dimension\n-"
+      },
+      {
+        "value": 2539.7,
+        "raw": "2,539.7 km",
+        "context": "D INTERVENTION\nHEAT\nRoutine maintenance"
+      },
+      {
+        "value": 32976.9,
+        "raw": "32,976.9 km",
+        "context": "42 records\n1% share\n1.02% of dimension\n-"
+      },
+      {
+        "value": 528.2,
+        "raw": "528.2 km",
+        "context": "NTERVENTION\nBULLET\nPaved reconstruction"
+      },
+      {
+        "value": 34988.4,
+        "raw": "34,988.4 km",
+        "context": "28.2 km\n188 records\n0.21% of dimension\n-"
+      },
+      {
+        "value": 897.1,
+        "raw": "897.1 km",
+        "context": "VENTION\nGAUGE\nCondition survey required"
+      },
+      {
+        "value": 34619.5,
+        "raw": "34,619.5 km",
+        "context": "2,417 records\n0.4%\n0.36% of dimension\n-"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 190776.4,
+        "raw": "190,776.4 km",
+        "context": "km\n23,373 records\n91.02% of dimension\n+"
       },
       {
         "value": 1,
@@ -43,9 +1908,29 @@
         "context": "DIVIDUAL-LINK LENGTH BAND\nTREEMAP\nBelow"
       },
       {
+        "value": 915,
+        "raw": "915 km",
+        "context": "UAL-LINK LENGTH BAND\nTREEMAP\nBelow 1 km"
+      },
+      {
+        "value": 40521,
+        "raw": "40,521 km",
+        "context": "2,969 records\n0.4%\n0.37% of dimension\n-"
+      },
+      {
         "value": 2.9,
         "raw": "2.9 km",
         "context": "G\nINDIVIDUAL-LINK LENGTH BAND\nSCATTER\n1–"
+      },
+      {
+        "value": 2775.3,
+        "raw": "2,775.3 km",
+        "context": "IDUAL-LINK LENGTH BAND\nSCATTER\n1–2.9 km"
+      },
+      {
+        "value": 38660.8,
+        "raw": "38,660.8 km",
+        "context": ".3 km\n1,413 records\n1.12% of dimension\n-"
       },
       {
         "value": 4.9,
@@ -53,9 +1938,289 @@
         "context": "INDIVIDUAL-LINK LENGTH BAND\nCOMPOSED\n3–"
       },
       {
+        "value": 4989,
+        "raw": "4,989 km",
+        "context": "DUAL-LINK LENGTH BAND\nCOMPOSED\n3–4.9 km"
+      },
+      {
+        "value": 36447,
+        "raw": "36,447 km",
+        "context": "89 km\n1,225 records\n2.01% of dimension\n-"
+      },
+      {
         "value": 9.9,
         "raw": "9.9 km",
         "context": "n\nPNG\nINDIVIDUAL-LINK LENGTH BAND\nBAR\n5–"
+      },
+      {
+        "value": 10692.6,
+        "raw": "10,692.6 km",
+        "context": "NDIVIDUAL-LINK LENGTH BAND\nBAR\n5–9.9 km"
+      },
+      {
+        "value": 30743.4,
+        "raw": "30,743.4 km",
+        "context": "m\n1,932 records\n4.3%\n4.3% of dimension\n-"
+      },
+      {
+        "value": 2951.3,
+        "raw": "2,951.3 km",
+        "context": "INDIVIDUAL-LINK LENGTH BAND\nRING\n10+ km"
+      },
+      {
+        "value": 38484.8,
+        "raw": "38,484.8 km",
+        "context": "km\n194 records\n1.2%\n1.19% of dimension\n-"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 184857,
+        "raw": "184,857 km",
+        "context": "3,373 records\n100%\n91.02% of dimension\n+"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "ION-RISK NUMERIC BAND\nSTACKED\n0 to 24.9"
+      },
+      {
+        "value": 5356.5,
+        "raw": "5,356.5 km",
+        "context": "to 24.9\n0 km\n0 records\n0% of dimension\n-"
+      },
+      {
+        "value": 2539.7,
+        "raw": "2,539.7 km",
+        "context": "DITION-RISK NUMERIC BAND\nPIE\n25 to 49.9"
+      },
+      {
+        "value": 2816.8,
+        "raw": "2,816.8 km",
+        "context": "542 records\n11.9%\n11.85% of dimension\n-"
+      },
+      {
+        "value": 13007.9,
+        "raw": "13,007.9 km",
+        "context": "ION-RISK NUMERIC BAND\nFUNNEL\n50 to 74.9"
+      },
+      {
+        "value": 7651.4,
+        "raw": "7,651.4 km",
+        "context": "9 km\n2,983 records\n60.71% of dimension\n+"
+      },
+      {
+        "value": 5878.4,
+        "raw": "5,878.4 km",
+        "context": "DITION-RISK NUMERIC BAND\nHEAT\n75 to 100"
+      },
+      {
+        "value": 521.9,
+        "raw": "521.9 km",
+        "context": "ecords\n27.4% share\n27.44% of dimension\n+"
+      },
+      {
+        "value": 3992.9,
+        "raw": "3,992.9 km",
+        "context": "RFACE-RISK NUMERIC BAND\nGAUGE\n0 to 24.9"
+      },
+      {
+        "value": 45730.3,
+        "raw": "45,730.3 km",
+        "context": "1,032 records\n1.6%\n1.61% of dimension\n-"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "-RISK NUMERIC BAND\nSPARKLINE\n25 to 49.9"
+      },
+      {
+        "value": 49723.2,
+        "raw": "49,723.2 km",
+        "context": "to 49.9\n0 km\n0 records\n0% of dimension\n-"
+      },
+      {
+        "value": 8385.4,
+        "raw": "8,385.4 km",
+        "context": "FACE-RISK NUMERIC BAND\nRADAR\n50 to 74.9"
+      },
+      {
+        "value": 41337.8,
+        "raw": "41,337.8 km",
+        "context": ".4 km\n2,005 records\n3.37% of dimension\n-"
+      },
+      {
+        "value": 9944.8,
+        "raw": "9,944.8 km",
+        "context": "ACE-RISK NUMERIC BAND\nTREEMAP\n75 to 100"
+      },
+      {
+        "value": 39778.5,
+        "raw": "39,778.5 km",
+        "context": ".8 km\n4,696 records\n4%\n4% of dimension\n-"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 176569.8,
+        "raw": "176,569.8 km",
+        "context": "km\n23,373 records\n91.02% of dimension\n+"
+      },
+      {
+        "value": 0,
+        "raw": "0 km",
+        "context": "NG UNIT-COST BAND\nBAR\nBelow UGX 100m/km"
+      },
+      {
+        "value": 49723.2,
+        "raw": "49,723.2 km",
+        "context": "m/km\n0 km\n0 records\n0%\n0% of dimension\n-"
+      },
+      {
+        "value": 9944.8,
+        "raw": "9,944.8 km",
+        "context": "UNIT-COST BAND\nRING\nUGX 100m to 299m/km"
+      },
+      {
+        "value": 39778.5,
+        "raw": "39,778.5 km",
+        "context": ".8 km\n4,696 records\n4%\n4% of dimension\n-"
+      },
+      {
+        "value": 8385.4,
+        "raw": "8,385.4 km",
+        "context": "IT-COST BAND\nCOLUMN\nUGX 300m to 599m/km"
+      },
+      {
+        "value": 41337.8,
+        "raw": "41,337.8 km",
+        "context": "2,005 records\n100%\n3.37% of dimension\n-"
+      },
+      {
+        "value": 3992.9,
+        "raw": "3,992.9 km",
+        "context": "NG UNIT-COST BAND\nLOLLIPOP\nUGX 600m+/km"
+      },
+      {
+        "value": 45730.3,
+        "raw": "45,730.3 km",
+        "context": ".9 km\n1,032 records\n1.61% of dimension\n-"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 176569.8,
+        "raw": "176,569.8 km",
+        "context": "km\n23,373 records\n91.02% of dimension\n+"
+      },
+      {
+        "value": 1310.2,
+        "raw": "1,310.2 km",
+        "context": "LANNING-COST BAND\nFUNNEL\nBelow UGX 100m"
+      },
+      {
+        "value": 48413,
+        "raw": "48,413 km",
+        "context": ".2 km\n2,894 records\n0.53% of dimension\n-"
+      },
+      {
+        "value": 6521.3,
+        "raw": "6,521.3 km",
+        "context": "LANNING-COST BAND\nHEAT\nUGX 100m to 499m"
+      },
+      {
+        "value": 43202,
+        "raw": "43,202 km",
+        "context": "records\n2.6% share\n2.62% of dimension\n-"
+      },
+      {
+        "value": 4154.9,
+        "raw": "4,154.9 km",
+        "context": "NNING-COST BAND\nBULLET\nUGX 500m to 999m"
+      },
+      {
+        "value": 45568.3,
+        "raw": "45,568.3 km",
+        "context": ".9 km\n1,012 records\n1.67% of dimension\n-"
+      },
+      {
+        "value": 10336.7,
+        "raw": "10,336.7 km",
+        "context": "G\nLINK PLANNING-COST BAND\nGAUGE\nUGX 1b+"
+      },
+      {
+        "value": 39386.5,
+        "raw": "39,386.5 km",
+        "context": "1,826 records\n4.2%\n4.16% of dimension\n-"
+      },
+      {
+        "value": 226293,
+        "raw": "226,293 km",
+        "context": "ntory awaiting attribute classification"
+      },
+      {
+        "value": 176569.8,
+        "raw": "176,569.8 km",
+        "context": "km\n23,373 records\n91.02% of dimension\n+"
+      },
+      {
+        "value": 161251.9,
+        "raw": "161,251.9 km",
+        "context": "LASS\nTREEMAP\nCommunity-access candidate"
+      },
+      {
+        "value": 111528.6,
+        "raw": "111,528.6 km",
+        "context": ",180 records\n64.9%\n64.86% of dimension\n+"
+      },
+      {
+        "value": 33447.6,
+        "raw": "33,447.6 km",
+        "context": "E CLASS\nSCATTER\nDistrict-road candidate"
+      },
+      {
+        "value": 16275.6,
+        "raw": "16,275.6 km",
+        "context": "6 km\n8,797 records\n13.45% of dimension\n-"
+      },
+      {
+        "value": 4410.8,
+        "raw": "4,410.8 km",
+        "context": "CLASS\nCOMPOSED\nNational-road candidate"
+      },
+      {
+        "value": 45312.4,
+        "raw": "45,312.4 km",
+        "context": ".8 km\n1,932 records\n1.77% of dimension\n-"
+      },
+      {
+        "value": 71.5,
+        "raw": "71.5 km",
+        "context": "ATE CLASS\nBAR\nOther vehicular candidate"
+      },
+      {
+        "value": 49651.8,
+        "raw": "49,651.8 km",
+        "context": ".5 km\n67 records\n0%\n0.03% of dimension\n-"
+      },
+      {
+        "value": 49434.4,
+        "raw": "49,434.4 km",
+        "context": "E CLASS\nRING\nUrban/local-road candidate"
+      },
+      {
+        "value": 288.8,
+        "raw": "288.8 km",
+        "context": ",071 records\n19.9%\n19.88% of dimension\n-"
       }
     ],
     "discrepancies": []
