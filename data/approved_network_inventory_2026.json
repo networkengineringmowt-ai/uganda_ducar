@@ -13,7 +13,14 @@
     "source_file": "MoWT_DUCAR_National_Road_Network_Master_Workbook_2026.xlsx",
     "ducar_link_rows": 31106,
     "attributes_per_link": 51,
-    "coordinate_fields": ["start_x_dd", "start_y_dd", "midpoint_x_dd", "midpoint_y_dd", "end_x_dd", "end_y_dd"],
+    "coordinate_fields": [
+      "start_x_dd",
+      "start_y_dd",
+      "midpoint_x_dd",
+      "midpoint_y_dd",
+      "end_x_dd",
+      "end_y_dd"
+    ],
     "administrative_extent": "135 districts",
     "publication_role": "Governed Link-ID, traffic, structures, cost and intervention relation scope"
   },
@@ -38,7 +45,7 @@
     "rule": "Never scale or duplicate governed geometry to force agreement with the national source inventory"
   },
   "published_reference_scopes": {
-    "national_roads_km": 21292,
+    "national_roads_km": 21302.0,
     "ducar_composition_km": 138503,
     "urban_km": 19952,
     "district_km": 38603,
@@ -64,5 +71,16 @@
     "public_reporting_rule": "Public dashboards use the 248,616.15 km HOTOSM vehicular inventory; governed Link-ID and source-verification coverage remain explicit in Admin Tools.",
     "high_cardinality_rule": "Complete dimensions remain available in tables and exports rather than selective charts.",
     "methodology_note": "The superseded prior inventory figure has no reproducible match in the underlying HOTOSM shapefile under the tested highway-tag and district filters. The 248,616.15 km authority is reproducible from every included vehicular geometry in the source shapefile using EPSG:32636."
+  },
+  "national_road_spatial_join_2026": {
+    "official_reference_km": 21302.0,
+    "authoritative_source_feature_count": 1014,
+    "authoritative_exploded_part_count": 1069,
+    "authoritative_geometry_km": 21091.23854,
+    "authoritative_length_field_km": 21136.748162,
+    "matched_hotosm_feature_count": 42460,
+    "matched_hotosm_length_km": 21370.392215,
+    "reference_coverage_pct": 100.321,
+    "method": "Nearest authoritative alignment midpoint within 500 m and local bearing difference no greater than 44 degrees in EPSG:32636."
   }
 }

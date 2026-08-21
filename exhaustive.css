@@ -212,6 +212,9 @@ body:not(.network-map-mode) .section-tabs{position:fixed;top:64px;left:225px;rig
 @media(prefers-reduced-motion:reduce){.mind-link{animation:none!important}}
 .ranked-matrix>div{grid-template-columns:26px minmax(78px,.8fr) minmax(72px,1.4fr) minmax(64px,82px) minmax(40px,54px);gap:6px}
 
+.layer-national_roads{height:7px;background:#ff2d55;box-shadow:0 0 0 1px #fff,0 0 10px #ff2d55}
+.catalogue-scroll label span{overflow:visible;text-overflow:clip;white-space:normal;line-height:1.25}
+
 /* Exhaustive tables and mobile controls */
 [data-collapse],[data-card-collapse],.card-collapse,.chart-collapse,.map-details-toggle{display:none!important}
 @media(max-width:800px){
