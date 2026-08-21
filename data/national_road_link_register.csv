@@ -1,0 +1,1016 @@
+﻿link_id,source_link_id,road_no,road_class,road_name,length_km,chainage_from_km,chainage_to_km,surface,pavement_class,maintenance_station,maintenance_region,start_x_coordinate_dd,start_y_coordinate_dd,end_x_coordinate_dd,end_y_coordinate_dd,link_id_correction_status
+A001_Link01,A001_Link01,A001,A,Kampala - Mukono,17.737,0.0,17.737,Bituminous,Paved,Kampala,Central,32.6089995,0.32624547,32.75137469,0.35829878,Source ID retained
+A001_Link02,A001_Link02,A001,A,Mukono - Lugazi,24.142,17.737,41.879,Bituminous,Paved,Kampala,Central,32.75137469,0.35829878,32.94244842,0.36864272,Source ID retained
+A001_Link03,A001_Link03,A001,A,Lugazi - Njeru,30.113,41.879,71.992,Bituminous,Paved,Kampala,Central,32.94244842,0.36864272,33.18347956,0.44236226,Source ID retained
+A001_Link04,A001_Link04,A001,A,Njeru - Jinja,2.29998767807,71.992,74.2919876781,Bituminous,Paved,Kampala,Central,33.17827143,0.44014521,33.19597808,0.44447786,Source ID retained
+A001_Link05,A001_Link05,A001,A,Jinja - Kakira Junction,11.852,74.2919876781,86.1439876781,Bituminous,Paved,Jinja,Eastern,33.19804973,0.44542076,33.28486365,0.48610141,Source ID retained
+A001_Link06,A001_Link06,A001,A,Kakira junction - Iganga,26.87,86.1439876781,112.952987678,Bituminous,Paved,Jinja,Eastern,33.28486365,0.48610141,33.47814985,0.6150131,Source ID retained
+A001_Link07,A001_Link07,A001,A,Iganga - Nakalama,4.907,112.952987678,117.859987678,Bituminous,Paved,Jinja,Eastern,33.47814985,0.6150131,33.51850709,0.6287347,Source ID retained
+A001_Link08,A001_Link08,A001,A,Nakalama - Bugiri - Namutere,28.4249569938,117.859987678,146.284944672,Bituminous,Paved,Jinja,Eastern,33.51850709,0.6287347,33.7565743,0.56309824,Source ID retained
+A001_Link09,A001_Link09,A001,A,Namutere - Busitema Junction,24.9864183193,146.284944672,172.718987678,Bituminous,Paved,Tororo,Eastern,33.7565743,0.56309824,33.96771658,0.52505897,Source ID retained
+A001_Link10,A001_Link10,A001,A,Busitema Junction - Tororo junction,28.29,172.718987678,201.008987678,Bituminous,Paved,Tororo,Eastern,33.96771658,0.52505897,34.17312424,0.66001653,Source ID retained
+A001_Link11,A001_Link11,A001,A,Tororo junction - Malaba(Uganda/Kenya border),11.649,201.008987678,212.657987678,Bituminous,Paved,Tororo,Eastern,34.17312424,0.66001653,34.26810836,0.63760627,Source ID retained
+A001N1_Link01,A001N1_Link01,A001N1,A,Njeru - Jinja (Dual Section),2.86490404003,74.2919876781,71.427083638,Bituminous,Paved,Kampala,Central,33.197701,0.444995,33.17523465,0.4387756,Source ID retained
+A001N2_Link01,A001N2_Link01,A001N2,A,Jinja - Kakira Junction(Dual section),11.853,86.1439876781,74.2909876781,Bituminous,Paved,Jinja,Eastern,33.28447378,0.48589887,33.197701,0.444995,Source ID retained
+A002_Link01,A002_Link01,A002,A,Kibuye - Natete - Busega,6.524,0.0,6.524,Bituminous,Paved,Kampala,Central,32.57256123,0.29354004,32.51601545,0.30629051,Source ID retained
+A002_Link02,A002_Link02,A002,A,Busega - Mpigi,25.342,6.524,31.866,Bituminous,Paved,Mpigi,Central,32.51601545,0.30629051,32.33533678,0.22115178,Source ID retained
+A002_Link03,A002_Link03,A002,A,Mpigi - Buwama,32.081,31.866,63.947,Bituminous,Paved,Mpigi,Central,32.3353378,0.22115455,32.10590662,0.06234439,Source ID retained
+A002_Link04,A002_Link04,A002,A,Buwama - Lukaya,30.5,63.947,94.447,Bituminous,Paved,Mpigi,Central,32.10590662,0.06234023,31.91392275,-0.12775303,Source ID retained
+A002_Link05,A002_Link05,A002,A,Lukaya - Masaka - bypass,34.0,94.447,128.447,Bituminous,Paved,Masaka,Central,31.91392689,-0.12775303,31.71983472,-0.33657705,Source ID retained
+A002_Link06,A002_Link06,A002,A,Masaka  - Lyantonde,67.781,128.447,196.228,Bituminous,Paved,Masaka,Central,31.71983472,-0.33657705,31.15429436,-0.40525643,Source ID retained
+A002_Link07,A002_Link07,A002,A,Lyantonde - Mbarara(Bushenyi junction),67.306,196.228,263.534,Bituminous,Paved,Mbarara,Southern,31.15429436,-0.40525643,30.64930839,-0.61721859,Source ID retained
+A002_Link08,A002_Link08,A002,A,Mbarara(Bushenyi Junction)  - Ntungamo,61.729,263.534,325.263,Bituminous,Paved,Mbarara,Southern,30.64930839,-0.61721859,30.26537981,-0.88148116,Source ID retained
+A002_Link09,A002_Link09,A002,A,Ntungamo - Rubaale,14.951,325.263,340.214,Bituminous,Paved,Kabale,Southern,30.26538343,-0.88146879,30.20008273,-0.98598011,Source ID retained
+A002_Link10,A002_Link10,A002,A,Rubaale - Muhanga - Kabale,59.407,340.214,399.621,Bituminous,Paved,Kabale,Southern,30.20008273,-0.98598011,29.99325894,-1.2597451,Source ID retained
+A002_Link11,A002_Link11,A002,A,Kabale - Katuna,21.697,399.621,421.318,Bituminous,Paved,Kabale,Southern,29.99325894,-1.2597451,30.01175,-1.42477001,Source ID retained
+A003_Link01,A003_Link01,A003,A,Kibuye - Zana,4.891,0.0,4.891,Bituminous,Paved,Kampala,Central,32.57282196,0.2932329,32.56224772,0.25225732,Source ID retained
+A003_Link02,A003_Link02,A003,A,Zana - Entebbe Airport,32.016,4.891,36.907,Bituminous,Paved,Kampala,Central,32.56224772,0.25225732,32.44436208,0.04513618,Source ID retained
+A003N1_Link01,A003N1_Link01,A003N1,A,Kibuye - Zana(Dual Section),4.953,4.953,0.0,Bituminous,Paved,Kampala,Central,32.56202361,0.25232999,32.57266124,0.29332227,Source ID retained
+A003N2_Link01,A003N2_Link01,A003N2,A,Entebbe Airport (Dual),12.9507,36.907,23.9563,Bituminous,Paved,Kampala,Central,32.44434343,0.0452175,32.50971273,0.10286242,Source ID retained
+A003N3_Link01,A003N3_Link01,A003N3,A,Kajjansi (Dual),0.353198859822,10.1087022041,9.75550334429,Bituminous,Paved,Kampala,Central,32.54153291,0.21039202,32.54232096,0.21324611,Source ID retained
+A004_Link01,A004_Link01,A004,A,Masaka round about - Kyotera,44.248,0.0,44.248,Bituminous,Paved,Masaka,Central,31.71982029,-0.33659629,31.54081004,-0.63551047,Source ID retained
+A004_Link02,A004_Link02,A004,A,Kyotera - Mutukula,44.654,44.248,88.902,Bituminous,Paved,Masaka,Central,31.54081004,-0.63551047,31.41666731,-1.00015209,Source ID retained
+A005_Link01,A005_Link01,A005,A,Busega - Bujuuko,32.2296294816,0.0,32.2296294816,Bituminous,Paved,Mpigi,Central,32.51390975,0.31163911,32.37043248,0.33354164,Source ID retained
+A005_Link02,A005_Link01,A005,A,Busega - Bujuuko,32.2296294816,0.0,32.2296294816,Bituminous,Paved,Mpigi,Central,32.37043248,0.33354164,32.2589371,0.37690412,Resequenced to unique Road_No_LinkNN standard
+A005_Link03,A005_Link02,A005,A,Bujuuko - Mityana,26.736,32.2296294816,58.9656294816,Bituminous,Paved,Mpigi,Central,32.2589371,0.37690412,32.03910088,0.40751216,Resequenced to unique Road_No_LinkNN standard
+A005_Link04,A005_Link03,A005,A,Mityana - Naama - Myanzi,15.842,58.9656294816,74.8076294816,Bituminous,Paved,Mubende,Central,32.03910088,0.40751216,31.90378061,0.43556583,Resequenced to unique Road_No_LinkNN standard
+A005_Link05,A005_Link04,A005,A,Myanzi - Kiganda,27.705,74.8076294816,102.512629482,Bituminous,Paved,Mubende,Central,31.90378061,0.43556583,31.66853024,0.45663587,Resequenced to unique Road_No_LinkNN standard
+A005_Link06,A005_Link05,A005,A,Kiganda-Kitenga,20.351,102.512629482,122.863629482,Bituminous,Paved,Mubende,Central,31.66853024,0.45663587,31.50718676,0.50400195,Resequenced to unique Road_No_LinkNN standard
+A005_Link07,A005_Link06,A005,A,Kitenga-Mubende-Lusalira,29.794,122.863629482,152.657629482,Bituminous,Paved,Mubende,Central,31.50718676,0.50400195,31.28047681,0.49786632,Resequenced to unique Road_No_LinkNN standard
+A005_Link08,A005_Link07,A005,A,Lusalira - Nabingoola - Lubaale,16.3,152.657629482,168.957629482,Bituminous,Paved,Mubende,Central,31.28047681,0.49786632,31.14621558,0.49239733,Resequenced to unique Road_No_LinkNN standard
+A005_Link09,A005_Link08,A005,A,Lubaale - Kyegegwa,12.0,168.957629482,180.957629482,Bituminous,Paved,Fort Portal,Western,31.14621558,0.49239733,31.04895033,0.48497849,Resequenced to unique Road_No_LinkNN standard
+A005_Link10,A005_Link09,A005,A,Kyegegwa - Kakabala - Kyenjojo,52.261,180.957629482,233.218629482,Bituminous,Paved,Fort Portal,Western,31.04895033,0.48497849,30.6417331,0.61290978,Resequenced to unique Road_No_LinkNN standard
+A005_Link11,A005_Link10,A005,A,Kyenjojo - Rugombe - Fortportal,49.811,233.218629482,283.029629482,Bituminous,Paved,Fort Portal,Western,30.6417331,0.61290978,30.27468306,0.6529176,Resequenced to unique Road_No_LinkNN standard
+A005_Link12,A005_Link11,A005,A,FortPortal - Rwimi(bridge),44.681,283.029629482,327.710629482,Bituminous,Paved,Fort Portal,Western,30.27468306,0.6529176,30.21134346,0.37328383,Resequenced to unique Road_No_LinkNN standard
+A005_Link13,A005_Link12,A005,A,Rwimi(bridge)-Hima-Mubuku,17.802,327.710629482,345.512629482,Bituminous,Paved,Kasese,Southern,30.21134346,0.37328383,30.12311223,0.26133415,Resequenced to unique Road_No_LinkNN standard
+A005_Link14,A005_Link13,A005,A,Mubuku - Kasese,11.617,345.512629482,357.129629482,Bituminous,Paved,Kasese,Southern,30.12311223,0.26133415,30.08556793,0.17199559,Resequenced to unique Road_No_LinkNN standard
+A005_Link15,A005_Link14,A005,A,Kasese - Kikorongo,21.956,357.129629482,379.085629482,Bituminous,Paved,Kasese,Southern,30.08556793,0.17199559,29.99889731,0.00011878,Resequenced to unique Road_No_LinkNN standard
+A005_Link16,A005_Link15,A005,A,Kikorongo - Bwera - Mpondwe,38.25,379.085629482,417.335629482,Bituminous,Paved,Kasese,Southern,29.99889731,0.00011878,29.72020776,0.04122282,Resequenced to unique Road_No_LinkNN standard
+A006_Link01,A006_Link01,A006,A,Kampala - Kawempe,7.675,0.0,7.675,Bituminous,Paved,Kampala,Central,32.57167942,0.34036034,32.54567572,0.40097277,Source ID retained
+A006_Link02,A006_Link02,A006,A,Kawempe - Matuga,8.591,7.675,16.266,Bituminous,Paved,Kampala,Central,32.54567572,0.40097277,32.52104732,0.46588882,Source ID retained
+A006_Link03,A006_Link03,A006,A,Matuga - Wobulenzi,28.92,16.266,45.186,Bituminous,Paved,Luwero,Central,32.52104732,0.46588882,32.52820666,0.71784714,Source ID retained
+A006_Link04,A006_Link04,A006,A,Wobulenzi - Kasana - Luweero,15.644,45.186,60.83,Bituminous,Paved,Luwero,Central,32.52820666,0.71784714,32.48832156,0.84914136,Source ID retained
+A006_Link05,A006_Link05,A006,A,Luweero - Nakasongola,54.829,60.83,115.659,Bituminous,Paved,Luwero,Central,32.48832156,0.84914136,32.42216022,1.32692645,Source ID retained
+A006_Link06,A006_Link06,A006,A,Nakasongola - Kafu,52.216,115.659,167.875,Bituminous,Paved,Luwero,Central,32.42216022,1.32692645,32.04145866,1.54512622,Source ID retained
+A006_Link07,A006_Link07,A006,A,Kafu - Kigumba,29.676,167.875,197.551,Bituminous,Paved,Masindi,Western,32.04145866,1.54512622,32.01162029,1.80970221,Source ID retained
+A006_Link08,A006_Link08,A006,A,Kigumba - Karuma,56.735,197.551,254.286,Bituminous,Paved,Masindi,Western,32.01162029,1.80970221,32.23982928,2.24252948,Source ID retained
+A006_Link09,A006_Link09,A006,A,Karuma - Kamdini,12.157,254.286,266.443,Bituminous,Paved,Gulu,Northern,32.23982928,2.24252948,32.33105173,2.24664132,Source ID retained
+A006_Link10,A006_Link10,A006,A,Kamdini - Minakulu,24.24,266.443,290.683,Bituminous,Paved,Gulu,Northern,32.33105173,2.24664132,32.37945624,2.44595938,Source ID retained
+A006_Link11,A006_Link11,A006,A,Minakulu - Bobi - Gulu,37.495,290.683,328.178,Bituminous,Paved,Gulu,Northern,32.37945624,2.44595938,32.29745743,2.77164124,Source ID retained
+A006_Link12,A006_Link12,A006,A,Gulu - Atiak,68.164,328.178,396.342,Bituminous,Paved,Gulu,Northern,32.29745743,2.77164124,32.12118367,3.2544971,Source ID retained
+A006_Link13,A006_Link13,A006,A,Atiak - Nimule(Uganda/Sudan border),37.275,396.342,433.617,Bituminous,Paved,Gulu,Northern,32.12118367,3.2544971,32.07322101,3.57095368,Source ID retained
+A006N1_Link01,A006N1_Link01,A006N1,A,Bwaise (Dual),0.721311886616,2.01469530748,1.29338342086,Bituminous,Paved,Kampala,Central,32.5627628,0.35455528,32.56386189,0.34836558,Source ID retained
+A007_Link01,A007_Link01,A007,A,Malaba junction - Tororo,3.751,0.0,3.751,Bituminous,Paved,Tororo,Eastern,34.17301452,0.66000923,34.18081564,0.69299599,Source ID retained
+A007_Link02,A007_Link02,A007,A,Tororo - Magodes - Nabumali,33.7,3.751,37.451,Bituminous,Paved,Tororo,Eastern,34.18081564,0.69299599,34.16706613,0.98350443,Source ID retained
+A007_Link03,A007_Link03,A007,A,Nabumali  - Mbale,10.228,37.451,47.679,Bituminous,Paved,Mbale,Eastern,34.16706613,0.98350443,34.17539237,1.07005472,Source ID retained
+A007_Link04,A007_Link04,A007,A,Mbale - Namunsi - Kumi,54.686,47.679,102.365,Bituminous,Paved,Mbale,Eastern,34.17539237,1.07005472,33.93875259,1.48668086,Source ID retained
+A007_Link05,A007_Link05,A007,A,Kumi - Soroti,46.745,102.365,149.11,Bituminous,Paved,Soroti,North Eastern,33.93875259,1.48668086,33.62124567,1.71532775,Source ID retained
+A007_Link06,A007_Link06,A007,A,Soroti - Dokolo,67.444,149.11,216.554,Bituminous,Paved,Soroti,North Eastern,33.62124567,1.71532775,33.17587849,1.91650279,Source ID retained
+A007_Link07,A007_Link07,A007,A,Dokolo - Agwata,23.493,216.554,240.047,Bituminous,Paved,Lira,Northern,33.17587849,1.91650279,32.9830533,1.97498811,Source ID retained
+A007_Link08,A007_Link08,A007,A,Agwata - Lira,31.149,240.047,271.196,Bituminous,Paved,Lira,Northern,32.9830533,1.97498811,32.89343863,2.23700128,Source ID retained
+A007_Link09,A007_Link09,A007,A,Lira - Ayer,27.084,271.196,298.28,Bituminous,Paved,Lira,Northern,32.89343863,2.23700128,32.68705853,2.31619584,Source ID retained
+A007_Link10,A007_Link10,A007,A,Ayer - Kamdini,43.956,298.28,342.236,Bituminous,Paved,Lira,Northern,32.68705013,2.31619568,32.33082693,2.24664318,Source ID retained
+A007N1_Link01,A007N1_Link01,A007N1,A,Mbale(Dual Section),0.75,48.614,47.862,Bituminous,Paved,Mbale,Eastern,34.17861303,1.0769692,34.17501683,1.07095853,Source ID retained
+A008_Link01,A008_Link01,A008,A,Karuma - Olwiyo,51.633,0.0,51.633,Bituminous,Paved,Gulu,Northern,32.24283829,2.25497346,31.88545107,2.53695431,Source ID retained
+A008_Link02,A008_Link02,A008,A,Olwiyo - Packwach,54.406,51.633,106.039,Bituminous,Paved,Gulu,Northern,31.88545107,2.53695431,31.5078894,2.45859217,Source ID retained
+A008_Link03,A008_Link03,A008,A,Packwach - Nebbi,53.49,106.039,159.509,Bituminous,Paved,Arua,Northern,31.5078894,2.45859217,31.08999887,2.47887436,Source ID retained
+A008_Link04,A008_Link04,A008,A,Nebbi - Eruba,63.79,159.509,223.299,Bituminous,Paved,Arua,Northern,31.08999887,2.47887436,30.96349715,2.94603039,Source ID retained
+A008_Link05,A008_Link05,A008,A,Eruba - Arua - Manibe,18.82,223.299,242.1,Bituminous,Paved,Arua,Northern,30.96349715,2.94603039,30.92830646,3.06039737,Source ID retained
+A008_Link06,A008_Link06,A008,A,Manibe - Maracha - Koboko,49.903,242.1,292.003,Bituminous,Paved,Arua,Northern,30.92830646,3.06039737,30.96000274,3.41521113,Source ID retained
+A008_Link07,A008_Link07,A008,A,Koboko - Oraba(Uganda/Sudan border),18.845,292.003,310.848,Bituminous,Paved,Arua,Northern,30.96000274,3.41521113,30.88348709,3.53965391,Source ID retained
+A009_Link01,A009_Link01,A009,A,Kampala - Nansana,5.305,0.0,5.305,Bituminous,Paved,Kampala,Central,32.56052993,0.32463391,32.53226068,0.35882451,Source ID retained
+A009_Link02,A009_Link02,A009,A,Nansana - Busunju,45.559,5.305,50.864,Bituminous,Paved,Kampala,Central,32.53226068,0.35882451,32.20856603,0.56499892,Source ID retained
+A009_Link03,A009_Link03,A009,A,Busunju - Kiboga - Lwamata,50.0,50.864,100.864,Bituminous,Paved,Kampala,Central,32.20856603,0.56499892,31.89871963,0.82997911,Source ID retained
+A009_Link04,A009_Link04,A009,A,Lwamata - Hoima,96.5,100.864,197.364,Bituminous,Paved,Hoima,Western,31.89871963,0.82997911,31.35009164,1.43676,Source ID retained
+A009N1_Link01,A009N1_Link01,A009N1,A,Kasubi (Dual),1.3652166541,1.3652166541,0.0,Bituminous,Paved,Kampala,Central,32.55397224,0.33272672,32.56052993,0.32463391,Source ID retained
+A009N2_Link01,A009N2_Link01,A009N2,A,Namungoona (Dual),0.519130274072,3.76418596213,3.24505568806,Bituminous,Paved,Kampala,Central,32.54059504,0.34781499,32.5431861,0.34424904,Source ID retained
+A010_Link01,A010_Link01,A010,A,Nsambya-Kabalagala-Gaba,9.144,0.0,9.144,Bituminous,Paved,Kampala,Central,32.58313377,0.30690963,32.63677955,0.25615212,Source ID retained
+A012_Link01,A012_Link01,A012,A,Nakalama - Namutumba - Mpologoma bridge,46.333,0.0,46.333,Bituminous,Paved,Jinja,Eastern,33.51802663,0.62846184,33.73783885,0.96721762,Source ID retained
+A012_Link02,A012_Link02,A012,A,Mpologoma bridge - Tirinyi,4.748,46.333,51.081,Bituminous,Paved,Mbale,Eastern,33.73783885,0.96721762,33.76269341,1.0010514,Source ID retained
+A012_Link03,A012_Link03,A012,A,Tirinyi - Budaka - Kamonkoli,38.859,51.081,89.94,Bituminous,Paved,Mbale,Eastern,33.76269341,1.0010514,34.09528484,1.07503808,Source ID retained
+A012_Link04,A012_Link04,A012,A,Kamonkoli - Mbale,9.395,89.94,99.335,Bituminous,Paved,Mbale,Eastern,34.09528484,1.07503808,34.174884,1.07138816,Source ID retained
+B100_Link01,B100_Link01,B100,B,Kubiri round about - Gayaza,13.346,0.0,13.346,Bituminous,Paved,Kampala,Central,32.57145823,0.34074591,32.61200043,0.44811615,Source ID retained
+B100_Link02,B100_Link02,B100,B,Gayaza - Kalagi,20.154,13.346,33.5,Bituminous,Paved,Kampala,Central,32.61200043,0.44811615,32.74901789,0.5039739,Source ID retained
+B100N1_Link01,B100N1_Link01,B100N1,B,Kalerwe (Dual),1.72520592506,1.72520592506,0.0,Bituminous,Paved,Kampala,Central,32.57298093,0.35589033,32.57183223,0.34082557,Source ID retained
+B101_Link01,B101_Link01,B101,B,Mukono - Kalagi,17.866,0.0,17.866,Bituminous,Paved,Kampala,Central,32.75124926,0.35836158,32.74938888,0.50427735,Source ID retained
+B101_Link02,B101_Link02,B101,B,Kalagi - Bukoloto - Kayunga,31.673,17.866,49.539,Bituminous,Paved,Kampala,Central,32.74938888,0.50427735,32.90449274,0.70102048,Source ID retained
+B101_Link03,B101_Link03,B101,B,Kayunga - Busana - Isimba,20.157,49.539,69.696,Bituminous,Paved,Kampala,Central,32.90447928,0.70101869,33.0484082,0.7756279,Source ID retained
+B101_Link04,B101_Link04,B101,B,Isimba - Mbulamuti - Kamuli,13.531,69.696,83.227,Unsealed,Unpaved,Jinja,Eastern,33.04354014,0.7758733,33.10869079,0.9145497,Source ID retained
+B102_Link01,B102_Link01,B102,B,Njeru - Bukoloto,42.591,0.0,42.591,Bituminous,Paved,Kampala,Central,33.17827145,0.44014524,32.91226804,0.68734357,Source ID retained
+B103_Link01,B103_Link01,B103,B,Nyendo - Villa Maria,10.113,0.0,10.113,Bituminous,Paved,Masaka,Central,31.75639191,-0.30876222,31.7375164,-0.23115846,Source ID retained
+B103_Link02,B103_Link02,B103,B,Sembabule - Lwemiyaga junction - Nkonge,36.0,10.113,46.113,Unsealed,Unpaved,Masaka,Central,31.46148275,-0.08193461,31.18628445,0.23455342,Source ID retained
+B103_Link03,B103_Link02,B103,B,Villa Maria - Sembabule,36.0,10.113,46.113,Bituminous,Paved,Masaka,Central,31.7375164,-0.23115846,31.46148275,-0.08193461,Resequenced to unique Road_No_LinkNN standard
+B103_Link04,B103_Link03,B103,B,Nkonge - Kibula - Magege - Kasambya,18.8,105.413,124.213,Unsealed,Unpaved,Mubende,Central,31.18628445,0.23455342,31.22792873,0.38068667,Resequenced to unique Road_No_LinkNN standard
+B103_Link05,B103_Link04,B103,B,Kasambya - Lusalira,17.289,124.213,141.502,Unsealed,Unpaved,Mubende,Central,31.22792873,0.38068667,31.28617838,0.49727108,Resequenced to unique Road_No_LinkNN standard
+B150_Link01,B150_Link01,B150,B,Ishanyu - Bwizibwera,18.949,0.0,18.949,Bituminous,Paved,Mbarara,Southern,30.60991175,-0.59819257,30.57413118,-0.4398736,Source ID retained
+B150_Link02,B150_Link02,B150,B,Bwizibwera - Ibanda,45.806,18.949,64.755,Bituminous,Paved,Ibanda,Southern,30.57413118,-0.4398736,30.5006984,-0.13074205,Source ID retained
+B150_Link03,B150_Link03,B150,B,Ibanda - Muziza - Kamwenge,44.461,64.755,109.216,Bituminous,Paved,Ibanda,Southern,30.5006984,-0.13074205,30.45341823,0.18574067,Source ID retained
+B150_Link04,B150_Link04,B150,B,Kamwenge - Fortportal,64.78,109.216,173.996,Bituminous,Paved,Fort Portal,Western,30.45280301,0.18540196,30.27798418,0.65658214,Source ID retained
+B151_Link01,B151_Link01,B151,B,Mbarara - Ishanyu,4.934,0.0,4.934,Bituminous,Paved,Mbarara,Southern,30.64849215,-0.61733631,30.60989631,-0.5981851,Source ID retained
+B151_Link02,B151_Link02,B151,B,Ishanyu - Kabwohe,26.171,4.934,31.105,Bituminous,Paved,Mbarara,Southern,30.60989631,-0.5981851,30.37830445,-0.58009605,Source ID retained
+B151_Link03,B151_Link03,B151,B,Kabwohe - Ishaka,28.078,31.105,59.183,Bituminous,Paved,Mbarara,Southern,30.37830445,-0.58009605,30.13900309,-0.54504758,Source ID retained
+B152_Link01,B152_Link01,B152,B,Ntungamo - Kagamba,15.229,0.0,15.229,Bituminous,Paved,Kabale,Southern,30.26541001,-0.88133001,30.15991876,-0.81796157,Source ID retained
+B152_Link02,B152_Link02,B152,B,Kagamba - Ishaka,35.906,15.229,51.135,Bituminous,Paved,Kabale,Southern,30.15991876,-0.81796157,30.13850218,-0.5451867,Source ID retained
+B152_Link03,B152_Link03,B152,B,Ishaka - Buhinda - Rugazi,39.3,51.135,90.435,Bituminous,Paved,Mbarara,Southern,30.13850218,-0.5451867,30.09106903,-0.2550689,Source ID retained
+B152_Link04,B152_Link04,B152,B,Rugazi - Katunguru  - Kikorongo,33.1,90.435,123.535,Bituminous,Paved,Kasese,Southern,30.09106903,-0.2550689,29.99901399,0.00028099,Source ID retained
+B153_Link01,B153_Link01,B153,B,Kabale - Ikumba - Muko,41.999,0.0,41.999,Bituminous,Paved,Kabale,Southern,29.97401709,-1.24476438,29.80256547,-1.20519874,Source ID retained
+B153_Link02,B153_Link02,B153,B,Muko - Nyakabande - Kisoro,33.845,41.999,75.844,Bituminous,Paved,Kabale,Southern,29.80256547,-1.20519874,29.68805359,-1.28343733,Source ID retained
+B153_Link03,B153_Link03,B153,B,Kisoro - Bunagana,12.026,75.844,87.87,Bituminous,Paved,Kabale,Southern,29.68805359,-1.28343733,29.59818224,-1.29568028,Source ID retained
+B200_Link01,B200_Link01,B200,B,Kafu - Masindi,43.263,0.0,43.263,Bituminous,Paved,Masindi,Western,32.04145866,1.54512622,31.70284307,1.68065608,Source ID retained
+B201_Link01,B201_Link01,B201,B,Kigumba - Masindi,39.058,0.0,39.058,Bituminous,Paved,Masindi,Western,32.0114663,1.80943804,31.71476301,1.6900827,Source ID retained
+B202_Link01,B202_Link01,B202,B,Kyenjojo - Katoke - R. Muzizi,37.9,0.0,37.9,Bituminous,Paved,Fort Portal,Western,30.64347879,0.61180212,30.73068207,0.87315673,Source ID retained
+B202_Link02,B202_Link02,B202,B,R. Muzizi - Muhooro - Kagadi,15.0,37.9,52.9,Bituminous,Paved,Hoima,Western,30.80900746,0.938118,30.73068207,0.87315673,Source ID retained
+B202_Link03,B202_Link03,B202,B,Kagadi - Mabale - Kabwoya,49.704,52.9,102.604,Bituminous,Paved,Hoima,Western,31.083591470000002,1.24623753,30.80900746,0.938118,Source ID retained
+B202_Link04,B202_Link04,B202,B,Kabwoya - Kiziranfumbi - Buhimba,31.503,102.604,134.107,Bituminous,Paved,Hoima,Western,31.083591470000002,1.24623753,31.31238866,1.34680677,Source ID retained
+B202_Link05,B202_Link05,B202,B,Buhimba - Hoima,10.573,134.107,144.68,Bituminous,Paved,Hoima,Western,31.31238866,1.34680677,31.35385614,1.43252309,Source ID retained
+B203_Link01,B203_Link01,B203,B,Mubende - Kiboyo - Kakumiro,30.499,0.0,30.499,Bituminous,Paved,Mubende,Central,31.389098,0.56165897,31.32358396,0.78177968,Source ID retained
+B203_Link02,B203_Link02,B203,B,Kakumiro - Nkondo - Kijaguza - Bulamagi- Kabaale swamp,77.0,30.499,107.499,Bituminous,Paved,Mubende,Central,31.32358396,0.78177968,31.28967,1.2102045,Source ID retained
+B203_Link03,B203_Link03,B203,B,Kabaale Swamp - Buhimba,16.0,107.499,123.499,Bituminous,Paved,Hoima,Western,31.28964535,1.21021146,31.31217739,1.34674749,Source ID retained
+B204_Link01,B204_Link01,B204,B,Masindi - Kisalizi,31.469,0.0,31.469,Bituminous,Paved,Masindi,Western,31.70284307,1.68065608,31.51670457,1.50366405,Source ID retained
+B204_Link02,B204_Link02,B204,B,Kisalizi - Hoima,20.3,31.469,51.769,Bituminous,Paved,Hoima,Western,31.51670457,1.50366405,31.37138892,1.42169365,Source ID retained
+B250_Link01,B250_Link01,B250,B,Atiak - Moyo,64.878431679,0.0,91.58,Bituminous,Paved,Moyo,Northern,32.12279873,3.26084199,31.81112986,3.54538264,Source ID retained
+B250_Link02,B250_Link01,B250,B,Atiak - Moyo,64.878431679,0.0,91.58,Bituminous,Paved,Moyo,Northern,31.81112986,3.54538264,31.72354098,3.65374128,Resequenced to unique Road_No_LinkNN standard
+B250_Link03,B250_Link02,B250,B,Moyo - Yumbe,65.954,91.58,157.534,Unsealed,Unpaved,Moyo,Northern,31.72354098,3.65374128,31.24756612,3.46995197,Resequenced to unique Road_No_LinkNN standard
+B250_Link04,B250_Link03,B250,B,Yumbe - Manibe,77.123,157.534,234.657,Unsealed,Unpaved,Arua,Northern,31.24756612,3.46995197,30.92916092,3.06109017,Resequenced to unique Road_No_LinkNN standard
+B251_Link01,B251_Link01,B251,B,Gulu - Olwiyo,61.808,0.0,61.808,Bituminous,Paved,Gulu,Northern,32.27922901,2.76120334,31.88576803,2.53687683,Source ID retained
+B252_Link01,B252_Link01,B252,B,Lira - Puranga Bridge,42.9,0.0,42.9,Unsealed,Unpaved,Lira,Northern,32.90063672,2.24869997,32.94252467,2.60646202,Source ID retained
+B252_Link02,B252_Link02,B252,B,Puranga Bridge - Corner Kilak - Pejule - Acholibur,61.6,42.9,104.5,Unsealed,Unpaved,Kitgum,Northern,32.94252467,2.60646202,32.9138638,3.14378822,Source ID retained
+B252_Link03,B252_Link03,B252,B,Acholibur - Kitgum,19.755,104.5,124.255,Bituminous,Paved,Kitgum,Northern,32.9138638,3.14378822,32.88013009,3.30340249,Source ID retained
+B252_Link04,B252_Link04,B252,B,Kitgum - Madi Opei,45.456,124.255,169.711,Bituminous,Paved,Kitgum,Northern,32.88013009,3.30340249,33.09189994,3.62227937,Source ID retained
+B252_Link05,B252_Link05,B252,B,Madi Opei - Uganda/Sudan border,20.512,169.711,190.223,Bituminous,Paved,Kitgum,Northern,33.09189994,3.62227937,33.19711473,3.77104648,Source ID retained
+B253_Link01,B253_Link01,B253,B,Rwekunye - Masindi Port,7.343,0.0,7.343,Unsealed,Unpaved,Masindi,Western,32.02853449,1.70986435,32.09261207,1.69528443,Source ID retained
+B253_Link02,B253_Link02,B253,B,Masindi Port-Akokoro-Apac-Aduku,103.421,7.343,110.764,Unsealed,Unpaved,Lira,Northern,32.09293314,1.69539757,32.71504008,1.99714268,Source ID retained
+B253_Link03,B253_Link03,B253,B,Aduku - Lira,35.018,110.764,145.782,Unsealed,Unpaved,Lira,Northern,32.71504008,1.99714268,32.89385732,2.2381396,Source ID retained
+B300_Link01,B300_Link01,B300,B,Namunsi - Sironko,21.805,0.0,21.805,Bituminous,Paved,Mbale,Eastern,34.16845329,1.12456098,34.27233648,1.24590291,Source ID retained
+B300_Link02,B300_Link02,B300,B,Sironko - Muyembe,10.46,21.805,32.265,Bituminous,Paved,Mbale,Eastern,34.27233648,1.24590291,34.29582497,1.33348611,Source ID retained
+B300_Link03,B300_Link03,B300,B,Muyembe - Namalu,71.6551359159,32.265,104.443,Unsealed,Unpaved,Mbale,Eastern,34.29582497,1.33348611,34.58220895,1.84061408,Source ID retained
+B300_Link04,B300_Link04,B300,B,Namalu - Chosan - Lokapel,58.7906246869,104.443,161.786,Bituminous,Paved,Moroto,North Eastern,34.5822172,1.84061194,34.69351824,2.14866024,Source ID retained
+B300_Link05,B300_Link05,B300,B,Lokapel - Ariamoi,45.803,161.786,207.589,Bituminous,Paved,Moroto,North Eastern,34.69351824,2.14866024,34.564887,2.50397007,Source ID retained
+B300_Link06,B300_Link06,B300,B,Ariamoi - Moroto,10.997,207.589,218.586,Bituminous,Paved,Moroto,North Eastern,34.564887,2.50397007,34.65769638,2.53300401,Source ID retained
+B301_Link01,B301_Link01,B301,B,Ariamoi - Kaladonapal - Kaperimoru,83.373,0.0,83.373,Unsealed,Unpaved,Kotido,North Eastern,34.54974368,2.49894747,34.19055967,2.97123132,Source ID retained
+B301_Link02,B301_Link02,B301,B,Kapelimoru - Kotido,19.038,83.373,102.411,Unsealed,Unpaved,Kotido,North Eastern,34.19055967,2.97123132,34.0779252,3.0100664,Source ID retained
+B301_Link03,B301_Link03,B301,B,Kotido - Apaan - Kabong,98.98,102.411,201.391,Unsealed,Unpaved,Kotido,North Eastern,34.0779252,3.0100664,33.94980522,3.685653,Source ID retained
+B302_Link01,B302_Link01,B302,B,Kotido - Abim,63.821,0.0,63.821,Unsealed,Unpaved,Kotido,North Eastern,34.07791912,3.0100608,33.65981205,2.71144792,Source ID retained
+B302_Link02,B302_Link02,B302,B,Abim - Kilak,83.189,63.821,147.01,Unsealed,Unpaved,Kitgum,Northern,33.65981205,2.71144792,32.9588015,2.7670978,Source ID retained
+B303_Link01,B303_Link01,B303,B,Soroti - Arapai,7.999,0.0,7.999,Bituminous,Paved,Soroti,North Eastern,33.61667791,1.7153539,33.628701,1.77988952,Source ID retained
+B303_Link02,B303_Link02,B303,B,Arapai - Katakwi - Iriri,81.862,7.999,89.861,Bituminous,Paved,Soroti,North Eastern,33.628701,1.77988952,34.19595253,2.09217086,Source ID retained
+B303_Link03,B303_Link03,B303,B,Iriri - Akisim (Lorengechora) - Ariamoi - Nadunget,68.814,89.861,158.675,Bituminous,Paved,Moroto,North Eastern,34.19595253,2.09217086,34.56498747,2.5042688,Source ID retained
+B304_Link01,B304_Link01,B304,B,Muyembe - Kaserem - Kapchorwa,24.68,0.0,24.68,Bituminous,Paved,Mbale,Eastern,34.29736477,1.33582303,34.4307983,1.39068463,Source ID retained
+B304_Link02,B304_Link02,B304,B,Kapchorwa-Suam,80.7,24.68,105.375,Bituminous,Paved,Mbale,Eastern,34.4307983,1.39068463,34.73281499,1.21637678,Source ID retained
+B305_Link01,B305_Link01,B305,B,Tirinyi - Pallisa,19.765,0.0,19.765,Bituminous,Paved,Mbale,Eastern,33.76249323,1.00091566,33.71174922,1.16724102,Source ID retained
+B305_Link02,B305_Link02,B305,B,Pallisa - Kanyago Bridge,21.681,19.765,41.446,Bituminous,Paved,Mbale,Eastern,33.71174922,1.16724102,33.87270264,1.26562001,Source ID retained
+B305_Link03,B305_Link03,B305,B,Kanyago Bridge - Kumi,25.882,41.446,67.328,Bituminous,Paved,Soroti,North Eastern,33.8726799,1.26554103,33.93070649,1.48709846,Source ID retained
+B306_Link01,B306_Link01,B306,B,Tororo(Malaba junction) - Busia,24.235,0.0,24.235,Unsealed,Unpaved,Tororo,Eastern,34.17194358,0.66001651,34.08873977,0.46641433,Source ID retained
+B307_Link01,B307_Link01,B307,B,Jinja(kubiri round about)-Buwenge,23.16,0.0,23.16,Bituminous,Paved,Jinja,Eastern,33.21921344,0.45585513,33.17149662,0.64942529,Source ID retained
+B307_Link02,B307_Link02,B307,B,Buwenge - Kamuli,32.633,23.16,55.793,Bituminous,Paved,Jinja,Eastern,33.17149662,0.64942529,33.11136345,0.93158757,Source ID retained
+B307_Link03,B307_Link03,B307,B,Kamuli - Nawantale,15.86,55.793,71.653,Unsealed,Unpaved,Jinja,Eastern,33.11136345,0.93158757,33.09367265,1.07302761,Source ID retained
+B307_Link04,B307_Link04,B307,B,Nawantale - Bukungu,51.319,71.653,122.972,Unsealed,Unpaved,Jinja,Eastern,33.09367265,1.07302761,32.86878297,1.43720818,Source ID retained
+B308_Link01,B308_Link01,B308,B,Namutere - Busia,16.905,0.0,16.905,Bituminous,Paved,Tororo,Eastern,33.96771658,0.52505897,34.09851349,0.46545324,Source ID retained
+C001_Link01,C001_Link01,C001,C,Nsambya- Cape town Villa,2.767,0.0,2.767,Bituminous,Paved,Kampala,Central,32.62826868,0.25806416,32.62092886,0.23925838,Source ID retained
+C002_Link01,C002_Link01,C002,C,Seeta-Namilyango,3.825,0.0,3.825,Bituminous,Paved,Kampala,Central,32.7135142,0.36895606,32.71811999,0.33963187,Source ID retained
+C003_Link01,C003_Link01,C003,C,Nazigo-Kireku-Nkokonjeru-Kitimbwa,41.578,0.0,41.578,Unsealed,Unpaved,Kampala,Central,32.9330196,0.82415707,32.98864545,0.77473462,Source ID retained
+C005_Link01,C005_Link01,C005,C,Salaama Road,12.2,0.0,12.2,Bituminous,Paved,Kampala,Central,32.57166585,0.29163641,32.62059419,0.2395552,Source ID retained
+C006_Link01,C006_Link01,C006,C,Kirongo-Kulwe,20.295,0.0,20.295,Unsealed,Unpaved,Kampala,Central,33.21732727,0.28367027,33.30717342,0.14547711,Source ID retained
+C007_Link01,C007_Link01,C007,C,Kyerima-Bulawula,10.202,0.0,10.202,Unsealed,Unpaved,Kampala,Central,32.9330196,0.82415707,32.9330196,0.82415707,Source ID retained
+C011_Link01,C011_Link01,C011,C,Walwanda-Kirongo,19.49,0.0,19.49,Unsealed,Unpaved,Kampala,Central,33.26105389,0.22015388,33.38953259,0.27646824,Source ID retained
+C022_Link01,C022_Link01,C022,C,Mbuya/SilverSprings-Kireka,4.634,0.0,4.634,Bituminous,Paved,Kampala,Central,32.62890392,0.31799221,32.64796555,0.3462878,Source ID retained
+C023_Link01,C023_Link01,C023,C,Old Njeru - Jinja,1.756,0.0,1.756,Bituminous,Paved,Kampala,Central,33.18347956,0.44236226,33.19804973,0.44542076,Source ID retained
+C024_Link01,C024_Link01,C024,C,Mukono-Kyetume-Kisoga-Katosi,26.643,0.0,26.643,Bituminous,Paved,Kampala,Central,32.76157619,0.3511041,32.80262794,0.15225417,Source ID retained
+C025_Link01,C025_Link01,C025,C,Kisoga - Lugasa,27.926,0.0,27.926,Bituminous,Paved,Kampala,Central,32.81738225,0.25311744,33.03146623,0.26987099,Source ID retained
+C025_Link02,C025_Link02,C025,C,Lugasa - Najja,10.408,27.926,38.334,Bituminous,Paved,Kampala,Central,33.03141652,0.2699207,33.10206931,0.31198432,Source ID retained
+C026_Link01,C026_Link01,C026,C,Bulumagi - Nyenga,4.05,0.0,4.05,Unsealed,Unpaved,Kampala,Central,33.13323044,0.41061962,33.15082284,0.37992137,Source ID retained
+C027_Link01,C027_Link01,C027,C,Lugazi - Buikwe,10.804,0.0,10.804,Unsealed,Unpaved,Kampala,Central,32.94223604,0.36875144,33.02939976,0.34423305,Source ID retained
+C028_Link01,C028_Link01,C028,C,Najja - Nyenga,9.791,0.0,9.791,Bituminous,Paved,Kampala,Central,33.10206931,0.31198432,33.14622124,0.3791549,Source ID retained
+C029_Link01,C029_Link01,C029,C,Njeru-Nyenga-Buikwe,9.8,0.0,9.8,Bituminous,Paved,Kampala,Central,33.18402093,0.43801518,33.14556832,0.37935686,Source ID retained
+C029_Link02,C029_Link02,C029,C,Nyenga-Buikwe,14.709,9.8,24.509,Unsealed,Unpaved,Kampala,Central,33.14556832,0.37935686,33.02939976,0.34423305,Source ID retained
+C030_Link01,C030_Link01,C030,C,Buikwe - Najja,9.029,0.0,9.029,Unsealed,Unpaved,Kampala,Central,33.02947819,0.33873506,33.10207955,0.3119825,Source ID retained
+C030_Link02,C030_Link02,C030,C,Najja - Kiyindi,7.83,9.029,16.859,Unsealed,Unpaved,Kampala,Central,33.10220039,0.31201707,33.15287496,0.27144454,Source ID retained
+C034_Link01,C034_Link01,C034,C,Bugungu Prisons Access,3.523,0.0,3.523,Unsealed,Unpaved,Kampala,Central,33.173761,0.39589257,33.19954939,0.39216122,Source ID retained
+C035_Link01,C035_Link01,C035,C,Buvuma Women's prison Access,0.931,0.0,0.931,Bituminous,Paved,Kampala,Central,32.64262048,0.30554216,32.63687997,0.30075005,Source ID retained
+C036_Link01,C036_Link01,C036,C,Nambole - Kampala Industrial Park - Mukono,13.692,0.0,13.692,Unsealed,Unpaved,Kampala,Central,32.66183593,0.34802052,32.74637147,0.36061583,Source ID retained
+C037_Link01,C037_Link01,C037,C,Mukono Railway access off Mukono - Kyetu,2.202,0.0,2.202,Unsealed,Unpaved,Kampala,Central,32.78004606,0.29991683,32.79705787,0.30172316,Source ID retained
+C038_Link01,C038_Link01,C038,C,Kisoga - Kibanga Port,10.573,0.0,10.573,Unsealed,Unpaved,Kampala,Central,32.81749729,0.25238908,32.87214316,0.18898728,Source ID retained
+C039_Link01,C039_Link01,C039,C,Nyenga - Railway station Access,1.733,0.0,1.733,Unsealed,Unpaved,Kampala,Central,33.15188866,0.37992404,33.15278827,0.3662991,Source ID retained
+C040_Link01,C040_Link01,C040,C,Lugasa - Buikwe,8.723,0.0,8.723,Unsealed,Unpaved,Kampala,Central,33.03146623,0.26987099,33.02939976,0.34423305,Source ID retained
+C041_Link01,C041_Link01,C041,C,Namataba - Kyampisi,40.806,0.0,40.806,Unsealed,Unpaved,Kampala,Central,32.86527123,0.38327715,32.92949037,0.6724373,Source ID retained
+C042_Link01,C042_Link01,C042,C,Kawolo Railway access,0.859,0.0,0.859,Unsealed,Unpaved,Kampala,Central,32.94069568,0.36905135,32.93868264,0.36288104,Source ID retained
+C043_Link01,C043_Link01,C043,C,Access to Kituuza Agriculture Research C,5.409,0.0,5.409,Unsealed,Unpaved,Kampala,Central,32.98140667,0.36051872,33.00995765,0.35067431,Source ID retained
+C044_Link01,C044_Link01,C044,C,Buikwe - Lugasa(Makindu),6.949,0.0,6.949,Unsealed,Unpaved,Kampala,Central,33.04573785,0.33420159,33.08138358,0.28743669,Source ID retained
+C045_Link01,C045_Link01,C045,C,Kabimbiri - Misindye,38.549,0.0,38.549,Unsealed,Unpaved,Kampala,Central,32.82835986,0.63027158,32.70150274,0.396484,Source ID retained
+C046_Link01,C046_Link01,C046,C,Zirobwe - Lwajjali - Kasawo - Kabimbiri,22.974,0.0,22.974,Unsealed,Unpaved,Luwero,Central,32.83461597,0.63527363,32.70093826,0.68292583,Source ID retained
+C047_Link01,C047_Link01,C047,C,Kasana - Bugobero,7.63,0.0,7.63,Unsealed,Unpaved,Kampala,Central,33.08765148,0.75560275,33.06981845,0.78077817,Source ID retained
+C140_Link01,C140_Link01,C140,C,Kasana - Mbulamuti ferry access,1.27245848059,0.0,0.0,Unsealed,Unpaved,Kampala,Central,33.03291022,0.78141557,33.03609633,0.79102821,Source ID retained
+C150_Link01,C150_Link01,C150,C,Najjanankumbi - Busabala,11.116,0.0,11.116,Unsealed,Unpaved,Kampala,Central,32.5692361,0.28714466,32.62003075,0.20879116,Source ID retained
+C151_Link01,C151_Link01,C151,C,Busabala-Kazi,0.56,0.0,0.56,Unsealed,Unpaved,Kampala,Central,32.61602262,0.2123104,32.6150971,0.20779585,Source ID retained
+C152_Link01,C152_Link01,C152,C,Kireka-Namugongo-Misindye-Seeta,14.879,0.0,14.879,Bituminous,Paved,Kampala,Central,32.64907748,0.34660372,32.71382363,0.36909167,Source ID retained
+C153_Link01,C153_Link01,C153,C,Lweza - Kigo Prison,8.684,0.0,8.684,Unsealed,Unpaved,Kampala,Central,32.54872507,0.22599274,32.58859508,0.20789598,Source ID retained
+C154_Link01,C154_Link01,C154,C,Matugga - Semuto - Kapeka,39.679,0.0,39.679,Bituminous,Paved,Luwero,Central,32.5213749,0.46567866,32.25074962,0.67043467,Source ID retained
+C154_Link02,C154_Link02,C154,C,Kapeka-Butalangwa,18.24,39.679,57.919,Unsealed,Unpaved,Luwero,Central,32.25074962,0.67043467,32.24267013,0.82261842,Source ID retained
+C157_Link01,C157_Link01,C157,C,Entebbe-Nakiwogo,3.374,0.0,3.374,Bituminous,Paved,Kampala,Central,32.47271044,0.06250596,32.44932285,0.08051931,Source ID retained
+C158_Link01,C158_Link01,C158,C,Nakiwogo Statehouse road,1.517,0.0,1.517,Bituminous,Paved,Kampala,Central,32.46037621,0.07104498,32.46550575,0.06260266,Source ID retained
+C159_Link01,C159_Link01,C159,C,Access to Kajjansi Fisheries Research Ce,1.669,0.0,1.669,Unsealed,Unpaved,Kampala,Central,32.54223622,0.21298661,32.53239305,0.22219647,Source ID retained
+C160_Link01,C160_Link01,C160,C,Mpigi-Kasanje-Buwaya,19.789,0.0,19.789,Unsealed,Unpaved,Mpigi,Central,32.33346213,0.21922522,32.43898144,0.08990512,Source ID retained
+C161_Link01,C161_Link01,C161,C,Mpigi Loop,3.434,0.0,3.434,Bituminous,Paved,Mpigi,Central,32.3349684,0.22073038,32.31560124,0.20729364,Source ID retained
+C162_Link01,C162_Link01,C162,C,Mpigi - Kanoni,59.028,0.0,59.028,Bituminous,Paved,Mpigi,Central,32.31784376,0.2318733,31.90581379,0.17257708,Source ID retained
+C162_Link02,C162_Link02,C162,C,Kanoni - Kabulasoke,11.347,59.028,70.375,Bituminous,Paved,Mpigi,Central,31.90581379,0.17257708,31.81206244,0.15737189,Source ID retained
+C162_Link03,C162_Link03,C162,C,Kabulasoke - Madu,19.701,70.375,90.076,Bituminous,Paved,Mpigi,Central,31.81206244,0.15737189,31.66761295,0.21585998,Source ID retained
+C162_Link04,C162_Link04,C162,C,Madu - Kasambya,36.155,90.076,126.231,Unsealed,Unpaved,Mpigi,Central,31.66761295,0.21585998,31.35732436,0.22558868,Source ID retained
+C162_Link05,C162_Link05,C162,C,Kasambya - Nabakazi,29.857,126.231,156.088,Unsealed,Unpaved,Mubende,Central,31.35732436,0.22558868,31.22509142,0.37843994,Source ID retained
+C163_Link01,C163_Link01,C163,C,MitalaMaria-Bulo-Kanoni,29.0,0.0,29.0,Unsealed,Unpaved,Mpigi,Central,32.11928332,0.08258632,31.90579883,0.17257971,Source ID retained
+C164_Link01,C164_Link01,C164,C,MatalaMaria Loop,4.303,0.0,4.303,Unsealed,Unpaved,Mpigi,Central,32.14263882,0.08802439,32.1158,0.06988999,Source ID retained
+C165_Link01,C165_Link01,C165,C,Buwama - Katebo Port,12.54,0.0,12.54,Unsealed,Unpaved,Mpigi,Central,32.10583001,0.06220999,32.07484294,-0.03678894,Source ID retained
+C166_Link01,C166_Link01,C166,C,Madu-Kisozi-R.Katonga,22.106,0.0,22.106,Bituminous,Paved,Mpigi,Central,31.66533861,0.21403588,31.57037805,0.06818482,Source ID retained
+C166_Link02,C166_Link02,C166,C,R. Katonga - Sembabule,21.994,22.106,44.1,Bituminous,Paved,Masaka,Central,31.57037446,0.06819157,31.46020625,-0.0831865,Source ID retained
+C166_Link03,C166_Link03,C166,C,Sembabule - Matete,18.799,44.1,62.899,Unsealed,Unpaved,Masaka,Central,31.46020625,-0.0831865,31.48999464,-0.24438128,Source ID retained
+C166_Link04,C166_Link04,C166,C,Matete - Mbirizi,17.309,62.899,80.208,Unsealed,Unpaved,Masaka,Central,31.48999464,-0.24438128,31.46138994,-0.3907871,Source ID retained
+C167_Link01,C167_Link01,C167,C,Kyayi - Kasambya,7.668,0.0,7.668,Unsealed,Unpaved,Mpigi,Central,31.35705721,0.22562963,31.32790126,0.26079823,Source ID retained
+C168_Link01,C168_Link01,C168,C,Bweyogerere - Bukasa,2.049,0.0,2.049,Bituminous,Paved,Kampala,Central,32.64615073,0.34351591,32.66147612,0.34825297,Source ID retained
+C170_Link01,C170_Link01,C170,C,Namboole Access Road,2.053,0.0,2.053,Bituminous,Paved,Kampala,Central,32.65018477,0.34692709,32.66295565,0.35273402,Source ID retained
+C171_Link01,C171_Link01,C171,C,Access to Kajjansi Air Strip,2.625,0.0,2.625,Unsealed,Unpaved,Kampala,Central,32.54149865,0.21026327,32.55258666,0.19435927,Source ID retained
+C172_Link01,C172_Link01,C172,C,Kawuku - Bwerenga,6.573,0.0,6.573,Unsealed,Unpaved,Kampala,Central,32.53887494,0.13835129,32.5890285,0.13416975,Source ID retained
+C173_Link01,C173_Link01,C173,C,Access to Lunnyo,2.121,0.0,2.121,Unsealed,Unpaved,Kampala,Central,32.47430143,0.06509386,32.46088513,0.07977593,Source ID retained
+C174_Link01,C174_Link01,C174,C,Kitala - Gerenge,9.625,0.0,9.625,Unsealed,Unpaved,Kampala,Central,32.52107985,0.10653568,32.56791115,0.04446747,Source ID retained
+C175_Link01,C175_Link01,C175,C,Abayita Ababiri - Kasenyi,5.446,0.0,5.446,Unsealed,Unpaved,Kampala,Central,32.50237951,0.09501856,32.51844939,0.0543284,Source ID retained
+C176_Link01,C176_Link01,C176,C,Access to Katabi,4.048,0.0,4.048,Unsealed,Unpaved,Kampala,Central,32.48875867,0.08888759,32.4783492,0.07496742,Source ID retained
+C177_Link01,C177_Link01,C177,C,Access to Kigungu,10.0,0.0,10.0,Unsealed,Unpaved,Kampala,Central,32.45809139,0.0529522,32.43621017,0.02792328,Source ID retained
+C178_Link01,C178_Link01,C178,C,Natete - Nakawuka - Kisubi,28.107,0.0,28.107,Unsealed,Unpaved,Kampala,Central,32.53286,0.29947999,32.53304907,0.13031343,Source ID retained
+C179_Link01,C179_Link01,C179,C,Old Masaka Road (Kyengera -Kabojja Secondary),1.598,0.0,1.598,Unsealed,Unpaved,Kampala,Central,32.50894881,0.29999544,32.52114491,0.29506833,Source ID retained
+C180_Link01,C180_Link01,C180,C,Nakawuka - Namutamala - Katende - Bujuko,35.426,0.0,35.426,Unsealed,Unpaved,Mpigi,Central,32.38771032,0.42034871,32.46247919,0.18855749,Source ID retained
+C181_Link01,C181_Link01,C181,C,Access to Kakiri Army Barracks,1.989,0.0,1.989,Unsealed,Unpaved,Kampala,Central,32.39212403,0.41995094,32.40115461,0.40555594,Source ID retained
+C182_Link01,C182_Link01,C182,C,Buloba - Wakiso,8.869,0.0,8.869,Unsealed,Unpaved,Kampala,Central,32.4684549,0.32721966,32.47982357,0.39822851,Source ID retained
+C183_Link01,C183_Link01,C183,C,Buloba PTTC,0.785,0.0,0.785,Unsealed,Unpaved,Mpigi,Central,32.46948882,0.32705966,32.463853,0.32356931,Source ID retained
+C184_Link01,C184_Link01,C184,C,Kakiri-Masulita-Danze-Mawale,23.168,0.0,23.168,Unsealed,Unpaved,Luwero,Central,32.39194771,0.41994994,32.34863698,0.61217467,Source ID retained
+C185_Link01,C185_Link01,C185,C,Gobero-Segenga-Kakonda,14.357,0.0,14.357,Unsealed,Unpaved,Luwero,Central,32.31257889,0.49028723,32.31397781,0.57804297,Source ID retained
+C186_Link01,C186_Link01,C186,C,Namyumba-Kakonda-Wabikokoma-Semuto,14.651,0.0,14.651,Unsealed,Unpaved,Luwero,Central,32.26657206,0.52232004,32.33012109,0.61982374,Source ID retained
+C187_Link01,C187_Link01,C187,C,Namayumba - Kitalya Prison - Kamuli,19.252,0.0,19.252,Unsealed,Unpaved,Kampala,Central,32.26549183,0.52277502,32.24708996,0.37979009,Source ID retained
+C188_Link01,C188_Link01,C188,C,Kyabadaza - Kibibi,14.67,0.0,14.67,Unsealed,Unpaved,Mpigi,Central,32.18251722,0.11836495,32.17389507,0.23282013,Source ID retained
+C189_Link01,C189_Link01,C189,C,Kayenje - Nkinga - Nakatoke,9.933,0.0,9.933,Unsealed,Unpaved,Mpigi,Central,32.10332608,0.17310894,32.04496541,0.11396048,Source ID retained
+C190_Link01,C190_Link01,C190,C,Kayabwe - Nkozi - Kinyika - Ngando - Wab,38.574,0.0,38.574,Unsealed,Unpaved,Mpigi,Central,32.03117745,-0.01266384,31.81207374,0.1573756,Source ID retained
+C191_Link01,C191_Link01,C191,C,Katonga - Ggolo,11.119,0.0,11.119,Unsealed,Unpaved,Mpigi,Central,32.00071047,-0.0392107,32.05895645,-0.09665399,Source ID retained
+C193_Link01,C193_Link01,C193,C,Wakiso-Kassengejja- Matugga,9.914,0.0,9.914,Unsealed,Unpaved,Kampala,Central,32.48047858,0.39803387,32.52890356,0.45944511,Source ID retained
+C194_Link01,C194_Link01,C194,C,Matugga - Kasangati,9.544,0.0,9.544,Unsealed,Unpaved,Kampala,Central,32.52846834,0.46026958,32.60265606,0.43812995,Source ID retained
+C194_Link02,C194_Link02,C194,C,Kasangati - Kyaliwajala,8.393,9.544,17.937,Unsealed,Unpaved,Kampala,Central,32.60265606,0.43812995,32.64672064,0.38022829,Source ID retained
+C195_Link01,C195_Link01,C195,C,Nakawuka - Kasanje,9.452,0.0,9.452,Unsealed,Unpaved,Kampala,Central,32.46239085,0.18846528,32.39951758,0.15297767,Source ID retained
+C196_Link01,C196_Link01,C196,C,Bujuuko Railway Access,2.889,0.0,2.889,Unsealed,Unpaved,Mpigi,Central,32.37398852,0.33892564,32.37633978,0.36094473,Source ID retained
+C197_Link01,C197_Link01,C197,C,Kawolongojjo Railway Access,2.56,0.0,2.56,Unsealed,Unpaved,Mpigi,Central,32.18550377,0.37781274,32.18230668,0.40013292,Source ID retained
+C198_Link01,C198_Link01,C198,C,Budo-Nakasozi,3.718,0.0,3.718,Bituminous,Paved,Mpigi,Central,32.48761775,0.28467257,32.48916505,0.25855181,Source ID retained
+C199_Link01,C199_Link01,C199,C,Nabbingo Access Road,1.484,0.0,1.484,Bituminous,Paved,Mpigi,Central,32.47878792,0.27869596,32.47901664,0.29036954,Source ID retained
+C200_Link01,C200_Link01,C200,C,Lukolo-Bunjako,13.855,0.0,13.855,Unsealed,Unpaved,Mpigi,Central,32.09734456,-0.01133841,32.18638767,-0.07137187,Source ID retained
+C201_Link01,C201_Link01,C201,C,Kabasanda-Kakindu-Zigoti,21.105,0.0,21.105,Unsealed,Unpaved,Mpigi,Central,32.22655031,0.263729,32.16568331,0.37900467,Source ID retained
+C210_Link01,C210_Link01,C210,C,Nyendo - Masaka,5.398,0.0,5.398,Bituminous,Paved,Masaka,Central,31.76387582,-0.30855474,31.73462139,-0.34298484,Source ID retained
+C211_Link01,C211_Link01,C211,C,Nyendo - Lambu port Junction,30.752,0.0,30.752,Bituminous,Paved,Masaka,Central,31.75352417,-0.32522617,31.9959602,-0.3064794,Source ID retained
+C211_Link02,C211_Link02,C211,C,Lambu port Junction - Bukakata,5.039,30.752,35.791,Bituminous,Paved,Masaka,Central,31.9959602,-0.3064794,32.02634624,-0.273757,Source ID retained
+C212_Link01,C212_Link01,C212,C,Bukakata - Lambu Port,4.979,0.0,4.979,Bituminous,Paved,Masaka,Central,31.99605443,-0.3063435,32.03712111,-0.30273141,Source ID retained
+C213_Link01,C213_Link01,C213,C,Bukakata - Old Landing Site,1.874,0.0,1.874,Unsealed,Unpaved,Masaka,Central,32.01245969,-0.28490589,32.01590851,-0.27230262,Source ID retained
+C214_Link01,C214_Link01,C214,C,Lyantonde - Lumbugu,48.889,0.0,48.889,Unsealed,Unpaved,Masaka,Central,31.1538752,-0.40541097,31.41804671,-0.68471894,Source ID retained
+C214_Link02,C214_Link02,C214,C,Lumbugu - Kyotera,16.241,48.889,65.13,Bituminous,Paved,Masaka,Central,31.41804671,-0.68471894,31.54088847,-0.63515652,Source ID retained
+C215_Link01,C215_Link01,C215,C,Villa Maria - Kalungu,25.792,0.0,25.792,Unsealed,Unpaved,Masaka,Central,31.73753549,-0.23119281,31.74089925,-0.0104917,Source ID retained
+C215_Link02,C215_Link02,C215,C,Kalungu - Mityegonga,9.315,25.792,35.107,Unsealed,Unpaved,Masaka,Central,31.74089925,-0.0104917,31.74966907,0.0728338,Source ID retained
+C215_Link03,C215_Link03,C215,C,Mityegonga - Kabulasoke,13.25,35.107,48.357,Unsealed,Unpaved,Masaka,Central,31.74966907,0.0728338,31.81175216,0.15746696,Source ID retained
+C216_Link01,C216_Link01,C216,C,Lukaya - Miwuula,25.918,0.0,25.918,Unsealed,Unpaved,Masaka,Central,31.88054897,-0.14252873,31.74091489,-0.01040188,Source ID retained
+C217_Link01,C217_Link01,C217,C,Miwula - Bweera-Kagologolo,35.583,0.0,35.583,Unsealed,Unpaved,Masaka,Central,31.74087895,-0.01066419,31.56318149,-0.13005313,Source ID retained
+C218_Link01,C218_Link01,C218,C,Masaka - Kidda - Buwunga - Nkuke - Kyana,31.956,0.0,31.956,Unsealed,Unpaved,Masaka,Central,31.73683494,-0.3427947,31.67909069,-0.54878558,Source ID retained
+C219_Link01,C219_Link01,C219,C,Masaka army barracks,1.018,0.0,1.018,Unsealed,Unpaved,Masaka,Central,31.73791911,-0.32533107,31.729206,-0.32266487,Source ID retained
+C220_Link01,C220_Link01,C220,C,Degeya PTTC off Masaka Township,3.757,0.0,3.757,Unsealed,Unpaved,Masaka,Central,31.74235213,-0.31630366,31.73781381,-0.28598464,Source ID retained
+C221_Link01,C221_Link01,C221,C,Kalisizo - Lusakalwamese,8.033,0.0,8.033,Unsealed,Unpaved,Masaka,Central,31.62251112,-0.53208103,31.67907408,-0.54871385,Source ID retained
+C221_Link02,C221_Link02,C221,C,Lusakalwamese - Bikira,24.712,8.033,32.745,Unsealed,Unpaved,Masaka,Central,31.67907408,-0.54871385,31.56370648,-0.61864245,Source ID retained
+C222_Link01,C222_Link01,C222,C,Kyesiga-Malembo Landing site,13.114,0.0,13.114,Unsealed,Unpaved,Masaka,Central,31.72237941,-0.59814075,31.75489028,-0.70404411,Source ID retained
+C223_Link01,C223_Link01,C223,C,Taba -Kyeesiga-Ddimo Landing site,17.097,0.0,17.097,Unsealed,Unpaved,Masaka,Central,31.691367,-0.55944863,31.79768742,-0.65445939,Source ID retained
+C224_Link01,C224_Link01,C224,C,Kyapa - Kasensero,41.903,0.0,41.903,Unsealed,Unpaved,Masaka,Central,31.50237329,-0.81044559,31.76328067,-0.92170856,Source ID retained
+C225_Link01,C225_Link01,C225,C,Kyabakuza - Kiwangala - Ndagwe - Namabal,60.928,0.0,60.928,Unsealed,Unpaved,Masaka,Central,31.70920585,-0.3383977,31.26743216,-0.53781788,Source ID retained
+C226_Link01,C226_Link01,C226,C,Kyabakuza - Kyogya - Matete,30.297,0.0,30.297,Unsealed,Unpaved,Masaka,Central,31.70749685,-0.33919667,31.48958558,-0.24208518,Source ID retained
+C226_Link02,C226_Link02,C226,C,Matete - Kakinga - Kaliro,50.493,30.297,80.79,Unsealed,Unpaved,Masaka,Central,31.48958558,-0.24208518,31.15084137,-0.3776845,Source ID retained
+C227_Link01,C227_Link01,C227,C,Lyantonde - Kaliro - Nabitanga - Ntusi,44.311,0.0,44.311,Unsealed,Unpaved,Masaka,Central,31.15411675,-0.40532191,31.12877343,-0.01917308,Source ID retained
+C228_Link01,C228_Link01,C228,C,Ntusi - Nabitanga,12.339,0.0,12.339,Unsealed,Unpaved,Masaka,Central,31.2006002,0.05037769,31.12888607,-0.01909188,Source ID retained
+C228_Link02,C228_Link02,C228,C,Nabitanga - Rushere,29.727,12.339,42.066,Unsealed,Unpaved,Ibanda,Southern,31.12888607,-0.01909188,30.95346056,-0.1773084,Source ID retained
+C229_Link01,C229_Link01,C229,C,Luku Pier - Kalangala HQ,34.652,0.0,34.652,Unsealed,Unpaved,Masaka,Central,32.06721075,-0.24840471,32.29221036,-0.31030874,Source ID retained
+C230_Link01,C230_Link01,C230,C,Kalangala HQ - Mulabana,34.705,0.0,34.705,Unsealed,Unpaved,Masaka,Central,32.19944126,-0.44259231,32.19938484,-0.4425822,Source ID retained
+C231_Link01,C231_Link01,C231,C,Lumbugu - Rakai,4.5,0.0,4.5,Bituminous,Paved,Masaka,Central,31.41793022,-0.68463139,31.40766129,-0.71310077,Source ID retained
+C232_Link01,C232_Link01,C232,C,Lyantonde - High Street,1.33,0.0,1.33,Bituminous,Paved,Masaka,Central,31.15911437,-0.40380608,31.1482644,-0.40817041,Source ID retained
+C233_Link01,C233_Link01,C233,C,Bukulula-Kalungu,11.635,0.0,11.635,Unsealed,Unpaved,Masaka,Central,31.84947342,-0.18359421,31.75783848,-0.17149002,Source ID retained
+C234_Link01,C234_Link01,C234,C,Mukoko-Birinzi-Ssunga,12.763,0.0,12.763,Unsealed,Unpaved,Masaka,Central,31.84422531,-0.20211573,31.88360963,-0.30418242,Source ID retained
+C235_Link01,C235_Link01,C235,C,Villa Road Link,1.02704077394,0.0,1.02704077394,Bituminous,Paved,Masaka,Central,31.75971167,-0.31743687,31.75639152,-0.30875968,Source ID retained
+C260_Link01,C260_Link01,C260,C,Mityana - Busunju,28.372,0.0,28.372,Unsealed,Unpaved,Mpigi,Central,32.04440361,0.40534526,32.206104,0.56522749,Source ID retained
+C261_Link01,C261_Link01,C261,C,Matte - Sekanyonyi,16.595,0.0,16.595,Unsealed,Unpaved,Mpigi,Central,32.19841127,0.38134501,32.13791406,0.50097876,Source ID retained
+C261_Link02,C261_Link02,C261,C,Sekanyonyi - Kikonge,13.567,16.595,30.162,Unsealed,Unpaved,Mpigi,Central,32.13791406,0.50097876,32.14145239,0.60918411,Source ID retained
+C262_Link01,C262_Link01,C262,C,Mityana-Misigi-Kanoni,36.594,0.0,36.594,Unsealed,Unpaved,Mpigi,Central,32.03846158,0.39430392,31.90610292,0.17249836,Source ID retained
+C263_Link01,C263_Link01,C263,C,Myanzi loop,1.839,0.0,1.839,Unsealed,Unpaved,Mubende,Central,31.91028124,0.43696461,31.8974991,0.43361435,Source ID retained
+C264_Link01,C264_Link01,C264,C,Nabingoola - Kasambya,15.45,0.0,15.45,Unsealed,Unpaved,Mubende,Central,31.18139211,0.48729376,31.22797036,0.38072539,Source ID retained
+C265_Link01,C265_Link01,C265,C,Kitenga-Masozi,17.769,0.0,17.769,Unsealed,Unpaved,Mubende,Central,31.50893072,0.49734008,31.57119625,0.36273535,Source ID retained
+C265_Link02,C265_Link02,C265,C,Masozi- Madu,20.742,17.769,38.511,Unsealed,Unpaved,Mpigi,Central,31.57119625,0.36273535,31.66757158,0.21591649,Source ID retained
+C266_Link01,C266_Link01,C266,C,Kiganda Loop,1.07,0.0,1.07,Unsealed,Unpaved,Mubende,Central,31.67545785,0.45343773,31.6678877,0.4569325,Source ID retained
+C267_Link01,C267_Link01,C267,C,Mityana - Katakala - Naama,0.137,0.0,0.137,Unsealed,Unpaved,Mubende,Central,31.99524167,0.41301113,31.99482815,0.41190308,Source ID retained
+C268_Link01,C268_Link01,C268,C,Mityana-Katakala-Naama,7.471,0.0,7.471,Bituminous,Paved,Mubende,Central,32.03712099,0.4020959,31.98018211,0.4155217,Source ID retained
+C270_Link01,C270_Link01,C270,C,Mityana - District Offices - Nakaseeta,8.09,0.0,8.09,Unsealed,Unpaved,Mubende,Central,32.0508639,0.40067247,32.07859621,0.4483286,Source ID retained
+C271_Link01,C271_Link01,C271,C,Wakitundu - Bulera - Mutetema,18.662,0.0,18.662,Unsealed,Unpaved,Mubende,Central,32.04636128,0.42475993,31.98003453,0.55689044,Source ID retained
+C271_Link02,C271_Link02,C271,C,Mutetema-Kyamusisi - Bukuya,22.976,18.662,41.638,Unsealed,Unpaved,Mubende,Central,31.98003453,0.55689044,31.83389956,0.67513814,Source ID retained
+C271_Link03,C271_Link03,C271,C,Kyamusisi- Kikoloto - Kitumbi Bridge (Kayindiyindi),26.499,41.638,68.137,Unsealed,Unpaved,Mubende,Central,31.83389956,0.67513814,31.65815712,0.81702322,Source ID retained
+C271_Link04,C271_Link04,C271,C,Kitumbi Bridge - Bukwiri,39.386,68.137,107.523,Unsealed,Unpaved,Hoima,Western,31.65818682,0.8170339,31.59567305,1.12551796,Source ID retained
+C272_Link01,C272_Link01,C272,C,Hoima Road/Kituuma-Kiryoka-Mutetema,20.08,0.0,20.08,Unsealed,Unpaved,Mpigi,Central,32.13669177,0.61755259,31.98006743,0.55682302,Source ID retained
+C273_Link01,C273_Link01,C273,C,Myanzi - Kasanda,16.86,0.0,16.86,Unsealed,Unpaved,Mubende,Central,31.91077463,0.4369913,31.82009715,0.54599537,Source ID retained
+C273_Link02,C273_Link02,C273,C,Kasanda - Bukuya,14.88,16.86,31.74,Unsealed,Unpaved,Mubende,Central,31.82009715,0.54599537,31.83681133,0.67405825,Source ID retained
+C273_Link03,C273_Link03,C273,C,Bukuya - Kiboga,29.925,31.74,61.665,Unsealed,Unpaved,Mubende,Central,31.83681133,0.67405825,31.77813845,0.90927156,Source ID retained
+C274_Link01,C274_Link01,C274,C,Kasanda - Madudu,42.8,0.0,42.8,Unsealed,Unpaved,Mubende,Central,31.81964942,0.54642492,31.49009677,0.67213631,Source ID retained
+C274_Link02,C274_Link02,C274,C,Madudu - Kiyuya,16.9,42.8,59.689,Unsealed,Unpaved,Mubende,Central,31.4900926,0.67213995,31.38932352,0.61404549,Source ID retained
+C275_Link01,C275_Link01,C275,C,Mate - Kabulamuliro-Kakinga,9.2,0.0,9.2,Unsealed,Unpaved,Luwero,Central,32.13667601,0.6176732,32.16479367,0.68351807,Source ID retained
+C277_Link01,C277_Link01,C277,C,Kitenga -Ikula-Kanyogoga,43.59,0.0,43.59,Unsealed,Unpaved,Mubende,Central,31.28079714,0.41896912,31.50963652,0.49232491,Source ID retained
+C279_Link01,C279_Link01,C279,C,Kabamba/ Karama army barracks off Mubende,9.0,0.0,9.0,Unsealed,Unpaved,Mubende,Central,31.1799907,0.27250027,31.17677055,0.27042564,Source ID retained
+C280_Link01,C280_Link01,C280,C,Rwebituti-Gold Mines Spur,7.73,0.0,7.73,Unsealed,Unpaved,Mubende,Central,31.83390734,0.67513701,31.77496618,0.66233682,Source ID retained
+C281_Link01,C281_Link01,C281,C,Mubende-Biwanga,4.879,0.0,4.879,Unsealed,Unpaved,Mubende,Central,31.38598767,0.5600084,31.35648737,0.53737887,Source ID retained
+C283_Link01,C283_Link01,C283,C,Nkondo - Nalweyo,14.467,0.0,14.467,Unsealed,Unpaved,Mubende,Central,31.26221064,1.11795258,31.33118062,0.87692943,Source ID retained
+C284_Link01,C284_Link01,C284,C,Mityana Railway Access 1,1.92225352671,0.0,1.92225352671,Unsealed,Unpaved,Mubende,Central,32.04546249,0.40491256,32.04837854,0.41288577,Source ID retained
+C285_Link01,C285_Link01,C285,C,Mityana Railway Access 2,0.27549783049,0.0,0.27549783049,Unsealed,Unpaved,Mubende,Central,32.04889235,0.41264577,32.05056239,0.41092134,Source ID retained
+C300_Link01,C300_Link01,C300,C,Kayunga-Bale-Galiraya-Lake Kyoga,87.401,0.0,87.401,Unsealed,Unpaved,Kampala,Central,32.90356666,0.6996902,32.75520194,1.41375763,Source ID retained
+C301_Link01,C301_Link01,C301,C,Zirobwe -Kikyusa - Luweero,37.188,0.0,37.188,Unsealed,Unpaved,Luwero,Central,32.69889392,0.68206924,32.49933828,0.8332298,Source ID retained
+C302_Link01,C302_Link01,C302,C,Gayaza-Zirobwe,30.873,0.0,30.873,Bituminous,Paved,Luwero,Central,32.61177126,0.45008124,32.69884751,0.68082251,Source ID retained
+C302_Link02,C302_Link02,C302,C,Zirobwe-Bamunanika,11.501,30.873,42.374,Unsealed,Unpaved,Luwero,Central,32.69884751,0.68082251,32.60901088,0.67711356,Source ID retained
+C302_Link03,C302_Link03,C302,C,Bamunanika-Wobulenzi,11.606,42.374,53.98,Unsealed,Unpaved,Luwero,Central,32.60901088,0.67711356,32.52821273,0.7174042,Source ID retained
+C303_Link01,C303_Link01,C303,C,Kalule - Bamunanika,11.055,0.0,11.055,Unsealed,Unpaved,Luwero,Central,32.53235937,0.63836194,32.60890114,0.67799844,Source ID retained
+C304_Link01,C304_Link01,C304,C,Kisule - Nakaseke - Kapeeka,34.106,0.0,34.106,Unsealed,Unpaved,Luwero,Central,32.51927911,0.73828757,32.24652645,0.68188757,Source ID retained
+C305_Link01,C305_Link01,C305,C,Busunju - Kapeeka,15.493,0.0,15.493,Unsealed,Unpaved,Luwero,Central,32.2208218,0.5579775,32.25066599,0.67056263,Source ID retained
+C306_Link01,C306_Link01,C306,C,Luwero-Kiwoko-Butalangu,28.761,0.0,28.761,Unsealed,Unpaved,Luwero,Central,32.49315051,0.84215396,32.24267013,0.82261842,Source ID retained
+C307_Link01,C307_Link01,C307,C,Butalangwa - Ngoma - Bulyamusenyu,82.212,0.0,82.212,Unsealed,Unpaved,Luwero,Central,32.24267013,0.82261842,31.845229,1.36783398,Source ID retained
+C308_Link01,C308_Link01,C308,C,Nakasongola loop,12.762,0.0,12.762,Bituminous,Paved,Luwero,Central,32.45821033,1.25160952,32.42214506,1.32577388,Source ID retained
+C309_Link01,C309_Link01,C309,C,Nakasongola - Airbase,6.699,0.0,6.699,Bituminous,Paved,Luwero,Central,32.46531098,1.31675731,32.4820406,1.37468834,Source ID retained
+C310_Link01,C310_Link01,C310,C,Kamuli - Namasagali,20.8,0.0,20.8,Unsealed,Unpaved,Jinja,Eastern,33.11045558,0.92738986,32.94984481,1.00718164,Source ID retained
+C311_Link01,C311_Link01,C311,C,Bombo - Ndejje - Kalasa,18.41,0.0,18.41,Unsealed,Unpaved,Luwero,Central,32.53236797,0.58497655,32.40390488,0.57609427,Source ID retained
+C312_Link01,C312_Link01,C312,C,Kalule - Bowa - Nakaseke,20.579,0.0,20.579,Unsealed,Unpaved,Luwero,Central,32.53228173,0.63903559,32.41604403,0.72994431,Source ID retained
+C312_Link02,C312_Link02,C312,C,Nakaseke - Kiwoko,14.97,20.579,35.549,Unsealed,Unpaved,Luwero,Central,32.41604403,0.72994431,32.36296278,0.84430595,Source ID retained
+C313_Link01,C313_Link01,C313,C,Katikamu - Kikyusa,16.881,0.0,16.881,Unsealed,Unpaved,Luwero,Central,32.52736962,0.7314106,32.63118821,0.83355399,Source ID retained
+C315_Link01,C315_Link01,C315,C,Kyankwazi - Ngoma,14.867,0.0,14.867,Unsealed,Unpaved,Luwero,Central,32.01857005,1.18029591,31.88558187,1.10429446,Source ID retained
+C315_Link02,C315_Link02,C315,C,Ngoma - Kasozi - Kyamukonda,42.0,14.9,56.9,Unsealed,Unpaved,Luwero,Central,32.19025417,1.42000809,32.15568944,1.38612612,Source ID retained
+C316_Link01,C316_Link01,C316,C,Ngoma-Buwana-Kinyogogga,27.15,0.0,27.15,Unsealed,Unpaved,Luwero,Central,32.01884621,1.1822223,32.23430725,1.21106798,Source ID retained
+C317_Link01,C317_Link01,C317,C,Katuugo-Kinyogogga,31.905,0.0,31.905,Unsealed,Unpaved,Luwero,Central,32.46425604,1.16069144,32.23440839,1.21105609,Source ID retained
+C317_Link02,C317_Link02,C317,C,Kinyogogga-Kaweweeta Barracks,8.984,31.905,40.889,Unsealed,Unpaved,Luwero,Central,32.23440839,1.21105609,32.17674282,1.24054927,Source ID retained
+C318_Link01,C318_Link01,C318,C,Sasira-Namika,22.082,0.0,22.082,Unsealed,Unpaved,Luwero,Central,32.42640527,1.32570387,32.41921922,1.51503936,Source ID retained
+C320_Link01,C320_Link01,C320,C,Kapeeka - Singo Military Barracks - Kituuma,19.513,0.0,19.513,Unsealed,Unpaved,Luwero,Central,32.08628098,0.67238377,32.24650227,0.68208838,Source ID retained
+C325_Link01,C325_Link01,C325,C,Kikyusa- Bamugolode - Kazwama - Nakasongola,83.131,0.0,83.131,Unsealed,Unpaved,Luwero,Central,32.64413806,0.83663306,32.46523646,1.31256385,Source ID retained
+C326_Link01,C326_Link01,C326,C,Nakasongola - Lwampanga - Zengebe Access,31.981,0.0,31.981,Unsealed,Unpaved,Luwero,Central,32.48146777,1.37263541,32.42191995,1.51587375,Source ID retained
+C326_Link02,C326_Link02,C326,C,Lwampanga - Lwabyata - Kafu,46.0,31.981,78.0,Unsealed,Unpaved,Luwero,Central,32.42191996,1.51586844,32.04216608,1.53822724,Source ID retained
+C329_Link01,C329_Link01,C329,C,Kayindu-Kalagala-Kyabakadde,27.65,0.0,27.65,Unsealed,Unpaved,Luwero,Central,32.65870484,0.58835473,32.61464789,0.6117568,Source ID retained
+C330_Link01,C330_Link01,C330,C,Kakooge - Nansaka - Wabusana,29.735,0.0,29.735,Unsealed,Unpaved,Luwero,Central,32.46717199,1.05121799,32.65575761,0.88935884,Source ID retained
+C331_Link01,C331_Link01,C331,C,Migeera-Nabisweera,7.079,0.0,7.079,Unsealed,Unpaved,Luwero,Central,32.26009058,1.40881862,32.27082619,1.4693563,Source ID retained
+C332_Link01,C332_Link01,C332,C,Kasiso-Mazzi-Kalungi,57.024,0.0,57.024,Unsealed,Unpaved,Luwero,Central,32.5232261,0.85988326,32.66125214,1.28909986,Source ID retained
+C333_Link01,C333_Link01,C333,C,Kiwoko-Kalagala-Ngogolo,34.8,0.0,34.8,Unsealed,Unpaved,Luwero,Central,32.36109161,0.84511831,32.47774951,0.89832849,Source ID retained
+C334_Link01,C334_Link01,C334,C,Kakinga -Kalungu - Dwaniro,32.0,0.0,32.0,Unsealed,Unpaved,Luwero,Central,32.16522118,0.68343243,32.07314804,0.80124087,Source ID retained
+C335_Link01,C335_Link01,C335,C,Sungira Hill Access,1.6,0.0,1.6,Bituminous,Paved,Luwero,Central,32.45863737,1.32123283,32.466588110000004,1.31937684,Source ID retained
+C336_Link01,C336_Link01,C336,C,Nakitooma Access,2.4,0.0,2.4,Unsealed,Unpaved,Luwero,Central,32.09596007,1.5079827,32.09199376,1.52865221,Source ID retained
+C337_Link01,C337_Link01,C337,C,Kikondo-Kikandwa-Nvuye,7.4,0.0,7.4,Unsealed,Unpaved,Luwero,Central,32.30890997,0.63568264,32.25583894,0.6129957,Source ID retained
+C338_Link01,C338_Link01,C338,C,Zengebe-Ferry-Access,3.025,0.0,3.025,Unsealed,Unpaved,Luwero,Central,32.50594167,1.47874358,32.52996863,1.47540428,Source ID retained
+C339_Link01,C339_Link01,C339,C,Kikubampanga - Lutabayima - Seganga,5.801,0.0,5.801,Unsealed,Unpaved,Luwero,Central,32.29715795,0.55261394,32.33283474,0.52343042,Source ID retained
+C340_Link01,C340_Link01,C340,C,Kyamukonda - Lugogo River - Ngoma,31.5952458143,0.0,31.5952458143,Unsealed,Unpaved,Luwero,Central,32.16892707,1.43398562,31.99311901,1.25342699,Source ID retained
+C350_Link01,C350_Link01,C350,C,Katete-Isingiro,30.649,0.0,30.649,Bituminous,Paved,Mbarara,Southern,30.64057727,-0.6197963,30.816942740000002,-0.79579777,Source ID retained
+C350_Link02,C350_Link02,C350,C,Isingiro-Nsongezi,23.654,30.649,54.303,Bituminous,Paved,Mbarara,Southern,30.816942740000002,-0.79579777,30.75281466,-0.98848269,Source ID retained
+C351_Link01,C351_Link01,C351,C,Isingiro-Kityanza,22.203,0.0,22.203,Unsealed,Unpaved,Mbarara,Southern,30.81759692,-0.81261509,30.98670941,-0.81035406,Source ID retained
+C351_Link02,C351_Link02,C351,C,Kityanza-Nakabanga,41.311,22.203,63.514,Unsealed,Unpaved,Mbarara,Southern,30.98670941,-0.81035406,31.29482209,-0.94821156,Source ID retained
+C351_Link03,C351_Link03,C351,C,Nakabanga-Rakai,40.058,63.514,103.572,Unsealed,Unpaved,Mbarara,Southern,31.29482209,-0.94821156,31.40766129,-0.71310077,Source ID retained
+C352_Link01,C352_Link01,C352,C,Kityaza-Burema-Bugango(Uganda/Tanzania border),25.217,0.0,25.217,Unsealed,Unpaved,Mbarara,Southern,30.97051739,-0.80860848,31.00524856,-0.99853017,Source ID retained
+C353_Link01,C353_Link01,C353,C,Nsongezi-Kyaka,13.783,0.0,13.783,Unsealed,Unpaved,Mbarara,Southern,30.75281466,-0.98848269,30.87032922,-0.99935892,Source ID retained
+C354_Link01,C354_Link01,C354,C,Kikagati - Murungo bridge,2.719,0.0,2.719,Bituminous,Paved,Mbarara,Southern,30.6582707,-1.0421589,30.64825318,-1.06405053,Source ID retained
+C355_Link01,C355_Link01,C355,C,Nyakahita-Rushere,33.232,0.0,33.232,Bituminous,Paved,Ibanda,Southern,31.12173683,-0.41706717,30.93815191,-0.21145295,Source ID retained
+C355_Link02,C355_Link02,C355,C,Rushere-Kazo,34.758,33.232,67.99,Bituminous,Paved,Ibanda,Southern,30.93815191,-0.21145295,30.75383128,-0.05792642,Source ID retained
+C356_Link01,C356_Link01,C356,C,Ibanda-Kanoni-Kazo,32.433,0.0,32.433,Bituminous,Paved,Ibanda,Southern,30.5008388,-0.13067303,30.75373018,-0.05806678,Source ID retained
+C356_Link02,C356_Link02,C356,C,Kazo-Buremba,29.938,32.433,62.371,Unsealed,Unpaved,Ibanda,Southern,30.75373018,-0.05806678,30.90951618,0.13044566,Source ID retained
+C357_Link01,C357_Link01,C357,C,Muzizi-Buremba,53.483,0.0,53.483,Unsealed,Unpaved,Ibanda,Southern,30.53234966,-0.00588087,30.93039605,0.13408564,Source ID retained
+C357_Link02,C357_Link02,C357,C,Buremba-Remiyaga,32.53,53.483,86.013,Unsealed,Unpaved,Ibanda,Southern,30.93039605,0.13408564,31.15419497,0.11236383,Source ID retained
+C358_Link01,C358_Link01,C358,C,Rwemikoma-Kijuma,4.212,0.0,4.212,Unsealed,Unpaved,Ibanda,Southern,30.93817788,-0.21144845,30.95346174,-0.17731896,Source ID retained
+C358_Link02,C358_Link02,C358,C,Kijuma-Rwakitura,31.257,4.212,35.469,Unsealed,Unpaved,Ibanda,Southern,30.95346174,-0.17731896,30.86100866,0.05679979,Source ID retained
+C359_Link01,C359_Link01,C359,C,Rugaaga-Rushasha-Rwentaha,49.707,0.0,49.707,Unsealed,Unpaved,Mbarara,Southern,31.02347415,-0.82902069,31.15971544,-0.82397043,Source ID retained
+C359_Link02,C359_Link02,C359,C,Rwentaha-Endizi,5.209,49.707,54.916,Unsealed,Unpaved,Mbarara,Southern,31.15971544,-0.82397043,31.14854365,-0.8651122,Source ID retained
+C360_Link01,C360_Link01,C360,C,Isingiro-Ngarama,6.1,0.0,6.1,Bituminous,Paved,Mbarara,Southern,30.81202378,-0.81507106,30.81189405,-0.8615323,Source ID retained
+C360_Link02,C360_Link02,C360,C,Ekitindo - Ngarama - Kasheshe,41.2,6.1,47.3,Unsealed,Unpaved,Mbarara,Southern,30.81189405,-0.8615323,30.94152551,-1.00161175,Source ID retained
+C361_Link01,C361_Link01,C361,C,Ntantamukyi - Kamwema,16.544,0.0,16.544,Unsealed,Unpaved,Mbarara,Southern,31.21428951,-0.89801231,31.23297773,-0.99922151,Source ID retained
+C362_Link01,C362_Link01,C362,C,Mabona Loop,7.1,0.0,7.1,Bituminous,Paved,Mbarara,Southern,30.81719107,-0.79554292,30.78103862,-0.83725804,Source ID retained
+C363_Link01,C363_Link01,C363,C,Kabingo - Nyakitunda - Kabuyanda - Kyezi,39.36,0.0,39.36,Unsealed,Unpaved,Mbarara,Southern,30.77827727,-0.77311315,30.69490329,-1.01376941,Source ID retained
+C364_Link01,C364_Link01,C364,C,Ruti - Mwizi - Kabuyanda - Kikagati,63.63,0.0,63.63,Unsealed,Unpaved,Mbarara,Southern,30.61492217,-0.63576045,30.60578179,-1.02123386,Source ID retained
+C365_Link01,C365_Link01,C365,C,Nyakiraguju - Ruzinga (Bugamba) Chitwe,32.825,0.0,32.825,Unsealed,Unpaved,Mbarara,Southern,30.37820059,-0.71727523,30.53130948,-0.82965143,Source ID retained
+C365_Link02,C365_Link02,C365,C,Ruzinga (Bugamba) Chitwe,19.497,32.825,52.322,Unsealed,Unpaved,Mbarara,Southern,30.53130948,-0.82965143,30.47520868,-0.97313093,Source ID retained
+C366_Link01,C366_Link01,C366,C,Nyamukana-Kahambo-Kashuro,23.33,0.0,23.33,Unsealed,Unpaved,Mbarara,Southern,30.33500637,-0.7531473,30.40875158,-0.90622033,Source ID retained
+C367_Link01,C367_Link01,C367,C,Biharwe - Rushozi - Ruhengere - Kikatsi,49.51,0.0,49.51,Unsealed,Unpaved,Ibanda,Southern,30.73341177,-0.52361113,30.87076643,-0.20295029,Source ID retained
+C368_Link01,C368_Link01,C368,C,Biharwe - Bwizibwera,22.944,0.0,22.944,Unsealed,Unpaved,Mbarara,Southern,30.57275409,-0.43638972,30.73063208,-0.51216806,Source ID retained
+C369_Link01,C369_Link01,C369,C,Lubingo-Kacwangobe-Kashenshama,20.465,0.0,20.465,Unsealed,Unpaved,Mbarara,Southern,30.65531434,-0.45415385,30.6704371,-0.28122404,Source ID retained
+C370_Link01,C370_Link01,C370,C,Ruhumba - Byanamira,6.301,0.0,6.301,Unsealed,Unpaved,Ibanda,Southern,30.59419563,-0.29950395,30.64096518,-0.28586513,Source ID retained
+C370_Link02,C370_Link02,C370,C,Byanamira - Kashwa,25.047,6.301,31.348,Unsealed,Unpaved,Ibanda,Southern,30.64096518,-0.28586513,30.8226814,-0.20806765,Source ID retained
+C371_Link01,C371_Link01,C371,C,Kashongi - Kantaganya,24.475,0.0,24.475,Unsealed,Unpaved,Ibanda,Southern,30.64091898,-0.28590812,30.66472589,-0.09660228,Source ID retained
+C372_Link01,C372_Link01,C372,C,Kyankanda-Bitsya,17.099,0.0,17.099,Unsealed,Unpaved,Ibanda,Southern,30.47923076,-0.15500507,30.42601771,-0.26789207,Source ID retained
+C372_Link02,C372_Link02,C372,C,Bitsya-Ruhoko,25.89,17.099,42.989,Unsealed,Unpaved,Ibanda,Southern,30.42598792,-0.2679047,30.43830168,-0.41789069,Source ID retained
+C373_Link01,C373_Link01,C373,C,Ruhoko - Kabujogera,14.531,0.0,14.531,Unsealed,Unpaved,Ibanda,Southern,30.47918314,-0.15445326,30.39491507,-0.09320727,Source ID retained
+C373_Link02,C373_Link02,C373,C,Kabujogera - Mahyoro Junction,21.03,14.531,35.561,Unsealed,Unpaved,Ibanda,Southern,30.39491507,-0.09320727,30.25392603,-0.05151911,Source ID retained
+C374_Link01,C374_Link01,C374,C,Mahyoro Junction- Mahyoro landing site,4.605,0.0,4.605,Bituminous,Paved,Ibanda,Southern,30.49190296,-0.13447892,30.45263266,-0.13368117,Source ID retained
+C375_Link01,C375_Link01,C375,C,Ishongororo - Bisheshe,24.126,0.0,24.126,Unsealed,Unpaved,Ibanda,Southern,30.48780765,-0.05767521,30.48441327,0.05582114,Source ID retained
+C376_Link01,C376_Link01,C376,C,Kanyarigiri-Nyamarebe-Ishongororo,23.427,0.0,23.427,Unsealed,Unpaved,Ibanda,Southern,30.49738414,0.05240717,30.60713858,0.07661412,Source ID retained
+C377_Link01,C377_Link01,C377,C,Kiburara T/c - Kiburara Prison Fram,1.487,0.0,1.487,Unsealed,Unpaved,Ibanda,Southern,30.47422415,0.07861207,30.46362962,0.0814277,Source ID retained
+C378_Link01,C378_Link01,C378,C,Bijutsyo - Bihanga,27.424,0.0,27.424,Unsealed,Unpaved,Fort Portal,Western,30.67364611,0.10111929,30.60016001,0.28773985,Source ID retained
+C379_Link01,C379_Link01,C379,C,Saano - Endizi Junction,10.941,0.0,10.941,Unsealed,Unpaved,Mbarara,Southern,31.12972021,-0.85633966,31.15971364,-0.82398978,Source ID retained
+C380_Link01,C380_Link01,C380,C,Engarusya - Buremba,24.312,0.0,24.312,Unsealed,Unpaved,Ibanda,Southern,30.62615714,-0.0985012,30.65575793,0.09460754,Source ID retained
+C382_Link01,C382_Link01,C382,C,Ntare-Mutonto-Kacwangobe,17.736,0.0,17.736,Unsealed,Unpaved,Mbarara,Southern,30.6493677,-0.6033241,30.6585381,-0.45373004,Source ID retained
+C383_Link01,C383_Link01,C383,C,Rushere-Rwakitura,8.605,0.0,8.605,Bituminous,Paved,Ibanda,Southern,30.93805451,-0.21149605,30.94651471,-0.14084527,Source ID retained
+C384_Link01,C384_Link01,C384,C,Nyakayojo TC-Kibingo PTC,2.839,0.0,2.839,Unsealed,Unpaved,Mbarara,Southern,30.56037246,-0.6427915,30.54938849,-0.65781282,Source ID retained
+C385_Link01,C385_Link01,C385,C,Bihanga Army Barracks Access,1.71,0.0,1.71,Unsealed,Unpaved,Ibanda,Southern,30.61532788,0.08132016,30.61745498,0.07502038,Source ID retained
+C386_Link01,C386_Link01,C386,C,Kiyoora PTC Access,0.229,0.0,0.229,Unsealed,Unpaved,Mbarara,Southern,30.33905045,-0.84558361,30.33991937,-0.84381961,Source ID retained
+C387_Link01,C387_Link01,C387,C,Kyambura-Kashaka,19.055,0.0,19.055,Unsealed,Unpaved,Mbarara,Southern,30.17051867,-0.08974116,30.18004623,-0.07408805,Source ID retained
+C388_Link01,C388_Link01,C388,C,Nyanga Swamp,0.7,0.0,0.7,Unsealed,Unpaved,Mbarara,Southern,31.12601799,-0.68882166,31.12721861,-0.68307622,Source ID retained
+C389_Link01,C389_Link01,C389,C,Kityaza Bugango access,1.0,0.0,1.0,Unsealed,Unpaved,Mbarara,Southern,30.9561779,-0.96594348,30.96542216,-0.9679627,Source ID retained
+C390_Link01,C390_Link01,C390,C,Mbarara Bypass,14.0,0.0,14.0,Bituminous,Paved,Mbarara,Southern,30.68151624,-0.58333673,30.58810724,-0.64210374,Source ID retained
+C390N1_Link01,C390N1_Link01,C390N1,C,Mbarara Bypass (dual),14.0,14.0,0.0,Bituminous,Paved,Mbarara,Southern,30.58447,-0.64279001,30.68383583,-0.58165989,Source ID retained
+C391_Link01,C391_Link01,C391,C,Access to Tumu hospital,10.195,0.0,10.195,Unsealed,Unpaved,Ibanda,Southern,30.46647331,-0.38516527,30.47856098,-0.34526163,Source ID retained
+C410_Link01,C410_Link01,C410,C,Kagamba-Kebisoni,20.602,0.0,20.602,Bituminous,Paved,Kabale,Southern,30.1599031,-0.81803591,30.01017792,-0.85565499,Source ID retained
+C410_Link02,C410_Link02,C410,C,Kebisoni-Rukungiri,13.941,20.602,34.543,Bituminous,Paved,Kabale,Southern,30.01017792,-0.85565499,29.92546832,-0.7831963,Source ID retained
+C411_Link01,C411_Link01,C411,C,Muhanga-Kisiizi-Kebisoni,59.882,0.0,59.882,Unsealed,Unpaved,Kabale,Southern,30.12389148,-1.1714787,30.01054427,-0.85573416,Source ID retained
+C412_Link01,C412_Link01,C412,C,Kisoro - Kyanika,9.89,0.0,9.89,Bituminous,Paved,Kabale,Southern,29.68822721,-1.28338717,29.74022323,-1.34070182,Source ID retained
+C413_Link01,C413_Link01,C413,C,Kalengyere bypass-Katojo-Rubuguri,28.218,0.0,28.218,Unsealed,Unpaved,Kabale,Southern,29.80408166,-1.2256214,29.68287315,-1.12377595,Source ID retained
+C414_Link01,C414_Link01,C414,C,Katunguru - Ishasha,87.025,0.0,87.025,Unsealed,Unpaved,Kasese,Southern,29.62819684,-0.72737955,30.0661664,-0.14828728,Source ID retained
+C415_Link01,C415_Link01,C415,C,Kabwohe - Nyakambu - Bihanga,21.129,0.0,21.129,Unsealed,Unpaved,Ibanda,Southern,30.37838711,-0.58010571,30.460241,-0.43457445,Source ID retained
+C415_Link02,C415_Link02,C415,C,Bihanga - Bwizibwera,14.057,21.129,35.186,Unsealed,Unpaved,Ibanda,Southern,30.460241,-0.43457445,30.57403994,-0.43963835,Source ID retained
+C416_Link01,C416_Link01,C416,C,Bihanga - Nsiika,13.222,0.0,13.222,Unsealed,Unpaved,Ibanda,Southern,30.45549685,-0.43850859,30.43435248,-0.36408993,Source ID retained
+C416_Link02,C416_Link02,C416,C,Nsiika -  Bihanga -Katerera(Ishaka T/C),44.31,13.222,57.532,Unsealed,Unpaved,Ibanda,Southern,30.43435248,-0.36408993,30.24220119,-0.1801606,Source ID retained
+C417_Link01,C417_Link01,C417,C,Ntungamo-Kakukuru,13.539,0.0,13.539,Bituminous,Paved,Kabale,Southern,30.26687853,-0.87447223,30.29452955,-0.97338025,Source ID retained
+C417_Link02,C417_Link02,C417,C,Kakukuru-Kafunzo,16.132,13.539,29.671,Bituminous,Paved,Kabale,Southern,30.29452955,-0.97338025,30.42725584,-1.01534717,Source ID retained
+C417_Link03,C417_Link03,C417,C,Kafunzo-Kakitumba,6.04,29.671,35.711,Bituminous,Paved,Kabale,Southern,30.42725584,-1.01534717,30.45933799,-1.05140385,Source ID retained
+C418_Link01,C418_Link01,C418,C,Kakukuru - Rubale,11.343,0.0,11.343,Unsealed,Unpaved,Kabale,Southern,30.2949444,-0.9736644,30.20010854,-0.98593092,Source ID retained
+C419_Link01,C419_Link01,C419,C,Kafunzo-Kikagati,30.111,0.0,30.111,Unsealed,Unpaved,Mbarara,Southern,30.42765036,-1.01504443,30.65812619,-1.04213317,Source ID retained
+C419_Link02,C419_Link02,C419,C,Kikagati-Nsongezi,13.765,30.111,43.876,Bituminous,Paved,Mbarara,Southern,30.65812619,-1.04213317,30.75281466,-0.98848269,Source ID retained
+C420_Link01,C420_Link01,C420,C,Kabale access roads,2.897,0.0,2.897,Bituminous,Paved,Kabale,Southern,29.99320001,-1.25953001,29.97401709,-1.24476438,Source ID retained
+C421_Link01,C421_Link01,C421,C,Kahunga - Nyakyera-Rukoni,31.0,0.0,31.0,Unsealed,Unpaved,Mbarara,Southern,30.29899612,-0.93578348,30.49754628,-0.92812696,Source ID retained
+C422_Link01,C422_Link01,C422,C,Rwentobo - Ngoma - Kizinga,18.188,0.0,18.188,Unsealed,Unpaved,Kabale,Southern,30.17856837,-1.11354925,30.3063668,-1.14613543,Source ID retained
+C423_Link01,C423_Link01,C423,C,Rutobo - Kamwezi,17.685,0.0,17.685,Unsealed,Unpaved,Kabale,Southern,30.13131126,-1.15572886,30.23247622,-1.25106196,Source ID retained
+C424_Link01,C424_Link01,C424,C,Old Kabale Road (Kigata - Kabunyonyi - N,20.068,0.0,20.068,Unsealed,Unpaved,Kabale,Southern,30.08085348,-1.25401344,30.03109156,-1.26169297,Source ID retained
+C425_Link01,C425_Link01,C425,C,Katuna - Rubaya - Muko,66.59,0.0,66.59,Unsealed,Unpaved,Kabale,Southern,30.01070675,-1.42310673,29.82226342,-1.20850362,Source ID retained
+C426_Link01,C426_Link01,C426,C,Kabale - Lake Bunyonyi,7.874,0.0,7.874,Unsealed,Unpaved,Kabale,Southern,29.97396767,-1.24474894,29.93803223,-1.26874106,Source ID retained
+C427_Link01,C427_Link01,C427,C,Access to Kacwekano Agriculture Research,0.404,0.0,0.404,Unsealed,Unpaved,Kabale,Southern,29.94468977,-1.25844639,29.94270097,-1.25540642,Source ID retained
+C428_Link01,C428_Link01,C428,C,Nyamirama - Ishasha,14.890186587,0.0,14.89,Bituminous,Paved,Kabale,Southern,29.63199146,-0.72444261,29.74861247,-0.69355101,Source ID retained
+C429_Link01,C429_Link01,C429,C,Butobere - Muyumbu - Rwamucucu,18.254,0.0,18.254,Unsealed,Unpaved,Kabale,Southern,30.00358187,-1.25500374,30.05475164,-1.14254592,Source ID retained
+C430_Link01,C430_Link01,C430,C,Rwashamaire - Rwahi,37.745,0.0,37.745,Unsealed,Unpaved,Kabale,Southern,30.1273269,-1.13979078,30.13397331,-0.83256078,Source ID retained
+C431_Link01,C431_Link01,C431,C,Rubaare - Kyempene,7.88,0.0,7.88,Unsealed,Unpaved,Kabale,Southern,30.18814995,-1.01743257,30.11909054,-1.02515653,Source ID retained
+C431_Link02,C431_Link02,C431,C,Kyempene - Rubirizi,15.755,7.88,23.635,Unsealed,Unpaved,Kabale,Southern,30.11909054,-1.02515653,29.99256073,-0.99839439,Source ID retained
+C432_Link01,C432_Link01,C432,C,Kanungu - Rugyeyo - Kabaranga,30.663,0.0,30.663,Unsealed,Unpaved,Kabale,Southern,29.77685811,-0.89439364,29.90996714,-0.99682267,Source ID retained
+C432_Link02,C432_Link02,C432,C,Kabaranga - Kisiizi,6.429,30.663,37.092,Unsealed,Unpaved,Kabale,Southern,29.90996449,-0.99682178,29.94165915,-1.01367186,Source ID retained
+C433_Link01,C433_Link01,C433,C,Ikumba - Kanungu,46.813,0.0,46.813,Unsealed,Unpaved,Kabale,Southern,29.90795677,-1.13207377,29.7749479,-0.89732004,Source ID retained
+C433_Link02,C433_Link02,C433,C,Kanungu - Kihihi,22.2255920639,46.813,70.127,Bituminous,Paved,Kabale,Southern,29.7749479,-0.89732004,29.70011704,-0.74610684,Source ID retained
+C433_Link03,C433_Link03,C433,C,Kihihi - Kazinga,4.142,70.127,74.269,Bituminous,Paved,Kabale,Southern,29.70011704,-0.74610684,29.68019287,-0.71759117,Source ID retained
+C433_Link04,C433_Link04,C433,C,Kazinga - Isaka,5.477,74.269,79.75,Unsealed,Unpaved,Kabale,Southern,29.68019287,-0.71759117,29.67047054,-0.67856899,Source ID retained
+C434_Link01,C434_Link01,C434,C,Ikumba - Nfasha - Ruhija - Mpungu - Hama,63.56,0.0,63.56,Unsealed,Unpaved,Kabale,Southern,29.87699996,-1.1229756,29.64537895,-0.90612112,Source ID retained
+C435_Link01,C435_Link01,C435,C,Rukungiri - Campbell,13.958987,0.0,13.958987,Bituminous,Paved,Kabale,Southern,29.85850193,-0.68783465,29.92404994,-0.77862219,Source ID retained
+C436_Link01,C436_Link01,C436,C,Kisoro - Nyabwishenya,1.964,0.0,1.964,Unsealed,Unpaved,Kabale,Southern,29.69687958,-1.2824495,29.70794256,-1.270313,Source ID retained
+C436_Link02,C436_Link02,C436,C,Nyabwishenya - Nteko,42.736,1.964,44.7,Unsealed,Unpaved,Kabale,Southern,29.70794256,-1.270313,29.58805585,-1.02371558,Source ID retained
+C437_Link01,C437_Link01,C437,C,Nyakabande - Mutorere,4.932,0.0,4.932,Unsealed,Unpaved,Kabale,Southern,29.74041324,-1.27878687,29.7080875,-1.27022522,Source ID retained
+C438_Link01,C438_Link01,C438,C,Kisoro - Nyarusiza,3.986,0.0,3.986,Unsealed,Unpaved,Kabale,Southern,29.6888465,-1.28452604,29.67868868,-1.31472521,Source ID retained
+C438_Link02,C438_Link02,C438,C,Nyarusiza - Muhabura,4.886,3.986,8.872,Unsealed,Unpaved,Kabale,Southern,29.67868868,-1.31472521,29.66146403,-1.35223703,Source ID retained
+C439_Link01,C439_Link01,C439,C,Natete - Busanza - Mpaka,18.389,0.0,18.389,Unsealed,Unpaved,Kabale,Southern,29.66220176,-1.26864981,29.58367577,-1.16113656,Source ID retained
+C440_Link01,C440_Link01,C440,C,Kanyantorogo - Butogota,17.31,0.0,17.31,Unsealed,Unpaved,Kabale,Southern,29.71007964,-0.82789707,29.64525272,-0.90618612,Source ID retained
+C440_Link02,C440_Link02,C440,C,Butogota - Kyeshero-Buhom,14.115,17.31,31.425,Unsealed,Unpaved,Kabale,Southern,29.64525272,-0.90618612,29.61647992,-0.98587574,Source ID retained
+C441_Link01,C441_Link01,C441,C,Katojo - Kihihi,16.961,0.0,16.961,Unsealed,Unpaved,Kabale,Southern,29.78575856,-0.82673233,29.70000989,-0.74569566,Source ID retained
+C442_Link01,C442_Link01,C442,C,Rukungiri - Ruerere,11.144,0.0,11.144,Unsealed,Unpaved,Kabale,Southern,29.92643641,-0.7909398,29.84655341,-0.79692074,Source ID retained
+C442_Link02,C442_Link02,C442,C,Ruerere - Mitaano,21.211,11.144,32.355,Unsealed,Unpaved,Kabale,Southern,29.84655341,-0.79692074,29.78601215,-0.82711161,Source ID retained
+C442_Link03,C442_Link03,C442,C,Mitaano - Kanungu,11.933,32.355,44.288,Unsealed,Unpaved,Kabale,Southern,29.78601215,-0.82711161,29.7749479,-0.89732004,Source ID retained
+C443_Link01,C443_Link01,C443,C,Bugangari - Rwerere,10.63,0.0,10.63,Unsealed,Unpaved,Kabale,Southern,29.8460114,-0.79683457,29.85374914,-0.72346739,Source ID retained
+C444_Link01,C444_Link01,C444,C,Access to Rukungiri PTTC,1.402,0.0,1.402,Unsealed,Unpaved,Kabale,Southern,29.96807124,-0.83508252,29.9666387,-0.84646452,Source ID retained
+C445_Link01,C445_Link01,C445,C,Katobo - Bugangari,9.909,0.0,9.909,Unsealed,Unpaved,Kabale,Southern,29.89545979,-0.78753124,29.85375492,-0.72347703,Source ID retained
+C445_Link02,C445_Link02,C445,C,Bugangari - Campbell,4.375,9.909,14.284,Unsealed,Unpaved,Kabale,Southern,29.85375492,-0.72347703,29.85850193,-0.68783465,Source ID retained
+C445_Link03,C445_Link03,C445,C,Campbell - Bukurungu,6.442,14.284,20.726,Bituminous,Paved,Kabale,Southern,29.85850193,-0.68783465,29.84476088,-0.64817689,Source ID retained
+C445_Link04,C445_Link04,C445,C,Bukurungu - Bwambara,22.656,20.726,43.338,Unsealed,Unpaved,Kabale,Southern,29.84476088,-0.64817689,29.80005848,-0.49165001,Source ID retained
+C446_Link01,C446_Link01,C446,C,Bukurungu - Nyamirama,15.7821584218,0.0,15.7821584218,Bituminous,Paved,Kabale,Southern,29.84476088,-0.64817689,29.74861247,-0.69355101,Source ID retained
+C446_Link02,C446_Link02,C446,C,Nyamirama - Kikongi - Burama,7.6158415782,15.7821584218,23.398,Bituminous,Paved,Kabale,Southern,29.74861247,-0.69355101,29.74838967,-0.75871365,Source ID retained
+C447_Link01,C447_Link01,C447,C,Kabwohe - Kitagata - Kabira(Mitooma),50.5,0.0,50.5,Unsealed,Unpaved,Mbarara,Southern,30.37807957,-0.58006977,29.98664014,-0.715085,Source ID retained
+C447_Link02,C447_Link02,C447,C,Kabira - Rukungiri,15.0,50.5,65.5,Unsealed,Unpaved,Kabale,Southern,29.98664014,-0.715085,29.92655199,-0.77376534,Source ID retained
+C448_Link01,C448_Link01,C448,C,Mgahinga - Ntebeko,9.365,0.0,9.365,Unsealed,Unpaved,Kabale,Southern,29.67870926,-1.31469155,29.61919312,-1.35389371,Source ID retained
+C449_Link01,C449_Link01,C449,C,Nyakabirizi-Burere-Nsiika,43.812,0.0,43.812,Unsealed,Unpaved,Ibanda,Southern,30.21994429,-0.54463468,30.4339033,-0.36348394,Source ID retained
+C450_Link01,C450_Link01,C450,C,Kyambura - Katerera,18.566,0.0,18.566,Unsealed,Unpaved,Mbarara,Southern,30.10224346,-0.21364307,30.24216661,-0.1802572,Source ID retained
+C450_Link02,C450_Link02,C450,C,Katerera - Buhindagye,8.864,18.566,27.43,Unsealed,Unpaved,Mbarara,Southern,30.24216661,-0.1802572,30.23327216,-0.11646084,Source ID retained
+C450_Link03,C450_Link03,C450,C,Buhindagye - Mahyoro,8.269,27.43,35.699,Unsealed,Unpaved,Ibanda,Southern,30.23327216,-0.11646084,30.259096,-0.05779846,Source ID retained
+C451_Link01,C451_Link01,C451,C,Kisoro army barracks off Kabale - Kisoro,0.093,0.0,0.093,Unsealed,Unpaved,Kabale,Southern,29.68953851,-1.28295601,29.68977213,-1.28376416,Source ID retained
+C452_Link01,C452_Link01,C452,C,Rukungiri - Station Boundary,19.6,0.0,19.6,Unsealed,Unpaved,Kabale,Southern,29.92546832,-0.7831963,29.95874308,-0.65190966,Source ID retained
+C452_Link02,C452_Link02,C452,C,Station Boundary - Mitooma HQ,13.9,19.6,33.5,Unsealed,Unpaved,Mbarara,Southern,29.95874308,-0.65190966,30.04665592,-0.6160746,Source ID retained
+C452_Link03,C452_Link03,C452,C,Mitooma HQ - Ruhinda/Kashenyi,11.5,33.5,45.0,Bituminous,Paved,Mbarara,Southern,30.04665592,-0.6160746,30.13305329,-0.58479032,Source ID retained
+C453_Link01,C453_Link01,C453,C,Nyakabande-Muganzi,2.105,0.0,2.105,Bituminous,Paved,Kabale,Southern,29.72155264,-1.2819342,29.72121111,-1.29853751,Source ID retained
+C454_Link01,C454_Link01,C454,C,Rwashameire-Kyafora-Kiyenje,18.84,0.0,18.84,Unsealed,Unpaved,Kabale,Southern,30.13429168,-0.83485327,30.04010775,-0.93573354,Source ID retained
+C455_Link01,C455_Link01,C455,C,Muhanga-Kyogo-Kamwezi,20.134,0.0,20.134,Unsealed,Unpaved,Kabale,Southern,30.123218,-1.1714605,30.23019619,-1.24553363,Source ID retained
+C456_Link01,C456_Link01,C456,C,Rwabuteera-Kanyansande spur,6.74,0.0,6.74,Unsealed,Unpaved,Kabale,Southern,29.6508937,-0.92438331,29.61904936,-0.94688328,Source ID retained
+C457_Link01,C457_Link01,C457,C,Kisoro - Muganzi - Chahi,5.1,0.0,5.1,Bituminous,Paved,Kabale,Southern,29.72118006,-1.29849478,29.72117925,-1.29849249,Source ID retained
+C510_Link01,C510_Link01,C510,C,Mubuku-Maliba-Nyakalingijo,15.32,0.0,15.32,Unsealed,Unpaved,Kasese,Southern,30.12331871,0.26130266,30.07448964,0.33024716,Source ID retained
+C511_Link01,C511_Link01,C511,C,Kasese - Kilembe mines,11.734,0.0,11.734,Bituminous,Paved,Kasese,Southern,30.08573118,0.17217757,30.00747714,0.20923922,Source ID retained
+C512_Link01,C512_Link01,C512,C,Rugendabara - Kaswangali,24.661,0.0,24.661,Unsealed,Unpaved,Kasese,Southern,30.20072599,0.35516945,30.11687132,0.47082769,Source ID retained
+C513_Link01,C513_Link01,C513,C,Kinyamaseke-Kisinga,12.747,0.0,12.747,Unsealed,Unpaved,Kasese,Southern,29.83532526,-0.00439124,29.90017089,0.07551865,Source ID retained
+C513_Link02,C513_Link02,C513,C,Kisinga-Kyarumba-Kibirizi,26.445,12.747,39.192,Unsealed,Unpaved,Kasese,Southern,29.90017089,0.07551865,29.94526794,0.01093758,Source ID retained
+C514_Link01,C514_Link01,C514,C,Kiburara -Kisinga,8.012,0.0,8.012,Unsealed,Unpaved,Kasese,Southern,29.89665768,0.00898075,29.90016359,0.07542125,Source ID retained
+C514_Link02,C514_Link02,C514,C,Kisinga-Nsenyi,2.142,8.012,10.154,Unsealed,Unpaved,Kasese,Southern,29.90016359,0.07542125,29.89214616,0.09293605,Source ID retained
+C515_Link01,C515_Link01,C515,C,Katojo-Mundongo-Bwera,7.656,0.0,7.656,Unsealed,Unpaved,Kasese,Southern,29.77275536,-0.01815355,29.75928094,0.0330421,Source ID retained
+C516_Link01,C516_Link01,C516,C,Katojo-Katwe-Rwentale,38.816,0.0,38.816,Unsealed,Unpaved,Kasese,Southern,29.76854122,-0.01753249,30.03011997,-0.08141914,Source ID retained
+C516_Link02,C516_Link02,C516,C,Rwentale-Lake George,16.422,38.816,55.238,Unsealed,Unpaved,Kasese,Southern,30.03011997,-0.08141914,30.15007952,-0.03200559,Source ID retained
+C517_Link01,C517_Link01,C517,C,Kasese Railway station Road,0.764,0.0,0.764,Bituminous,Paved,Kasese,Southern,30.08588588,0.17233144,30.09207192,0.17049232,Source ID retained
+C518_Link01,C518_Link01,C518,C,Hima army barracks off Kasese FP- Redone,3.722,0.0,3.722,Unsealed,Unpaved,Kasese,Southern,30.17996498,0.29812905,30.20553081,0.28506239,Source ID retained
+C519_Link01,C519_Link01,C519,C,Nkenda - Bugoye,16.9328218335,0.0,16.9328218335,Unsealed,Unpaved,Kasese,Southern,30.11687631,0.25428627,30.02526177,0.3570811,Source ID retained
+C520_Link01,C520_Link01,C520,C,Bwera - Kithoma,5.477,0.0,5.477,Unsealed,Unpaved,Kasese,Southern,29.75507466,0.03410254,29.750212,0.07411101,Source ID retained
+C520_Link02,C520_Link02,C520,C,Kithoma - Kiraro,8.016,5.477,13.493,Unsealed,Unpaved,Kasese,Southern,29.750212,0.07411101,29.76252388,0.13226332,Source ID retained
+C521_Link01,C521_Link01,C521,C,Muruseghe - Ihandiro,6.827,0.0,6.827,Unsealed,Unpaved,Kasese,Southern,29.75021896,0.07407104,29.78491032,0.09381928,Source ID retained
+C522_Link01,C522_Link01,C522,C,Nchwera-Rwenshama,6.709,0.0,6.709,Unsealed,Unpaved,Kasese,Southern,29.8055454,-0.45463741,29.77447248,-0.4060964,Source ID retained
+C523_Link01,C523_Link01,C523,C,Chanya-Nyuyo Institute,2.869,0.0,2.869,Unsealed,Unpaved,Kasese,Southern,30.07780706,0.33442971,30.07019961,0.34642812,Source ID retained
+C539_Link01,C539_Link01,C539,C,Itojo - Sempaya,15.0,0.0,15.0,Unsealed,Unpaved,Fort Portal,Western,30.22732538,0.84056732,30.16786439,0.83886193,Source ID retained
+C540_Link01,C540_Link01,C540,C,Fortportal-Kichwamba-Karugutu,27.414,0.0,27.414,Bituminous,Paved,Fort Portal,Western,30.27459331,0.65278715,30.22556111,0.787536,Source ID retained
+C540_Link02,C540_Link02,C540,C,Karugutu-Bundibugyo - Lamia,76.2,27.414,103.614,Bituminous,Paved,Fort Portal,Western,30.22556111,0.787536,29.95792478,0.63006547,Source ID retained
+C541_Link01,C541_Link01,C541,C,Karugutu - Ntoroko,50.281,0.0,50.281,Unsealed,Unpaved,Fort Portal,Western,30.22620947,0.78918768,30.5445203,1.05806952,Source ID retained
+C542_Link01,C542_Link01,C542,C,Fortportal - Kijura - Kabende Bridge-Sogahe-Kyarusozi,59.78,0.0,59.78,Unsealed,Unpaved,Fort Portal,Western,30.29500653,0.65871233,30.55542339,0.76892626,Source ID retained
+C543_Link01,C543_Link01,C543,C,Bubandi - Bundibugyo Army Barracks - Butama Health Center,4.75,0.0,4.75,Unsealed,Unpaved,Fort Portal,Western,29.97966156,0.6426182,29.99621934,0.60843868,Source ID retained
+C544_Link01,C544_Link01,C544,C,Bubandi - Kahuka -Malindi,11.0,0.0,11.0,Unsealed,Unpaved,Fort Portal,Western,29.97236853,0.63711463,29.97131579,0.58237563,Source ID retained
+C545_Link01,C545_Link01,C545,C,Nyahuka - Busalu - Butoogo,12.565,0.0,12.565,Unsealed,Unpaved,Fort Portal,Western,30.03026507,0.6692948,29.9745017,0.72829549,Source ID retained
+C546_Link01,C546_Link01,C546,C,Kigarama-Gweri-Harubaho,6.415,0.0,6.415,Unsealed,Unpaved,Fort Portal,Western,30.31096211,0.58915395,30.28920801,0.63295229,Source ID retained
+C547_Link01,C547_Link01,C547,C,Rwimi-Dura-Kamwenge,58.624,0.0,58.624,Unsealed,Unpaved,Fort Portal,Western,30.21619226,0.37924849,30.45217962,0.18019373,Source ID retained
+C548_Link01,C548_Link01,C548,C,Rugombe-Kyarusozi-Katooke,15.0,0.0,15.0,Unsealed,Unpaved,Fort Portal,Western,30.50255414,0.66496138,30.70024743,0.73472673,Source ID retained
+C549_Link01,C549_Link01,C549,C,Kakabara-Bujuzo-Katooke,45.144,0.0,45.144,Unsealed,Unpaved,Fort Portal,Western,30.72866585,0.74968139,30.95324405,0.52689137,Source ID retained
+C550_Link01,C550_Link01,C550,C,Kakumiro-Kibale,32.205,0.0,32.205,Bituminous,Paved,Mubende,Central,31.32341584,0.78118151,31.0797834,0.77459164,Source ID retained
+C550_Link02,C550_Link02,C550,C,Kibale-Kagadi,42.543,32.205,74.748,Bituminous,Paved,Hoima,Western,31.07965679,0.77489253,30.80891761,0.93774901,Source ID retained
+C551_Link01,C551_Link01,C551,C,Kyegegwa-Hapuyo-kibale,36.551,0.0,36.551,Unsealed,Unpaved,Fort Portal,Western,31.05306225,0.4830192,31.07965679,0.77489253,Source ID retained
+C552_Link01,C552_Link01,C552,C,Nyakaliiro-Kabagole,10.156,0.0,10.156,Unsealed,Unpaved,Ibanda,Southern,30.93052121,0.13409032,30.89175766,0.20367984,Source ID retained
+C552_Link02,C552_Link02,C552,C,Kabagole-Kyegegwa,40.784,10.156,50.94,Unsealed,Unpaved,Ibanda,Southern,30.89175766,0.20367984,31.05424606,0.48138247,Source ID retained
+C553_Link01,C553_Link01,C553,C,Kibaale-Kyebando - Pacwa,46.268,0.0,46.268,Unsealed,Unpaved,Hoima,Western,31.07623769,0.79026681,30.98751611,1.11321507,Source ID retained
+C554_Link01,C554_Link01,C554,C,Ntandi - Kicyo - Bundibugyo,19.926,0.0,19.926,Unsealed,Unpaved,Fort Portal,Western,30.14350279,0.80577639,30.06320395,0.70587634,Source ID retained
+C555_Link01,C555_Link01,C555,C,Nyakigumba-Katebwa,6.477,0.0,6.477,Unsealed,Unpaved,Fort Portal,Western,30.17105032,0.52899496,30.12296665,0.51383213,Source ID retained
+C556_Link01,C556_Link01,C556,C,Bukuku - Rubona,16.879,0.0,16.879,Unsealed,Unpaved,Fort Portal,Western,30.17150692,0.55692769,30.19822772,0.67440703,Source ID retained
+C557_Link01,C557_Link01,C557,C,Kasisi - Rutete -Kabata-Rwenkenzi-Kyanga,27.85,0.0,27.85,Unsealed,Unpaved,Fort Portal,Western,30.215355,0.39496985,30.3101457,0.57550319,Source ID retained
+C558_Link01,C558_Link01,C558,C,Kakara - Rwebisengo,26.152,0.0,26.152,Unsealed,Unpaved,Fort Portal,Western,30.27856547,0.85079029,30.26743472,1.04378571,Source ID retained
+C560_Link01,C560_Link01,C560,C,Butiti PTTC Access,1.855,0.0,1.855,Unsealed,Unpaved,Fort Portal,Western,30.54529192,0.6546408,30.54112352,0.64102818,Source ID retained
+C561_Link01,C561_Link01,C561,C,Access to Canon Apollo PTTC,5.047,0.0,5.047,Unsealed,Unpaved,Fort Portal,Western,30.19845226,0.6742662,30.22895013,0.6632553,Source ID retained
+C562_Link01,C562_Link01,C562,C,Access to Muhooti Army Barracks,6.0,0.0,6.0,Unsealed,Unpaved,Fort Portal,Western,30.27828688,0.65713384,30.25024006,0.7027024,Source ID retained
+C563_Link01,C563_Link01,C563,C,Muhooro-Ndaiga-L. Albert,30.252,0.0,30.252,Unsealed,Unpaved,Hoima,Western,30.75959736,0.91521301,30.58578749,1.02287678,Source ID retained
+C564_Link01,C564_Link01,C564,C,Kitumba-Harubako,2.948,0.0,2.948,Unsealed,Unpaved,Fort Portal,Western,30.30372233,0.64959087,30.28863563,0.63431504,Source ID retained
+C564_Link02,C564_Link02,C564,C,Harubako-Kasusu,2.876,2.948,5.824,Unsealed,Unpaved,Fort Portal,Western,30.28861795,0.63447734,30.26729591,0.63655168,Source ID retained
+C565_Link01,C565_Link01,C565,C,Kyenzige-Rugashali-Mabaale,30.085,0.0,30.085,Unsealed,Unpaved,Hoima,Western,30.84928106,0.97969162,30.91781174,1.04972708,Source ID retained
+C566_Link01,C566_Link01,C566,C,Isunga-Bugwara,27.591,0.0,27.591,Unsealed,Unpaved,Hoima,Western,30.88815084,0.9091896,31.07857009,1.01911272,Source ID retained
+C566_Link02,C566_Link02,C566,C,Bugwara-Kikwaya,8.653,27.591,36.244,Unsealed,Unpaved,Hoima,Western,31.07857009,1.01911272,31.14517383,1.0116326,Source ID retained
+C567_Link01,C567_Link01,C567,C,Kakumiro - Nkooko,26.618,0.0,26.618,Unsealed,Unpaved,Mubende,Central,31.32383222,0.77987424,31.42948511,0.96048057,Source ID retained
+C568_Link01,C568_Link01,C568,C,Kihura - Bwizi,27.714,0.0,27.714,Unsealed,Unpaved,Fort Portal,Western,30.7324839,0.58716249,30.72121346,0.39086432,Source ID retained
+C568_Link02,C568_Link02,C568,C,Bwizi - Bisozi,19.735,27.714,47.449,Unsealed,Unpaved,Fort Portal,Western,30.72121346,0.39086432,30.59936361,0.28728809,Source ID retained
+C568_Link03,C568_Link03,C568,C,Bisozi - Kahunge,19.567,47.449,67.016,Unsealed,Unpaved,Fort Portal,Western,30.59936361,0.28728809,30.44748671,0.32446123,Source ID retained
+C569_Link01,C569_Link01,C569,C,Mpara - Kazinga - Bwizi,37.837,0.0,37.837,Unsealed,Unpaved,Fort Portal,Western,30.98426789,0.37650787,30.7220077,0.39245339,Source ID retained
+C571_Link01,C571_Link01,C571,C,Kamwenge - Kabambiro - Bigusyo - Bihanga,22.682,0.0,22.682,Unsealed,Unpaved,Fort Portal,Western,30.45217962,0.18019373,30.59556906,0.22191039,Source ID retained
+C572_Link01,C572_Link01,C572,C,Rwenjaza - Kabujogera,33.454,0.0,33.454,Unsealed,Unpaved,Ibanda,Southern,30.43597406,0.15064312,30.39495054,-0.09312653,Source ID retained
+C573_Link01,C573_Link01,C573,C,Kamwenge Railway Access,2.0,0.0,2.0,Unsealed,Unpaved,Fort Portal,Western,30.43898982,0.1834957,30.45280301,0.18540196,Source ID retained
+C574_Link01,C574_Link01,C574,C,Accesses to Rwimi Prisons,1.047,0.0,1.047,Unsealed,Unpaved,Kasese,Southern,30.21635367,0.37875658,30.22016273,0.37029396,Source ID retained
+C575_Link01,C575_Link01,C575,C,Kibuku - Nyabushozi,15.0,0.0,15.0,Unsealed,Unpaved,Fort Portal,Western,30.30843091,1.0073182,30.23023279,0.91978701,Source ID retained
+C578_Link01,C578_Link01,C578,C,Accesses to Ibuga,7.169,0.0,7.169,Unsealed,Unpaved,Kasese,Southern,30.20691299,0.36898423,30.2468268,0.32629128,Source ID retained
+C579_Link01,C579_Link01,C579,C,Harugale - Bupompoli,8.0,0.0,8.0,Unsealed,Unpaved,Fort Portal,Western,30.06588747,0.68111287,30.07435735,0.66811792,Source ID retained
+C590_Link01,C590_Link01,C590,C,Hoima (Parajwoki) -Biso,35.703,0.0,35.703,Bituminous,Paved,Hoima,Western,31.35009164,1.43676,31.37628904,1.70922973,Source ID retained
+C590_Link02,C590_Link02,C590,C,Biso-Bukumi,17.596,35.703,53.299,Bituminous,Paved,Masindi,Western,31.37628904,1.70922973,31.3849211,1.79137638,Source ID retained
+C591_Link01,C591_Link01,C591,C,Kabwoya - Kituti,41.302,0.0,41.302,Unsealed,Unpaved,Hoima,Western,31.08337182,1.24592474,30.7658046,1.2264085,Source ID retained
+C592_Link01,C592_Link01,C592,C,Parajwoki-Buseruka,21.728,0.0,21.728,Bituminous,Paved,Hoima,Western,31.34378479,1.47919576,31.17332059,1.55012906,Source ID retained
+C592_Link02,C592_Link02,C592,C,Buseruka-Kabaale,21.341,21.728,43.069,Bituminous,Paved,Hoima,Western,31.17332059,1.55012906,31.03313062,1.44492338,Source ID retained
+C593_Link01,C593_Link01,C593,C,Bugambe-Buseruka,19.172,0.0,19.172,Unsealed,Unpaved,Hoima,Western,31.23708646,1.43718011,31.13733907,1.54874333,Source ID retained
+C594_Link01,C594_Link01,C594,C,Bugambe-Kidoma,27.202,0.0,27.202,Unsealed,Unpaved,Hoima,Western,31.33929575,1.45594244,31.193184,1.36008112,Source ID retained
+C595_Link01,C595_Link01,C595,C,Mairirwe-Wambabya,7.361,0.0,7.361,Unsealed,Unpaved,Hoima,Western,31.24875775,1.36357751,31.2534268,1.42047089,Source ID retained
+C596_Link01,C596_Link01,C596,C,Kiziranfumbi - Kabaale,25.0813077488,0.0,25.0813077488,Bituminous,Paved,Hoima,Western,31.20484298,1.33069154,31.03313062,1.44492338,Source ID retained
+C596_Link02,C596_Link02,C596,C,Kabaale -Kaiso,33.7,25.7,59.433,Bituminous,Paved,Hoima,Western,31.03313062,1.44492338,30.96264668,1.52509148,Source ID retained
+C597_Link01,C597_Link01,C597,C,Kyehooro Link 1,7.5,0.0,7.5,Bituminous,Paved,Hoima,Western,30.93919574,1.50718115,30.94022687,1.50837425,Source ID retained
+C598_Link01,C598_Link01,C598,C,Hohwa - Nyairongo - Kyarushesha,24.9584452104,0.0,24.96,Bituminous,Paved,Hoima,Western,30.9828893,1.37851523,30.85461657,1.22718671,Source ID retained
+C599_Link01,C599_Link01,C599,C,Kaiso-Tonya,23.123,0.0,23.123,Unsealed,Unpaved,Hoima,Western,31.0001929,1.49074655,31.09219309,1.58543273,Source ID retained
+C600_Link01,C600_Link01,C600,C,Katasiiha-Waki,32.735,0.0,32.735,Unsealed,Unpaved,Hoima,Western,31.34160467,1.45038642,31.50244564,1.67815716,Source ID retained
+C601_Link01,C601_Link01,C601,C,Buseruka-Kigorobya,17.582,0.0,17.582,Unsealed,Unpaved,Hoima,Western,31.30792777,1.5986888,31.17332059,1.55012906,Source ID retained
+C602_Link01,C602_Link01,C602,C,Bulera PTC Access,0.583,0.0,0.583,Unsealed,Unpaved,Hoima,Western,31.37775899,1.4016585,31.37529978,1.40081489,Source ID retained
+C603_Link01,C603_Link01,C603,C,Waki 2 - Katanga - Karongo,18.116,0.0,18.116,Unsealed,Unpaved,Masindi,Western,31.30832307,1.61557202,31.44616546,1.61054703,Source ID retained
+C604_Link01,C604_Link01,C604,C,Buseruka-Tonya,9.325,0.0,9.325,Unsealed,Unpaved,Hoima,Western,31.13622732,1.54811569,31.09219309,1.58543273,Source ID retained
+C605_Link01,C605_Link01,C605,C,Kiryamboga Link,2.785,0.0,2.785,Unsealed,Unpaved,Hoima,Western,31.11580336,1.56568362,31.1017021,1.58357455,Source ID retained
+C606_Link01,C606_Link01,C606,C,Rwera-Kaseeta,15.448,0.0,15.448,Unsealed,Unpaved,Hoima,Western,30.99458792,1.38594149,30.97761456,1.26069927,Source ID retained
+C607_Link01,C607_Link01,C607,C,Bukwiri-Byerima-Kikuya,18.154,0.0,18.154,Unsealed,Unpaved,Hoima,Western,31.59499901,1.11111278,31.47834529,1.09824625,Source ID retained
+C608_Link01,C608_Link01,C608,C,Kyenda-Banda-River Mayanja,37.0,0.0,37.0,Unsealed,Unpaved,Hoima,Western,31.74176968,1.11053847,31.74175166,1.11052946,Source ID retained
+C609_Link01,C609_Link01,C609,C,Sebagoro Link,8.063,0.0,8.063,Unsealed,Unpaved,Hoima,Western,30.97087383,1.40345478,30.90921029,1.44297241,Source ID retained
+C610_Link01,C610_Link01,C610,C,Kyehooro Link 3,6.7,0.0,6.7,Unsealed,Unpaved,Hoima,Western,30.93807759,1.50808888,30.93595476,1.50895647,Source ID retained
+C611_Link01,C611_Link01,C611,C,Kituti-Buhuka,10.1,0.0,10.1,Bituminous,Paved,Hoima,Western,30.7658046,1.2264085,30.7505904,1.25585817,Source ID retained
+C613_Link01,C613_Link01,C613,C,Kaiso Airstrip link 1,9.30932749906,0.0,9.30932749906,Bituminous,Paved,Hoima,Western,30.96409489,1.5266622,30.93857653,1.4760604,Source ID retained
+C613_Link02,C613_Link02,C613,C,Kaiso Airstrip link 2,6.6904457315,9.30932749906,15.9997732306,Unsealed,Unpaved,Hoima,Western,30.93857653,1.4760604,30.9621352,1.42818016,Source ID retained
+C620_Link01,C620_Link01,C620,C,Bukwiri - Kyankwanzi,28.829,0.0,28.829,Unsealed,Unpaved,Hoima,Western,31.59562694,1.12556304,31.81910649,1.20403726,Source ID retained
+C621_Link01,C621_Link01,C621,C,Rwekunye - Masindi,35.426,0.0,35.426,Unsealed,Unpaved,Masindi,Western,32.02847896,1.71022561,31.75252762,1.67147943,Source ID retained
+C622_Link01,C622_Link01,C622,C,Masindi - Biiso,49.704,0.0,49.704,Unsealed,Unpaved,Masindi,Western,31.70284307,1.68065608,31.41834837,1.76093139,Source ID retained
+C623_Link01,C623_Link01,C623,C,Bukumi-Bulisa,41.349,0.0,41.349,Bituminous,Paved,Masindi,Western,31.3849211,1.79137638,31.41174186,2.1176992,Source ID retained
+C623_Link02,C623_Link02,C623,C,Bulisa-Wanseko,8.52,41.349,49.869,Bituminous,Paved,Masindi,Western,31.41174186,2.1176992,31.37760606,2.17913925,Source ID retained
+C624_Link01,C624_Link01,C624,C,Bukumi - Butiaba,8.191,0.0,8.191,Bituminous,Paved,Masindi,Western,31.3849211,1.79137638,31.32085448,1.82394008,Source ID retained
+C625_Link01,C625_Link01,C625,C,Kisanja-Park junction,71.121,0.0,71.121,Bituminous,Paved,Masindi,Western,31.56975148,2.2173063,31.74282688,1.73302191,Source ID retained
+C625_Link02,C625_Link02,C625,C,Park junction - Buliisa,21.433,71.121,92.554,Bituminous,Paved,Masindi,Western,31.56975148,2.2173063,31.41168543,2.11771891,Source ID retained
+C626_Link01,C626_Link01,C626,C,Park junction - Paraa,7.701,0.0,7.701,Bituminous,Paved,Masindi,Western,31.56980611,2.21733966,31.56415759,2.28311481,Source ID retained
+C626_Link02,C626_Link02,C626,C,Paraa - Packwach,21.8316151256,7.701,29.5326151256,Bituminous,Paved,Masindi,Western,31.56415759,2.28311481,31.51328258,2.45145537,Source ID retained
+C627_Link01,C627_Link01,C627,C,Masoode-Nkooko,35.684,0.0,35.684,Unsealed,Unpaved,Hoima,Western,31.74404239,0.95550358,31.44678599,0.95449659,Source ID retained
+C627_Link02,C627_Link02,C627,C,Nkooko-Nalweyo,34.868,35.684,70.552,Unsealed,Unpaved,Hoima,Western,31.44678599,0.95449659,31.26221064,1.11795258,Source ID retained
+C629_Link01,C629_Link01,C629,C,Kyenda - Mpongo Swamp - Kisita,33.373,0.0,33.373,Unsealed,Unpaved,Hoima,Western,31.65319054,1.06727328,31.4013232,1.10165736,Source ID retained
+C630_Link01,C630_Link01,C630,C,Ikooba - Ntoma,12.973,0.0,12.973,Unsealed,Unpaved,Masindi,Western,31.65235952,1.59723074,31.6477483,1.48965386,Source ID retained
+C630_Link02,C630_Link02,C630,C,Ntoma - Bwijanga,34.777,12.973,47.75,Unsealed,Unpaved,Masindi,Western,31.6477483,1.48965386,31.58343151,1.53322158,Source ID retained
+C631_Link01,C631_Link01,C631,C,Bwijanga - Isimba Prisons,3.187,0.0,3.187,Unsealed,Unpaved,Masindi,Western,31.58623035,1.53227572,31.59161173,1.50512875,Source ID retained
+C632_Link01,C632_Link01,C632,C,Isimba-Ntoma,14.0,0.0,14.0,Unsealed,Unpaved,Masindi,Western,31.59410985,1.50645141,31.64044849,1.43431442,Source ID retained
+C633_Link01,C633_Link01,C633,C,Butiaba Army Barracks Accesse,1.197,0.0,1.197,Bituminous,Paved,Masindi,Western,31.37352585,1.79844935,31.36691413,1.79004805,Source ID retained
+C634_Link01,C634_Link01,C634,C,Nguedo - Bugana - Waiga,22.103,0.0,22.103,Unsealed,Unpaved,Masindi,Western,31.47225772,1.99688728,31.41581605,2.11862919,Source ID retained
+C635_Link01,C635_Link01,C635,C,Katulikile - Mutunda - Atura / Nanda,23.301,0.0,23.301,Unsealed,Unpaved,Masindi,Western,32.17154043,1.98815513,32.32952098,2.12373326,Source ID retained
+C636_Link01,C636_Link01,C636,C,Kirasa-Kamurasi-Kiwanana (Kisengya),2.552,0.0,2.552,Unsealed,Unpaved,Masindi,Western,31.73146334,1.67545204,31.73504791,1.65484349,Source ID retained
+C637_Link01,C637_Link01,C637,C,(Kisengya),1.543,0.0,1.543,Unsealed,Unpaved,Masindi,Western,31.73170266,1.67015908,31.72448574,1.65876445,Source ID retained
+C638_Link01,C638_Link01,C638,C,Ihungu - Kijunjubwa,3.449,0.0,3.449,Unsealed,Unpaved,Masindi,Western,31.70625001,1.65570749,31.7351475,1.65475961,Source ID retained
+C638_Link02,C638_Link02,C638,C,Kijunjubwa - Bulyamusenyu (Kafu),37.29,3.449,40.739,Unsealed,Unpaved,Masindi,Western,31.7351475,1.65475961,31.845229,1.36783398,Source ID retained
+C639_Link01,C639_Link01,C639,C,Bukommero-Dwaniro-Kyankwanzi,68.528,0.0,68.528,Unsealed,Unpaved,Hoima,Western,32.03984248,0.69098684,31.80164958,1.19500157,Source ID retained
+C640_Link01,C640_Link01,C640,C,Bugungu - Wanseko,21.2223798363,0.0,21.2223798363,Bituminous,Paved,Masindi,Western,31.517615,2.17384088,31.38208491,2.1775244,Source ID retained
+C649_Link01,C649_Link01,C649,C,Lira Army Barracks Access,1.4,0.0,1.4,Bituminous,Paved,Lira,Northern,32.90534961,2.24823085,32.91039941,2.23675232,Source ID retained
+C650_Link01,C650_Link01,C650,C,Akia - Olilim,8.2,8.2,83.8,Unsealed,Unpaved,Lira,Northern,32.97404124,2.23974507,33.51851772,2.45397098,Source ID retained
+C650_Link02,C650_Link01,C650,C,Lira - Akia,8.2,0.0,8.2,Bituminous,Paved,Lira,Northern,32.90216698,2.25040826,32.97404124,2.23974507,Resequenced to unique Road_No_LinkNN standard
+C650_Link03,C650_Link02,C650,C,Olilim - Abim,24.9,97.4,122.3,Unsealed,Unpaved,Kotido,North Eastern,33.51851772,2.45397098,33.65991328,2.71161225,Resequenced to unique Road_No_LinkNN standard
+C651_Link01,C651_Link01,C651,C,Agwata - Aduku,30.306,0.0,30.306,Unsealed,Unpaved,Lira,Northern,32.97921841,1.97429121,32.71557336,1.99887166,Source ID retained
+C652_Link01,C652_Link01,C652,C,Agwata - Kachung,9.141,0.0,9.141,Unsealed,Unpaved,Lira,Northern,32.97957748,1.97413483,32.973055,1.89644167,Source ID retained
+C653_Link01,C653_Link01,C653,C,Dokolo-Ochero,45.661,0.0,45.661,Unsealed,Unpaved,Lira,Northern,33.17194543,1.91672877,32.92593675,1.63142903,Source ID retained
+C653_Link02,C653_Link02,C653,C,Ochero-Namasale,42.292,45.661,87.953,Unsealed,Unpaved,Lira,Northern,32.92593675,1.63142903,32.61444275,1.49423624,Source ID retained
+C654_Link01,C654_Link01,C654,C,Kamdini-Zambia,28.852,0.0,28.852,Unsealed,Unpaved,Gulu,Northern,32.31156286,2.24637238,32.23848218,2.48236237,Source ID retained
+C654_Link02,C654_Link02,C654,C,Zambia-Minakulu,17.756,28.852,46.608,Unsealed,Unpaved,Gulu,Northern,32.23848218,2.48236237,32.37945793,2.44592417,Source ID retained
+C655_Link01,C655_Link01,C655,C,Bobi-Aboke-Ayer,54.222,0.0,54.222,Unsealed,Unpaved,Gulu,Northern,32.3565005,2.56955422,32.68974317,2.28460007,Source ID retained
+C656_Link01,C656_Link01,C656,C,Namasale - Alemere,40.907,0.0,40.907,Unsealed,Unpaved,Lira,Northern,32.62469583,1.50192858,32.81771632,1.63476053,Source ID retained
+C656_Link02,C656_Link02,C656,C,Alemere - Muntu,11.26,40.907,52.167,Unsealed,Unpaved,Lira,Northern,32.81771632,1.63476053,32.8975499,1.58183244,Source ID retained
+C657_Link01,C657_Link01,C657,C,Odyek - Muntu,9.255,0.0,9.255,Unsealed,Unpaved,Lira,Northern,32.92607215,1.63143215,32.88828965,1.5582123,Source ID retained
+C658_Link01,C658_Link01,C658,C,Aduku-Nambieso,18.065,0.0,18.065,Unsealed,Unpaved,Lira,Northern,32.72265921,1.9929763,32.79708665,1.85385914,Source ID retained
+C659_Link01,C659_Link01,C659,C,Ami-Kidilani,16.38,0.0,16.38,Unsealed,Unpaved,Lira,Northern,32.40749505,1.93223524,32.38586899,2.05401834,Source ID retained
+C660_Link01,C660_Link01,C660,C,Cegere-Kidilani,14.83,0.0,14.83,Unsealed,Unpaved,Lira,Northern,32.38586899,2.05401834,32.5091572,2.09244073,Source ID retained
+C661_Link01,C661_Link01,C661,C,Apac-Cegere,12.278,0.0,12.278,Unsealed,Unpaved,Lira,Northern,32.5341557,1.98480191,32.50918706,2.09152248,Source ID retained
+C661_Link02,C661_Link02,C661,C,Cegere-Teboke,14.621,12.278,26.899,Unsealed,Unpaved,Lira,Northern,32.50918706,2.09152248,32.58440961,2.19522333,Source ID retained
+C662_Link01,C662_Link01,C662,C,Aduku-Teboke-Loro,34.272,0.0,34.272,Unsealed,Unpaved,Lira,Northern,32.53031175,2.24583935,32.72064022,2.0155662,Source ID retained
+C663_Link01,C663_Link01,C663,C,Loro Prisons Access,1.935,0.0,1.935,Unsealed,Unpaved,Lira,Northern,32.46965841,2.23141923,32.4736675,2.2161248,Source ID retained
+C664_Link01,C664_Link01,C664,C,Atopi Prisons Access,0.648,0.0,0.648,Unsealed,Unpaved,Lira,Northern,32.50072743,1.97733976,32.50095715,1.97152925,Source ID retained
+C665_Link01,C665_Link01,C665,C,Loro - Anyeke,11.857,0.0,11.857,Unsealed,Unpaved,Gulu,Northern,32.53067771,2.246033,32.51572207,2.34821429,Source ID retained
+C665_Link02,C665_Link02,C665,C,Anyeke-Minakulu,20.679,11.857,32.536,Unsealed,Unpaved,Gulu,Northern,32.51572207,2.34821429,32.37944323,2.44623095,Source ID retained
+C666_Link01,C666_Link01,C666,C,Aber-Anyeke-Ngai,36.755,0.0,36.755,Unsealed,Unpaved,Gulu,Northern,32.37058084,2.21376218,32.501322,2.49369806,Source ID retained
+C666_Link02,C666_Link02,C666,C,Ngai-Abok-Otwal-Aromo,50.098,36.755,86.853,Unsealed,Unpaved,Gulu,Northern,32.501322,2.49369806,32.8378433,2.61186855,Source ID retained
+C667_Link01,C667_Link01,C667,C,Agweng-Arom,18.392,0.0,18.392,Unsealed,Unpaved,Lira,Northern,32.93477017,2.48766613,32.83796141,2.61168535,Source ID retained
+C667_Link02,C667_Link02,C667,C,Arom-Awere,11.04,18.392,29.432,Unsealed,Unpaved,Gulu,Northern,32.83796141,2.61168535,32.78520515,2.68689507,Source ID retained
+C668_Link01,C668_Link01,C668,C,Agwata Bypass,1.6,0.0,1.6,Bituminous,Paved,Lira,Northern,32.97863867,1.98057372,32.98609441,1.97676681,Source ID retained
+C669_Link01,C669_Link01,C669,C,Lira Railway Access,2.277,0.0,2.277,Bituminous,Paved,Lira,Northern,32.90507853,2.25482709,32.91622633,2.24559839,Source ID retained
+C670_Link01,C670_Link01,C670,C,Lira - Boroboro - Abako - Okude,59.43,0.0,59.43,Unsealed,Unpaved,Lira,Northern,32.91039941,2.23675232,33.35154695,2.07202532,Source ID retained
+C670_Link02,C670_Link02,C670,C,Okude - Amuria,34.046,59.43,93.476,Unsealed,Unpaved,Soroti,North Eastern,33.35154695,2.07202532,33.64268203,2.02989533,Source ID retained
+C671_Link01,C671_Link01,C671,C,Aloi - Aboko - Bata - Dokolo,42.37,0.0,42.37,Unsealed,Unpaved,Lira,Northern,33.17194779,1.91674777,33.17519935,2.2738333,Source ID retained
+C672_Link01,C672_Link01,C672,C,Ogur - Apala,12.72,0.0,12.72,Unsealed,Unpaved,Lira,Northern,32.93503274,2.4372059,33.04208354,2.40009084,Source ID retained
+C672_Link02,C672_Link02,C672,C,Apala-Aloi,20.683,12.72,33.403,Unsealed,Unpaved,Lira,Northern,33.04208354,2.40009084,33.1754229,2.27385695,Source ID retained
+C673_Link01,C673_Link01,C673,C,Ngetta-Apala,19.803,0.0,19.803,Unsealed,Unpaved,Lira,Northern,32.91877886,2.27610793,33.04186462,2.40009055,Source ID retained
+C673_Link02,C673_Link02,C673,C,Apala-Adwari,27.187,19.803,46.99,Unsealed,Unpaved,Lira,Northern,33.04186462,2.40009055,33.25666311,2.43353429,Source ID retained
+C674_Link01,C674_Link01,C674,C,Patongo-Okee Bridge,22.085,0.0,22.085,Unsealed,Unpaved,Kitgum,Northern,33.31133683,2.76439961,33.26768408,2.57235091,Source ID retained
+C674_Link02,C674_Link02,C674,C,Okee Bridge-Adwari,15.95,22.085,38.035,Unsealed,Unpaved,Lira,Northern,33.26768408,2.57235091,33.25666311,2.43353429,Source ID retained
+C675_Link01,C675_Link01,C675,C,Pajule - Pader,18.1,0.0,18.1,Unsealed,Unpaved,Kitgum,Northern,32.94200436,2.94489383,33.08668267,2.88222505,Source ID retained
+C675_Link02,C675_Link02,C675,C,Pader - Kwonkwic (Palwo),9.2,18.1,27.351,Unsealed,Unpaved,Kitgum,Northern,33.08668267,2.88222505,33.11170546,2.8079148,Source ID retained
+C676_Link01,C676_Link01,C676,C,Pader - Kalongo,37.1,0.0,37.1,Unsealed,Unpaved,Kitgum,Northern,33.08688882,2.88204142,33.37034606,3.02878477,Source ID retained
+C677_Link01,C677_Link01,C677,C,Patongo - Kalongo,31.986,0.0,31.986,Unsealed,Unpaved,Kitgum,Northern,33.30718619,2.76619059,33.37186946,3.03858269,Source ID retained
+C677_Link02,C677_Link02,C677,C,Kalongo - Kitgum Matidi,45.614,31.986,77.6,Unsealed,Unpaved,Kitgum,Northern,33.37144386,3.0383418,33.053186,3.26855421,Source ID retained
+C678_Link01,C678_Link01,C678,C,Naamokora - Lokapel,37.201,0.0,37.201,Unsealed,Unpaved,Kitgum,Northern,33.48081693,2.74160226,33.44314371,3.07113571,Source ID retained
+C678_Link02,C678_Link02,C678,C,Lokapel - Adilang,37.26,37.201,74.461,Unsealed,Unpaved,Kitgum,Northern,33.44314371,3.07113571,33.33445132,3.34805105,Source ID retained
+C679_Link01,C679_Link01,C679,C,Lira bypas,3.8,0.0,3.8,Bituminous,Paved,Lira,Northern,32.87565392,2.26062248,32.89317464,2.23383041,Source ID retained
+C680_Link01,C680_Link01,C680,C,Gulu-Opit,64.108,0.0,64.108,Unsealed,Unpaved,Gulu,Northern,32.29789664,2.77171446,32.72918131,2.68020585,Source ID retained
+C680_Link02,C680_Link02,C680,C,Opit-Rwackoko,26.995,64.108,91.103,Unsealed,Unpaved,Gulu,Northern,32.72918131,2.68020585,32.945426,2.70131797,Source ID retained
+C681_Link01,C681_Link01,C681,C,Acholibur - Aswa,45.119,0.0,45.119,Bituminous,Paved,Kitgum,Northern,32.91396699,3.14468854,32.58140358,2.95851111,Source ID retained
+C681_Link02,C681_Link02,C681,C,Aswa - Gulu,38.622,45.119,83.741,Bituminous,Paved,Gulu,Northern,32.58140358,2.95851111,32.29518779,2.77898728,Source ID retained
+C682_Link01,C682_Link01,C682,C,Gulu - Logere - Adee,57.529,0.0,57.529,Unsealed,Unpaved,Gulu,Northern,32.29395774,2.78376312,32.33136436,3.24756399,Source ID retained
+C683_Link01,C683_Link01,C683,C,Layibi - Custom corner,3.911,0.0,3.911,Bituminous,Paved,Gulu,Northern,32.30580731,2.74343341,32.27922901,2.76120334,Source ID retained
+C684_Link01,C684_Link01,C684,C,Gulu Airport road,4.101,0.0,4.101,Bituminous,Paved,Gulu,Northern,32.29725259,2.77724699,32.27564893,2.79982386,Source ID retained
+C685_Link01,C685_Link01,C685,C,Katikati - Tenumu - Nwoya,34.538,0.0,34.538,Unsealed,Unpaved,Gulu,Northern,32.23742352,2.76776953,32.00011924,2.6331865,Source ID retained
+C686_Link01,C686_Link01,C686,C,Lamogi - Amuru Junction,31.103,0.0,31.103,Unsealed,Unpaved,Gulu,Northern,32.17339708,2.83849946,31.92671999,2.81829088,Source ID retained
+C686_Link02,C686_Link02,C686,C,Amuru Junction - Awee,43.976,31.103,75.079,Unsealed,Unpaved,Gulu,Northern,31.92671999,2.81829088,31.5858851,2.87399545,Source ID retained
+C686_Link03,C686_Link03,C686,C,Awee - Omee Rhino  Camp,23.043,75.079,98.122,Unsealed,Unpaved,Gulu,Northern,31.5858851,2.87399545,31.4284386,2.90911005,Source ID retained
+C687_Link01,C687_Link01,C687,C,Packwach Railway Access,0.21,0.0,0.21,Unsealed,Unpaved,Arua,Northern,31.50683388,2.46076617,31.50838782,2.46174717,Source ID retained
+C688_Link01,C688_Link01,C688,C,Amuru Junction - Mungula,25.652,0.0,25.652,Unsealed,Unpaved,Moyo,Northern,31.92710709,2.81803483,31.86575767,2.95979427,Source ID retained
+C688_Link02,C688_Link02,C688,C,Mungula - Adjumani,59.454,25.652,85.106,Unsealed,Unpaved,Moyo,Northern,31.86575767,2.95979427,31.78748697,3.37636948,Source ID retained
+C689_Link01,C689_Link01,C689,C,Pakele - Pabbo,59.895,0.0,59.895,Unsealed,Unpaved,Moyo,Northern,32.15315741,3.01449263,31.85906917,3.35727929,Source ID retained
+C690_Link01,C690_Link01,C690,C,Pabbo - Ajulu - Uyama,20.022,0.0,20.022,Unsealed,Unpaved,Gulu,Northern,32.14965797,3.01011063,32.3070364,2.98677221,Source ID retained
+C691_Link01,C691_Link01,C691,C,Gulu Army Barracks Access,3.961,0.0,3.961,Unsealed,Unpaved,Gulu,Northern,32.28363006,2.78657273,32.26629699,2.76508906,Source ID retained
+C692_Link01,C692_Link01,C692,C,Gulu Railway Access,1.633,0.0,1.633,Unsealed,Unpaved,Gulu,Northern,32.29990923,2.76281695,32.28887684,2.75836141,Source ID retained
+C693_Link01,C693_Link01,C693,C,Atapara-Aber-Atura-Kidilani,23.087,0.0,23.087,Unsealed,Unpaved,Lira,Northern,32.36693675,2.21430364,32.38586899,2.05401834,Source ID retained
+C694_Link01,C694_Link01,C694,C,Teokur - Aboo,13.21,0.0,13.21,Unsealed,Unpaved,Gulu,Northern,31.46885091,2.88731116,31.37698992,2.85825146,Source ID retained
+C700_Link01,C700_Link01,C700,C,Atiak-Palabek,65.0,0.0,65.0,Unsealed,Unpaved,Kitgum,Northern,32.12109444,3.25416262,32.53632675,3.43418415,Source ID retained
+C700_Link02,C700_Link02,C700,C,Palabek-Kitgum,43.0,65.0,108.0,Unsealed,Unpaved,Kitgum,Northern,32.53632675,3.43418415,32.88034606,3.30386499,Source ID retained
+C701_Link01,C701_Link01,C701,C,Kitgum-Lukung-Ngomoromo,67.331,0.0,67.331,Unsealed,Unpaved,Kitgum,Northern,32.90276718,3.32377291,32.53866851,3.75254884,Source ID retained
+C702_Link01,C702_Link01,C702,C,Madi Opei-Agoro Hills,49.063,0.0,49.063,Unsealed,Unpaved,Kitgum,Northern,33.09192996,3.62304744,32.90527426,3.7190652,Source ID retained
+C703_Link01,C703_Link01,C703,C,Kitgum - Orom,79.113,0.0,79.113,Unsealed,Unpaved,Kitgum,Northern,32.89853538,3.27338942,33.46950646,3.39950763,Source ID retained
+C704_Link01,C704_Link01,C704,C,Palabek - Padibe,24.86,0.0,24.86,Unsealed,Unpaved,Kitgum,Northern,32.83410635,3.46870926,32.62564091,3.4001665,Source ID retained
+C705_Link01,C705_Link01,C705,C,Padibe - Paloga,16.832,0.0,16.832,Unsealed,Unpaved,Kitgum,Northern,33.08744886,3.60595075,32.94454198,3.58966463,Source ID retained
+C705_Link02,C705_Link02,C705,C,Paloga - Madiopei,18.978,16.832,35.81,Unsealed,Unpaved,Kitgum,Northern,32.94454198,3.58966463,32.83672028,3.46589756,Source ID retained
+C706_Link01,C706_Link01,C706,C,Paloga-Potika,17.307,0.0,17.307,Unsealed,Unpaved,Kitgum,Northern,32.94447707,3.58961191,32.88087362,3.7198911,Source ID retained
+C706_Link02,C706_Link02,C706,C,Potika - Lututur,12.038,17.307,29.345,Unsealed,Unpaved,Kitgum,Northern,32.88087362,3.7198911,32.91175957,3.75639522,Source ID retained
+C707_Link01,C707_Link01,C707,C,Acholi Pii Army Baracks Access,1.342,0.0,1.342,Unsealed,Unpaved,Kitgum,Northern,33.01691093,3.79712586,33.02315184,3.80600948,Source ID retained
+C708_Link01,C708_Link01,C708,C,Ngomoromo - Nyimur - Bibia,45.085,0.0,45.085,Unsealed,Unpaved,Kitgum,Northern,32.57712613,3.69878703,32.44656419,3.49738299,Source ID retained
+C709_Link01,C709_Link01,C709,C,Potika - Aweno Olwiyo - Ngomoromo,37.125,0.0,37.125,Unsealed,Unpaved,Kitgum,Northern,32.57677445,3.69900402,32.88087979,3.7199004,Source ID retained
+C710_Link01,C710_Link01,C710,C,Orom - Locomo - Karenga,41.4,0.0,41.4,Unsealed,Unpaved,Kitgum,Northern,33.46950646,3.39950763,33.697037,3.57643482,Source ID retained
+C711_Link01,C711_Link01,C711,C,Pajimo-Army Barracks,1.264,0.0,1.264,Unsealed,Unpaved,Kitgum,Northern,32.78907765,3.32921992,32.79486077,3.33545067,Source ID retained
+C720_Link01,C720_Link01,C720,C,Moyo - Sudan border,10.662,0.0,10.662,Unsealed,Unpaved,Moyo,Northern,31.72240313,3.65409704,31.66321156,3.71877842,Source ID retained
+C721_Link01,C721_Link01,C721,C,Obongi - Kulikulinga,45.546,0.0,45.546,Unsealed,Unpaved,Moyo,Northern,31.25046343,3.34639662,31.55936012,3.23880385,Source ID retained
+C722_Link01,C722_Link01,C722,C,Moyo - Obongi,53.037,0.0,53.037,Unsealed,Unpaved,Moyo,Northern,31.66803395,3.6296283,31.55039445,3.24162983,Source ID retained
+C723_Link01,C723_Link01,C723,C,Access to Adjumani Prison,3.441,0.0,3.441,Unsealed,Unpaved,Moyo,Northern,31.7782304,3.34158692,31.75219547,3.33358907,Source ID retained
+C725_Link01,C725_Link01,C725,C,Dzaipi - Tete,12.2,0.0,12.2,Unsealed,Unpaved,Moyo,Northern,31.96298795,3.39546939,32.01193667,3.48426167,Source ID retained
+C725_Link02,C725_Link02,C725,C,Tete - Bibia (Nimule border),6.6,12.2,18.8,Unsealed,Unpaved,Moyo,Northern,32.01193667,3.48426167,32.0679572,3.47389926,Source ID retained
+C726_Link01,C726_Link01,C726,C,Adjumani - Sinyanya Ferry landing,34.352,0.0,34.352,Unsealed,Unpaved,Moyo,Northern,31.79255232,3.37791067,31.57002066,3.2319845,Source ID retained
+C727_Link01,C727_Link01,C727,C,Tete - Nimule Border,14.329,0.0,14.329,Unsealed,Unpaved,Moyo,Northern,32.01256863,3.48438076,32.07103325,3.56716303,Source ID retained
+C728_Link01,C728_Link01,C728,C,Aliodranusi-Gobolo-Matu-Kerwa-kei,76.0,0.0,76.0,Unsealed,Unpaved,Moyo,Northern,31.51554188,3.5789392,31.31376562,3.72132634,Source ID retained
+C740_Link01,C740_Link01,C740,C,Koboko - Yumbe,36.23,0.0,36.23,Unsealed,Unpaved,Arua,Northern,30.96002398,3.41553073,31.24726822,3.4698306,Source ID retained
+C741_Link01,C741_Link01,C741,C,Wandi - Rhino camp,51.549,0.0,51.549,Unsealed,Unpaved,Arua,Northern,30.97877961,3.10074415,31.4011619,2.97410854,Source ID retained
+C742_Link01,C742_Link01,C742,C,Rhino camp-Ogoko-Inde,22.638,0.0,22.638,Unsealed,Unpaved,Arua,Northern,31.39547716,2.97270963,31.23235064,2.8756852,Source ID retained
+C743_Link01,C743_Link01,C743,C,Pakwach-Inde,59.771,0.0,59.771,Unsealed,Unpaved,Arua,Northern,31.49485521,2.46088445,31.23264411,2.87539164,Source ID retained
+C743_Link02,C743_Link02,C743,C,Inde-Ocoko,33.019,59.771,92.79,Unsealed,Unpaved,Arua,Northern,31.23264411,2.87539164,30.96323789,2.94627184,Source ID retained
+C744_Link01,C744_Link01,C744,C,Eruba - Vurra,9.411,0.0,9.411,Bituminous,Paved,Arua,Northern,30.91646093,2.95630924,30.8794506,2.88635192,Source ID retained
+C745_Link01,C745_Link01,C745,C,Nebbi - Goli,15.141,0.0,15.141,Unsealed,Unpaved,Arua,Northern,31.08989721,2.4784871,31.02993098,2.37714199,Source ID retained
+C746_Link01,C746_Link01,C746,C,Packwach - Panyimur,33.96,0.0,33.96,Unsealed,Unpaved,Arua,Northern,31.46849031,2.46009816,31.30886393,2.22992655,Source ID retained
+C747_Link01,C747_Link01,C747,C,Panyimur - Paidha Via Erusi-Goli,52.029,0.0,52.029,Unsealed,Unpaved,Arua,Northern,31.3113939,2.23386191,31.03162435,2.3866134,Source ID retained
+C748_Link01,C748_Link01,C748,C,Okullo - Inde,28.15,0.0,28.15,Unsealed,Unpaved,Arua,Northern,31.13947081,2.65699212,31.25524646,2.85891001,Source ID retained
+C749_Link01,C749_Link01,C749,C,Eruba - Logiri,23.257,0.0,23.257,Unsealed,Unpaved,Arua,Northern,30.91437037,2.95340221,30.86087572,2.7734025,Source ID retained
+C750_Link01,C750_Link01,C750,C,Arua - Muni PTTC - Eruba,5.971,0.0,5.971,Unsealed,Unpaved,Arua,Northern,30.91999757,2.97541676,30.91531119,3.01423226,Source ID retained
+C751_Link01,C751_Link01,C751,C,Arua - Girigiri - Ovisoni,14.61,0.0,14.61,Unsealed,Unpaved,Arua,Northern,30.91219657,3.01899386,30.88191156,2.90760499,Source ID retained
+C752_Link01,C752_Link01,C752,C,Arua - Lia,15.205,0.0,15.205,Unsealed,Unpaved,Arua,Northern,30.910256,3.02250398,30.79181087,3.06015515,Source ID retained
+C753_Link01,C753_Link01,C753,C,Ragem Prisons Access,3.65,0.0,3.65,Unsealed,Unpaved,Arua,Northern,31.39301673,2.71370591,31.36984079,2.71112963,Source ID retained
+C755_Link01,C755_Link01,C755,C,Owaffa - Kubala,14.557,0.0,14.557,Unsealed,Unpaved,Arua,Northern,31.0123698,3.1568465,31.05529408,3.26639211,Source ID retained
+C756_Link01,C756_Link01,C756,C,Lomunga - Bidibidi - Kochi,44.148,0.0,44.148,Unsealed,Unpaved,Moyo,Northern,31.28563064,3.40923334,31.43779021,3.55924612,Source ID retained
+C757_Link01,C757_Link01,C757,C,Keri - Lima - Midigo - Kerila,38.536,0.0,38.536,Unsealed,Unpaved,Moyo,Northern,30.93989589,3.50241765,31.23252699,3.60803321,Source ID retained
+C758_Link01,C758_Link01,C758,C,Keriri - Midigo,14.013,0.0,14.013,Unsealed,Unpaved,Moyo,Northern,31.2705229,3.49520587,31.23254797,3.6079084,Source ID retained
+C758_Link02,C758_Link02,C758,C,Midigo - Kerwa,21.733,14.013,35.746,Unsealed,Unpaved,Moyo,Northern,31.23254797,3.6079084,31.28826839,3.75636585,Source ID retained
+C759_Link01,C759_Link01,C759,C,Vurra Customs - Odramacaku,34.206,0.0,34.206,Unsealed,Unpaved,Arua,Northern,30.87930773,2.88756983,30.80139977,3.11056294,Source ID retained
+C760_Link01,C760_Link01,C760,C,Logiri - Bondo,16.845,0.0,16.845,Unsealed,Unpaved,Arua,Northern,30.8588927,2.76857448,30.97754666,2.79668076,Source ID retained
+C761_Link01,C761_Link01,C761,C,Lodonga - Iti - Otumbari,17.651,0.0,17.651,Unsealed,Unpaved,Moyo,Northern,31.14473417,3.27089716,31.11461616,3.41330086,Source ID retained
+C762_Link01,C762_Link01,C762,C,Arua - Biliafe,23.0,0.0,23.0,Unsealed,Unpaved,Arua,Northern,30.9145661,3.01456899,31.0774233,3.06262556,Source ID retained
+C762_Link02,C762_Link02,C762,C,Biliafe - Otrevu,13.8,23.0,36.8,Unsealed,Unpaved,Arua,Northern,31.0774233,3.06262556,31.08071226,3.1787577,Source ID retained
+C763_Link01,C763_Link01,C763,C,Paidha-Zombo,22.0,0.0,22.0,Unsealed,Unpaved,Arua,Northern,31.03140316,2.3857183,30.92492038,2.47739692,Source ID retained
+C763_Link02,C763_Link02,C763,C,Zombo-Vurra,61.2,22.0,83.2,Unsealed,Unpaved,Arua,Northern,30.92492038,2.47739692,30.87943682,2.88644391,Source ID retained
+C764_Link01,C764_Link01,C764,C,Katrini - Nyadri,22.055,0.0,22.055,Unsealed,Unpaved,Arua,Northern,30.95399417,3.27279113,30.96402929,3.09772885,Source ID retained
+C765_Link01,C765_Link01,C765,C,Packwach-Railway Access,0.274,0.0,0.274,Unsealed,Unpaved,Arua,Northern,31.50648441,2.46144164,31.50510704,2.46344855,Source ID retained
+C766_Link01,C766_Link01,C766,C,Elefe - Odokibo (Iti),9.455,0.0,9.455,Unsealed,Unpaved,Moyo,Northern,31.17880439,3.32593585,31.12868306,3.38647083,Source ID retained
+C767_Link01,C767_Link01,C767,C,Omugo-Kubala,6.688,0.0,6.688,Unsealed,Unpaved,Arua,Northern,31.11438437,3.27551859,31.05538528,3.2663828,Source ID retained
+C768_Link01,C768_Link01,C768,C,Yuku - Lobe spur,10.228,0.0,10.228,Unsealed,Unpaved,Moyo,Northern,31.0944481,3.5721861,31.13327266,3.5680513,Source ID retained
+C769_Link01,C769_Link01,C769,C,Rhino Camp Ferry Access,5.85,0.0,5.85,Unsealed,Unpaved,Arua,Northern,31.36966401,2.93418914,31.39031629,2.94763815,Source ID retained
+C780_Link01,C780_Link01,C780,C,Iganga-Kitayungwa,50.041,0.0,50.041,Unsealed,Unpaved,Jinja,Eastern,33.46589664,0.60698784,33.16295848,0.89425432,Source ID retained
+C780_Link02,C780_Link02,C780,C,Kitayungwa-Kamuli,7.185,50.041,57.226,Unsealed,Unpaved,Jinja,Eastern,33.16295848,0.89425432,33.11091251,0.9295188,Source ID retained
+C781_Link01,C781_Link01,C781,C,Iganga - Mayuge,20.406,0.0,20.406,Unsealed,Unpaved,Jinja,Eastern,33.47769663,0.61488385,33.48076913,0.45882264,Source ID retained
+C781_Link02,C781_Link02,C781,C,Mayuge - Kaluuba,9.061,20.406,29.467,Unsealed,Unpaved,Jinja,Eastern,33.48076913,0.45882264,33.52119922,0.39560765,Source ID retained
+C781_Link03,C781_Link03,C781,C,Kaluuba - Bugadde - Bwondha,29.851,29.467,59.318,Unsealed,Unpaved,Jinja,Eastern,33.52119922,0.39560765,33.56555719,0.17078843,Source ID retained
+C782_Link01,C782_Link01,C782,C,Musita-Mayuge - Nankoma,35.6,0.0,35.6,Bituminous,Paved,Jinja,Eastern,33.38715834,0.52897363,33.67572283,0.4493957,Source ID retained
+C782_Link02,C782_Link02,C782,C,Nankoma-Namayingo-Lumino,41.8,35.6,77.4,Bituminous,Paved,Tororo,Eastern,33.67572283,0.4493957,33.99558142,0.32309466,Source ID retained
+C783_Link01,C783_Link01,C783,C,Namayingo - Lugala,16.928,0.0,16.928,Unsealed,Unpaved,Tororo,Eastern,33.88029193,0.34105467,33.9028884,0.19911797,Source ID retained
+C784_Link01,C784_Link01,C784,C,Iganga-Kaliro,32.032,0.0,32.032,Bituminous,Paved,Jinja,Eastern,33.48203472,0.61625773,33.50450661,0.8940228,Source ID retained
+C784_Link02,C784_Link02,C784,C,Kaliro-Nawaikoke-Irundu,52.2,32.032,84.232,Unsealed,Unpaved,Jinja,Eastern,33.50450661,0.8940228,33.3747477,1.21703655,Source ID retained
+C785_Link01,C785_Link01,C785,C,Buwenge-Nakabugu,23.051,0.0,23.051,Unsealed,Unpaved,Jinja,Eastern,33.1712878,0.64965978,33.31087171,0.79691028,Source ID retained
+C785_Link02,C785_Link02,C785,C,Nakabugu-Kaliro,24.376,23.051,47.427,Unsealed,Unpaved,Jinja,Eastern,33.31087171,0.79691028,33.50403737,0.89164938,Source ID retained
+C786_Link01,C786_Link01,C786,C,Kaliro - Kamuli,45.284,0.0,45.284,Unsealed,Unpaved,Jinja,Eastern,33.50481329,0.89484525,33.1283791,0.94257638,Source ID retained
+C787_Link01,C787_Link01,C787,C,Nawangasi-Busesa,11.37,0.0,11.37,Unsealed,Unpaved,Jinja,Eastern,33.58318769,0.72475184,33.60027153,0.62651069,Source ID retained
+C787_Link02,C787_Link02,C787,C,Busesa-Nakivumbi,8.39,11.37,19.76,Unsealed,Unpaved,Jinja,Eastern,33.60027153,0.62651069,33.60304605,0.55161911,Source ID retained
+C788_Link01,C788_Link01,C788,C,Iganga - Buniantole,15.286,0.0,15.286,Unsealed,Unpaved,Jinja,Eastern,33.4785814,0.60914846,33.60108578,0.57062063,Source ID retained
+C789_Link01,C789_Link01,C789,C,Kamuli Railway access 1,5.883,0.0,5.883,Unsealed,Unpaved,Jinja,Eastern,33.11699115,0.87561517,33.16286213,0.89441013,Source ID retained
+C790_Link01,C790_Link01,C790,C,Nawantale-Nakabila,6.532,0.0,6.532,Unsealed,Unpaved,Jinja,Eastern,33.09364374,1.07383447,33.13858526,1.10672843,Source ID retained
+C791_Link01,C791_Link01,C791,C,Gadaffi army barracks off Jinja - Iganga,0.911,0.0,0.911,Unsealed,Unpaved,Jinja,Eastern,33.2127743,0.4415921,33.20871902,0.44692194,Source ID retained
+C792_Link01,C792_Link01,C792,C,Kaitabawaala - Buyala - Namagera,18.484,0.0,18.484,Unsealed,Unpaved,Jinja,Eastern,33.19762742,0.44530155,33.13372421,0.5824559,Source ID retained
+C792_Link02,C792_Link02,C792,C,Namagera - Lubanyi,37.199,18.484,55.683,Unsealed,Unpaved,Jinja,Eastern,33.13372421,0.5824559,33.10898251,0.89476809,Source ID retained
+C793_Link01,C793_Link01,C793,C,Mbulamuti railway access,2.157,0.0,2.157,Unsealed,Unpaved,Jinja,Eastern,33.04872362,0.83940095,33.06667077,0.83695111,Source ID retained
+C794_Link01,C794_Link01,C794,C,Kamuli railway access 2,2.403,0.0,2.403,Unsealed,Unpaved,Jinja,Eastern,33.14281992,0.90903892,33.14883571,0.89100877,Source ID retained
+C795_Link01,C795_Link01,C795,C,Namaganda railway access,8.719,0.0,8.719,Unsealed,Unpaved,Jinja,Eastern,33.18786841,0.86976724,33.26550769,0.91869668,Source ID retained
+C796_Link01,C796_Link01,C796,C,Magamaga - Bugolooza - Namasiga - Iziru - Bugobya,7.996,0.0,7.996,Unsealed,Unpaved,Jinja,Eastern,33.34824233,0.52033134,33.31261643,0.57997125,Source ID retained
+C797_Link01,C797_Link01,C797,C,Bugembe - Kakira,7.052,0.0,7.052,Unsealed,Unpaved,Jinja,Eastern,33.2416319,0.46762749,33.28141148,0.50918798,Source ID retained
+C797_Link02,C797_Link02,C797,C,Kakira - Namasiga,12.018,7.052,19.07,Unsealed,Unpaved,Jinja,Eastern,33.28141148,0.50918798,33.31560728,0.59121634,Source ID retained
+C797_Link03,C797_Link03,C797,C,Namasiga - Bulongo,19.1456,19.07,38.2156,Unsealed,Unpaved,Jinja,Eastern,33.31591299,0.5900264,33.33481463,0.75795293,Source ID retained
+C798_Link01,C798_Link01,C798,C,Kakira railway access,3.519,0.0,3.519,Unsealed,Unpaved,Jinja,Eastern,33.28140705,0.50920052,33.25166526,0.51932818,Source ID retained
+C799_Link01,C799_Link01,C799,C,Kimaka army barracks,4.137,0.0,4.137,Unsealed,Unpaved,Jinja,Eastern,33.18405625,0.4593065,33.21920176,0.45583689,Source ID retained
+C800_Link01,C800_Link01,C800,C,Bugiri - Nankoma,16.699,0.0,16.699,Unsealed,Unpaved,Jinja,Eastern,33.76878009,0.55104656,33.68277984,0.44955755,Source ID retained
+C801_Link01,C801_Link01,C801,C,Lwangosha - Lufudu,12.645,0.0,12.645,Unsealed,Unpaved,Tororo,Eastern,33.88413257,0.29807715,33.80713465,0.22334702,Source ID retained
+C802_Link01,C802_Link01,C802,C,Iganga railway access,0.913,0.0,0.913,Unsealed,Unpaved,Jinja,Eastern,33.47375621,0.61379895,33.47279704,0.62047947,Source ID retained
+C803_Link01,C803_Link01,C803,C,Idudi - Busembatya,17.93,0.0,17.93,Unsealed,Unpaved,Jinja,Eastern,33.62309564,0.62295199,33.62528789,0.77159784,Source ID retained
+C803_Link02,C803_Link02,C803,C,Busembatya - Namakoko,32.09,17.93,50.02,Unsealed,Unpaved,Jinja,Eastern,33.62528789,0.77159784,33.67696119,1.03415759,Source ID retained
+C804_Link01,C804_Link01,C804,C,Bugiri - Kisetaka - Nabukalu - Naigaga,19.174,0.0,19.174,Unsealed,Unpaved,Jinja,Eastern,33.74520312,0.57321434,33.6997119,0.73718899,Source ID retained
+C805_Link01,C805_Link01,C805,C,Namalemba-Nawampandhu-Bulange,10.517,0.0,10.517,Unsealed,Unpaved,Jinja,Eastern,33.60818543,0.75592017,33.69969211,0.73719164,Source ID retained
+C805_Link02,C805_Link02,C805,C,Bulange - Kisiro,17.0048963953,10.517,27.5218963953,Unsealed,Unpaved,Jinja,Eastern,33.69969211,0.73719164,33.84499679,0.71629189,Source ID retained
+C806_Link01,C806_Link01,C806,C,Namatumba - Nawampandu,10.793,0.0,10.793,Unsealed,Unpaved,Jinja,Eastern,33.68601491,0.83541638,33.67986719,0.74240391,Source ID retained
+C807_Link01,C807_Link01,C807,C,Busoko - Busaba,0.773,0.0,0.773,Unsealed,Unpaved,Jinja,Eastern,33.70685661,0.86094279,33.71295395,0.86420271,Source ID retained
+C808_Link01,C808_Link01,C808,C,Kaliro railway access,3.0,0.0,3.0,Unsealed,Unpaved,Jinja,Eastern,33.50163976,0.87204529,33.49298226,0.87217571,Source ID retained
+C809_Link01,C809_Link01,C809,C,Kaliro - Namwiwa,22.26,0.0,22.26,Unsealed,Unpaved,Jinja,Eastern,33.50557779,0.89689738,33.55210317,1.09132354,Source ID retained
+C810_Link01,C810_Link01,C810,C,Pallisa - Kasodo - Saaka,10.418,0.0,10.418,Unsealed,Unpaved,Mbale,Eastern,33.7110879,1.16677652,33.59868036,1.12232208,Source ID retained
+C811_Link01,C811_Link01,C811,C,Kamuli - Nabirumba,10.427,0.0,10.427,Unsealed,Unpaved,Jinja,Eastern,33.1237544,0.94891021,33.18207892,1.02338716,Source ID retained
+C811_Link02,C811_Link02,C811,C,Nabirumba - Iyingo,36.418,10.427,46.845,Unsealed,Unpaved,Jinja,Eastern,33.18207892,1.02338716,33.30617508,1.31113604,Source ID retained
+C812_Link01,C812_Link01,C812,C,Nabirumbi- Buyende - Nkondo - Kidera,46.019,0.0,46.019,Unsealed,Unpaved,Jinja,Eastern,32.98837989,1.33666505,33.18127556,1.0215349,Source ID retained
+C813_Link01,C813_Link01,C813,C,Namayingo - Bumeru (Namayingo - Lugala),30.368,0.0,30.368,Unsealed,Unpaved,Tororo,Eastern,33.8783647,0.34205208,33.70915265,0.19297072,Source ID retained
+C815_Link01,C815_Link01,C815,C,Bugobya-Mugulula-Namagera,19.356,0.0,19.356,Unsealed,Unpaved,Jinja,Eastern,33.31561819,0.59114427,33.19106726,0.60963366,Source ID retained
+C816_Link01,C816_Link01,C816,C,Muguluka-Namagera,8.052,0.0,8.052,Unsealed,Unpaved,Jinja,Eastern,33.19037305,0.61118363,33.13263142,0.58380534,Source ID retained
+C817_Link01,C817_Link01,C817,C,Nankoma - Kaluba,23.866,0.0,23.866,Unsealed,Unpaved,Jinja,Eastern,33.68221101,0.44958613,33.52165603,0.39504488,Source ID retained
+C818_Link01,C818_Link01,C818,C,Namalemba-Nambale-Nawandala,12.051,0.0,12.051,Unsealed,Unpaved,Jinja,Eastern,33.60979359,0.75795692,33.50483183,0.77634144,Source ID retained
+C819_Link01,C819_Link01,C819,C,Nambale-Nawandala,14.874,0.0,14.874,Unsealed,Unpaved,Jinja,Eastern,33.50451219,0.77738704,33.38994739,0.83299925,Source ID retained
+C820_Link01,C820_Link01,C820,C,Namutumba-Nawansangwa,9.733,0.0,9.733,Unsealed,Unpaved,Jinja,Eastern,33.69260449,0.83924416,33.7593089,0.82720612,Source ID retained
+C821_Link01,C821_Link01,C821,C,Kasejere-Budumba,14.1759910303,0.0,14.1759910303,Unsealed,Unpaved,Jinja,Eastern,33.68226068,0.77593511,33.78933369,0.82723992,Source ID retained
+C823_Link01,C823_Link01,C823,C,"Access to Buyanga S/C, off Busesa Nawangisa road",4.0,0.0,4.0,Unsealed,Unpaved,Jinja,Eastern,33.60112236,0.64630081,33.63045457,0.6436843,Source ID retained
+C824_Link01,C824_Link01,C824,C,"Access to Isimba Dam, off Namagera Lubanyi road",5.0,0.0,5.0,Bituminous,Paved,Jinja,Eastern,33.00572016,0.78883981,33.02947753,0.82177892,Source ID retained
+C825_Link01,C825_Link01,C825,C,Old -access-to-Isimba-dam,3.96,0.0,3.96,Unsealed,Unpaved,Jinja,Eastern,33.05411116,0.73368263,33.08067942,0.73785849,Source ID retained
+C826_Link01,C826_Link01,C826,C,Old Mbulamuti ferry access,3.29673024061,0.0,0.0,Unsealed,Unpaved,Jinja,Eastern,33.03999655,0.79424759,33.04510412,0.81783887,Source ID retained
+C830_Link01,C830_Link01,C830,C,Busia - Majanji,26.982,0.0,26.982,Bituminous,Paved,Tororo,Eastern,34.08873977,0.46641433,33.98691791,0.26163141,Source ID retained
+C831_Link01,C831_Link01,C831,C,Tororo - Morukatipe prison,6.5233,0.0,6.5233,Unsealed,Unpaved,Tororo,Eastern,34.19179039,0.68904637,34.24511213,0.71054408,Source ID retained
+C832_Link01,C832_Link01,C832,C,Tororo-Nagongera,33.725,0.0,33.725,Unsealed,Unpaved,Tororo,Eastern,34.18081399,0.69296899,33.9268984,0.84910544,Source ID retained
+C832_Link02,C832_Link02,C832,C,Nagongera-Busolwe,10.101,33.725,43.826,Unsealed,Unpaved,Tororo,Eastern,33.9268984,0.84910544,33.84953295,0.88357969,Source ID retained
+C833_Link01,C833_Link01,C833,C,Nabumali junction-Busolwe,34.588,0.0,34.588,Unsealed,Unpaved,Tororo,Eastern,34.1669895,0.98451193,33.92654612,0.85008195,Source ID retained
+C833_Link02,C833_Link02,C833,C,Busolwe-Budumba,16.046,34.588,50.634,Unsealed,Unpaved,Tororo,Eastern,33.92654612,0.85008195,33.7893335,0.82723965,Source ID retained
+C835_Link01,C835_Link01,C835,C,Magodes-Railway Station,2.278,0.0,2.278,Unsealed,Unpaved,Tororo,Eastern,34.17527298,0.83887086,34.15674837,0.83056313,Source ID retained
+C836_Link01,C836_Link01,C836,C,Nyambogo - Iyolwa - Mulanda,18.9,0.0,18.9,Unsealed,Unpaved,Tororo,Eastern,34.06345618,0.59926256,34.01061853,0.69240003,Source ID retained
+C836_Link02,C836_Link02,C836,C,Mulanda - Nagongera,8.675,18.9,27.575,Unsealed,Unpaved,Tororo,Eastern,34.01061853,0.69240003,34.03006788,0.76620782,Source ID retained
+C837_Link01,C837_Link01,C837,C,Nagongera - Merikit - Kidoko,18.218,0.0,18.218,Unsealed,Unpaved,Tororo,Eastern,34.02616998,0.76967311,34.11581833,0.88259499,Source ID retained
+C837_Link02,C837_Link02,C837,C,Kidoko - Busiu - Isikhoye,15.862,18.218,34.08,Unsealed,Unpaved,Tororo,Eastern,34.11581833,0.88259499,34.22368451,0.94325679,Source ID retained
+C838_Link01,C838_Link01,C838,C,Butiru - Molo - Kidoko,8.213,0.0,8.213,Unsealed,Unpaved,Tororo,Eastern,34.17541989,0.84016137,34.11577821,0.88243204,Source ID retained
+C838_Link02,C838_Link02,C838,C,Kidoko - Kachonga,12.273,8.213,20.486,Unsealed,Unpaved,Tororo,Eastern,34.11577821,0.88243204,34.04595774,0.96282308,Source ID retained
+C839_Link01,C839_Link01,C839,C,Doho - Namulo - Amuro,13.594,0.0,13.594,Unsealed,Unpaved,Tororo,Eastern,33.99918852,0.93352298,34.1040936,0.88661966,Source ID retained
+C840_Link01,C840_Link01,C840,C,Malaba - Mella - Apokor,10.655,0.0,10.655,Unsealed,Unpaved,Tororo,Eastern,34.26017996,0.63984932,34.24504877,0.71069127,Source ID retained
+C840_Link02,C840_Link02,C840,C,Apokor - Kwapa - Tuba,15.083,10.655,25.738,Unsealed,Unpaved,Tororo,Eastern,34.24504877,0.71069127,34.17254374,0.79401907,Source ID retained
+C841_Link01,C841_Link01,C841,C,Nabaloba - Bukobe,10.9,0.0,10.9,Unsealed,Unpaved,Tororo,Eastern,34.03240405,0.40733613,33.94382511,0.43273672,Source ID retained
+C842_Link01,C842_Link01,C842,C,Tororo Prisons Access,1.036,0.0,1.036,Unsealed,Unpaved,Tororo,Eastern,34.22696288,0.70563304,34.2336733,0.70014618,Source ID retained
+C844_Link01,C844_Link01,C844,C,Rubongi - Mulanda,17.079,0.0,17.079,Unsealed,Unpaved,Tororo,Eastern,34.15406087,0.70506791,34.01044387,0.69238486,Source ID retained
+C844_Link02,C844_Link02,C844,C,Mulanda - Nabuyoga - Bubada - Kisiro,19.32,17.079,36.399,Unsealed,Unpaved,Tororo,Eastern,33.89012068,0.72234887,33.89012068,0.72234887,Source ID retained
+C845_Link01,C845_Link01,C845,C,Bubada - Budhumba Station,15.344,0.0,15.344,Unsealed,Unpaved,Tororo,Eastern,33.89016,0.72235154,33.82525884,0.82344469,Source ID retained
+C846_Link01,C846_Link01,C846,C,Budhumba - Busaba,11.983,0.0,11.983,Unsealed,Unpaved,Tororo,Eastern,33.86480648,0.82488845,33.80973714,0.88553975,Source ID retained
+C847_Link01,C847_Link01,C847,C,Nagongera - Paya - Leresi,18.578,0.0,18.578,Unsealed,Unpaved,Tororo,Eastern,34.02610098,0.77026378,33.98222952,0.92516966,Source ID retained
+C848_Link01,C848_Link01,C848,C,Magale - Bumbo - Lwakhaka,13.149,0.0,13.149,Unsealed,Unpaved,Mbale,Eastern,34.36898259,0.86343837,34.37769484,0.80519402,Source ID retained
+C849_Link01,C849_Link01,C849,C,Leresi-Bunghaji-Budaka,13.5,0.0,13.5,Unsealed,Unpaved,Tororo,Eastern,33.98216157,0.92512148,33.95860844,1.01785468,Source ID retained
+C850_Link01,C850_Link01,C850,C,Busoko - Busaba - Nawanjofu - Hisiro,10.244,0.0,10.244,Unsealed,Unpaved,Tororo,Eastern,33.84953295,0.88357969,33.78930459,0.94035354,Source ID retained
+C860_Link01,C860_Link01,C860,C,Kamonkoli-Pallisa,44.442,0.0,44.442,Bituminous,Paved,Mbale,Eastern,34.09397512,1.07454864,33.71169194,1.16721034,Source ID retained
+C861_Link01,C861_Link01,C861,C,Nalugugu-Mutufu-Budadiri,16.245,0.0,16.245,Unsealed,Unpaved,Mbale,Eastern,34.27224469,1.2480169,34.36997298,1.15109133,Source ID retained
+C862_Link01,C862_Link01,C862,C,Namagumba - Budadiri,18.427,0.0,18.427,Unsealed,Unpaved,Mbale,Eastern,34.19958306,1.14898251,34.33580876,1.17052955,Source ID retained
+C863_Link01,C863_Link01,C863,C,Mbale - Nkokonjeru,21.067,0.0,21.067,Unsealed,Unpaved,Mbale,Eastern,34.18432734,1.06986816,34.22672159,1.03883331,Source ID retained
+C864_Link01,C864_Link01,C864,C,Bugema-Busano,11.389,0.0,11.389,Unsealed,Unpaved,Mbale,Eastern,34.17795038,1.04044485,34.24788014,0.99982766,Source ID retained
+C865_Link01,C865_Link01,C865,C,Magodes-Busumbu,12.726,0.0,12.726,Unsealed,Unpaved,Tororo,Eastern,34.17522015,0.83840685,34.28294461,0.8349142,Source ID retained
+C866_Link01,C866_Link01,C866,C,Munamba - Lwakhakha,4.518,0.0,4.518,Bituminous,Paved,Tororo,Eastern,34.35695848,0.82354637,34.37869053,0.79459942,Source ID retained
+C867_Link01,C867_Link01,C867,C,Bumbobi-Bubulo,15.402,0.0,15.402,Bituminous,Paved,Mbale,Eastern,34.16684435,0.99466624,34.27617665,0.9489582,Source ID retained
+C867_Link02,C867_Link02,C867,C,Bubulo-Bududa Circle road,28.482,15.402,43.884,Unsealed,Unpaved,Mbale,Eastern,34.27617665,0.9489582,34.33433196,1.00350464,Source ID retained
+C870_Link01,C870_Link01,C870,C,Bubulo-Busumbu,15.69,0.0,15.69,Bituminous,Paved,Mbale,Eastern,34.27500538,0.94883738,34.28296366,0.834888,Source ID retained
+C870_Link02,C870_Link02,C870,C,Busumbu - Munamba,9.898,15.69,25.588,Bituminous,Paved,Tororo,Eastern,34.2837085,0.83569357,34.3569475,0.82353696,Source ID retained
+C870_Link03,C870_Link03,C870,C,Munamba-Magale - Nangya,23.947,25.588,49.535,Unsealed,Unpaved,Tororo,Eastern,34.3569475,0.82353696,34.28511027,0.93516007,Source ID retained
+C871_Link01,C871_Link01,C871,C,Simu corner - Kaserem,9.801,0.0,9.801,Unsealed,Unpaved,Mbale,Eastern,34.28809399,1.30011199,34.33827309,1.31993415,Source ID retained
+C872_Link01,C872_Link01,C872,C,Budaka - Kaderuna,12.488,0.0,12.488,Unsealed,Unpaved,Mbale,Eastern,33.95606227,1.01737308,33.93566085,1.11657611,Source ID retained
+C872_Link02,C872_Link02,C872,C,Kaderuna - Butebo,9.212,12.488,21.7,Unsealed,Unpaved,Mbale,Eastern,33.93566085,1.11657611,33.92219804,1.1942238,Source ID retained
+C873_Link01,C873_Link01,C873,C,Nabiganda - Kaiti,3.436,0.0,3.436,Unsealed,Unpaved,Mbale,Eastern,34.05960654,0.96882552,34.05326843,0.99888488,Source ID retained
+C873_Link02,C873_Link02,C873,C,Kaiti - Naboa,5.864,3.436,9.3,Unsealed,Unpaved,Mbale,Eastern,34.05326843,0.99888488,34.02331726,1.04030627,Source ID retained
+C874_Link01,C874_Link01,C874,C,Mbale railway crossing Access,0.106,0.0,0.106,Unsealed,Unpaved,Mbale,Eastern,34.15765734,1.07801296,34.15723923,1.07715814,Source ID retained
+C875_Link01,C875_Link01,C875,C,Bugema army barracks Access,0.176,0.0,0.176,Unsealed,Unpaved,Mbale,Eastern,34.17658676,1.0299255,34.17814237,1.03004251,Source ID retained
+C876_Link01,C876_Link01,C876,C,Nabiganda -Nambale - Kamoto - Malukhu,16.266,0.0,16.266,Unsealed,Unpaved,Mbale,Eastern,34.17493818,1.07101414,34.14165256,0.98893864,Source ID retained
+C877_Link01,C877_Link01,C877,C,Kamonkoli - Kabwangasi - Nakaloke,7.792,0.0,7.792,Unsealed,Unpaved,Mbale,Eastern,34.0947079,1.07767883,34.11318847,1.13795587,Source ID retained
+C878_Link01,C878_Link01,C878,C,Nakaloke-Kabwangasi-Butebo,28.988,0.0,28.988,Unsealed,Unpaved,Mbale,Eastern,34.16453814,1.14266964,33.92255787,1.1943048,Source ID retained
+C878_Link02,C878_Link02,C878,C,Butebo-Kadoto,19.56,28.988,48.548,Unsealed,Unpaved,Mbale,Eastern,33.92255787,1.1943048,33.74778314,1.18970309,Source ID retained
+C879_Link01,C879_Link01,C879,C,Morita -Kanyum,12.538,0.0,12.538,Unsealed,Unpaved,Soroti,North Eastern,33.83683666,1.46953458,33.91441237,1.38533277,Source ID retained
+C879_Link02,C879_Link02,C879,C,Kanyum - Kidongole,16.819,12.538,29.357,Unsealed,Unpaved,Soroti,North Eastern,33.91441237,1.38533277,33.9763994,1.25793369,Source ID retained
+C880_Link01,C880_Link01,C880,C,Mbale-Bufumbo,16.458,0.0,16.458,Unsealed,Unpaved,Mbale,Eastern,34.1870675,1.07836564,34.28268908,1.12250471,Source ID retained
+C881_Link01,C881_Link01,C881,C,Bugusege - Buteza,8.765,0.0,8.765,Unsealed,Unpaved,Mbale,Eastern,34.30489089,1.11504221,34.30489103,1.11504206,Source ID retained
+C882_Link01,C882_Link01,C882,C,Korir - Sironko,13.552,0.0,13.552,Unsealed,Unpaved,Mbale,Eastern,34.24750589,1.23241523,34.16517992,1.32010256,Source ID retained
+C883_Link01,C883_Link01,C883,C,Nalugugu - Elgon,20.083,0.0,20.083,Unsealed,Unpaved,Mbale,Eastern,34.27759534,1.24401786,34.3720314,1.20286233,Source ID retained
+C884_Link01,C884_Link01,C884,C,Buyaga - Buluganya,12.431,0.0,12.431,Unsealed,Unpaved,Mbale,Eastern,34.27656358,1.27987298,34.36239773,1.22639817,Source ID retained
+C885_Link01,C885_Link01,C885,C,Buginyanya Agriculture Research Station,5.121,0.0,5.121,Unsealed,Unpaved,Mbale,Eastern,34.35323598,1.26340818,34.37915799,1.28522411,Source ID retained
+C887_Link01,C887_Link01,C887,C,Bulugeni - Siyiyi - Bumwambu,7.868,0.0,7.868,Unsealed,Unpaved,Mbale,Eastern,34.32295837,1.30468437,34.35290703,1.2637031,Source ID retained
+C887_Link02,C887_Link02,C887,C,Bumwambu - Bulaago - Gimadu,6.641,7.868,14.509,Unsealed,Unpaved,Mbale,Eastern,34.35290703,1.2637031,34.38546738,1.23629542,Source ID retained
+C888_Link01,C888_Link01,C888,C,Kapenguria - Kwot,10.629,0.0,10.629,Bituminous,Paved,Mbale,Eastern,34.45085967,1.39702108,34.48226599,1.33683971,Source ID retained
+C889_Link01,C889_Link01,C889,C,Chepsikunya -Girik,26.246,0.0,26.246,Unsealed,Unpaved,Mbale,Eastern,34.53208764,1.57289359,34.71901934,1.44789723,Source ID retained
+C889_Link02,C889_Link02,C889,C,Girik - Bukwa,29.559,26.246,55.805,Unsealed,Unpaved,Mbale,Eastern,34.72009797,1.44819124,34.73926313,1.28932647,Source ID retained
+C891_Link01,C891_Link01,C891,C,Buseta - Bugiri,7.55,0.0,7.55,Unsealed,Unpaved,Mbale,Eastern,33.75357838,1.07860802,33.69343638,1.0550854,Source ID retained
+C892_Link01,C892_Link01,C892,C,Bulumba - Namwiwa,19.822,0.0,19.822,Unsealed,Unpaved,Jinja,Eastern,33.45239389,0.99974753,33.55211983,1.09134322,Source ID retained
+C892_Link02,C892_Link02,C892,C,Namwiwa - Saaka,5.85,19.822,25.672,Unsealed,Unpaved,Jinja,Eastern,33.55210317,1.09132354,33.59790766,1.1219222,Source ID retained
+C893_Link01,C893_Link01,C893,C,Kapnandi-Suam,15.818,0.0,15.818,Unsealed,Unpaved,Mbale,Eastern,34.75286759,1.29258595,34.74275543,1.22978762,Source ID retained
+C920_Link01,C920_Link01,C920,C,Kumi-Brooks corner,45.953,0.0,45.953,Unsealed,Unpaved,Soroti,North Eastern,33.93686486,1.48908076,33.54691478,1.50014616,Source ID retained
+C920_Link02,C920_Link02,C920,C,Brooks corner-Serere-Bugondo,33.643,45.953,79.596,Unsealed,Unpaved,Soroti,North Eastern,33.54691478,1.50014616,33.27841967,1.62272253,Source ID retained
+C921_Link01,C921_Link01,C921,C,Soroti to Brooks corner,26.076,0.0,26.076,Unsealed,Unpaved,Soroti,North Eastern,33.6144878,1.6986673,33.54742679,1.500162,Source ID retained
+C922_Link01,C922_Link01,C922,C,Lira junction-Arapai,8.502,0.0,8.502,Unsealed,Unpaved,Soroti,North Eastern,33.56390225,1.76031808,33.62831542,1.7792123,Source ID retained
+C923_Link01,C923_Link01,C923,C,Arapai - Railway Station,1.93,0.0,1.93,Bituminous,Paved,Soroti,North Eastern,33.62876823,1.77998796,33.64375534,1.78759604,Source ID retained
+C924_Link01,C924_Link01,C924,C,Katine to Ochero,69.936,0.0,69.936,Unsealed,Unpaved,Soroti,North Eastern,33.49161627,1.84587211,33.0137369,1.67948147,Source ID retained
+C925_Link01,C925_Link01,C925,C,Soroti - Serere,27.443,0.0,27.443,Unsealed,Unpaved,Soroti,North Eastern,33.61318604,1.70681148,33.4591282,1.51820291,Source ID retained
+C926_Link01,C926_Link01,C926,C,Kachumbala - Kidongole,15.431,0.0,15.431,Unsealed,Unpaved,Mbale,Eastern,34.11247863,1.22406181,33.97653265,1.25791908,Source ID retained
+C926_Link02,C926_Link02,C926,C,Kidongole - Mukongoro,13.244,15.431,28.675,Unsealed,Unpaved,Soroti,North Eastern,33.97653265,1.25791908,33.88841553,1.3260447,Source ID retained
+C927_Link01,C927_Link01,C927,C,Kachumbala - Korir,12.293,0.0,12.293,Unsealed,Unpaved,Mbale,Eastern,34.11185036,1.22510084,34.16518753,1.32017114,Source ID retained
+C927_Link02,C927_Link02,C927,C,Korir - Malera - Kumi,37.241,12.293,49.534,Unsealed,Unpaved,Mbale,Eastern,34.16518753,1.32017114,33.93763103,1.48980014,Source ID retained
+C928_Link01,C928_Link01,C928,C,Kumi railway access,0.46,0.0,0.46,Unsealed,Unpaved,Soroti,North Eastern,33.94212582,1.48780495,33.94410065,1.49147212,Source ID retained
+C929_Link01,C929_Link01,C929,C,Kumi - Ongino,0.115,0.0,0.115,Unsealed,Unpaved,Soroti,North Eastern,33.93682589,1.48912988,33.93764196,1.48980897,Source ID retained
+C929_Link02,C929_Link02,C929,C,Ongino - Akide,20.15,0.115,20.265,Unsealed,Unpaved,Soroti,North Eastern,33.93764196,1.48980897,34.05105088,1.6297989,Source ID retained
+C930_Link01,C930_Link01,C930,C,Kapir - Ngora,19.678,0.0,19.678,Unsealed,Unpaved,Soroti,North Eastern,33.79986041,1.63646395,33.77863344,1.45860617,Source ID retained
+C930_Link02,C930_Link02,C930,C,Ngora - Mukongoro,23.068,19.678,42.746,Unsealed,Unpaved,Soroti,North Eastern,33.77863344,1.45860617,33.88842672,1.32606755,Source ID retained
+C931_Link01,C931_Link01,C931,C,Serere - Kateta - Kyere,26.463,0.0,26.463,Unsealed,Unpaved,Soroti,North Eastern,33.45907996,1.5181933,33.60395845,1.48082935,Source ID retained
+C932_Link01,C932_Link01,C932,C,Serere-Pingire,30.436,0.0,30.436,Unsealed,Unpaved,Soroti,North Eastern,33.45815334,1.51801238,33.22847054,1.42664105,Source ID retained
+C932_Link02,C932_Link02,C932,C,Pingire-Mugarama,5.031,30.436,35.467,Unsealed,Unpaved,Soroti,North Eastern,33.22847054,1.42664105,33.21585175,1.38329454,Source ID retained
+C934_Link01,C934_Link01,C934,C,Serere - Kasilo - Kadungulu,22.807,0.0,22.807,Unsealed,Unpaved,Soroti,North Eastern,33.4244663,1.53226165,33.2172873,1.52403683,Source ID retained
+C934_Link02,C934_Link02,C934,C,Kadungulu - Kagwara,14.378,22.807,37.185,Unsealed,Unpaved,Soroti,North Eastern,33.2172873,1.52403683,33.09120139,1.49594086,Source ID retained
+C935_Link01,C935_Link01,C935,C,Bugondo - Butiku - Kadungulu,13.821,0.0,13.821,Unsealed,Unpaved,Soroti,North Eastern,33.21719561,1.52399179,33.28598426,1.61910047,Source ID retained
+C937_Link01,C937_Link01,C937,C,Ngariam-Magoro,27.376,0.0,27.376,Unsealed,Unpaved,Soroti,North Eastern,34.09701682,1.95569095,34.10279899,1.72950064,Source ID retained
+C938_Link01,C938_Link01,C938,C,Usuk - Katakwi,10.522,0.0,10.522,Unsealed,Unpaved,Soroti,North Eastern,33.96501485,2.01236879,33.96323635,1.91878468,Source ID retained
+C938_Link02,C938_Link02,C938,C,Katakwi - Toroma,18.849,10.522,29.371,Unsealed,Unpaved,Soroti,North Eastern,33.96323635,1.91878468,33.95648722,1.75354883,Source ID retained
+C939_Link01,C939_Link01,C939,C,Arapai-Amuria,27.813,0.0,27.813,Unsealed,Unpaved,Soroti,North Eastern,33.61965192,1.78122665,33.64277495,2.0299061,Source ID retained
+C939_Link02,C939_Link02,C939,C,Amuria-Acowa-Usuk,39.05,27.813,66.863,Unsealed,Unpaved,Soroti,North Eastern,33.64277495,2.0299061,33.96501229,2.0123713,Source ID retained
+C940_Link01,C940_Link01,C940,C,Amuria-Amucu-Kapelebyong,35.817,0.0,35.817,Unsealed,Unpaved,Soroti,North Eastern,33.68947415,2.05459526,33.81705387,2.34871236,Source ID retained
+C940_Link02,C940_Link02,C940,C,Kapelebyong-Oreta,18.98,35.817,54.797,Unsealed,Unpaved,Kotido,North Eastern,33.81705387,2.34871236,33.90327171,2.49336214,Source ID retained
+C941_Link01,C941_Link01,C941,C,Amuria (Kuju) - Obalang,33.058,0.0,33.058,Unsealed,Unpaved,Soroti,North Eastern,33.60119178,2.0466462,33.58076764,2.33241795,Source ID retained
+C941_Link02,C941_Link02,C941,C,Obalang - Alito,17.094,33.058,50.152,Unsealed,Unpaved,Lira,Northern,33.58077345,2.3324112,33.57431882,2.48103524,Source ID retained
+C942_Link01,C942_Link01,C942,C,Kalaki - Lwala,9.63,0.0,9.63,Unsealed,Unpaved,Soroti,North Eastern,33.26969059,1.86329559,33.33779655,1.81163847,Source ID retained
+C943_Link01,C943_Link01,C943,C,Lwala - Kaberamaido,18.353,0.0,18.353,Unsealed,Unpaved,Soroti,North Eastern,33.27434106,1.87179616,33.15793258,1.76154085,Source ID retained
+C944_Link01,C944_Link01,C944,C,Kaberamaido - Dokolo,16.332,0.0,16.332,Unsealed,Unpaved,Soroti,North Eastern,33.17141111,1.91630296,33.16286325,1.76983446,Source ID retained
+C945_Link01,C945_Link01,C945,C,Orungo Corner - Adachal - Usuku,22.155,0.0,22.155,Unsealed,Unpaved,Soroti,North Eastern,34.08513178,1.99188927,33.96501485,2.01236879,Source ID retained
+C946_Link01,C946_Link01,C946,C,Araapo - Mulondo,8.598,0.0,8.598,Unsealed,Unpaved,Soroti,North Eastern,33.2283996,1.42657872,33.15514889,1.41211474,Source ID retained
+C947_Link01,C947_Link01,C947,C,Soroti State Lodge,2.0,0.0,2.0,Bituminous,Paved,Soroti,North Eastern,33.61667791,1.7153539,33.6144878,1.6986673,Source ID retained
+C948_Link01,C948_Link01,C948,C,Kumi - Umateng - Agule Ferry,15.0,0.0,15.0,Unsealed,Unpaved,Soroti,North Eastern,33.93758967,1.48976567,33.9225235,1.62299748,Source ID retained
+C949_Link01,C949_Link01,C949,C,Toroma - Kokorio,12.0,0.0,12.0,Unsealed,Unpaved,Soroti,North Eastern,33.91867278,1.66322965,33.95648722,1.75354883,Source ID retained
+C960_Link01,C960_Link01,C960,C,Angatun-Nabilatuk-Lokapel,46.817,0.0,46.817,Unsealed,Unpaved,Moroto,North Eastern,34.58185892,1.8433222,34.69300886,2.14919437,Source ID retained
+C961_Link01,C961_Link01,C961,C,Chosan to Amudat,30.731,0.0,30.731,Unsealed,Unpaved,Moroto,North Eastern,34.7280152,1.89814199,34.94474283,1.95420576,Source ID retained
+C962_Link01,C962_Link01,C962,C,Girik River - Kalita,32.741,0.0,32.741,Unsealed,Unpaved,Moroto,North Eastern,34.7201911,1.44827077,34.92999278,1.56623198,Source ID retained
+C963_Link01,C963_Link01,C963,C,Moroto-Lokitanyara,28.078,0.0,28.078,Bituminous,Paved,Moroto,North Eastern,34.65769638,2.53300401,34.8170988,2.38097466,Source ID retained
+C963_Link02,C963_Link02,C963,C,Lokitanyara-Loro-Amudat,62.855,28.078,90.933,Unsealed,Unpaved,Moroto,North Eastern,34.8170988,2.38097466,34.94455279,1.95502555,Source ID retained
+C963_Link03,C963_Link03,C963,C,Amudat-Alakasi-Kalita,56.73,90.933,147.663,Unsealed,Unpaved,Moroto,North Eastern,34.94455279,1.95502555,34.91282577,1.57186573,Source ID retained
+C964_Link01,C964_Link01,C964,C,Soroti-Toroma,37.213,0.0,37.213,Unsealed,Unpaved,Soroti,North Eastern,33.65136969,1.71519658,33.95575577,1.75321942,Source ID retained
+C964_Link02,C964_Link02,C964,C,Toroma-Magoro,17.517,37.213,54.73,Unsealed,Unpaved,Soroti,North Eastern,33.95575577,1.75321942,34.10191398,1.73028497,Source ID retained
+C964_Link03,C964_Link03,C964,C,Magoro-Lorachat,19.944,54.73,74.674,Unsealed,Unpaved,Moroto,North Eastern,34.10191398,1.73028497,34.21010932,1.6863254,Source ID retained
+C965_Link01,C965_Link01,C965,C,Apeitolim - Iriri,46.325,0.0,46.325,Unsealed,Unpaved,Moroto,North Eastern,34.23539516,2.16321311,33.87645394,2.33146785,Source ID retained
+C966_Link01,C966_Link01,C966,C,Turtuko - Apeitolim,37.196,0.0,37.196,Unsealed,Unpaved,Moroto,North Eastern,33.87645394,2.33146785,34.14496748,2.49577257,Source ID retained
+C967_Link01,C967_Link01,C967,C,Kokeris - Lopei,17.517,0.0,17.517,Unsealed,Unpaved,Moroto,North Eastern,34.40692496,2.40425958,34.35959767,2.55042505,Source ID retained
+C968_Link01,C968_Link01,C968,C,Matany - Lokopo - Turtuko,29.827,0.0,29.827,Unsealed,Unpaved,Moroto,North Eastern,34.40451115,2.4077837,34.19287227,2.49603428,Source ID retained
+C969_Link01,C969_Link01,C969,C,Lokicher - Turtuko,23.396,0.0,23.396,Unsealed,Unpaved,Kotido,North Eastern,34.30361344,2.60859274,34.14498548,2.49577256,Source ID retained
+C969_Link02,C969_Link02,C969,C,Turtuko - Nyakwae,24.801,23.396,48.197,Unsealed,Unpaved,Moroto,North Eastern,34.14498548,2.49577256,33.91960487,2.49365972,Source ID retained
+C969_Link03,C969_Link03,C969,C,Turtuko - Opekit,1.77,48.197,49.967,Unsealed,Unpaved,Kotido,North Eastern,33.91960487,2.49365972,33.90342349,2.49333958,Source ID retained
+C969_Link04,C969_Link04,C969,C,Opekit - Nyakwae,19.135,49.967,69.102,Unsealed,Unpaved,Kotido,North Eastern,33.90342349,2.49333958,33.76110948,2.58979942,Source ID retained
+C970_Link01,C970_Link01,C970,C,Moroto army barracks access,0.952,0.0,0.952,Unsealed,Unpaved,Moroto,North Eastern,34.65769638,2.53300401,34.6619602,2.54047066,Source ID retained
+C971_Link01,C971_Link01,C971,C,Moroto - Rupa - Nakiloro - Nakabat,31.744,0.0,31.744,Unsealed,Unpaved,Moroto,North Eastern,34.66038599,2.538207,34.82210891,2.70032111,Source ID retained
+C972_Link01,C972_Link01,C972,C,Nakiloro-Lomukura,85.0,0.0,85.0,Unsealed,Unpaved,Moroto,North Eastern,34.73324036,2.63778497,34.5329254,2.98309898,Source ID retained
+C973_Link01,C973_Link01,C973,C,Lokopo Link,5.652,0.0,5.652,Unsealed,Unpaved,Moroto,North Eastern,34.38255035,2.48063318,34.33518689,2.47968265,Source ID retained
+C974_Link01,C974_Link01,C974,C,Lokopo Link 2,1.232,0.0,1.232,Unsealed,Unpaved,Moroto,North Eastern,34.32415514,2.4786446,34.33518689,2.47968265,Source ID retained
+C975_Link01,C975_Link01,C975,C,Tapach - Katikekile,10.567,0.0,10.567,Unsealed,Unpaved,Moroto,North Eastern,34.8170252,2.3810118,34.78474004,2.46186927,Source ID retained
+C976_Link01,C976_Link01,C976,C,Kitale Road,1.584,0.0,1.584,Unsealed,Unpaved,Moroto,North Eastern,34.6577316,2.53300825,34.65589945,2.51916886,Source ID retained
+C978_Link01,C978_Link01,C978,C,Lorachat - Magoro,59.0,0.0,59.0,Unsealed,Unpaved,Moroto,North Eastern,34.55913912,1.93788649,34.227767,1.68811145,Source ID retained
+C979_Link01,C979_Link01,C979,C,Achan Pii-Alito,17.7995,0.0,17.7995,Unsealed,Unpaved,Kotido,North Eastern,33.57439178,2.481046,33.58078727,2.3324882,Source ID retained
+C980_Link01,C980_Link01,C980,C,Akwanamoru - Opua - Orogom - Oreta,57.258,0.0,57.258,Unsealed,Unpaved,Kotido,North Eastern,33.88438425,2.94081161,33.91950341,2.49367884,Source ID retained
+C981_Link01,C981_Link01,C981,C,Koputh - Koputh Junction,6.354,0.0,6.354,Unsealed,Unpaved,Kotido,North Eastern,34.11999299,3.35376405,34.06965055,3.37403661,Source ID retained
+C981_Link02,C981_Link02,C981,C,Koputh Junction-Orom,60.0,6.354,66.354,Unsealed,Unpaved,Kotido,North Eastern,34.06965,3.3740394,33.46950646,3.39950763,Source ID retained
+C982_Link01,C982_Link01,C982,C,Kotido - Loslang - Layoro,38.709,0.0,38.709,Unsealed,Unpaved,Kotido,North Eastern,34.11441381,3.0062461,34.24553427,3.31684526,Source ID retained
+C983_Link01,C983_Link01,C983,C,Kapelimoru - Kotein,0.057,0.0,0.057,Unsealed,Unpaved,Kotido,North Eastern,34.22258657,2.97136267,34.2229937,2.9716547,Source ID retained
+C983_Link02,C983_Link02,C983,C,Kotein - Kenya Border,37.434,0.057,37.491,Unsealed,Unpaved,Kotido,North Eastern,34.2711694,3.03280815,34.27165846,3.03301121,Source ID retained
+C984_Link01,C984_Link01,C984,C,Kapelimoru Barracks Access,0.619,0.0,0.619,Unsealed,Unpaved,Kotido,North Eastern,34.22299272,2.97165237,34.22795594,2.97413252,Source ID retained
+C985_Link01,C985_Link01,C985,C,Kaabong - Kalapata - Piire,33.621,0.0,33.621,Unsealed,Unpaved,Kotido,North Eastern,34.11964357,3.5736973,34.04276979,3.8570823,Source ID retained
+C986_Link01,C986_Link01,C986,C,Karenga - Birra,30.23,0.0,30.23,Unsealed,Unpaved,Kotido,North Eastern,33.70095037,3.58857241,33.58809934,3.82580518,Source ID retained
+C987_Link01,C987_Link01,C987,C,Old Depoth Bridge Access,5.23,0.0,5.23,Unsealed,Unpaved,Kotido,North Eastern,34.04812058,3.00424733,34.01256864,2.99947333,Source ID retained
+C988_Link01,C988_Link01,C988,C,Koputh Junction - Lolelia,22.0,0.0,22.0,Unsealed,Unpaved,Kotido,North Eastern,34.06965111,3.37403717,33.92444388,3.31558321,Source ID retained
+C989_Link01,C989_Link01,C989,C,Lokatelebu - Kacheri - Lolelia,40.124,0.0,40.124,Unsealed,Unpaved,Kotido,North Eastern,33.9932163,2.99375047,33.92444388,3.31558321,Source ID retained
+C991_Link01,C991_Link01,C991,C,Nyakwae(Aremo)-Kiru,13.39,0.0,13.39,Unsealed,Unpaved,Kotido,North Eastern,33.76115557,2.58982307,33.66796091,2.63258904,Source ID retained
+C992_Link01,C992_Link01,C992,C,Kapelimoru-Loyoro - Apaan,50.0,0.0,50.0,Unsealed,Unpaved,Kotido,North Eastern,34.22722989,3.02011938,34.12809568,3.3116866,Source ID retained
+C993_Link01,C993_Link01,C993,C,Kapedo-Karenga,38.0,0.0,38.0,Unsealed,Unpaved,Kotido,North Eastern,33.94980522,3.685653,33.69707177,3.57642917,Source ID retained
+C994_Link01,C994_Link01,C994,C,Okwang-Okwang Subcounty spur,3.21,0.0,3.21,Unsealed,Unpaved,Lira,Northern,33.16130839,2.5769435,33.14753941,2.60140863,Source ID retained
+C996_Link01,C996_Link01,C996,C,Kalongo - Paimol,8.828,0.0,8.828,Unsealed,Unpaved,Kitgum,Northern,33.37144386,3.0383418,33.44314411,3.0709601,Source ID retained
+C997_Link01,C997_Link01,C997,C,Aloi-Aleptong,10.415,0.0,10.415,Unsealed,Unpaved,Lira,Northern,33.17730594,2.2741989,33.26610815,2.26329542,Source ID retained
+C998_Link01,C998_Link01,C998,C,Adwari-Okwang,24.864,0.0,24.864,Unsealed,Unpaved,Lira,Northern,33.19238103,2.46814873,33.26771352,2.57232556,Source ID retained
+C998_Link02,C998_Link02,C998,C,Okwang-Okee River - Omwonylee,12.46,24.864,37.324,Unsealed,Unpaved,Lira,Northern,33.26771352,2.57232556,33.37682621,2.57386512,Source ID retained
+C999_Link01,C999_Link01,C999,C,Corner Chwagera-Ekwera,14.56,0.0,14.56,Unsealed,Unpaved,Lira,Northern,33.09608346,1.85834679,32.97534588,1.82807571,Source ID retained
+M20_Link01,M20,M20,M,Kampala NorthernBypass,19.9991526352,0.0,19.9991526352,Bituminous,Paved,Kampala,Central,32.6535642,0.34894266,32.51890372,0.31554068,Resequenced to unique Road_No_LinkNN standard
+M20_Link02,M20Int1_S1,M20,M,Namboole Interchange Slip 1,0.355406599439,0.0,0.355406599439,Bituminous,Paved,Kampala,Central,32.65406754,0.34917015,32.65407383,0.3491684,Resequenced to unique Road_No_LinkNN standard
+M20_Link03,M20Int1_S2,M20,M,Namboole Interchange Slip 2,0.369251994413,0.0,0.369251994413,Bituminous,Paved,Kampala,Central,32.65407383,0.3491684,32.65657963,0.35130124,Resequenced to unique Road_No_LinkNN standard
+M20_Link04,M20Int1_S3,M20,M,Namboole Interchange Slip 3,0.397115495771,0.0,0.397115495771,Bituminous,Paved,Kampala,Central,32.65657963,0.35130124,32.65454856,0.3483838,Resequenced to unique Road_No_LinkNN standard
+M20_Link05,M20Int1_S4,M20,M,Namboole Interchange Slip 4,0.341426731881,0.0,0.341426731881,Bituminous,Paved,Kampala,Central,32.65398437,0.34814447,32.65106462,0.34724908,Resequenced to unique Road_No_LinkNN standard
+M20_Link06,M20Int1_S5,M20,M,Namboole Interchange Slip 5,0.338980623122,0.0,0.338980623122,Bituminous,Paved,Kampala,Central,32.65106462,0.34724908,32.6535557,0.34892223,Resequenced to unique Road_No_LinkNN standard
+M20_Link07,M20Int2_S1,M20,M,Naalya Interchange Slip 1,0.312431097217,0.0,0.312431097217,Bituminous,Paved,Kampala,Central,32.6329927,0.36312569,32.63395065,0.36336085,Resequenced to unique Road_No_LinkNN standard
+M20_Link08,M20Int2_S10,M20,M,Naalya Interchange Slip 10,0.449970020502,0.0,0.449970020502,Bituminous,Paved,Kampala,Central,32.63300984,0.36356436,32.63215422,0.36739467,Resequenced to unique Road_No_LinkNN standard
+M20_Link09,M20Int2_S11,M20,M,Naalya Interchange Slip 11,0.368758245804,0.0,0.368758245804,Bituminous,Paved,Kampala,Central,32.63124393,0.36363187,32.63306997,0.36515646,Resequenced to unique Road_No_LinkNN standard
+M20_Link10,M20Int2_S2,M20,M,Naalya Interchange Slip 2,0.400086188169,0.0,0.400086188169,Bituminous,Paved,Kampala,Central,32.63258652,0.36701196,32.63381338,0.36372927,Resequenced to unique Road_No_LinkNN standard
+M20_Link11,M20Int2_S3,M20,M,Naalya Interchange Slip 3,0.208233888218,0.0,0.226959923861,Bituminous,Paved,Kampala,Central,32.63381582,0.36372735,32.63558723,0.36393356,Resequenced to unique Road_No_LinkNN standard
+M20_Link12,M20Int2_S4,M20,M,Naalya Interchange Slip 4,0.233160350834,0.0,0.348446956192,Bituminous,Paved,Kampala,Central,32.63340056,0.36498047,32.63460236,0.36358812,Resequenced to unique Road_No_LinkNN standard
+M20_Link13,M20Int2_S5,M20,M,Naalya Interchange Slip 5,0.197740432439,0.0,0.178657323648,Bituminous,Paved,Kampala,Central,32.63558859,0.3639322,32.63395039,0.36336081,Resequenced to unique Road_No_LinkNN standard
+M20_Link14,M20Int2_S6,M20,M,Naalya Interchange Slip 6,0.597525000321,0.0,0.597525000321,Bituminous,Paved,Kampala,Central,32.63395065,0.36336085,32.6382504,0.36205446,Resequenced to unique Road_No_LinkNN standard
+M20_Link15,M20Int2_S7,M20,M,Naalya Interchange Slip 7,0.390341151047,0.0,0.390341151047,Bituminous,Paved,Kampala,Central,32.63600037,0.36128163,32.63311639,0.36303968,Resequenced to unique Road_No_LinkNN standard
+M20_Link16,M20Int2_S8,M20,M,Naalya Interchange Slip 8,0.204860108051,0.0,0.204860108051,Bituminous,Paved,Kampala,Central,32.63299317,0.36312516,32.63123615,0.36356016,Resequenced to unique Road_No_LinkNN standard
+M20_Link17,M20Int2_S9,M20,M,Naalya Interchange Slip 9,0.205516214702,0.0,0.205516214702,Bituminous,Paved,Kampala,Central,32.63124393,0.36363187,32.63300684,0.36356124,Resequenced to unique Road_No_LinkNN standard
+M20_Link18,M20Int3_S1,M20,M,Kisaasi Interchange Slip 1,0.360816127501,0.0,0.360816127501,Bituminous,Paved,Kampala,Central,32.60449912,0.36583695,32.60449912,0.36583695,Resequenced to unique Road_No_LinkNN standard
+M20_Link19,M20Int3_S2,M20,M,Kisaasi Interchange Slip 2,0.420423658551,0.0,0.420423658551,Bituminous,Paved,Kampala,Central,32.60457496,0.36637367,32.60812609,0.36588548,Resequenced to unique Road_No_LinkNN standard
+M20_Link20,M20Int3_S3,M20,M,Kisaasi Interchange Slip 3,0.422365536745,0.0,0.422365536745,Bituminous,Paved,Kampala,Central,32.60896685,0.36562566,32.60539636,0.36504347,Resequenced to unique Road_No_LinkNN standard
+M20_Link21,M20Int3_S4,M20,M,Kisaasi Interchange Slip 4,0.188192684536,0.0,0.188192684536,Bituminous,Paved,Kampala,Central,32.60539039,0.36498944,32.60622987,0.36354765,Resequenced to unique Road_No_LinkNN standard
+M20_Link22,M20Int3_S5,M20,M,Kisaasi Interchange Slip 5,0.191146727069,0.0,0.191146727069,Bituminous,Paved,Kampala,Central,32.60619681,0.36352674,32.60505234,0.36480225,Resequenced to unique Road_No_LinkNN standard
+M20_Link23,M20Int3_S6,M20,M,Kisaasi Interchange Slip 6,0.28834229215,0.0,0.28834229215,Bituminous,Paved,Kampala,Central,32.60495753,0.36482734,32.6031579,0.36308745,Resequenced to unique Road_No_LinkNN standard
+M20_Link24,M20Int3_S7,M20,M,Kisaasi Interchange Slip 7,0.308440406864,0.0,0.308440406864,Bituminous,Paved,Kampala,Central,32.60310522,0.36322226,32.60444619,0.36561259,Resequenced to unique Road_No_LinkNN standard
+M20_Link25,M20Int3_S8,M20,M,Kisaasi Interchange Slip 8,0.0588794539206,0.0,0.0588794539206,Bituminous,Paved,Kampala,Central,32.60449554,0.36582354,32.60447384,0.36632894,Resequenced to unique Road_No_LinkNN standard
+M20_Link26,M20Int4_S1,M20,M,Kyebando Interchange Slip 1,0.333585746494,0.0,0.333585746494,Bituminous,Paved,Kampala,Central,32.58853575,0.35236034,32.58853442,0.35236299,Resequenced to unique Road_No_LinkNN standard
+M20_Link27,M20Int4_S10,M20,M,Kyebando Interchange Slip 10,0.145713914859,0.0,0.145713914859,Bituminous,Paved,Kampala,Central,32.58851641,0.35239992,32.58731706,0.35267258,Resequenced to unique Road_No_LinkNN standard
+M20_Link28,M20Int4_S2,M20,M,Kyebando Interchange Slip 2,0.109607456281,0.0,0.109607456281,Bituminous,Paved,Kampala,Central,32.58771863,0.35274307,32.58869636,0.35277665,Resequenced to unique Road_No_LinkNN standard
+M20_Link29,M20Int4_S3,M20,M,Kyebando Interchange Slip 3,0.498946280557,0.0,0.498946280557,Bituminous,Paved,Kampala,Central,32.58869522,0.35277749,32.59143458,0.35629501,Resequenced to unique Road_No_LinkNN standard
+M20_Link30,M20Int4_S4,M20,M,Kyebando Interchange Slip 4,0.499911799776,0.0,0.499911799776,Bituminous,Paved,Kampala,Central,32.59158359,0.35640864,32.58962376,0.35237134,Resequenced to unique Road_No_LinkNN standard
+M20_Link31,M20Int4_S5,M20,M,Kyebando Interchange Slip 5,0.1283201958,0.0,0.1283201958,Bituminous,Paved,Kampala,Central,32.58962478,0.35237225,32.59051117,0.35265556,Resequenced to unique Road_No_LinkNN standard
+M20_Link32,M20Int4_S6,M20,M,Kyebando Interchange Slip 6,0.131783430607,0.0,0.131783430607,Bituminous,Paved,Kampala,Central,32.59047227,0.35251361,32.58945938,0.35198852,Resequenced to unique Road_No_LinkNN standard
+M20_Link33,M20Int4_S7,M20,M,Kyebando Interchange Slip 7,0.447093884321,0.0,0.447093884321,Bituminous,Paved,Kampala,Central,32.58946851,0.35199427,32.58633744,0.34961369,Resequenced to unique Road_No_LinkNN standard
+M20_Link34,M20Int4_S8,M20,M,Kyebando Interchange Slip 8,0.249467679967,0.0,0.249467679967,Bituminous,Paved,Kampala,Central,32.59047227,0.35251361,32.58870263,0.35124182,Resequenced to unique Road_No_LinkNN standard
+M20_Link35,M20Int4_S9,M20,M,Kyebando Interchange Slip 9,0.476383001963,0.0,0.476383001963,Bituminous,Paved,Kampala,Central,32.58565681,0.34953339,32.58851817,0.35240028,Resequenced to unique Road_No_LinkNN standard
+M20_Link36,M20Int5_S1,M20,M,Kalerwe Interchange Slip 1,0.449425622974,0.0,0.449425622974,Bituminous,Paved,Kampala,Central,32.57191248,0.35344768,32.57574575,0.3523485,Resequenced to unique Road_No_LinkNN standard
+M20_Link37,M20Int5_S2,M20,M,Kalerwe Interchange Slip 2,0.3988436888,0.0,0.3988436888,Bituminous,Paved,Kampala,Central,32.57567986,0.35222537,32.57215503,0.35232139,Resequenced to unique Road_No_LinkNN standard
+M20_Link38,M20Int5_S3,M20,M,Kalerwe Interchange Slip 3,1.09230341003,0.0,1.09230341003,Bituminous,Paved,Kampala,Central,32.57188414,0.3521738,32.56335551,0.34904678,Resequenced to unique Road_No_LinkNN standard
+M20_Link39,M20Int6_S1,M20,M,Bwaise Interchange Slip 1,1.09307027299,0.0,1.09307027299,Bituminous,Paved,Kampala,Central,32.56295328,0.35014006,32.57175343,0.35329483,Resequenced to unique Road_No_LinkNN standard
+M20_Link40,M20Int6_S2,M20,M,Bwaise Interchange Slip 2,0.367191367369,0.0,0.367191367369,Bituminous,Paved,Kampala,Central,32.56273981,0.34897106,32.55955218,0.34898716,Resequenced to unique Road_No_LinkNN standard
+M20_Link41,M20Int6_S3,M20,M,Bwaise Interchange Slip 3,0.469337149089,0.0,0.469337149089,Bituminous,Paved,Kampala,Central,32.55899685,0.34889629,32.56295328,0.35014006,Resequenced to unique Road_No_LinkNN standard
+M20_Link42,M20Int7_S1,M20,M,Namungoona Interchange Slip 1,0.499962131665,0.0,0.499962131665,Bituminous,Paved,Kampala,Central,32.54221949,0.3458237,32.54663105,0.34629151,Resequenced to unique Road_No_LinkNN standard
+M20_Link43,M20Int7_S2,M20,M,Namungoona Interchange Slip 2,0.516907737093,0.0,0.516907737093,Bituminous,Paved,Kampala,Central,32.54691923,0.34616501,32.54270707,0.34457231,Resequenced to unique Road_No_LinkNN standard
+M20_Link44,M20Int7_S3,M20,M,Namungoona Interchange Slip 3,0.454223056794,0.0,0.454223056794,Bituminous,Paved,Kampala,Central,32.54248197,0.344605,32.53852588,0.34376212,Resequenced to unique Road_No_LinkNN standard
+M20_Link45,M20Int7_S4,M20,M,Namungoona Interchange Slip 4,0.47884604415,0.0,0.47884604415,Bituminous,Paved,Kampala,Central,32.53845858,0.34391357,32.54221949,0.3458237,Resequenced to unique Road_No_LinkNN standard
+M20_Link46,M20Int8_S1,M20,M,Masanafu Interchange Slip 1,0.390466613946,0.0,0.390466613946,Bituminous,Paved,Kampala,Central,32.52677064,0.33256994,32.52740849,0.33151058,Resequenced to unique Road_No_LinkNN standard
+M20_Link47,M20Int8_S2,M20,M,Masanafu Interchange Slip 2,0.0995216766546,0.0,0.0995216766546,Bituminous,Paved,Kampala,Central,32.52590801,0.33257593,32.52677064,0.33256994,Resequenced to unique Road_No_LinkNN standard
+M20_Link48,M20Int8_S3,M20,M,Masanafu Interchange Slip 3,0.501811025678,0.0,0.501811025678,Bituminous,Paved,Kampala,Central,32.52677644,0.33256792,32.52974791,0.3359253,Resequenced to unique Road_No_LinkNN standard
+M20_Link49,M20Int8_S4,M20,M,Masanafu Interchange Slip 4,0.369114577565,0.0,0.369114577565,Bituminous,Paved,Kampala,Central,32.52918833,0.33495509,32.52771161,0.332005,Resequenced to unique Road_No_LinkNN standard
+M20_Link50,M20Int8_S5,M20,M,Masanafu Interchange Slip 5,0.0892240373596,0.0,0.0892240373596,Bituminous,Paved,Kampala,Central,32.52771432,0.3319996,32.52833022,0.33152997,Resequenced to unique Road_No_LinkNN standard
+M20_Link51,M20Int8_S6,M20,M,Masanafu Interchange Slip 6,0.104371854207,0.0,0.104371854207,Bituminous,Paved,Kampala,Central,32.52832271,0.33151457,32.52742039,0.33151424,Resequenced to unique Road_No_LinkNN standard
+M20_Link52,M20Int8_S7,M20,M,Masanafu Interchange Slip 7,0.356485869738,0.0,0.356485869738,Bituminous,Paved,Kampala,Central,32.52740849,0.33151058,32.52533215,0.32910282,Resequenced to unique Road_No_LinkNN standard
+M20_Link53,M20Int8_S8,M20,M,Masanafu Interchange Slip 8,0.425130324694,0.0,0.425130324694,Bituminous,Paved,Kampala,Central,32.52486518,0.32860559,32.5265332,0.33201941,Resequenced to unique Road_No_LinkNN standard
+M20_Link54,M20Int8_S9,M20,M,Masanafu Interchange Slip 9,0.0963171832672,0.0,0.0963171832672,Bituminous,Paved,Kampala,Central,32.52653215,0.33202037,32.52590138,0.33255963,Resequenced to unique Road_No_LinkNN standard
+M20_Link55,M20Int9_S1,M20,M,Busega Interchange Slip 1,0.768949811414,0.0,0.768949811414,Bituminous,Paved,Kampala,Central,32.51390721,0.31206678,32.5171567,0.30648738,Resequenced to unique Road_No_LinkNN standard
+M20_Link56,M20Int9_S2,M20,M,Busega Interchange Slip 2,0.663654237384,0.0,0.663654237384,Bituminous,Paved,Kampala,Central,32.51434743,0.31179191,32.51877376,0.31565079,Resequenced to unique Road_No_LinkNN standard
+M20_Link57,M20Int9_S3,M20,M,Busega Interchange Slip 3,0.779374488257,0.0,0.779374488257,Bituminous,Paved,Kampala,Central,32.51890372,0.31554068,32.51548177,0.30966651,Resequenced to unique Road_No_LinkNN standard
+M20N1_Link01,M20N1,M20N1,M,Kampala NorthernBypass (dual),20.0239325581,20.0239325581,0.0,Bituminous,Paved,Kampala,Central,32.51877376,0.31565079,32.65406754,0.34917015,Resequenced to unique Road_No_LinkNN standard
+M3_Link01,M3_Link01,M3,M,Kampala - Entebbe Expressway,24.811287602,0.0,24.811287602,Bituminous,Paved,Kampala,Central,32.51892353,0.31555427,32.51072112,0.10375784,Source ID retained
+M3_Link02,M3_Link02,M3,M,Munyonyo Spur,12.3360181866,24.811287602,37.1473057886,Bituminous,Paved,Kampala,Central,32.53408638,0.2153568,32.6204408,0.23934603,Source ID retained
+M3_Link03,M3Int1_S1,M3,M,Busega Interchange Slip 4,0.676711856489,0.0,0.676711856489,Bituminous,Paved,Kampala,Central,32.51647687,0.30651045,32.51390975,0.31163911,Resequenced to unique Road_No_LinkNN standard
+M3_Link04,M3Int1_S2,M3,M,Busega Interchange Slip 5,0.56109949186,0.0,0.56109949186,Bituminous,Paved,Kampala,Central,32.51516663,0.30933008,32.51267268,0.30550644,Resequenced to unique Road_No_LinkNN standard
+M3_Link05,M3Int1_S3,M3,M,Busega Interchange Slip 6,0.592918095901,0.0,0.592918095901,Bituminous,Paved,Kampala,Central,32.51265992,0.30615814,32.51390149,0.31132716,Resequenced to unique Road_No_LinkNN standard
+M3_Link06,M3Int2_S1,M3,M,Kajjansi Interchange Slip 1,0.603195226072,0.0,0.603195226072,Bituminous,Paved,Kampala,Central,32.53075817,0.21879926,32.53406713,0.21535923,Resequenced to unique Road_No_LinkNN standard
+M3_Link07,M3Int2_S2,M3,M,Kajjansi Interchange Slip 2,0.985075526767,0.0,0.985075526767,Bituminous,Paved,Kampala,Central,32.53017004,0.21068766,32.53408638,0.2153568,Resequenced to unique Road_No_LinkNN standard
+M3_Link08,M3Int2_S3,M3,M,Kajjansi Interchange Slip 3,0.727199303499,0.0,0.727199303499,Bituminous,Paved,Kampala,Central,32.53402234,0.2152673,32.53116203,0.21465013,Resequenced to unique Road_No_LinkNN standard
+M3_Link09,M3Int2_S4,M3,M,Kajjansi Interchange Slip 4,0.821746519093,0.0,0.821746519093,Bituminous,Paved,Kampala,Central,32.53404145,0.21525996,32.53000491,0.20997822,Resequenced to unique Road_No_LinkNN standard
+M3_Link10,M3Int3_S1,M3,M,Kajjansi Interchange Slip 5,0.406333158178,0.0,0.406333158178,Bituminous,Paved,Kampala,Central,32.53884301,0.21410932,32.54215892,0.2126173,Resequenced to unique Road_No_LinkNN standard
+M3_Link11,M3Int3_S2,M3,M,Kajjansi Interchange Slip 6,0.530487786633,0.0,0.530487786633,Bituminous,Paved,Kampala,Central,32.54215892,0.2126173,32.54558545,0.2093113,Resequenced to unique Road_No_LinkNN standard
+M3_Link12,M3Int3_S3,M3,M,Kajjansi Interchange Slip 7,0.384577841418,0.0,0.384577841418,Bituminous,Paved,Kampala,Central,32.54467394,0.21004453,32.54187044,0.21199945,Resequenced to unique Road_No_LinkNN standard
+M3_Link13,M3Int3_S4,M3,M,Kajjansi Interchange Slip 8,0.425853140015,0.0,0.425853140015,Bituminous,Paved,Kampala,Central,32.54187044,0.21199945,32.5386701,0.21407372,Resequenced to unique Road_No_LinkNN standard
+M3_Link14,M3Int4_S1,M3,M,Mpala Interchange Slip 1,0.395520853911,0.0,0.395520853911,Bituminous,Paved,Kampala,Central,32.51273303,0.10548373,32.51273303,0.10548373,Resequenced to unique Road_No_LinkNN standard
+M3_Link15,M3Int4_S2,M3,M,Mpala Interchange Slip 2,0.671482952279,0.0,0.671482952279,Bituminous,Paved,Kampala,Central,32.51323221,0.11145507,32.51273328,0.10550761,Resequenced to unique Road_No_LinkNN standard
+M3_Link16,M3Int4_S3,M3,M,Mpala Interchange Slip 3,0.150456641968,0.0,0.150456641968,Bituminous,Paved,Kampala,Central,32.51273328,0.10550761,32.51401491,0.10522058,Resequenced to unique Road_No_LinkNN standard
+M3_Link17,M3Int4_S4,M3,M,Mpala Interchange Slip 4,0.367683544376,0.0,0.367683544376,Bituminous,Paved,Kampala,Central,32.50966277,0.10280382,32.5115995,0.10545428,Resequenced to unique Road_No_LinkNN standard
+M3_Link18,M3Int4_S5,M3,M,Mpala Interchange Slip 5,0.691233729983,0.0,0.691233729983,Bituminous,Paved,Kampala,Central,32.51179922,0.10580534,32.51312069,0.11174504,Resequenced to unique Road_No_LinkNN standard
+M3N1_Link01,M3N1_Link01,M3N1,M,Kampala - Entebbe Expressway (dual),24.9583481808,24.9583481808,0.0,Bituminous,Paved,Kampala,Central,32.50971273,0.10286242,32.51880029,0.31566854,Source ID retained
+M3N2_Link01,M3N2_Link01,M3N2,M,Munyonyo Spur (dual),12.3441834469,37.1473057886,24.8031223417,Bituminous,Paved,Kampala,Central,32.62050016,0.23913305,32.53402234,0.2152673,Source ID retained

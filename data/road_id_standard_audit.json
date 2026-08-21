@@ -1,0 +1,408 @@
+{
+  "audited_at_utc": "2026-08-21T08:19:18.777881+00:00",
+  "district_source_workbooks": 56,
+  "source_id_patterns": {
+    "four_letter_prefix_three_digits": 8,
+    "legacy_numeric": 153,
+    "legacy_mixed": 40
+  },
+  "source_examples": [
+    {
+      "workbook": "Bulambuli Community Access Roads.xlsx",
+      "sheet": "Community Acces Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "BULA051",
+        "BULA052",
+        "BULA053",
+        "BULA054",
+        "BULA055",
+        "BULA056",
+        "BULA057",
+        "BULA058"
+      ]
+    },
+    {
+      "workbook": "Bulambuli District_Roads.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "225010001",
+        "225010002",
+        "225010003",
+        "225010004",
+        "225010005",
+        "225010006",
+        "225010007",
+        "225010008"
+      ]
+    },
+    {
+      "workbook": "Bulambuli TC.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "BULAMBULI TOWN COUNCIL ROADS",
+        "225T010001",
+        "225T010002",
+        "225T010005",
+        "225T010006",
+        "225T010007",
+        "225T010009",
+        "225T010010"
+      ]
+    },
+    {
+      "workbook": "Bushenyi Ishaka MC.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "workbook": "DISTRICT, URBAN  ROADS DATA TEREGO DLG 2022 FOR SDP 4.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "T36001",
+        "T36002",
+        "T36003",
+        "T36004",
+        "T36005",
+        "T36006",
+        "T36007",
+        "T36008"
+      ]
+    },
+    {
+      "workbook": "Dokolo DLG - District Roads Condition..xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "7544",
+        "7534",
+        "7525",
+        "7515",
+        "7508",
+        "7513",
+        "7520",
+        "7507"
+      ]
+    },
+    {
+      "workbook": "DUCAR DETAILS FOR MARACHA DLG 2022.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "771",
+        "772",
+        "773",
+        "774",
+        "775",
+        "776",
+        "778",
+        "779"
+      ]
+    },
+    {
+      "workbook": "DUCAR DETAILS FOR MARACHA DLG 2022.xlsx",
+      "sheet": "Urban Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "MTC001",
+        "MTC002",
+        "MTC003",
+        "MTC004",
+        "MTC005",
+        "MTC006",
+        "MTC007",
+        "MTC008"
+      ]
+    },
+    {
+      "workbook": "Kalangala District Roads.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "51501",
+        "51502",
+        "51503",
+        "51504",
+        "51505",
+        "51506",
+        "51507",
+        "51508"
+      ]
+    },
+    {
+      "workbook": "Karenga Community Access Roads.xlsx",
+      "sheet": "Community Acces Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "workbook": "Karenga District Urban Roads Data.xlsx",
+      "sheet": "Urban Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
+    },
+    {
+      "workbook": "KUMI MUNICIPAL ROADS.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "workbook": "Napak -Community Access Roads.xlsx",
+      "sheet": "Community Acces Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "9014",
+        "9015",
+        "9016",
+        "9017",
+        "9018",
+        "9019",
+        "9020",
+        "9021"
+      ]
+    },
+    {
+      "workbook": "Napak- District_Roads.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "9001",
+        "9002",
+        "9003",
+        "9004",
+        "9005",
+        "9006",
+        "9007",
+        "9008"
+      ]
+    },
+    {
+      "workbook": "Nebbi Municipal Urban Roads.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "workbook": "Oyam District Roads.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "32107004",
+        "32103036",
+        "32105024",
+        "32103028",
+        "32103034",
+        "32104037",
+        "32103033",
+        "32106025"
+      ]
+    },
+    {
+      "workbook": "Pader DLG Community Access Roads (2).xlsx",
+      "sheet": "Community Acces Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "312",
+        "312",
+        "312",
+        "312",
+        "312",
+        "312",
+        "312",
+        "312"
+      ]
+    },
+    {
+      "workbook": "Pader DLG District Roads (2).xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "5305",
+        "5308",
+        "5312",
+        "5313",
+        "5314",
+        "5318",
+        "5319",
+        "5320"
+      ]
+    },
+    {
+      "workbook": "Pakwach Community Access Roads.xlsx",
+      "sheet": "Community Acces Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "workbook": "Pakwach District Roads.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "workbook": "Rubirizi DLG Community Access Roads (1).xlsx",
+      "sheet": "Community Acces Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "workbook": "Rubirizi DLG District Roads (1).xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "workbook": "District Roads.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "4432",
+        "4460",
+        "4431"
+      ]
+    },
+    {
+      "workbook": "Kadungulu town council.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "Nil",
+        "Nil",
+        "Nil",
+        "Nil",
+        "Nil",
+        "Nil",
+        "Nil",
+        "Nil"
+      ]
+    },
+    {
+      "workbook": "Kagwara town council.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "Nil",
+        "Nil",
+        "Nil",
+        "Nil",
+        "Nil",
+        "Nil",
+        "Nil",
+        "Nil"
+      ]
+    },
+    {
+      "workbook": "Urban Roads- Kasilo TC.xlsx",
+      "sheet": "District Roads",
+      "source_field": "Road ID",
+      "sample_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    }
+  ],
+  "public_ducar_standard": "[DISTRICT 4-LETTER PREFIX][3-DIGIT SEQUENCE]",
+  "public_ducar_records": 7733,
+  "public_ducar_valid_ids": 7733,
+  "public_ducar_unique_ids": 7733,
+  "national_standard": "Road_No_LinkNN",
+  "national_register": {
+    "records": 1015,
+    "road_numbers": 650,
+    "length_km": 21168.978,
+    "source_duplicate_ids": 4,
+    "corrected_duplicate_ids": 0,
+    "standard": "Road_No_LinkNN"
+  },
+  "policy": "Legacy district identifiers are retained only as provenance. Public DUCAR Link IDs use the approved district-prefix standard; national links use the independent national Road_No_LinkNN standard."
+}
