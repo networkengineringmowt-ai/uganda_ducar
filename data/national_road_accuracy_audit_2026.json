@@ -5,6 +5,7 @@
   "duplicate_source_link_id_records": 6,
   "blank_road_names": 0,
   "null_geometries": 0,
+  "invalid_geometries_after_repair": 0,
   "registry_length_km": 21136.748162,
   "geometry_length_km": 21091.23854,
   "length_variance_km": -45.509621,

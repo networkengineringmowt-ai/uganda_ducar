@@ -1,0 +1,5208 @@
+{
+  "audit_year": 2026,
+  "scope_root": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR",
+  "shapefile_paths": 155,
+  "unique_shapefile_datasets": 104,
+  "exact_duplicate_paths": 51,
+  "readable_paths": 155,
+  "unreadable_paths": 0,
+  "unique_line_datasets": 31,
+  "unique_line_features": 2295653,
+  "unique_line_null_or_empty_geometries": 348,
+  "unique_line_invalid_geometries": 5,
+  "duplicate_groups": [
+    {
+      "fingerprint": "aad16e7ea311511dcf0e9b4bb7e4887644e21dd0af27b5cfbf01ee86017f3df3",
+      "copies": 2,
+      "paths": [
+        "ESRI PROTOTYPE SOLUTION\\Transport Facility\\Mobility Facilities.shp",
+        "ESRI PROTOTYPE SOLUTION\\Transport Facility\\Transport Facilities.shp"
+      ]
+    },
+    {
+      "fingerprint": "ad8096366927ff23bdd7f07e468642e266587d20b5165f75fb3edd5e86800e96",
+      "copies": 2,
+      "paths": [
+        "gis_osm_buildings_a_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_buildings_a_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "ca8d9bb2314116fbd8a7700e1dcfcd91cd5ec6ed37d339d7468af55949dc946a",
+      "copies": 2,
+      "paths": [
+        "gis_osm_landuse_a_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_landuse_a_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "eba7d3bb0a5dd8cce899848ab0c08bc387aefd2f9691cf5bba8243eb4d184e2f",
+      "copies": 2,
+      "paths": [
+        "gis_osm_natural_a_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_natural_a_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "87c522293cb244a9441c7fc0e3fff3ebed522b7d5335e87d63b4b1cb089d4c43",
+      "copies": 2,
+      "paths": [
+        "gis_osm_natural_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_natural_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "e02e2109c4dda6271f7409fa6a690f57dfecb6cafde0ab6b2dfb301e1a5698da",
+      "copies": 2,
+      "paths": [
+        "gis_osm_places_a_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_places_a_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "dddd74170bc6d70dab9dfbc802d6f0887eced1bdbd0ba216c1fa8b9b415ff362",
+      "copies": 2,
+      "paths": [
+        "gis_osm_places_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_places_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "a7a0dfa56e90b4a53d413a9a7745ec110bcae74496ad2451f7bd56d003eeabaf",
+      "copies": 2,
+      "paths": [
+        "gis_osm_pofw_a_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_pofw_a_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "12f8a3b17d63f3efbd84550c617119960decbdb5e7c0bab35cc0ad23674f3f50",
+      "copies": 2,
+      "paths": [
+        "gis_osm_pofw_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_pofw_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "f38f91b94243476a1c0e1f1cfb296080527a499c6cf35870aaa162bc8df538b0",
+      "copies": 2,
+      "paths": [
+        "gis_osm_pois_a_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_pois_a_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "c8ade0c82f3b42075778d194839babeed64fe446cf40e5341a6f140baca3a102",
+      "copies": 2,
+      "paths": [
+        "gis_osm_pois_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_pois_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "57ef4dcd4c51bf951533c777913e7d812c1643656461e231df37d6317316cf18",
+      "copies": 2,
+      "paths": [
+        "gis_osm_railways_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_railways_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "d48bf4f7e243edc0b12c4f327a72d9287838449f3b188dc9516ba2d4c5cdcbe1",
+      "copies": 2,
+      "paths": [
+        "gis_osm_roads_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_roads_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "7237e409ff337ba9adc10f7c254ebe10514a220f9cff2ff7fe5699468113a082",
+      "copies": 2,
+      "paths": [
+        "gis_osm_traffic_a_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_traffic_a_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "1663cc03d9f23e53699e4a91fe0c6557cc81d67a0b4995bc96910409eecf3d71",
+      "copies": 2,
+      "paths": [
+        "gis_osm_traffic_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_traffic_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "24bd4575674823afa39b4c64e95add3e86e8efef520c2391ca2738bd3ebe5985",
+      "copies": 2,
+      "paths": [
+        "gis_osm_transport_a_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_transport_a_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "5184f56de8c82da2d308089f9cc8ef2ee7ce02a6e296cb527cabbe64de5084b8",
+      "copies": 2,
+      "paths": [
+        "gis_osm_transport_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_transport_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "1f90d8d479c6eedad8e68446a018aefa9d25734246bb248fdda4e9c3a813f630",
+      "copies": 2,
+      "paths": [
+        "gis_osm_water_a_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_water_a_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "5436b3aeb9f66221e1770bd2b487a8d110b8427f69a8e0f5bad0316a23a8df2e",
+      "copies": 2,
+      "paths": [
+        "gis_osm_waterways_free_1.shp",
+        "uganda-latest-free.shp\\gis_osm_waterways_free_1.shp"
+      ]
+    },
+    {
+      "fingerprint": "987e4354c71719c6488c07c3d3cbb20dcab21de82942fdf76ec8e63e55555c30",
+      "copies": 2,
+      "paths": [
+        "KCCA\\Selected Roads in CBD\\KCCA.shp",
+        "Selected Roads in CBD\\KCCA.shp"
+      ]
+    },
+    {
+      "fingerprint": "c705da8360ff42bd083b75df2d589ab3d3bdfc955ab56e71fbc35f3ab5865302",
+      "copies": 2,
+      "paths": [
+        "KCCA\\Selected Roads in CBD\\Selected_Roads_in_CBD.shp",
+        "Selected Roads in CBD\\Selected_Roads_in_CBD.shp"
+      ]
+    },
+    {
+      "fingerprint": "1da1e5abc2a5bc311898f84c5c31fd103675126312cd9378a48989200e734899",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\arc60unra_roads.shp",
+        "shapefiles\\shapefiles\\arc60unra_roads.shp"
+      ]
+    },
+    {
+      "fingerprint": "2ce5ef92ce4b93129c0d927e7bf9e3d7f0f95a0f4b55e1753144e544ba221ea8",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\BA_Facilities.shp",
+        "shapefiles\\shapefiles\\BA_Facilities.shp"
+      ]
+    },
+    {
+      "fingerprint": "82d10a00daf751ec3a9807f69dac6cff64c71e2f7f2828deab65b95359f666c4",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\BA_Roads.shp",
+        "shapefiles\\shapefiles\\BA_Roads.shp"
+      ]
+    },
+    {
+      "fingerprint": "cf880582eee9a8bccff9f1149c604fd550ab7998bc111eee19bc5ca311c07abe",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\Districts_larger_than_kampala.shp",
+        "shapefiles\\shapefiles\\Districts_larger_than_kampala.shp"
+      ]
+    },
+    {
+      "fingerprint": "1a4aea0256fbb8c2af66e4cf2d5f99e7fbc76f7ef3276c5c673e9c093a9cc03e",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\Hoima_Kaiso.shp",
+        "shapefiles\\shapefiles\\Hoima_Kaiso.shp"
+      ]
+    },
+    {
+      "fingerprint": "450c96627a4f1e975f6aefef26764b4e87b79a0bf0966d58bda0c416157eb0af",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\kampala roads proj.shp",
+        "shapefiles\\shapefiles\\kampala roads proj.shp"
+      ]
+    },
+    {
+      "fingerprint": "b79a76aaa94e15dd4bbb1709d22c7b56071b1fb8521532c2b7194817dd82117f",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\Kampala_district.shp",
+        "shapefiles\\shapefiles\\Kampala_district.shp"
+      ]
+    },
+    {
+      "fingerprint": "ed8ea5771d1ad595e6273d1c5591687f258b41a306d1ffe227e570f51060b0f2",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\Kampala_Roads.shp",
+        "shapefiles\\shapefiles\\Kampala_Roads.shp"
+      ]
+    },
+    {
+      "fingerprint": "a9b0eab0f8d1b4eac9605210d537b4771f4614c9846c0162ff292c30fd60bea0",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\lakesnew.shp",
+        "shapefiles\\shapefiles\\lakesnew.shp"
+      ]
+    },
+    {
+      "fingerprint": "bf119e86545466ea59576be86b0c747465d1377f24342a25716ea8ed814128c8",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\qgisclip.shp",
+        "shapefiles\\shapefiles\\qgisclip.shp"
+      ]
+    },
+    {
+      "fingerprint": "91bd2c12e8597f8e4d6a345720113a57184b14a324532e3a3fb28198777c9a63",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Airfields.shp",
+        "shapefiles\\Ug_Airfields.shp"
+      ]
+    },
+    {
+      "fingerprint": "8de549197d74a0f31bace4c1cd5c23f5576f65714efed08f6f48db07b10604b4",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Counties.shp",
+        "shapefiles\\Ug_Counties.shp"
+      ]
+    },
+    {
+      "fingerprint": "baef2ca1c50f1752841c8d5dc6e0b3c1f2341ce6859cbcb0e4d7715875120a82",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Districts.shp",
+        "shapefiles\\Ug_Districts.shp"
+      ]
+    },
+    {
+      "fingerprint": "6e4b0641e887ca6999b384053c9c492051ce80da83bbb6f4d12800ad620fabc0",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\ug_DrainageBasins.shp",
+        "shapefiles\\ug_DrainageBasins.shp"
+      ]
+    },
+    {
+      "fingerprint": "d8f690cd1c034acde55157ea849060f2803d1197814450ecb2a89e96edb44d1e",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_health_centres.shp",
+        "shapefiles\\Ug_health_centres.shp"
+      ]
+    },
+    {
+      "fingerprint": "343a583b42bb78bf71e62bfde0ab4c8c9ee645455b9d2eca8cce81191b7acd43",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Lakes.shp",
+        "shapefiles\\Ug_Lakes.shp"
+      ]
+    },
+    {
+      "fingerprint": "616bbb0c8883c6612ab3638598da67cf8ec6b89e0b5fdc54dd00a15a22870c35",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Parishes.shp",
+        "shapefiles\\Ug_Parishes.shp"
+      ]
+    },
+    {
+      "fingerprint": "96b45267bc49f04a8a6a8dfb5da150642909c545f03fccd25800f79b0c3d5042",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Protected_Areas.shp",
+        "shapefiles\\Ug_Protected_Areas.shp"
+      ]
+    },
+    {
+      "fingerprint": "625c6effd1f4ec1a62a3f7e359359a518e33fdd597c15d80c3194f20f9d7da81",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_ProtectedAreas.shp",
+        "shapefiles\\Ug_ProtectedAreas.shp"
+      ]
+    },
+    {
+      "fingerprint": "9c3a4eb403f576ca6e0cc9328e361e213a5bd50818ab3de47b211c2a6212a5c8",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Rivers.shp",
+        "shapefiles\\Ug_Rivers.shp"
+      ]
+    },
+    {
+      "fingerprint": "87747e7ec13977bb73d7e040c7a44aa55f5f47237bf389c31da1868838546331",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Roads.shp",
+        "shapefiles\\Ug_Roads.shp"
+      ]
+    },
+    {
+      "fingerprint": "0e765aeec7b441a05e0ba4c8479f009ffefad80e864e6e86c0362d9fce9e0f22",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Roads_UNRA_2012.shp",
+        "shapefiles\\Ug_Roads_UNRA_2012.shp"
+      ]
+    },
+    {
+      "fingerprint": "06fb70387fd3c8ee2d6394deb8c75d7fe1eb60b2161de7c777d2450cd1b7b424",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\UG_ROADS_UTM.shp",
+        "shapefiles\\UG_ROADS_UTM.shp"
+      ]
+    },
+    {
+      "fingerprint": "c2b7d16e8a61f5ae7c7c8b4da48087b579801f27cb106e5daf2e4e35903d38b9",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Schools.shp",
+        "shapefiles\\Ug_Schools.shp"
+      ]
+    },
+    {
+      "fingerprint": "d18ca35da179d0b1fa8cf89d60f1a6d02f018b483c7a0c8d22381a8bc356daca",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Security.shp",
+        "shapefiles\\Ug_Security.shp"
+      ]
+    },
+    {
+      "fingerprint": "030b1cfa6a95c11fd4078cbad281ac9207270ab43747b991b648d7c47e1182af",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Subcounties.shp",
+        "shapefiles\\Ug_Subcounties.shp"
+      ]
+    },
+    {
+      "fingerprint": "410d9580466ec675f1f1a07ff7dead78d2354e73df363f78adaa046177e1c172",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Towns.shp",
+        "shapefiles\\Ug_Towns.shp"
+      ]
+    },
+    {
+      "fingerprint": "291a60222e1ab779d30105a742b97ac58d8d1e758e4422df4277bda7350d50ab",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Ug_Trading_Centres.shp",
+        "shapefiles\\Ug_Trading_Centres.shp"
+      ]
+    },
+    {
+      "fingerprint": "7fb2a9c58e46c0760baf439a898045b80b4060c90c407c4f3ccee569cceb0c25",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Wetlands1994.shp",
+        "shapefiles\\Wetlands1994.shp"
+      ]
+    },
+    {
+      "fingerprint": "77d1a617907dc124021263906d61c5eab2ca411bb6fcab35ac14f626b634632c",
+      "copies": 2,
+      "paths": [
+        "shapefiles\\shapefiles\\Wetlands2008.shp",
+        "shapefiles\\Wetlands2008.shp"
+      ]
+    }
+  ],
+  "datasets": [
+    {
+      "path": "Administrative units - Uganda\\ug_counties.shp",
+      "fingerprint": "e6c92264b24daba6065a97329e11835ce214c411d4cad31caf870b61996f7fa8",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 208,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 31,
+      "fields": [
+        "adm3_name",
+        "adm3_name1",
+        "adm3_name2",
+        "adm3_name3",
+        "adm3_pcode",
+        "adm2_name",
+        "adm2_name1",
+        "adm2_name2",
+        "adm2_name3",
+        "adm2_pcode",
+        "adm1_name",
+        "adm1_name1",
+        "adm1_name2",
+        "adm1_name3",
+        "adm1_pcode",
+        "adm0_name",
+        "adm0_name1",
+        "adm0_name2",
+        "adm0_name3",
+        "adm0_pcode",
+        "valid_on",
+        "valid_to",
+        "area_sqkm",
+        "version",
+        "lang",
+        "lang1",
+        "lang2",
+        "lang3",
+        "adm3_ref_n",
+        "center_lat",
+        "center_lon"
+      ],
+      "source_bounds": [
+        29.5721617,
+        -1.4814743,
+        35.0010536,
+        4.231367
+      ]
+    },
+    {
+      "path": "Administrative units - Uganda\\ug_districts.shp",
+      "fingerprint": "77b65e2df720a9c1408004deb6e5f60a57446fba80c1eadff9137e881911f045",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 135,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 26,
+      "fields": [
+        "adm2_name",
+        "adm2_name1",
+        "adm2_name2",
+        "adm2_name3",
+        "adm2_pcode",
+        "adm1_name",
+        "adm1_name1",
+        "adm1_name2",
+        "adm1_name3",
+        "adm1_pcode",
+        "adm0_name",
+        "adm0_name1",
+        "adm0_name2",
+        "adm0_name3",
+        "adm0_pcode",
+        "valid_on",
+        "valid_to",
+        "area_sqkm",
+        "version",
+        "lang",
+        "lang1",
+        "lang2",
+        "lang3",
+        "adm2_ref_n",
+        "center_lat",
+        "center_lon"
+      ],
+      "source_bounds": [
+        29.5721617,
+        -1.4814743,
+        35.0010536,
+        4.231367
+      ]
+    },
+    {
+      "path": "Administrative units - Uganda\\ug_parishes.shp",
+      "fingerprint": "47db90125913bfcbf9eda1f1741bc619bfde3ec6e5a29e8463b29c233c4a27b1",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 6239,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 14,
+      "fields": [
+        "OBJECTID_1",
+        "DNAME_2002",
+        "CNAME_2002",
+        "SNAME_2002",
+        "PNAME_2002",
+        "FTYPE",
+        "DNAME_2006",
+        "CNAME_2006",
+        "SNAME_2006",
+        "PNAME_2006",
+        "DNAME_2011",
+        "NAME",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        118564.993,
+        -163993.094,
+        722608.7896,
+        467771.7991
+      ]
+    },
+    {
+      "path": "Administrative units - Uganda\\ug_subcounties.shp",
+      "fingerprint": "3f5b407e5034255a6ee259bcf555c8dfba40a347fff4cd98a05f2e583c2d9d93",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 6239,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 14,
+      "fields": [
+        "OBJECTID_1",
+        "DNAME_2002",
+        "CNAME_2002",
+        "SNAME_2002",
+        "PNAME_2002",
+        "FTYPE",
+        "DNAME_2006",
+        "CNAME_2006",
+        "SNAME_2006",
+        "PNAME_2006",
+        "DNAME_2011",
+        "NAME",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        118564.993,
+        -163993.094,
+        722608.7896,
+        467771.7991
+      ]
+    },
+    {
+      "path": "Administrative units - Uganda\\ug_villages.shp",
+      "fingerprint": "84f2e25b418c525ad6c08e3404c3c4f978540702af31440823fc510449f45e4a",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 42816,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 21,
+      "fields": [
+        "OBJECTID_1",
+        "VILLAGE",
+        "PARISH",
+        "SUBCOUNTY",
+        "COUNTY",
+        "DISTRICT",
+        "POP2002",
+        "HH2002",
+        "POP2010",
+        "HH2010",
+        "ELE_ACCESS",
+        "Area_m2",
+        "Area_km2",
+        "Shape_Leng",
+        "Area_sqkm",
+        "Shape_Le_1",
+        "Area_sqkm_",
+        "RuleID",
+        "Label",
+        "Shape_Le_2",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        118423.6643,
+        -163735.9625,
+        722594.1004,
+        468074.3368
+      ]
+    },
+    {
+      "path": "district roads\\dcroads.shp",
+      "fingerprint": "46088763110c84206a0811888cfac55d37ad33807de456ae766b72d2417bbf4f",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 21675,
+      "geometry_type": "LineString Z",
+      "crs": "COMPD_CS[\"WGS 84 / UTM zone 36N + WGS_1984_Geoid\",PROJCS[\"WGS 84 / UTM zone 36N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[...",
+      "field_count": 38,
+      "fields": [
+        "RdCode",
+        "RdSect",
+        "ChainStart",
+        "ChainEnd",
+        "RoadLen_Km",
+        "RdType",
+        "DC_Left",
+        "DC_Right",
+        "SC_Left",
+        "SC_Right",
+        "SurFactor",
+        "CarWidth",
+        "ShWidth",
+        "WPNo",
+        "WP_Lat",
+        "WP_Lon",
+        "WPNo_End",
+        "WP_Lat_End",
+        "WP_Lon_End",
+        "AveSpeed",
+        "Remarks",
+        "DistCode",
+        "DistName",
+        "Rdname",
+        "VilStart",
+        "VillEnd",
+        "Surveyor",
+        "FileName",
+        "TrackName",
+        "RdClass",
+        "ShpFile",
+        "RdSectId",
+        "DUC_Code",
+        "DUC_Name",
+        "LenthM_GIS",
+        "desgn",
+        "Shape_Leng",
+        "Shape_Le_1"
+      ],
+      "source_bounds": [
+        119631.5875,
+        -161345.6706,
+        726299.0,
+        418198.0
+      ],
+      "null_or_empty_geometries": 174,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 11729,
+      "projected_length_km": 86248.047742,
+      "wgs84_bounds": [
+        29.5830719,
+        -1.4576392,
+        35.0343949,
+        3.7826899
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "district roads\\dcroads2025.shp",
+      "fingerprint": "f0e523680e1b9eeedef4fec9cb467b51c483b952044052524fd7f43ce32a266e",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 31106,
+      "geometry_type": "LineString Z",
+      "crs": "COMPD_CS[\"WGS 84 / UTM zone 36N + WGS_1984_Geoid\",PROJCS[\"WGS 84 / UTM zone 36N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[...",
+      "field_count": 46,
+      "fields": [
+        "RdCode",
+        "RdSect",
+        "ChainStart",
+        "ChainEnd",
+        "RoadLen_Km",
+        "RdType",
+        "DC_Left",
+        "DC_Right",
+        "SC_Left",
+        "SC_Right",
+        "SurFactor",
+        "CarWidth",
+        "ShWidth",
+        "WPNo",
+        "WP_Lat",
+        "WP_Lon",
+        "WPNo_End",
+        "WP_Lat_End",
+        "WP_Lon_End",
+        "AveSpeed",
+        "Remarks",
+        "DistCode",
+        "DistName",
+        "Rdname",
+        "VilStart",
+        "VillEnd",
+        "Surveyor",
+        "FileName",
+        "TrackName",
+        "RdClass",
+        "ShpFile",
+        "RdSectId",
+        "DUC_Code",
+        "DUC_Name",
+        "LenthM_GIS",
+        "desgn",
+        "Shape_Leng",
+        "Shape_Le_1",
+        "Rd_Class",
+        "Rd_materia",
+        "Speed_limi",
+        "Rd_Width",
+        "Rd_way",
+        "No_of_lane",
+        "Rd_name",
+        "ClassDescr"
+      ],
+      "source_bounds": [
+        119631.5875,
+        -161345.6706,
+        726299.0,
+        418198.0
+      ],
+      "null_or_empty_geometries": 174,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 11729,
+      "projected_length_km": 89077.361538,
+      "wgs84_bounds": [
+        29.5830719,
+        -1.4576392,
+        35.0343949,
+        3.7826899
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "district roads\\Final_Merged_2026\\uganda_district_roads_2026_merged.shp",
+      "fingerprint": "853f8f9fe176663fac1de288b32d2acbadeb47c05695541d25c277cc43149d73",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 4259,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 11,
+      "fields": [
+        "LINK_ID",
+        "ROAD_NAME",
+        "DISTRICT",
+        "ROAD_TYPE",
+        "CLASS_BAND",
+        "SURFACE",
+        "PAVE_CLASS",
+        "LENGTH_KM",
+        "REG_LEN_KM",
+        "SRC_SEC_CT",
+        "GEOM_BASIS"
+      ],
+      "source_bounds": [
+        29.5830719,
+        -1.4576392,
+        35.0343949,
+        3.7826899
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 31799.381799,
+      "wgs84_bounds": [
+        29.5830719,
+        -1.4576392,
+        35.0343949,
+        3.7826899
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "Districts\\districts.shp",
+      "fingerprint": "c2e9d699bf08a49055b55b1b8adab71abb72e73cae8fc28b17d18f57f8b8a4b7",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 135,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 14,
+      "fields": [
+        "admin2Name",
+        "admin2Pcod",
+        "admin2RefN",
+        "admin2AltN",
+        "admin2Al_1",
+        "admin1Name",
+        "admin1Pcod",
+        "admin0Name",
+        "admin0Pcod",
+        "date",
+        "validOn",
+        "validTo",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        29.5721617,
+        -1.4814743,
+        35.0010536,
+        4.231367
+      ]
+    },
+    {
+      "path": "Districts\\districts2020.shp",
+      "fingerprint": "345f50f9b18a2a372b0b4c9690d07755f94ddac4d83ec2b59e3d263d9a93a245",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 14,
+      "fields": [
+        "admin2Name",
+        "admin2Pcod",
+        "admin2RefN",
+        "admin2AltN",
+        "admin2Al_1",
+        "admin1Name",
+        "admin1Pcod",
+        "admin0Name",
+        "admin0Pcod",
+        "date",
+        "validOn",
+        "validTo",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        32.8603852,
+        1.7060649,
+        33.2905112,
+        2.1086081
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_adminareas_a_free_1.shp",
+      "fingerprint": "4ac8fbc2e43f66bdb804029f00e5846d258fc5dd35d99fd38c4ebbf11dfd5410",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 616,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.573433,
+        -1.5023693,
+        35.000308,
+        4.2340766
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_buildings_a_free_1.shp",
+      "fingerprint": "210d49f895cbfb041d0d29394879c9ff2dde4fe00863f15396fbb7bf2938a737",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 9682255,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "type"
+      ],
+      "source_bounds": [
+        29.5709017,
+        -1.4830593,
+        35.0010164,
+        4.1986206
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_landuse_a_free_1.shp",
+      "fingerprint": "960153f84aae73afae02638505df558e923a2099903ca3a4fb7449f297eaf835",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 145252,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.3259323,
+        -2.5450698,
+        34.9614484,
+        4.2477542
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_natural_a_free_1.shp",
+      "fingerprint": "784379e535a5371fb40912f8572d97f75902051fb8153e168c476887eb652be5",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 173,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.7307141,
+        -0.9087669,
+        34.6310549,
+        3.5917123
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_natural_free_1.shp",
+      "fingerprint": "cb85cb22120f33bb94859fa9de8794ef37f83db78835c40d8534868125fb7b6d",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 270455,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.584548,
+        -1.4800303,
+        34.79921,
+        4.1405161
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_places_a_free_1.shp",
+      "fingerprint": "0f954ca519a328614d05f35dbf565303c248869e2fa4879d42bdfa0d50e5434b",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 533,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "population",
+        "name"
+      ],
+      "source_bounds": [
+        29.6181846,
+        -2.8112734,
+        34.8678757,
+        4.1950264
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_places_free_1.shp",
+      "fingerprint": "326c133e685da8ec5505e658b101e628b930a2e22be077792cfc4ab9b777f891",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 74502,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "population",
+        "name"
+      ],
+      "source_bounds": [
+        29.5728778,
+        -1.4841169,
+        35.0097461,
+        4.0873402
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_pofw_a_free_1.shp",
+      "fingerprint": "8bc024abaa5fc1ec0982b2a32303f47eb235e9dd4e43b137be61f34969c06964",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 721,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.587621,
+        -1.446903,
+        34.6588649,
+        3.5869015
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_pofw_free_1.shp",
+      "fingerprint": "8b663ee81eeff91111a420a724cc777b2ad0b1e4632ab94ecef02f5088ef40a1",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 2801,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.5912836,
+        -1.3653927,
+        34.6603963,
+        3.7446383
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_pois_a_free_1.shp",
+      "fingerprint": "7313a344b1180c267eeb82c2e52ab7bdc5c802ff27f6a42f827349a227d95507",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 7208,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.603294,
+        -1.474206,
+        34.9608712,
+        3.9575742
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_pois_free_1.shp",
+      "fingerprint": "5b2d864c2d7dcdd6dfbde3da6704ff878236863e0d0eb0b8d010f9a291240073",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 62097,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.555533,
+        -1.4718307,
+        34.9950819,
+        3.8747442
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_protected_areas_a_free_1.shp",
+      "fingerprint": "b985a33e52f37d8cf7fc944206437c7a6d52e6df709ec7540cf680b2dda7a350",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 119,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 3,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass"
+      ],
+      "source_bounds": [
+        29.5847038,
+        -1.355742,
+        35.000308,
+        4.3830624
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_railways_free_1.shp",
+      "fingerprint": "f25734f3aaa30846901870b14a6336a7901e753861fe92bbe1c05f38337252e5",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 284,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 7,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "layer",
+        "bridge",
+        "tunnel"
+      ],
+      "source_bounds": [
+        31.3797083,
+        0.1556798,
+        34.2872026,
+        2.7667237
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 1003.519642,
+      "wgs84_bounds": [
+        31.3797083,
+        0.1556798,
+        34.2872026,
+        2.7667237
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_roads_free_1.shp",
+      "fingerprint": "e2121d49af6b96473aba537224057fe2181c219d84e71dd7e5d0773f94ee869e",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 677545,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 10,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "ref",
+        "oneway",
+        "maxspeed",
+        "layer",
+        "bridge",
+        "tunnel"
+      ],
+      "source_bounds": [
+        29.5595846,
+        -1.6290307,
+        35.0358739,
+        4.2558582
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 7,
+      "projected_length_km": 321166.324998,
+      "wgs84_bounds": [
+        29.5595846,
+        -1.6290307,
+        35.0358739,
+        4.2558582
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_traffic_a_free_1.shp",
+      "fingerprint": "4f0e899dcbedb09fe31012dd26f8434fbcf9806eadaf1cfe996ea37748ca63da",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 2391,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "calming"
+      ],
+      "source_bounds": [
+        29.6164874,
+        -1.3402843,
+        34.6064977,
+        3.735454
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_traffic_free_1.shp",
+      "fingerprint": "c6a9a7dbfe1af91bf5317021dc537d75d7a9aeb73ea2d702f2b7b6690709224c",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 5119,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "calming"
+      ],
+      "source_bounds": [
+        29.5872367,
+        -1.9618656,
+        34.8179205,
+        3.9353968
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_transport_a_free_1.shp",
+      "fingerprint": "33b2e8fab85ff5951ee2c0ae5758c5fb64c35e9c0ec0c06b43c2b8b7391adcd7",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 122,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6957755,
+        -1.2899942,
+        34.6016453,
+        3.720608
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_transport_free_1.shp",
+      "fingerprint": "216fb01d68795734a6f900c66317a6221e7e8b8881c71facd2821577bd846c6e",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 496,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6649695,
+        -2.5187221,
+        34.6536997,
+        3.7780269
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_water_a_free_1.shp",
+      "fingerprint": "f587e7458d6910823d4404140397eab00ec7559a30138f3ff5c35066af614961",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 26758,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.3034467,
+        -3.0233812,
+        34.9167121,
+        3.995684
+      ]
+    },
+    {
+      "path": "DUCAR_Framework_Tool\\github_app\\data_sources\\geofabrik_uganda\\gis_osm_waterways_free_1.shp",
+      "fingerprint": "a2d661a4046d1bf82f28bb4326e5d1d02680e92f2e4bd3e303b43fa5110870ae",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 30450,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "width",
+        "name"
+      ],
+      "source_bounds": [
+        29.5334776,
+        -1.4942171,
+        35.0684285,
+        4.330739
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 2,
+      "projected_length_km": 31990.835175,
+      "wgs84_bounds": [
+        29.5334776,
+        -1.4942171,
+        35.0684285,
+        4.330739
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "ESRI PROTOTYPE SOLUTION\\Kampala Roads\\Kampala roads.shp",
+      "fingerprint": "0d15ddd95779b615f473f1f5f315895ce8522b35231a6f4a0c35cf4913eb3ec5",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 9431,
+      "geometry_type": "LineString",
+      "crs": "EPSG:21096",
+      "field_count": 9,
+      "fields": [
+        "Rd_Class",
+        "Rd_materia",
+        "Speed_limi",
+        "Rd_Width",
+        "Rd_way",
+        "No_of_lane",
+        "SHAPE_Leng",
+        "Rd_name",
+        "ClassDescr"
+      ],
+      "source_bounds": [
+        435643.3399331,
+        3770.1143457,
+        476809.6155517,
+        53209.6540226
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 2829.313792,
+      "wgs84_bounds": [
+        32.422388,
+        0.0313766,
+        32.7923271,
+        0.4786618
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "ESRI PROTOTYPE SOLUTION\\Road side facilities\\Road Side Facilities.shp",
+      "fingerprint": "d7ca78e0959994feab97f5e96c55b11da47ea7107afa45f2d1c24210a15dc73b",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 4774,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.5872367,
+        -1.9618656,
+        34.8177874,
+        3.9353968
+      ]
+    },
+    {
+      "path": "ESRI PROTOTYPE SOLUTION\\Transport Facility\\Mobility Facilities.shp",
+      "fingerprint": "aad16e7ea311511dcf0e9b4bb7e4887644e21dd0af27b5cfbf01ee86017f3df3",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 112,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6957755,
+        -1.2899942,
+        34.6016453,
+        3.720608
+      ]
+    },
+    {
+      "path": "ESRI PROTOTYPE SOLUTION\\Transport Facility\\Transport Facilities.shp",
+      "fingerprint": "aad16e7ea311511dcf0e9b4bb7e4887644e21dd0af27b5cfbf01ee86017f3df3",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 112,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6957755,
+        -1.2899942,
+        34.6016453,
+        3.720608
+      ]
+    },
+    {
+      "path": "ESRI PROTOTYPE SOLUTION\\Transport Facility\\Transport Facility.shp",
+      "fingerprint": "1bc622931eb7deae29131e51bd1ce49a01b54d7446d1194e3e40de5e128d8d7f",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 497,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6649695,
+        -2.5187221,
+        34.6536997,
+        3.7780269
+      ]
+    },
+    {
+      "path": "ESRI PROTOTYPE SOLUTION\\Uganda Districts\\Uganda Districts.shp",
+      "fingerprint": "b6ac10ac414d8eadc333631c35a2547cbfeb5364a32d847b18270adb1ea1a8cc",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 112,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 2,
+      "fields": [
+        "OBJECTID_1",
+        "dist"
+      ],
+      "source_bounds": [
+        118419.5767249,
+        -163987.2604034,
+        722608.8003398,
+        467771.5486841
+      ]
+    },
+    {
+      "path": "ESRI PROTOTYPE SOLUTION\\Uganda Towns\\Uganda Towns.shp",
+      "fingerprint": "10bab40e819a71e8b6b617d173c63894a7d9700da5e69c87c0a2f1611086c3f4",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 58,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 4,
+      "fields": [
+        "OBJECTID_1",
+        "cityname",
+        "Adm_level",
+        "ORIG_FID"
+      ],
+      "source_bounds": [
+        125384.02,
+        -142917.6627,
+        679529.4604,
+        413061.0551
+      ]
+    },
+    {
+      "path": "gis_osm_buildings_a_free_1.shp",
+      "fingerprint": "ad8096366927ff23bdd7f07e468642e266587d20b5165f75fb3edd5e86800e96",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 8878201,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "type"
+      ],
+      "source_bounds": [
+        29.5709017,
+        -1.4830593,
+        34.9854268,
+        4.1986206
+      ]
+    },
+    {
+      "path": "gis_osm_landuse_a_free_1.shp",
+      "fingerprint": "ca8d9bb2314116fbd8a7700e1dcfcd91cd5ec6ed37d339d7468af55949dc946a",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 142602,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.3259323,
+        -2.5450698,
+        34.9614484,
+        4.2477542
+      ]
+    },
+    {
+      "path": "gis_osm_natural_a_free_1.shp",
+      "fingerprint": "eba7d3bb0a5dd8cce899848ab0c08bc387aefd2f9691cf5bba8243eb4d184e2f",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 173,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.7307141,
+        -0.9087669,
+        34.6310549,
+        3.5917123
+      ]
+    },
+    {
+      "path": "gis_osm_natural_free_1.shp",
+      "fingerprint": "87c522293cb244a9441c7fc0e3fff3ebed522b7d5335e87d63b4b1cb089d4c43",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 269940,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.584548,
+        -1.4800303,
+        34.79921,
+        4.1405161
+      ]
+    },
+    {
+      "path": "gis_osm_places_a_free_1.shp",
+      "fingerprint": "e02e2109c4dda6271f7409fa6a690f57dfecb6cafde0ab6b2dfb301e1a5698da",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 530,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "population",
+        "name"
+      ],
+      "source_bounds": [
+        29.6181846,
+        -2.8112734,
+        34.8678757,
+        4.1950264
+      ]
+    },
+    {
+      "path": "gis_osm_places_free_1.shp",
+      "fingerprint": "dddd74170bc6d70dab9dfbc802d6f0887eced1bdbd0ba216c1fa8b9b415ff362",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 74368,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "population",
+        "name"
+      ],
+      "source_bounds": [
+        29.5728778,
+        -1.4841169,
+        35.0097461,
+        4.0873402
+      ]
+    },
+    {
+      "path": "gis_osm_pofw_a_free_1.shp",
+      "fingerprint": "a7a0dfa56e90b4a53d413a9a7745ec110bcae74496ad2451f7bd56d003eeabaf",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 697,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.587621,
+        -1.446903,
+        34.6588649,
+        3.5869015
+      ]
+    },
+    {
+      "path": "gis_osm_pofw_free_1.shp",
+      "fingerprint": "12f8a3b17d63f3efbd84550c617119960decbdb5e7c0bab35cc0ad23674f3f50",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 2791,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.5912836,
+        -1.3653927,
+        34.6603963,
+        3.7446383
+      ]
+    },
+    {
+      "path": "gis_osm_pois_a_free_1.shp",
+      "fingerprint": "f38f91b94243476a1c0e1f1cfb296080527a499c6cf35870aaa162bc8df538b0",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 6730,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.603294,
+        -1.474206,
+        34.9608712,
+        3.9575742
+      ]
+    },
+    {
+      "path": "gis_osm_pois_free_1.shp",
+      "fingerprint": "c8ade0c82f3b42075778d194839babeed64fe446cf40e5341a6f140baca3a102",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 61875,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.555533,
+        -1.4718307,
+        34.9950819,
+        3.8747442
+      ]
+    },
+    {
+      "path": "gis_osm_railways_free_1.shp",
+      "fingerprint": "57ef4dcd4c51bf951533c777913e7d812c1643656461e231df37d6317316cf18",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 284,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 7,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "layer",
+        "bridge",
+        "tunnel"
+      ],
+      "source_bounds": [
+        31.3797083,
+        0.1556798,
+        34.2872026,
+        2.7667237
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 1003.846736,
+      "wgs84_bounds": [
+        31.3797083,
+        0.1556798,
+        34.2872026,
+        2.7667237
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "gis_osm_roads_free_1.shp",
+      "fingerprint": "d48bf4f7e243edc0b12c4f327a72d9287838449f3b188dc9516ba2d4c5cdcbe1",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 647074,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 10,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "ref",
+        "oneway",
+        "maxspeed",
+        "layer",
+        "bridge",
+        "tunnel"
+      ],
+      "source_bounds": [
+        29.5595846,
+        -1.6290307,
+        35.0358739,
+        4.4330808
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 312991.102168,
+      "wgs84_bounds": [
+        29.5595846,
+        -1.6290307,
+        35.0358739,
+        4.4330808
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "gis_osm_traffic_a_free_1.shp",
+      "fingerprint": "7237e409ff337ba9adc10f7c254ebe10514a220f9cff2ff7fe5699468113a082",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 2379,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6164874,
+        -1.3402843,
+        34.6064977,
+        3.735454
+      ]
+    },
+    {
+      "path": "gis_osm_traffic_free_1.shp",
+      "fingerprint": "1663cc03d9f23e53699e4a91fe0c6557cc81d67a0b4995bc96910409eecf3d71",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 4774,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.5872367,
+        -1.9618656,
+        34.8177874,
+        3.9353968
+      ]
+    },
+    {
+      "path": "gis_osm_transport_a_free_1.shp",
+      "fingerprint": "24bd4575674823afa39b4c64e95add3e86e8efef520c2391ca2738bd3ebe5985",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 112,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6957755,
+        -1.2899942,
+        34.6016453,
+        3.720608
+      ]
+    },
+    {
+      "path": "gis_osm_transport_free_1.shp",
+      "fingerprint": "5184f56de8c82da2d308089f9cc8ef2ee7ce02a6e296cb527cabbe64de5084b8",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 497,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6649695,
+        -2.5187221,
+        34.6536997,
+        3.7780269
+      ]
+    },
+    {
+      "path": "gis_osm_water_a_free_1.shp",
+      "fingerprint": "1f90d8d479c6eedad8e68446a018aefa9d25734246bb248fdda4e9c3a813f630",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 26646,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.3034467,
+        -3.0233812,
+        34.9167121,
+        3.995684
+      ]
+    },
+    {
+      "path": "gis_osm_waterways_free_1.shp",
+      "fingerprint": "5436b3aeb9f66221e1770bd2b487a8d110b8427f69a8e0f5bad0316a23a8df2e",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 30150,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "width",
+        "name"
+      ],
+      "source_bounds": [
+        29.5334776,
+        -1.489455,
+        35.0684285,
+        4.330739
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 2,
+      "projected_length_km": 31549.393651,
+      "wgs84_bounds": [
+        29.5334776,
+        -1.489455,
+        35.0684285,
+        4.330739
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "hotosm_uga_roads_osm_shp\\roads_lines.shp",
+      "fingerprint": "0309f61e615727f041ce95eeb58d552303311b4e1363436a7a924e3a69e33b6e",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 681678,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 24,
+      "fields": [
+        "id",
+        "name",
+        "name_en",
+        "name_sw",
+        "highway",
+        "surface",
+        "smoothness",
+        "width",
+        "lanes",
+        "oneway",
+        "bridge",
+        "layer",
+        "source",
+        "adm0_pcode",
+        "adm0_name",
+        "adm1_pcode",
+        "adm1_name",
+        "adm2_pcode",
+        "adm2_name",
+        "adm3_pcode",
+        "adm3_name",
+        "adm4_pcode",
+        "adm4_name",
+        "name_latin"
+      ],
+      "source_bounds": [
+        29.5643136,
+        -1.4927862,
+        35.0267719,
+        4.23403
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 322692.247409,
+      "wgs84_bounds": [
+        29.5643136,
+        -1.4927862,
+        35.0267719,
+        4.23403
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "hotosm_uga_roads_osm_shp\\roads_points.shp",
+      "fingerprint": "6a3dd5754c25f080a002916242d4b681ae09a7b7c1f1c986b2f2525fc16b9a1b",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 3025,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 24,
+      "fields": [
+        "id",
+        "name",
+        "name_en",
+        "name_sw",
+        "highway",
+        "surface",
+        "smoothness",
+        "width",
+        "lanes",
+        "oneway",
+        "bridge",
+        "layer",
+        "source",
+        "adm0_pcode",
+        "adm0_name",
+        "adm1_pcode",
+        "adm1_name",
+        "adm2_pcode",
+        "adm2_name",
+        "adm3_pcode",
+        "adm3_name",
+        "adm4_pcode",
+        "adm4_name",
+        "name_latin"
+      ],
+      "source_bounds": [
+        29.6367936,
+        -1.4288119,
+        34.7528766,
+        3.805936
+      ]
+    },
+    {
+      "path": "hotosm_uga_roads_osm_shp\\roads_polygons.shp",
+      "fingerprint": "eaca39b05164315246a043f4fb0ffa0ae03853b1f17705f45a01b6c6e0d29cbf",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 234,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 24,
+      "fields": [
+        "id",
+        "name",
+        "name_en",
+        "name_sw",
+        "highway",
+        "surface",
+        "smoothness",
+        "width",
+        "lanes",
+        "oneway",
+        "bridge",
+        "layer",
+        "source",
+        "adm0_pcode",
+        "adm0_name",
+        "adm1_pcode",
+        "adm1_name",
+        "adm2_pcode",
+        "adm2_name",
+        "adm3_pcode",
+        "adm3_name",
+        "adm4_pcode",
+        "adm4_name",
+        "name_latin"
+      ],
+      "source_bounds": [
+        29.6800533,
+        -1.3049639,
+        34.334473,
+        3.5024255
+      ]
+    },
+    {
+      "path": "KCCA\\kcca_nrn\\kccanrn.shp",
+      "fingerprint": "9146468b9e625e25a0d6af65870f228391551c2e1e9f6e79e8c999cec0b022af",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 80,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:32636",
+      "field_count": 18,
+      "fields": [
+        "Unique_ID",
+        "Road_No_1",
+        "Link_ID_1",
+        "Road_Cla_1",
+        "Link_Name",
+        "Chainage_1",
+        "Chainage_2",
+        "Length_km_",
+        "Surface__1",
+        "Maintena_2",
+        "Maintena_3",
+        "Completi_1",
+        "Rehabili_1",
+        "Year_of_La",
+        "Comments",
+        "NATIONAL_R",
+        "NATIONAL_1",
+        "FUNDER"
+      ],
+      "source_bounds": [
+        426038.5022401,
+        11369.8075,
+        472334.6783,
+        49531.4524
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 308.275249,
+      "wgs84_bounds": [
+        32.3353368,
+        0.1028624,
+        32.7513747,
+        0.4481162
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "KCCA\\Selected Roads in CBD\\KCCA.shp",
+      "fingerprint": "987e4354c71719c6488c07c3d3cbb20dcab21de82942fdf76ec8e63e55555c30",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 59,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:4326",
+      "field_count": 7,
+      "fields": [
+        "Road_Name",
+        "Shape_Leng",
+        "Length_km",
+        "Start_X",
+        "Start_Y",
+        "End_X",
+        "End_Y"
+      ],
+      "source_bounds": [
+        32.57115,
+        0.3072373,
+        32.6171733,
+        0.3335457
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 49.104372,
+      "wgs84_bounds": [
+        32.57115,
+        0.3072373,
+        32.6171733,
+        0.3335457
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "KCCA\\Selected Roads in CBD\\Selected_Roads_in_CBD.shp",
+      "fingerprint": "c705da8360ff42bd083b75df2d589ab3d3bdfc955ab56e71fbc35f3ab5865302",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 59,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:21096",
+      "field_count": 0,
+      "fields": [],
+      "source_bounds": [
+        452198.13937,
+        34261.6267055,
+        457319.4068022,
+        37169.574707
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 49.104372,
+      "wgs84_bounds": [
+        32.57115,
+        0.3072373,
+        32.6171733,
+        0.3335457
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "National Roads\\Final_Merged_2026\\uganda_national_roads_2026_merged.shp",
+      "fingerprint": "c738f1930f4aeebb75ca1e836e7b507ee71dffc6c36f45b1ec2a2220d2c97fd8",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1011,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 16,
+      "fields": [
+        "LINK_ID",
+        "ROAD_NO",
+        "ROAD_NAME",
+        "HIGHWAY",
+        "SURFACE",
+        "PAVE_CLASS",
+        "CONDITION",
+        "FUNC_CLASS",
+        "LENGTH_KM",
+        "REG_LEN_KM",
+        "REGION",
+        "COMPL_YR",
+        "REHAB_YR",
+        "GEOM_BASIS",
+        "SRC_SEG_CT",
+        "GOV_DEPT"
+      ],
+      "source_bounds": [
+        29.5814221,
+        -1.4720606,
+        34.9542733,
+        3.8063573
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 21434.510619,
+      "wgs84_bounds": [
+        29.5814221,
+        -1.4720606,
+        34.9542733,
+        3.8063573
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "National Roads\\national road network fy25-26.shp",
+      "fingerprint": "27c98a2ef8d76ac2e2a8960c8923ad5a9e19a3893792206f1671d7e00766b202",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 773,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:32636",
+      "field_count": 18,
+      "fields": [
+        "Unique_ID",
+        "Road_No_1",
+        "Link_ID_1",
+        "Road_Cla_1",
+        "Link_Name",
+        "Chainage_1",
+        "Chainage_2",
+        "Length_km_",
+        "Surface__1",
+        "Maintena_2",
+        "Maintena_3",
+        "Completi_1",
+        "Rehabili_1",
+        "Year_of_La",
+        "Comments",
+        "NATIONAL_R",
+        "NATIONAL_1",
+        "FUNDER"
+      ],
+      "source_bounds": [
+        119626.687,
+        -162713.3435072,
+        722702.0,
+        426400.8232
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 1,
+      "duplicate_geometries": 0,
+      "projected_length_km": 17826.216954,
+      "wgs84_bounds": [
+        29.58302,
+        -1.4699897,
+        35.0019886,
+        3.8570823
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "National Roads\\national_hotosm_spatial_join_2026\\matched_hotosm_national_roads.shp",
+      "fingerprint": "62e0f2545d2da118e518346c7e9b919fcc6d14bb79f0d8f16ba06303b66394a5",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 42460,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 16,
+      "fields": [
+        "osm_id",
+        "name",
+        "hwy",
+        "surface",
+        "adm1_name",
+        "adm2_name",
+        "adm3_name",
+        "adm4_name",
+        "nat_uid",
+        "nat_rd_no",
+        "nat_link",
+        "nat_class",
+        "nat_name",
+        "dist_m",
+        "bear_deg",
+        "len_km"
+      ],
+      "source_bounds": [
+        29.581414,
+        -1.4720606,
+        34.9542733,
+        3.8063573
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 21370.392136,
+      "wgs84_bounds": [
+        29.581414,
+        -1.4720606,
+        34.9542733,
+        3.8063573
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "National Roads\\network2025.shp",
+      "fingerprint": "cd9f99bab2645f8e3372f3bd7143f7159ab03c96647fbc0b85f86d6aea287ee1",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1014,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:32636",
+      "field_count": 17,
+      "fields": [
+        "Unique_ID",
+        "Road_No",
+        "Link_ID",
+        "Road_Class",
+        "Link_Nam_1",
+        "Chainage_F",
+        "Chainage_T",
+        "Length_km1",
+        "Surface_Ty",
+        "Maintenanc",
+        "Maintena_1",
+        "Completion",
+        "Rehabilita",
+        "Start_X",
+        "Start_Y",
+        "End_X",
+        "End_Y"
+      ],
+      "source_bounds": [
+        119626.687,
+        -162713.3435072,
+        722702.0,
+        426400.8232
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 1,
+      "duplicate_geometries": 0,
+      "projected_length_km": 21091.23854,
+      "wgs84_bounds": [
+        29.58302,
+        -1.4699897,
+        35.0019886,
+        3.8570823
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "National Roads\\network2026\\network2026.shp",
+      "fingerprint": "d97775322de0d7e048e2b2c3d004391fd1cf2e722a179e4dbdc3a29ce831b7bb",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1014,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:32636",
+      "field_count": 19,
+      "fields": [
+        "Unique_ID",
+        "Road_No_1",
+        "Link_ID_1",
+        "Road_Cla_1",
+        "Link_Name",
+        "Chainage_1",
+        "Chainage_2",
+        "Length_km_",
+        "Surface__1",
+        "Maintena_2",
+        "Maintena_3",
+        "Completi_1",
+        "Rehabili_1",
+        "Year_of_La",
+        "Comments",
+        "StartX",
+        "StartY",
+        "EndX",
+        "EndY"
+      ],
+      "source_bounds": [
+        119626.687,
+        -162713.3435072,
+        722702.0,
+        426400.8232
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 1,
+      "duplicate_geometries": 0,
+      "projected_length_km": 21091.23854,
+      "wgs84_bounds": [
+        29.58302,
+        -1.4699897,
+        35.0019886,
+        3.8570823
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "National Roads\\networkfy25_26.shp",
+      "fingerprint": "32f85a34e74b78ede4f736225eba78e37ef404c1f704dd3620992d3e6c4500c1",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1014,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:32636",
+      "field_count": 35,
+      "fields": [
+        "Road_No_1",
+        "Link_ID_1",
+        "Road_Cla_1",
+        "Link_Name",
+        "Chainage_1",
+        "Chainage_2",
+        "Length_km_",
+        "Surface__1",
+        "Maintena_2",
+        "Maintena_3",
+        "Completi_1",
+        "Rehabili_1",
+        "Year_of_La",
+        "Comments",
+        "Road_No",
+        "Link_ID",
+        "Road_Class",
+        "Link_Nam_1",
+        "Chainage_F",
+        "Chainage_T",
+        "Length_km1",
+        "Surface_Ty",
+        "Maintenanc",
+        "Maintena_1",
+        "Completion",
+        "Rehabilita",
+        "Year_of__1",
+        "Comments_1",
+        "NATIONAL_R",
+        "NATIONAL_1",
+        "FUNDER",
+        "F18",
+        "F19",
+        "F20",
+        "ObjectID_1"
+      ],
+      "source_bounds": [
+        119626.687,
+        -162713.3435072,
+        722702.0,
+        426400.8232
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 1,
+      "duplicate_geometries": 0,
+      "projected_length_km": 21091.23854,
+      "wgs84_bounds": [
+        29.58302,
+        -1.4699897,
+        35.0019886,
+        3.8570823
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "National Roads\\networkfy25_26\\networkfy25_26.shp",
+      "fingerprint": "d8bd9264b3df8f8070a718b9ee6bbfba114df6985ef71df6a2625125b4a721d6",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1014,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:32636",
+      "field_count": 19,
+      "fields": [
+        "Unique_ID",
+        "Road_No_1",
+        "Link_ID_1",
+        "Road_Cla_1",
+        "Link_Name",
+        "Chainage_1",
+        "Chainage_2",
+        "Length_km_",
+        "Surface__1",
+        "Maintena_2",
+        "Maintena_3",
+        "Completi_1",
+        "Rehabili_1",
+        "Year_of_La",
+        "Comments",
+        "NATIONAL_R",
+        "NATIONAL_1",
+        "FUNDER",
+        "bef_af1986"
+      ],
+      "source_bounds": [
+        119626.687,
+        -162713.3435072,
+        722702.0,
+        426400.8232
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 1,
+      "duplicate_geometries": 0,
+      "projected_length_km": 21091.23854,
+      "wgs84_bounds": [
+        29.58302,
+        -1.4699897,
+        35.0019886,
+        3.8570823
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "Selected Roads in CBD\\KCCA.shp",
+      "fingerprint": "987e4354c71719c6488c07c3d3cbb20dcab21de82942fdf76ec8e63e55555c30",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 59,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:4326",
+      "field_count": 7,
+      "fields": [
+        "Road_Name",
+        "Shape_Leng",
+        "Length_km",
+        "Start_X",
+        "Start_Y",
+        "End_X",
+        "End_Y"
+      ],
+      "source_bounds": [
+        32.57115,
+        0.3072373,
+        32.6171733,
+        0.3335457
+      ]
+    },
+    {
+      "path": "Selected Roads in CBD\\Selected_Roads_in_CBD.shp",
+      "fingerprint": "c705da8360ff42bd083b75df2d589ab3d3bdfc955ab56e71fbc35f3ab5865302",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 59,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:21096",
+      "field_count": 0,
+      "fields": [],
+      "source_bounds": [
+        452198.13937,
+        34261.6267055,
+        457319.4068022,
+        37169.574707
+      ]
+    },
+    {
+      "path": "shapefiles\\arc60unra_roads.shp",
+      "fingerprint": "1da1e5abc2a5bc311898f84c5c31fd103675126312cd9378a48989200e734899",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 2850,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:21096",
+      "field_count": 8,
+      "fields": [
+        "FID_1",
+        "CLASS",
+        "CLASSDESCR",
+        "MAINTAINAN",
+        "ROADNAME",
+        "CLASSCODE",
+        "SHAPE_LENG",
+        "LENGTH_KM"
+      ],
+      "source_bounds": [
+        119545.7389355,
+        -162418.6906844,
+        722618.6928339,
+        420984.1488482
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 27,
+      "projected_length_km": 38992.105078,
+      "wgs84_bounds": [
+        29.5830198,
+        -1.4700632,
+        35.0020024,
+        3.80601
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "shapefiles\\BA_Facilities.shp",
+      "fingerprint": "2ce5ef92ce4b93129c0d927e7bf9e3d7f0f95a0f4b55e1753144e544ba221ea8",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1107,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 12,
+      "fields": [
+        "DistrictNa",
+        "CountyName",
+        "SubCountyN",
+        "ParishName",
+        "VillageNam",
+        "FName",
+        "FType",
+        "Easting",
+        "Northing",
+        "Type",
+        "Name",
+        "Layer"
+      ],
+      "source_bounds": [
+        190354.6603352,
+        84924.1199919,
+        399963.5437176,
+        252402.2725613
+      ]
+    },
+    {
+      "path": "shapefiles\\BA_Roads.shp",
+      "fingerprint": "82d10a00daf751ec3a9807f69dac6cff64c71e2f7f2828deab65b95359f666c4",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1736,
+      "geometry_type": "LineString",
+      "crs": "EPSG:32636",
+      "field_count": 20,
+      "fields": [
+        "OBJECTID",
+        "Width",
+        "Speed_limi",
+        "Class",
+        "Material",
+        "Condition",
+        "Maintainan",
+        "Remark",
+        "ID",
+        "Remark2",
+        "Length_m",
+        "Road_class",
+        "Rig",
+        "Truck",
+        "Cars",
+        "Class_Desc",
+        "Time_Min",
+        "Section_De",
+        "Section_Ty",
+        "Shape_Leng"
+      ],
+      "source_bounds": [
+        262048.7559,
+        145700.3423,
+        353841.6385,
+        252404.996
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 42,
+      "projected_length_km": 800.63106,
+      "wgs84_bounds": [
+        30.8614583,
+        1.3173833,
+        31.6856786,
+        2.282855
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "shapefiles\\Districts_larger_than_kampala.shp",
+      "fingerprint": "cf880582eee9a8bccff9f1149c604fd550ab7998bc111eee19bc5ca311c07abe",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 69,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 3,
+      "fields": [
+        "OBJECTID",
+        "dist",
+        "orig_ogc_f"
+      ],
+      "source_bounds": [
+        118419.5767249,
+        -153728.8580168,
+        717465.2033052,
+        430068.8463972
+      ]
+    },
+    {
+      "path": "shapefiles\\Hoima_Kaiso.shp",
+      "fingerprint": "1a4aea0256fbb8c2af66e4cf2d5f99e7fbc76f7ef3276c5c673e9c093a9cc03e",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 3730,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:32636",
+      "field_count": 5,
+      "fields": [
+        "FID",
+        "SHAPE_LENG",
+        "MAINTAINAN",
+        "CLASS",
+        "CLASSDESCR"
+      ],
+      "source_bounds": [
+        270639.337,
+        152440.3366,
+        316407.9789,
+        171739.0936
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 100.74168,
+      "wgs84_bounds": [
+        30.9385613,
+        1.3783145,
+        31.3498187,
+        1.5529564
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "shapefiles\\kampala roads proj.shp",
+      "fingerprint": "450c96627a4f1e975f6aefef26764b4e87b79a0bf0966d58bda0c416157eb0af",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 9431,
+      "geometry_type": "LineString",
+      "crs": "EPSG:21096",
+      "field_count": 9,
+      "fields": [
+        "Rd_Class",
+        "Rd_materia",
+        "Speed_limi",
+        "Rd_Width",
+        "Rd_way",
+        "No_of_lane",
+        "SHAPE_Leng",
+        "Rd_name",
+        "ClassDescr"
+      ],
+      "source_bounds": [
+        435643.3399331,
+        3770.1143457,
+        476809.6155517,
+        53209.6540226
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 2829.313792,
+      "wgs84_bounds": [
+        32.422388,
+        0.0313766,
+        32.7923271,
+        0.4786618
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "shapefiles\\Kampala_district.shp",
+      "fingerprint": "b79a76aaa94e15dd4bbb1709d22c7b56071b1fb8521532c2b7194817dd82117f",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 3,
+      "fields": [
+        "OBJECTID",
+        "dist",
+        "orig_ogc_f"
+      ],
+      "source_bounds": [
+        445515.9993037,
+        23689.3208202,
+        463141.3470016,
+        44848.5826133
+      ]
+    },
+    {
+      "path": "shapefiles\\Kampala_Roads.shp",
+      "fingerprint": "ed8ea5771d1ad595e6273d1c5591687f258b41a306d1ffe227e570f51060b0f2",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 9431,
+      "geometry_type": "LineString",
+      "crs": "EPSG:32636",
+      "field_count": 9,
+      "fields": [
+        "Rd_Class",
+        "Rd_materia",
+        "Speed_limi",
+        "Rd_Width",
+        "Rd_way",
+        "No_of_lane",
+        "SHAPE_Leng",
+        "Rd_name",
+        "ClassDescr"
+      ],
+      "source_bounds": [
+        435725.1600175,
+        3468.2351798,
+        476891.5940306,
+        52907.9896671
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 2829.313796,
+      "wgs84_bounds": [
+        32.422388,
+        0.0313766,
+        32.7923271,
+        0.4786619
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "shapefiles\\lakesnew.shp",
+      "fingerprint": "a9b0eab0f8d1b4eac9605210d537b4771f4614c9846c0162ff292c30fd60bea0",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 0,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "id",
+        "name",
+        "length",
+        "district"
+      ],
+      "source_bounds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "shapefiles\\qgisclip.shp",
+      "fingerprint": "bf119e86545466ea59576be86b0c747465d1377f24342a25716ea8ed814128c8",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 8,
+      "fields": [
+        "OBJECTID_1",
+        "DNAME_2006",
+        "CNAME_2006",
+        "SNAME_2006",
+        "NAME",
+        "DNAME_2011",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        451118.3079,
+        33262.2495,
+        456939.7078,
+        38485.2723
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\arc60unra_roads.shp",
+      "fingerprint": "1da1e5abc2a5bc311898f84c5c31fd103675126312cd9378a48989200e734899",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 2850,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:21096",
+      "field_count": 8,
+      "fields": [
+        "FID_1",
+        "CLASS",
+        "CLASSDESCR",
+        "MAINTAINAN",
+        "ROADNAME",
+        "CLASSCODE",
+        "SHAPE_LENG",
+        "LENGTH_KM"
+      ],
+      "source_bounds": [
+        119545.7389355,
+        -162418.6906844,
+        722618.6928339,
+        420984.1488482
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\BA_Facilities.shp",
+      "fingerprint": "2ce5ef92ce4b93129c0d927e7bf9e3d7f0f95a0f4b55e1753144e544ba221ea8",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 1107,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 12,
+      "fields": [
+        "DistrictNa",
+        "CountyName",
+        "SubCountyN",
+        "ParishName",
+        "VillageNam",
+        "FName",
+        "FType",
+        "Easting",
+        "Northing",
+        "Type",
+        "Name",
+        "Layer"
+      ],
+      "source_bounds": [
+        190354.6603352,
+        84924.1199919,
+        399963.5437176,
+        252402.2725613
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\BA_Roads.shp",
+      "fingerprint": "82d10a00daf751ec3a9807f69dac6cff64c71e2f7f2828deab65b95359f666c4",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 1736,
+      "geometry_type": "LineString",
+      "crs": "EPSG:32636",
+      "field_count": 20,
+      "fields": [
+        "OBJECTID",
+        "Width",
+        "Speed_limi",
+        "Class",
+        "Material",
+        "Condition",
+        "Maintainan",
+        "Remark",
+        "ID",
+        "Remark2",
+        "Length_m",
+        "Road_class",
+        "Rig",
+        "Truck",
+        "Cars",
+        "Class_Desc",
+        "Time_Min",
+        "Section_De",
+        "Section_Ty",
+        "Shape_Leng"
+      ],
+      "source_bounds": [
+        262048.7559,
+        145700.3423,
+        353841.6385,
+        252404.996
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Districts_larger_than_kampala.shp",
+      "fingerprint": "cf880582eee9a8bccff9f1149c604fd550ab7998bc111eee19bc5ca311c07abe",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 69,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 3,
+      "fields": [
+        "OBJECTID",
+        "dist",
+        "orig_ogc_f"
+      ],
+      "source_bounds": [
+        118419.5767249,
+        -153728.8580168,
+        717465.2033052,
+        430068.8463972
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Hoima_Kaiso.shp",
+      "fingerprint": "1a4aea0256fbb8c2af66e4cf2d5f99e7fbc76f7ef3276c5c673e9c093a9cc03e",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 3730,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:32636",
+      "field_count": 5,
+      "fields": [
+        "FID",
+        "SHAPE_LENG",
+        "MAINTAINAN",
+        "CLASS",
+        "CLASSDESCR"
+      ],
+      "source_bounds": [
+        270639.337,
+        152440.3366,
+        316407.9789,
+        171739.0936
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\kampala roads proj.shp",
+      "fingerprint": "450c96627a4f1e975f6aefef26764b4e87b79a0bf0966d58bda0c416157eb0af",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 9431,
+      "geometry_type": "LineString",
+      "crs": "EPSG:21096",
+      "field_count": 9,
+      "fields": [
+        "Rd_Class",
+        "Rd_materia",
+        "Speed_limi",
+        "Rd_Width",
+        "Rd_way",
+        "No_of_lane",
+        "SHAPE_Leng",
+        "Rd_name",
+        "ClassDescr"
+      ],
+      "source_bounds": [
+        435643.3399331,
+        3770.1143457,
+        476809.6155517,
+        53209.6540226
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Kampala_district.shp",
+      "fingerprint": "b79a76aaa94e15dd4bbb1709d22c7b56071b1fb8521532c2b7194817dd82117f",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 1,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 3,
+      "fields": [
+        "OBJECTID",
+        "dist",
+        "orig_ogc_f"
+      ],
+      "source_bounds": [
+        445515.9993037,
+        23689.3208202,
+        463141.3470016,
+        44848.5826133
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Kampala_Roads.shp",
+      "fingerprint": "ed8ea5771d1ad595e6273d1c5591687f258b41a306d1ffe227e570f51060b0f2",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 9431,
+      "geometry_type": "LineString",
+      "crs": "EPSG:32636",
+      "field_count": 9,
+      "fields": [
+        "Rd_Class",
+        "Rd_materia",
+        "Speed_limi",
+        "Rd_Width",
+        "Rd_way",
+        "No_of_lane",
+        "SHAPE_Leng",
+        "Rd_name",
+        "ClassDescr"
+      ],
+      "source_bounds": [
+        435725.1600175,
+        3468.2351798,
+        476891.5940306,
+        52907.9896671
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\lakesnew.shp",
+      "fingerprint": "a9b0eab0f8d1b4eac9605210d537b4771f4614c9846c0162ff292c30fd60bea0",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 0,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "id",
+        "name",
+        "length",
+        "district"
+      ],
+      "source_bounds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\qgisclip.shp",
+      "fingerprint": "bf119e86545466ea59576be86b0c747465d1377f24342a25716ea8ed814128c8",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 1,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 8,
+      "fields": [
+        "OBJECTID_1",
+        "DNAME_2006",
+        "CNAME_2006",
+        "SNAME_2006",
+        "NAME",
+        "DNAME_2011",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        451118.3079,
+        33262.2495,
+        456939.7078,
+        38485.2723
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Airfields.shp",
+      "fingerprint": "91bd2c12e8597f8e4d6a345720113a57184b14a324532e3a3fb28198777c9a63",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 12,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 10,
+      "fields": [
+        "Deg",
+        "Min",
+        "Sec",
+        "Lat",
+        "Deg1",
+        "Min1",
+        "Sec1",
+        "Long",
+        "F9",
+        "Category"
+      ],
+      "source_bounds": [
+        175022.3533765,
+        4873.6788994,
+        569069.5443946,
+        257182.0512947
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Counties.shp",
+      "fingerprint": "8de549197d74a0f31bace4c1cd5c23f5576f65714efed08f6f48db07b10604b4",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 164,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 4,
+      "fields": [
+        "OBJECTID",
+        "DNAME_2006",
+        "CNAME_2006",
+        "DNAME_2011"
+      ],
+      "source_bounds": [
+        118564.9929,
+        -163993.0941,
+        722608.7899,
+        467771.7992
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Districts.shp",
+      "fingerprint": "baef2ca1c50f1752841c8d5dc6e0b3c1f2341ce6859cbcb0e4d7715875120a82",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 112,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 2,
+      "fields": [
+        "OBJECTID",
+        "dist"
+      ],
+      "source_bounds": [
+        118419.5767249,
+        -163987.2604034,
+        722608.8003398,
+        467771.5486841
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\ug_DrainageBasins.shp",
+      "fingerprint": "6e4b0641e887ca6999b384053c9c492051ce80da83bbb6f4d12800ad620fabc0",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 8,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:21096",
+      "field_count": 6,
+      "fields": [
+        "OBJECTID",
+        "Main_basin",
+        "Surface",
+        "Team",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        118232.7933075,
+        -163784.5397467,
+        713761.2036624,
+        454340.9944504
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_health_centres.shp",
+      "fingerprint": "d8f690cd1c034acde55157ea849060f2803d1197814450ecb2a89e96edb44d1e",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 2320,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 12,
+      "fields": [
+        "OBJECTID_1",
+        "LABEL",
+        "GRADE",
+        "OWNERSHIP",
+        "CAPACITY",
+        "DISTANCE",
+        "DISP_CODE",
+        "Name",
+        "CNAME_2006",
+        "SNAME_2006",
+        "Parish",
+        "DISTRICT"
+      ],
+      "source_bounds": [
+        0.0,
+        -161458.0,
+        715368.0,
+        428331.0
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Lakes.shp",
+      "fingerprint": "343a583b42bb78bf71e62bfde0ab4c8c9ee645455b9d2eca8cce81191b7acd43",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 990,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 1,
+      "fields": [
+        "Water"
+      ],
+      "source_bounds": [
+        54619.1376,
+        -221619.4384,
+        611296.1086,
+        400598.299
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Parishes.shp",
+      "fingerprint": "616bbb0c8883c6612ab3638598da67cf8ec6b89e0b5fdc54dd00a15a22870c35",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 6239,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 14,
+      "fields": [
+        "OBJECTID_1",
+        "DNAME_2002",
+        "CNAME_2002",
+        "SNAME_2002",
+        "PNAME_2002",
+        "FTYPE",
+        "DNAME_2006",
+        "CNAME_2006",
+        "SNAME_2006",
+        "PNAME_2006",
+        "DNAME_2011",
+        "NAME",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        118564.993,
+        -163993.094,
+        722608.7896,
+        467771.7991
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Protected_Areas.shp",
+      "fingerprint": "96b45267bc49f04a8a6a8dfb5da150642909c545f03fccd25800f79b0c3d5042",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 889,
+      "geometry_type": "Polygon Z",
+      "crs": "EPSG:32636",
+      "field_count": 20,
+      "fields": [
+        "FID",
+        "OBJECTID",
+        "AREA",
+        "PERIMETER",
+        "GAZ_",
+        "GAZ_ID",
+        "PSUBJ",
+        "NAME",
+        "FD_CODE",
+        "FD_NAME",
+        "GAZTYPE",
+        "COMMENT",
+        "ANNONAM",
+        "ANNOTYP",
+        "LOCK__ID",
+        "PHASE__ID",
+        "OBJECT__ID",
+        "CREATE__ID",
+        "SHAPE_LENG",
+        "SHAPE_AREA"
+      ],
+      "source_bounds": [
+        119794.2999638,
+        -153894.7538587,
+        725109.3276124,
+        467756.9240829
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_ProtectedAreas.shp",
+      "fingerprint": "625c6effd1f4ec1a62a3f7e359359a518e33fdd597c15d80c3194f20f9d7da81",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 881,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 19,
+      "fields": [
+        "OBJECTID",
+        "AREA",
+        "PERIMETER",
+        "GAZ_",
+        "GAZ_ID",
+        "PSUBJ",
+        "NAME",
+        "FD_CODE",
+        "FD_NAME",
+        "GAZTYPE",
+        "COMMENT",
+        "ANNONAM",
+        "ANNOTYP",
+        "LOCK__ID",
+        "PHASE__ID",
+        "OBJECT__ID",
+        "CREATE__ID",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        119794.2999638,
+        -153894.7538587,
+        712629.8164881,
+        467756.9240829
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Rivers.shp",
+      "fingerprint": "9c3a4eb403f576ca6e0cc9328e361e213a5bd50818ab3de47b211c2a6212a5c8",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 31768,
+      "geometry_type": "LineString",
+      "crs": "EPSG:32636",
+      "field_count": 11,
+      "fields": [
+        "OBJECTID_1",
+        "OBJECTID",
+        "LENGTH",
+        "LSUBJ",
+        "NAME",
+        "SCE_ARC",
+        "SCE_SUBJ",
+        "DESCRIP",
+        "SHAPE_LENG",
+        "Shape_Le_1",
+        "Shape_Le_2"
+      ],
+      "source_bounds": [
+        119593.6966651,
+        -162533.9660402,
+        722569.8683814,
+        459858.1592617
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 49391.99935,
+      "wgs84_bounds": [
+        29.5827179,
+        -1.4683956,
+        35.0008145,
+        4.1598452
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Roads.shp",
+      "fingerprint": "87747e7ec13977bb73d7e040c7a44aa55f5f47237bf389c31da1868838546331",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 23387,
+      "geometry_type": "LineString",
+      "crs": "EPSG:32636",
+      "field_count": 13,
+      "fields": [
+        "OBJECTID",
+        "INF_",
+        "INF_ID",
+        "LSUBJ",
+        "SCE_ARC",
+        "SCE_SUBJ",
+        "LOCK__ID",
+        "PHASE__ID",
+        "OBJECT__ID",
+        "CREATE__ID",
+        "NAMES_",
+        "DESCRIP",
+        "Shape_Leng"
+      ],
+      "source_bounds": [
+        122054.3367016,
+        -162567.3187638,
+        721109.2019288,
+        455498.4999485
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 52371.814309,
+      "wgs84_bounds": [
+        29.6046352,
+        -1.468667,
+        34.9876555,
+        4.118502
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Roads_UNRA_2012.shp",
+      "fingerprint": "0e765aeec7b441a05e0ba4c8479f009ffefad80e864e6e86c0362d9fce9e0f22",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 2850,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:32636",
+      "field_count": 8,
+      "fields": [
+        "FID",
+        "CLASS",
+        "CLASSDESCR",
+        "MAINTAINAN",
+        "ROADNAME",
+        "CLASSCODE",
+        "SHAPE_LENG",
+        "LENGTH_KM"
+      ],
+      "source_bounds": [
+        119626.687,
+        -162721.5366,
+        722702.0,
+        420684.6458
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 27,
+      "projected_length_km": 38992.052758,
+      "wgs84_bounds": [
+        29.58302,
+        -1.4700639,
+        35.0019886,
+        3.8060095
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "shapefiles\\shapefiles\\UG_ROADS_UTM.shp",
+      "fingerprint": "06fb70387fd3c8ee2d6394deb8c75d7fe1eb60b2161de7c777d2450cd1b7b424",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 23389,
+      "geometry_type": "LineString",
+      "crs": "EPSG:21096",
+      "field_count": 13,
+      "fields": [
+        "OBJECTID",
+        "INF_",
+        "INF_ID",
+        "LSUBJ",
+        "SCE_ARC",
+        "SCE_SUBJ",
+        "LOCK__ID",
+        "PHASE__ID",
+        "OBJECT__ID",
+        "CREATE__ID",
+        "NAMES_",
+        "DESCRIP",
+        "Shape_Leng"
+      ],
+      "source_bounds": [
+        121973.341973,
+        -162264.472529,
+        721025.9070377,
+        441502.041049
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 52079.957194,
+      "wgs84_bounds": [
+        29.6046352,
+        -1.468667,
+        34.9876695,
+        3.9912811
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Schools.shp",
+      "fingerprint": "c2b7d16e8a61f5ae7c7c8b4da48087b579801f27cb106e5daf2e4e35903d38b9",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 21484,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 31,
+      "fields": [
+        "ID",
+        "DISTNAM",
+        "SCHOOLNAME",
+        "SCHOOLTYPE",
+        "MAPSCHLTYP",
+        "SCHOOLOWNE",
+        "MAPSCHLOWN",
+        "SCHOOLSTAT",
+        "SCHOOLDESC",
+        "NRSTUD",
+        "NRTEACHERS",
+        "NRCLASSROO",
+        "PTR",
+        "PCR",
+        "EMIS_DATA_",
+        "UBOS_X",
+        "UBOS_Y",
+        "LON",
+        "LAT",
+        "TP",
+        "TYPEDESC",
+        "COORDINATE",
+        "DISPEMISNO",
+        "RECID",
+        "SCHLREFNO",
+        "X",
+        "Y",
+        "DIST_GRID",
+        "BP",
+        "DESIGN_KVA",
+        "DESIGN_KWH"
+      ],
+      "source_bounds": [
+        120087.21574,
+        -162928.55708,
+        722779.641168,
+        421576.0
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Security.shp",
+      "fingerprint": "d18ca35da179d0b1fa8cf89d60f1a6d02f018b483c7a0c8d22381a8bc356daca",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 276,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 12,
+      "fields": [
+        "DISTRICTNA",
+        "COUNTYNAME",
+        "SUBCOUNTYN",
+        "PARISHNAME",
+        "ADMINISTRA",
+        "POINTFEATU",
+        "DESCRIPTIO",
+        "EASTCOORDI",
+        "NORTHCOORD",
+        "Dist_Grid",
+        "BP",
+        "Type"
+      ],
+      "source_bounds": [
+        117056.0,
+        -142932.0,
+        692686.0,
+        403717.0
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Subcounties.shp",
+      "fingerprint": "030b1cfa6a95c11fd4078cbad281ac9207270ab43747b991b648d7c47e1182af",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 958,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 8,
+      "fields": [
+        "OBJECTID_1",
+        "DNAME_2006",
+        "CNAME_2006",
+        "SNAME_2006",
+        "NAME",
+        "DNAME_2011",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        118564.9929,
+        -163993.0941,
+        722608.7899,
+        467771.7992
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Towns.shp",
+      "fingerprint": "410d9580466ec675f1f1a07ff7dead78d2354e73df363f78adaa046177e1c172",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 58,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 4,
+      "fields": [
+        "OBJECTID",
+        "cityname",
+        "Adm_level",
+        "ORIG_FID"
+      ],
+      "source_bounds": [
+        125384.02,
+        -142917.6627,
+        679529.4604,
+        413061.0551
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Ug_Trading_Centres.shp",
+      "fingerprint": "291a60222e1ab779d30105a742b97ac58d8d1e758e4422df4277bda7350d50ab",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 2869,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 26,
+      "fields": [
+        "DUPLICATE",
+        "ID",
+        "NAME",
+        "DISTRICT",
+        "NOTE",
+        "EASTING",
+        "NORTHING",
+        "ZONE",
+        "EASTADJ",
+        "NORTHADJ",
+        "GPS_UPDATE",
+        "HOUSEHOLD_",
+        "HH",
+        "POWER_SUPP",
+        "SUPPLY",
+        "NO",
+        "DATE_",
+        "AREA",
+        "POPULATION",
+        "POP",
+        "PS_GRID",
+        "PS_MINIRID",
+        "BP",
+        "DESIGN_KVA",
+        "DESIGN_KWH",
+        "GRID_DIST"
+      ],
+      "source_bounds": [
+        121312.0,
+        -160576.0,
+        715142.0,
+        421929.0
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Wetlands1994.shp",
+      "fingerprint": "7fb2a9c58e46c0760baf439a898045b80b4060c90c407c4f3ccee569cceb0c25",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 70631,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:21096",
+      "field_count": 25,
+      "fields": [
+        "OBJECTID",
+        "PSUBJ",
+        "CLASS",
+        "STYPE",
+        "STOCK",
+        "BTYPE",
+        "BPERC",
+        "USE",
+        "STRATA",
+        "NEWCLASS",
+        "WET_SYST",
+        "DRN_SYST",
+        "Wet_Name",
+        "Region",
+        "District",
+        "Wet_Code",
+        "County",
+        "Subcounty",
+        "Parish",
+        "District_2",
+        "FTYPE",
+        "District_3",
+        "Shape_Leng",
+        "Shape_Area",
+        "Seasonalit"
+      ],
+      "source_bounds": [
+        121083.0143291,
+        -162466.1743987,
+        722503.9841,
+        463578.0207987
+      ]
+    },
+    {
+      "path": "shapefiles\\shapefiles\\Wetlands2008.shp",
+      "fingerprint": "77d1a617907dc124021263906d61c5eab2ca411bb6fcab35ac14f626b634632c",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 52136,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:21096",
+      "field_count": 31,
+      "fields": [
+        "OBJECTID",
+        "Watershed",
+        "CLASS",
+        "Code_quali",
+        "Class_Name",
+        "LCCS_Code",
+        "Life_form",
+        "Life_form_",
+        "Life_form1",
+        "Spatial_as",
+        "Cover",
+        "Spatial__1",
+        "Physical_s",
+        "Salinity",
+        "F15",
+        "Stype",
+        "Region",
+        "District",
+        "FTYPE",
+        "County",
+        "Parish",
+        "Subcounty",
+        "WET_SYST",
+        "DRN_SYST",
+        "Wet_Name",
+        "Wet_Code",
+        "Shape_Leng",
+        "Shape_Area",
+        "District_2",
+        "Descriptio",
+        "Water_Seas"
+      ],
+      "source_bounds": [
+        124242.8204367,
+        -161330.222493,
+        712245.855729,
+        452963.7973874
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Airfields.shp",
+      "fingerprint": "91bd2c12e8597f8e4d6a345720113a57184b14a324532e3a3fb28198777c9a63",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 12,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 10,
+      "fields": [
+        "Deg",
+        "Min",
+        "Sec",
+        "Lat",
+        "Deg1",
+        "Min1",
+        "Sec1",
+        "Long",
+        "F9",
+        "Category"
+      ],
+      "source_bounds": [
+        175022.3533765,
+        4873.6788994,
+        569069.5443946,
+        257182.0512947
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Counties.shp",
+      "fingerprint": "8de549197d74a0f31bace4c1cd5c23f5576f65714efed08f6f48db07b10604b4",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 164,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 4,
+      "fields": [
+        "OBJECTID",
+        "DNAME_2006",
+        "CNAME_2006",
+        "DNAME_2011"
+      ],
+      "source_bounds": [
+        118564.9929,
+        -163993.0941,
+        722608.7899,
+        467771.7992
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Districts.shp",
+      "fingerprint": "baef2ca1c50f1752841c8d5dc6e0b3c1f2341ce6859cbcb0e4d7715875120a82",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 112,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 2,
+      "fields": [
+        "OBJECTID",
+        "dist"
+      ],
+      "source_bounds": [
+        118419.5767249,
+        -163987.2604034,
+        722608.8003398,
+        467771.5486841
+      ]
+    },
+    {
+      "path": "shapefiles\\ug_DrainageBasins.shp",
+      "fingerprint": "6e4b0641e887ca6999b384053c9c492051ce80da83bbb6f4d12800ad620fabc0",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 8,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:21096",
+      "field_count": 6,
+      "fields": [
+        "OBJECTID",
+        "Main_basin",
+        "Surface",
+        "Team",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        118232.7933075,
+        -163784.5397467,
+        713761.2036624,
+        454340.9944504
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_health_centres.shp",
+      "fingerprint": "d8f690cd1c034acde55157ea849060f2803d1197814450ecb2a89e96edb44d1e",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 2320,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 12,
+      "fields": [
+        "OBJECTID_1",
+        "LABEL",
+        "GRADE",
+        "OWNERSHIP",
+        "CAPACITY",
+        "DISTANCE",
+        "DISP_CODE",
+        "Name",
+        "CNAME_2006",
+        "SNAME_2006",
+        "Parish",
+        "DISTRICT"
+      ],
+      "source_bounds": [
+        0.0,
+        -161458.0,
+        715368.0,
+        428331.0
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Lakes.shp",
+      "fingerprint": "343a583b42bb78bf71e62bfde0ab4c8c9ee645455b9d2eca8cce81191b7acd43",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 990,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 1,
+      "fields": [
+        "Water"
+      ],
+      "source_bounds": [
+        54619.1376,
+        -221619.4384,
+        611296.1086,
+        400598.299
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Parishes.shp",
+      "fingerprint": "616bbb0c8883c6612ab3638598da67cf8ec6b89e0b5fdc54dd00a15a22870c35",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 6239,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 14,
+      "fields": [
+        "OBJECTID_1",
+        "DNAME_2002",
+        "CNAME_2002",
+        "SNAME_2002",
+        "PNAME_2002",
+        "FTYPE",
+        "DNAME_2006",
+        "CNAME_2006",
+        "SNAME_2006",
+        "PNAME_2006",
+        "DNAME_2011",
+        "NAME",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        118564.993,
+        -163993.094,
+        722608.7896,
+        467771.7991
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Protected_Areas.shp",
+      "fingerprint": "96b45267bc49f04a8a6a8dfb5da150642909c545f03fccd25800f79b0c3d5042",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 889,
+      "geometry_type": "Polygon Z",
+      "crs": "EPSG:32636",
+      "field_count": 20,
+      "fields": [
+        "FID",
+        "OBJECTID",
+        "AREA",
+        "PERIMETER",
+        "GAZ_",
+        "GAZ_ID",
+        "PSUBJ",
+        "NAME",
+        "FD_CODE",
+        "FD_NAME",
+        "GAZTYPE",
+        "COMMENT",
+        "ANNONAM",
+        "ANNOTYP",
+        "LOCK__ID",
+        "PHASE__ID",
+        "OBJECT__ID",
+        "CREATE__ID",
+        "SHAPE_LENG",
+        "SHAPE_AREA"
+      ],
+      "source_bounds": [
+        119794.2999638,
+        -153894.7538587,
+        725109.3276124,
+        467756.9240829
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_ProtectedAreas.shp",
+      "fingerprint": "625c6effd1f4ec1a62a3f7e359359a518e33fdd597c15d80c3194f20f9d7da81",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 881,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 19,
+      "fields": [
+        "OBJECTID",
+        "AREA",
+        "PERIMETER",
+        "GAZ_",
+        "GAZ_ID",
+        "PSUBJ",
+        "NAME",
+        "FD_CODE",
+        "FD_NAME",
+        "GAZTYPE",
+        "COMMENT",
+        "ANNONAM",
+        "ANNOTYP",
+        "LOCK__ID",
+        "PHASE__ID",
+        "OBJECT__ID",
+        "CREATE__ID",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        119794.2999638,
+        -153894.7538587,
+        712629.8164881,
+        467756.9240829
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Rivers.shp",
+      "fingerprint": "9c3a4eb403f576ca6e0cc9328e361e213a5bd50818ab3de47b211c2a6212a5c8",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 31768,
+      "geometry_type": "LineString",
+      "crs": "EPSG:32636",
+      "field_count": 11,
+      "fields": [
+        "OBJECTID_1",
+        "OBJECTID",
+        "LENGTH",
+        "LSUBJ",
+        "NAME",
+        "SCE_ARC",
+        "SCE_SUBJ",
+        "DESCRIP",
+        "SHAPE_LENG",
+        "Shape_Le_1",
+        "Shape_Le_2"
+      ],
+      "source_bounds": [
+        119593.6966651,
+        -162533.9660402,
+        722569.8683814,
+        459858.1592617
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Roads.shp",
+      "fingerprint": "87747e7ec13977bb73d7e040c7a44aa55f5f47237bf389c31da1868838546331",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 23387,
+      "geometry_type": "LineString",
+      "crs": "EPSG:32636",
+      "field_count": 13,
+      "fields": [
+        "OBJECTID",
+        "INF_",
+        "INF_ID",
+        "LSUBJ",
+        "SCE_ARC",
+        "SCE_SUBJ",
+        "LOCK__ID",
+        "PHASE__ID",
+        "OBJECT__ID",
+        "CREATE__ID",
+        "NAMES_",
+        "DESCRIP",
+        "Shape_Leng"
+      ],
+      "source_bounds": [
+        122054.3367016,
+        -162567.3187638,
+        721109.2019288,
+        455498.4999485
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Roads_UNRA_2012.shp",
+      "fingerprint": "0e765aeec7b441a05e0ba4c8479f009ffefad80e864e6e86c0362d9fce9e0f22",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 2850,
+      "geometry_type": "LineString Z",
+      "crs": "EPSG:32636",
+      "field_count": 8,
+      "fields": [
+        "FID",
+        "CLASS",
+        "CLASSDESCR",
+        "MAINTAINAN",
+        "ROADNAME",
+        "CLASSCODE",
+        "SHAPE_LENG",
+        "LENGTH_KM"
+      ],
+      "source_bounds": [
+        119626.687,
+        -162721.5366,
+        722702.0,
+        420684.6458
+      ]
+    },
+    {
+      "path": "shapefiles\\UG_ROADS_UTM.shp",
+      "fingerprint": "06fb70387fd3c8ee2d6394deb8c75d7fe1eb60b2161de7c777d2450cd1b7b424",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 23389,
+      "geometry_type": "LineString",
+      "crs": "EPSG:21096",
+      "field_count": 13,
+      "fields": [
+        "OBJECTID",
+        "INF_",
+        "INF_ID",
+        "LSUBJ",
+        "SCE_ARC",
+        "SCE_SUBJ",
+        "LOCK__ID",
+        "PHASE__ID",
+        "OBJECT__ID",
+        "CREATE__ID",
+        "NAMES_",
+        "DESCRIP",
+        "Shape_Leng"
+      ],
+      "source_bounds": [
+        121973.341973,
+        -162264.472529,
+        721025.9070377,
+        441502.041049
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Schools.shp",
+      "fingerprint": "c2b7d16e8a61f5ae7c7c8b4da48087b579801f27cb106e5daf2e4e35903d38b9",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 21484,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 31,
+      "fields": [
+        "ID",
+        "DISTNAM",
+        "SCHOOLNAME",
+        "SCHOOLTYPE",
+        "MAPSCHLTYP",
+        "SCHOOLOWNE",
+        "MAPSCHLOWN",
+        "SCHOOLSTAT",
+        "SCHOOLDESC",
+        "NRSTUD",
+        "NRTEACHERS",
+        "NRCLASSROO",
+        "PTR",
+        "PCR",
+        "EMIS_DATA_",
+        "UBOS_X",
+        "UBOS_Y",
+        "LON",
+        "LAT",
+        "TP",
+        "TYPEDESC",
+        "COORDINATE",
+        "DISPEMISNO",
+        "RECID",
+        "SCHLREFNO",
+        "X",
+        "Y",
+        "DIST_GRID",
+        "BP",
+        "DESIGN_KVA",
+        "DESIGN_KWH"
+      ],
+      "source_bounds": [
+        120087.21574,
+        -162928.55708,
+        722779.641168,
+        421576.0
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Security.shp",
+      "fingerprint": "d18ca35da179d0b1fa8cf89d60f1a6d02f018b483c7a0c8d22381a8bc356daca",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 276,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 12,
+      "fields": [
+        "DISTRICTNA",
+        "COUNTYNAME",
+        "SUBCOUNTYN",
+        "PARISHNAME",
+        "ADMINISTRA",
+        "POINTFEATU",
+        "DESCRIPTIO",
+        "EASTCOORDI",
+        "NORTHCOORD",
+        "Dist_Grid",
+        "BP",
+        "Type"
+      ],
+      "source_bounds": [
+        117056.0,
+        -142932.0,
+        692686.0,
+        403717.0
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Subcounties.shp",
+      "fingerprint": "030b1cfa6a95c11fd4078cbad281ac9207270ab43747b991b648d7c47e1182af",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 958,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:32636",
+      "field_count": 8,
+      "fields": [
+        "OBJECTID_1",
+        "DNAME_2006",
+        "CNAME_2006",
+        "SNAME_2006",
+        "NAME",
+        "DNAME_2011",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "source_bounds": [
+        118564.9929,
+        -163993.0941,
+        722608.7899,
+        467771.7992
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Towns.shp",
+      "fingerprint": "410d9580466ec675f1f1a07ff7dead78d2354e73df363f78adaa046177e1c172",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 58,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 4,
+      "fields": [
+        "OBJECTID",
+        "cityname",
+        "Adm_level",
+        "ORIG_FID"
+      ],
+      "source_bounds": [
+        125384.02,
+        -142917.6627,
+        679529.4604,
+        413061.0551
+      ]
+    },
+    {
+      "path": "shapefiles\\Ug_Trading_Centres.shp",
+      "fingerprint": "291a60222e1ab779d30105a742b97ac58d8d1e758e4422df4277bda7350d50ab",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 2869,
+      "geometry_type": "Point",
+      "crs": "EPSG:32636",
+      "field_count": 26,
+      "fields": [
+        "DUPLICATE",
+        "ID",
+        "NAME",
+        "DISTRICT",
+        "NOTE",
+        "EASTING",
+        "NORTHING",
+        "ZONE",
+        "EASTADJ",
+        "NORTHADJ",
+        "GPS_UPDATE",
+        "HOUSEHOLD_",
+        "HH",
+        "POWER_SUPP",
+        "SUPPLY",
+        "NO",
+        "DATE_",
+        "AREA",
+        "POPULATION",
+        "POP",
+        "PS_GRID",
+        "PS_MINIRID",
+        "BP",
+        "DESIGN_KVA",
+        "DESIGN_KWH",
+        "GRID_DIST"
+      ],
+      "source_bounds": [
+        121312.0,
+        -160576.0,
+        715142.0,
+        421929.0
+      ]
+    },
+    {
+      "path": "shapefiles\\Wetlands1994.shp",
+      "fingerprint": "7fb2a9c58e46c0760baf439a898045b80b4060c90c407c4f3ccee569cceb0c25",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 70631,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:21096",
+      "field_count": 25,
+      "fields": [
+        "OBJECTID",
+        "PSUBJ",
+        "CLASS",
+        "STYPE",
+        "STOCK",
+        "BTYPE",
+        "BPERC",
+        "USE",
+        "STRATA",
+        "NEWCLASS",
+        "WET_SYST",
+        "DRN_SYST",
+        "Wet_Name",
+        "Region",
+        "District",
+        "Wet_Code",
+        "County",
+        "Subcounty",
+        "Parish",
+        "District_2",
+        "FTYPE",
+        "District_3",
+        "Shape_Leng",
+        "Shape_Area",
+        "Seasonalit"
+      ],
+      "source_bounds": [
+        121083.0143291,
+        -162466.1743987,
+        722503.9841,
+        463578.0207987
+      ]
+    },
+    {
+      "path": "shapefiles\\Wetlands2008.shp",
+      "fingerprint": "77d1a617907dc124021263906d61c5eab2ca411bb6fcab35ac14f626b634632c",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 52136,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:21096",
+      "field_count": 31,
+      "fields": [
+        "OBJECTID",
+        "Watershed",
+        "CLASS",
+        "Code_quali",
+        "Class_Name",
+        "LCCS_Code",
+        "Life_form",
+        "Life_form_",
+        "Life_form1",
+        "Spatial_as",
+        "Cover",
+        "Spatial__1",
+        "Physical_s",
+        "Salinity",
+        "F15",
+        "Stype",
+        "Region",
+        "District",
+        "FTYPE",
+        "County",
+        "Parish",
+        "Subcounty",
+        "WET_SYST",
+        "DRN_SYST",
+        "Wet_Name",
+        "Wet_Code",
+        "Shape_Leng",
+        "Shape_Area",
+        "District_2",
+        "Descriptio",
+        "Water_Seas"
+      ],
+      "source_bounds": [
+        124242.8204367,
+        -161330.222493,
+        712245.855729,
+        452963.7973874
+      ]
+    },
+    {
+      "path": "uga_admin_boundaries.shp\\uga_admin0.shp",
+      "fingerprint": "06fe954e28ef335d6fcb0476c577809899619ac20df61eceabc39f303c2e29c5",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 18,
+      "fields": [
+        "iso2",
+        "iso3",
+        "adm0_name",
+        "adm0_name1",
+        "adm0_name2",
+        "adm0_name3",
+        "adm0_pcode",
+        "valid_on",
+        "valid_to",
+        "version",
+        "area_sqkm",
+        "lang",
+        "lang1",
+        "lang2",
+        "lang3",
+        "adm0_ref_n",
+        "center_lat",
+        "center_lon"
+      ],
+      "source_bounds": [
+        29.5721617,
+        -1.4814743,
+        35.0010536,
+        4.231367
+      ]
+    },
+    {
+      "path": "uga_admin_boundaries.shp\\uga_admin1.shp",
+      "fingerprint": "bc914cf7c0273392970382f5a0b99d919f9854c3dc012ceaf59623de3d93d494",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 4,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 21,
+      "fields": [
+        "adm1_name",
+        "adm1_name1",
+        "adm1_name2",
+        "adm1_name3",
+        "adm1_pcode",
+        "adm0_name",
+        "adm0_name1",
+        "adm0_name2",
+        "adm0_name3",
+        "adm0_pcode",
+        "valid_on",
+        "valid_to",
+        "area_sqkm",
+        "version",
+        "lang",
+        "lang1",
+        "lang2",
+        "lang3",
+        "adm1_ref_n",
+        "center_lat",
+        "center_lon"
+      ],
+      "source_bounds": [
+        29.5721617,
+        -1.4814743,
+        35.0010536,
+        4.231367
+      ]
+    },
+    {
+      "path": "uga_admin_boundaries.shp\\uga_admin2.shp",
+      "fingerprint": "ed2cddd2938d6320765ca45f5548f3431d8369ab4b3b62de60057ee4d31a6f77",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 135,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 26,
+      "fields": [
+        "adm2_name",
+        "adm2_name1",
+        "adm2_name2",
+        "adm2_name3",
+        "adm2_pcode",
+        "adm1_name",
+        "adm1_name1",
+        "adm1_name2",
+        "adm1_name3",
+        "adm1_pcode",
+        "adm0_name",
+        "adm0_name1",
+        "adm0_name2",
+        "adm0_name3",
+        "adm0_pcode",
+        "valid_on",
+        "valid_to",
+        "area_sqkm",
+        "version",
+        "lang",
+        "lang1",
+        "lang2",
+        "lang3",
+        "adm2_ref_n",
+        "center_lat",
+        "center_lon"
+      ],
+      "source_bounds": [
+        29.5721617,
+        -1.4814743,
+        35.0010536,
+        4.231367
+      ]
+    },
+    {
+      "path": "uga_admin_boundaries.shp\\uga_admin3.shp",
+      "fingerprint": "170b2305a935c5f52f0ce90a521fdb8415326a45e4b91d50b3d0d292806406b8",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 208,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 31,
+      "fields": [
+        "adm3_name",
+        "adm3_name1",
+        "adm3_name2",
+        "adm3_name3",
+        "adm3_pcode",
+        "adm2_name",
+        "adm2_name1",
+        "adm2_name2",
+        "adm2_name3",
+        "adm2_pcode",
+        "adm1_name",
+        "adm1_name1",
+        "adm1_name2",
+        "adm1_name3",
+        "adm1_pcode",
+        "adm0_name",
+        "adm0_name1",
+        "adm0_name2",
+        "adm0_name3",
+        "adm0_pcode",
+        "valid_on",
+        "valid_to",
+        "area_sqkm",
+        "version",
+        "lang",
+        "lang1",
+        "lang2",
+        "lang3",
+        "adm3_ref_n",
+        "center_lat",
+        "center_lon"
+      ],
+      "source_bounds": [
+        29.5721617,
+        -1.4814743,
+        35.0010536,
+        4.231367
+      ]
+    },
+    {
+      "path": "uga_admin_boundaries.shp\\uga_admin4.shp",
+      "fingerprint": "033398085818b03d303e083e438acfb85f5ca51c4479fde28233d9ca299342a2",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1520,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 36,
+      "fields": [
+        "adm4_name",
+        "adm4_name1",
+        "adm4_name2",
+        "adm4_name3",
+        "adm4_pcode",
+        "adm3_name",
+        "adm3_name1",
+        "adm3_name2",
+        "adm3_name3",
+        "adm3_pcode",
+        "adm2_name",
+        "adm2_name1",
+        "adm2_name2",
+        "adm2_name3",
+        "adm2_pcode",
+        "adm1_name",
+        "adm1_name1",
+        "adm1_name2",
+        "adm1_name3",
+        "adm1_pcode",
+        "adm0_name",
+        "adm0_name1",
+        "adm0_name2",
+        "adm0_name3",
+        "adm0_pcode",
+        "valid_on",
+        "valid_to",
+        "area_sqkm",
+        "version",
+        "lang",
+        "lang1",
+        "lang2",
+        "lang3",
+        "adm4_ref_n",
+        "center_lat",
+        "center_lon"
+      ],
+      "source_bounds": [
+        29.5721617,
+        -1.4814743,
+        35.0010536,
+        4.231367
+      ]
+    },
+    {
+      "path": "uga_admin_boundaries.shp\\uga_adminlines.shp",
+      "fingerprint": "8f86e63bb25a775a9d2a303974e6bfdc22bb9d592f6aec6f717b55c6f28e9e02",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 4647,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 7,
+      "fields": [
+        "adm_level",
+        "name",
+        "valid_on",
+        "valid_to",
+        "version",
+        "right_pcod",
+        "left_pcod"
+      ],
+      "source_bounds": [
+        29.5721617,
+        -1.4814743,
+        35.0010536,
+        4.231367
+      ],
+      "null_or_empty_geometries": 0,
+      "invalid_geometries": 0,
+      "duplicate_geometries": 0,
+      "projected_length_km": 46881.688243,
+      "wgs84_bounds": [
+        29.5721617,
+        -1.4814743,
+        35.0010536,
+        4.231367
+      ],
+      "outside_uganda_extent": false
+    },
+    {
+      "path": "uga_admin_boundaries.shp\\uga_adminpoints.shp",
+      "fingerprint": "3b7bbc6379f125eee68de23cf324d5b13fe124eb8de64aeb1b802adcb601c5a9",
+      "exact_copy_number": 1,
+      "status": "Readable",
+      "feature_count": 1868,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 39,
+      "fields": [
+        "admin_leve",
+        "name",
+        "name1",
+        "name2",
+        "name3",
+        "x_coord",
+        "y_coord",
+        "adm4_name",
+        "adm4_name1",
+        "adm4_name2",
+        "adm4_name3",
+        "adm4_pcode",
+        "adm3_name",
+        "adm3_name1",
+        "adm3_name2",
+        "adm3_name3",
+        "adm3_pcode",
+        "adm2_name",
+        "adm2_name1",
+        "adm2_name2",
+        "adm2_name3",
+        "adm2_pcode",
+        "adm1_name",
+        "adm1_name1",
+        "adm1_name2",
+        "adm1_name3",
+        "adm1_pcode",
+        "adm0_name",
+        "adm0_name1",
+        "adm0_name2",
+        "adm0_name3",
+        "adm0_pcode",
+        "valid_on",
+        "valid_to",
+        "version",
+        "lang",
+        "lang1",
+        "lang2",
+        "lang3"
+      ],
+      "source_bounds": [
+        29.6119315,
+        -1.418612,
+        34.9313318,
+        3.9102211
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_buildings_a_free_1.shp",
+      "fingerprint": "ad8096366927ff23bdd7f07e468642e266587d20b5165f75fb3edd5e86800e96",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 8878201,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "type"
+      ],
+      "source_bounds": [
+        29.5709017,
+        -1.4830593,
+        34.9854268,
+        4.1986206
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_landuse_a_free_1.shp",
+      "fingerprint": "ca8d9bb2314116fbd8a7700e1dcfcd91cd5ec6ed37d339d7468af55949dc946a",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 142602,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.3259323,
+        -2.5450698,
+        34.9614484,
+        4.2477542
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_natural_a_free_1.shp",
+      "fingerprint": "eba7d3bb0a5dd8cce899848ab0c08bc387aefd2f9691cf5bba8243eb4d184e2f",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 173,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.7307141,
+        -0.9087669,
+        34.6310549,
+        3.5917123
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_natural_free_1.shp",
+      "fingerprint": "87c522293cb244a9441c7fc0e3fff3ebed522b7d5335e87d63b4b1cb089d4c43",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 269940,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.584548,
+        -1.4800303,
+        34.79921,
+        4.1405161
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_places_a_free_1.shp",
+      "fingerprint": "e02e2109c4dda6271f7409fa6a690f57dfecb6cafde0ab6b2dfb301e1a5698da",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 530,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "population",
+        "name"
+      ],
+      "source_bounds": [
+        29.6181846,
+        -2.8112734,
+        34.8678757,
+        4.1950264
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_places_free_1.shp",
+      "fingerprint": "dddd74170bc6d70dab9dfbc802d6f0887eced1bdbd0ba216c1fa8b9b415ff362",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 74368,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "population",
+        "name"
+      ],
+      "source_bounds": [
+        29.5728778,
+        -1.4841169,
+        35.0097461,
+        4.0873402
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_pofw_a_free_1.shp",
+      "fingerprint": "a7a0dfa56e90b4a53d413a9a7745ec110bcae74496ad2451f7bd56d003eeabaf",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 697,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.587621,
+        -1.446903,
+        34.6588649,
+        3.5869015
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_pofw_free_1.shp",
+      "fingerprint": "12f8a3b17d63f3efbd84550c617119960decbdb5e7c0bab35cc0ad23674f3f50",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 2791,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.5912836,
+        -1.3653927,
+        34.6603963,
+        3.7446383
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_pois_a_free_1.shp",
+      "fingerprint": "f38f91b94243476a1c0e1f1cfb296080527a499c6cf35870aaa162bc8df538b0",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 6730,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.603294,
+        -1.474206,
+        34.9608712,
+        3.9575742
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_pois_free_1.shp",
+      "fingerprint": "c8ade0c82f3b42075778d194839babeed64fe446cf40e5341a6f140baca3a102",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 61875,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.555533,
+        -1.4718307,
+        34.9950819,
+        3.8747442
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_railways_free_1.shp",
+      "fingerprint": "57ef4dcd4c51bf951533c777913e7d812c1643656461e231df37d6317316cf18",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 284,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 7,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "layer",
+        "bridge",
+        "tunnel"
+      ],
+      "source_bounds": [
+        31.3797083,
+        0.1556798,
+        34.2872026,
+        2.7667237
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_roads_free_1.shp",
+      "fingerprint": "d48bf4f7e243edc0b12c4f327a72d9287838449f3b188dc9516ba2d4c5cdcbe1",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 647074,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 10,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name",
+        "ref",
+        "oneway",
+        "maxspeed",
+        "layer",
+        "bridge",
+        "tunnel"
+      ],
+      "source_bounds": [
+        29.5595846,
+        -1.6290307,
+        35.0358739,
+        4.4330808
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_traffic_a_free_1.shp",
+      "fingerprint": "7237e409ff337ba9adc10f7c254ebe10514a220f9cff2ff7fe5699468113a082",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 2379,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6164874,
+        -1.3402843,
+        34.6064977,
+        3.735454
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_traffic_free_1.shp",
+      "fingerprint": "1663cc03d9f23e53699e4a91fe0c6557cc81d67a0b4995bc96910409eecf3d71",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 4774,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.5872367,
+        -1.9618656,
+        34.8177874,
+        3.9353968
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_transport_a_free_1.shp",
+      "fingerprint": "24bd4575674823afa39b4c64e95add3e86e8efef520c2391ca2738bd3ebe5985",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 112,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6957755,
+        -1.2899942,
+        34.6016453,
+        3.720608
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_transport_free_1.shp",
+      "fingerprint": "5184f56de8c82da2d308089f9cc8ef2ee7ce02a6e296cb527cabbe64de5084b8",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 497,
+      "geometry_type": "Point",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.6649695,
+        -2.5187221,
+        34.6536997,
+        3.7780269
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_water_a_free_1.shp",
+      "fingerprint": "1f90d8d479c6eedad8e68446a018aefa9d25734246bb248fdda4e9c3a813f630",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 26646,
+      "geometry_type": "Polygon",
+      "crs": "EPSG:4326",
+      "field_count": 4,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "name"
+      ],
+      "source_bounds": [
+        29.3034467,
+        -3.0233812,
+        34.9167121,
+        3.995684
+      ]
+    },
+    {
+      "path": "uganda-latest-free.shp\\gis_osm_waterways_free_1.shp",
+      "fingerprint": "5436b3aeb9f66221e1770bd2b487a8d110b8427f69a8e0f5bad0316a23a8df2e",
+      "exact_copy_number": 2,
+      "status": "Readable",
+      "feature_count": 30150,
+      "geometry_type": "LineString",
+      "crs": "EPSG:4326",
+      "field_count": 5,
+      "fields": [
+        "osm_id",
+        "code",
+        "fclass",
+        "width",
+        "name"
+      ],
+      "source_bounds": [
+        29.5334776,
+        -1.489455,
+        35.0684285,
+        4.330739
+      ]
+    }
+  ],
+  "selection_policy": {
+    "national_roads": "MoWT National Roads/network2026/network2026.shp is the current authoritative FY2025/26 alignment and attribute register.",
+    "complete_vehicular_geometry": "HOTOSM roads_lines.shp is the exhaustive 248,616.15 km geometry population; other road layers supply names and classifications through spatial joins without replacing its geometry.",
+    "district_roads": "The 2025 district register and 2026 merged output are reference alignments; source lineage is retained.",
+    "administrative_relations": "Administrative units - Uganda layers are used from district through village for spatial containment joins."
+  }
+}

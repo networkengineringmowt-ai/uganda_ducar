@@ -37,6 +37,16 @@ def endpoint(geometry, last: bool = False) -> tuple[float, float]:
     return round(float(coordinate[0]), 7), round(float(coordinate[1]), 7)
 
 
+def valid_line_geometry(geometry):
+    """Repair source topology while retaining only its linear components."""
+    repaired = shapely.make_valid(geometry)
+    if repaired.geom_type in {"LineString", "MultiLineString"}:
+        return repaired
+    lines = [part for part in repaired.geoms if part.geom_type in {"LineString", "MultiLineString"}]
+    flattened = [line for part in lines for line in (part.geoms if part.geom_type == "MultiLineString" else [part])]
+    return shapely.MultiLineString(flattened)
+
+
 def condition(row: pd.Series) -> tuple[str, float, str]:
     years = [float(value) if pd.notna(value) else 0.0 for value in (row.get(field) for field in ["Rehabili_1", "Year_of_La", "Completi_1"])]
     latest = int(max(years)) if max(years) > 1900 else 2000
@@ -52,6 +62,7 @@ def condition(row: pd.Series) -> tuple[str, float, str]:
 def main() -> None:
     roads = gpd.read_file(SOURCE)
     roads = roads[~roads.geometry.isna() & ~roads.geometry.is_empty].copy()
+    roads.geometry = roads.geometry.map(valid_line_geometry)
     roads["registry_length_km"] = pd.to_numeric(roads["Length_km_"], errors="coerce").fillna(0)
     roads["geometry_length_km"] = roads.to_crs(32636).length / 1000.0
     roads["registry_geometry_variance_pct"] = np.where(roads["registry_length_km"] > 0, (roads["geometry_length_km"] / roads["registry_length_km"] - 1) * 100, 0)
@@ -120,6 +131,7 @@ def main() -> None:
         "source": str(SOURCE), "records": int(len(roads)), "unique_public_link_ids": int(roads["link_id"].nunique()),
         "duplicate_source_link_id_records": int(roads["source_link_id"].duplicated(keep=False).sum()),
         "blank_road_names": int(roads["road_name"].eq("").sum()), "null_geometries": 0,
+        "invalid_geometries_after_repair": int((~roads.geometry.is_valid).sum()),
         "registry_length_km": round(registry_total, 6), "geometry_length_km": round(geometry_total, 6),
         "length_variance_km": round(geometry_total - registry_total, 6),
         "paved_registry_length_km": round(float(roads.loc[roads["pavement_class"] == "Paved", "registry_length_km"].sum()), 6),
