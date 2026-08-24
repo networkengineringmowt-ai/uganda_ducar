@@ -1,0 +1,406 @@
+{
+  "name": "Uganda source-faithful vehicular road detail tiles",
+  "source": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\Merged HOTOSM Routes 2026\\uganda_hotosm_merged_routes_2026.gpkg",
+  "minimum_zoom": 11,
+  "display_simplification_m": 2.0,
+  "display_coordinate_precision_dd": 1e-06,
+  "tile_count": 33,
+  "tiles": [
+    {
+      "id": "29:-2",
+      "url": "./data/hotosm_detail_tiles/roads_lon+29_lat-02.geojson.gz",
+      "bbox": [
+        29,
+        -2,
+        30,
+        -1
+      ],
+      "features": 267,
+      "gzip_bytes": 602695
+    },
+    {
+      "id": "29:-1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+29_lat-01.geojson.gz",
+      "bbox": [
+        29,
+        -1,
+        30,
+        0
+      ],
+      "features": 282,
+      "gzip_bytes": 755821
+    },
+    {
+      "id": "29:0",
+      "url": "./data/hotosm_detail_tiles/roads_lon+29_lat+00.geojson.gz",
+      "bbox": [
+        29,
+        0,
+        30,
+        1
+      ],
+      "features": 122,
+      "gzip_bytes": 277130
+    },
+    {
+      "id": "30:-2",
+      "url": "./data/hotosm_detail_tiles/roads_lon+30_lat-02.geojson.gz",
+      "bbox": [
+        30,
+        -2,
+        31,
+        -1
+      ],
+      "features": 182,
+      "gzip_bytes": 266733
+    },
+    {
+      "id": "30:-1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+30_lat-01.geojson.gz",
+      "bbox": [
+        30,
+        -1,
+        31,
+        0
+      ],
+      "features": 1234,
+      "gzip_bytes": 2275934
+    },
+    {
+      "id": "30:0",
+      "url": "./data/hotosm_detail_tiles/roads_lon+30_lat+00.geojson.gz",
+      "bbox": [
+        30,
+        0,
+        31,
+        1
+      ],
+      "features": 894,
+      "gzip_bytes": 2790504
+    },
+    {
+      "id": "30:1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+30_lat+01.geojson.gz",
+      "bbox": [
+        30,
+        1,
+        31,
+        2
+      ],
+      "features": 147,
+      "gzip_bytes": 309683
+    },
+    {
+      "id": "30:2",
+      "url": "./data/hotosm_detail_tiles/roads_lon+30_lat+02.geojson.gz",
+      "bbox": [
+        30,
+        2,
+        31,
+        3
+      ],
+      "features": 167,
+      "gzip_bytes": 343767
+    },
+    {
+      "id": "30:3",
+      "url": "./data/hotosm_detail_tiles/roads_lon+30_lat+03.geojson.gz",
+      "bbox": [
+        30,
+        3,
+        31,
+        4
+      ],
+      "features": 225,
+      "gzip_bytes": 420008
+    },
+    {
+      "id": "31:-2",
+      "url": "./data/hotosm_detail_tiles/roads_lon+31_lat-02.geojson.gz",
+      "bbox": [
+        31,
+        -2,
+        32,
+        -1
+      ],
+      "features": 28,
+      "gzip_bytes": 13712
+    },
+    {
+      "id": "31:-1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+31_lat-01.geojson.gz",
+      "bbox": [
+        31,
+        -1,
+        32,
+        0
+      ],
+      "features": 920,
+      "gzip_bytes": 2529042
+    },
+    {
+      "id": "31:0",
+      "url": "./data/hotosm_detail_tiles/roads_lon+31_lat+00.geojson.gz",
+      "bbox": [
+        31,
+        0,
+        32,
+        1
+      ],
+      "features": 822,
+      "gzip_bytes": 2252343
+    },
+    {
+      "id": "31:1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+31_lat+01.geojson.gz",
+      "bbox": [
+        31,
+        1,
+        32,
+        2
+      ],
+      "features": 577,
+      "gzip_bytes": 1027291
+    },
+    {
+      "id": "31:2",
+      "url": "./data/hotosm_detail_tiles/roads_lon+31_lat+02.geojson.gz",
+      "bbox": [
+        31,
+        2,
+        32,
+        3
+      ],
+      "features": 402,
+      "gzip_bytes": 892023
+    },
+    {
+      "id": "31:3",
+      "url": "./data/hotosm_detail_tiles/roads_lon+31_lat+03.geojson.gz",
+      "bbox": [
+        31,
+        3,
+        32,
+        4
+      ],
+      "features": 598,
+      "gzip_bytes": 1601087
+    },
+    {
+      "id": "32:-1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+32_lat-01.geojson.gz",
+      "bbox": [
+        32,
+        -1,
+        33,
+        0
+      ],
+      "features": 118,
+      "gzip_bytes": 145633
+    },
+    {
+      "id": "32:0",
+      "url": "./data/hotosm_detail_tiles/roads_lon+32_lat+00.geojson.gz",
+      "bbox": [
+        32,
+        0,
+        33,
+        1
+      ],
+      "features": 3361,
+      "gzip_bytes": 4394863
+    },
+    {
+      "id": "32:1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+32_lat+01.geojson.gz",
+      "bbox": [
+        32,
+        1,
+        33,
+        2
+      ],
+      "features": 535,
+      "gzip_bytes": 1050416
+    },
+    {
+      "id": "32:2",
+      "url": "./data/hotosm_detail_tiles/roads_lon+32_lat+02.geojson.gz",
+      "bbox": [
+        32,
+        2,
+        33,
+        3
+      ],
+      "features": 745,
+      "gzip_bytes": 1605986
+    },
+    {
+      "id": "32:3",
+      "url": "./data/hotosm_detail_tiles/roads_lon+32_lat+03.geojson.gz",
+      "bbox": [
+        32,
+        3,
+        33,
+        4
+      ],
+      "features": 327,
+      "gzip_bytes": 804426
+    },
+    {
+      "id": "33:-1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+33_lat-01.geojson.gz",
+      "bbox": [
+        33,
+        -1,
+        34,
+        0
+      ],
+      "features": 8,
+      "gzip_bytes": 18913
+    },
+    {
+      "id": "33:0",
+      "url": "./data/hotosm_detail_tiles/roads_lon+33_lat+00.geojson.gz",
+      "bbox": [
+        33,
+        0,
+        34,
+        1
+      ],
+      "features": 1137,
+      "gzip_bytes": 1960784
+    },
+    {
+      "id": "33:1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+33_lat+01.geojson.gz",
+      "bbox": [
+        33,
+        1,
+        34,
+        2
+      ],
+      "features": 934,
+      "gzip_bytes": 1403391
+    },
+    {
+      "id": "33:2",
+      "url": "./data/hotosm_detail_tiles/roads_lon+33_lat+02.geojson.gz",
+      "bbox": [
+        33,
+        2,
+        34,
+        3
+      ],
+      "features": 568,
+      "gzip_bytes": 1190553
+    },
+    {
+      "id": "33:3",
+      "url": "./data/hotosm_detail_tiles/roads_lon+33_lat+03.geojson.gz",
+      "bbox": [
+        33,
+        3,
+        34,
+        4
+      ],
+      "features": 263,
+      "gzip_bytes": 494203
+    },
+    {
+      "id": "33:4",
+      "url": "./data/hotosm_detail_tiles/roads_lon+33_lat+04.geojson.gz",
+      "bbox": [
+        33,
+        4,
+        34,
+        5
+      ],
+      "features": 11,
+      "gzip_bytes": 7984
+    },
+    {
+      "id": "34:0",
+      "url": "./data/hotosm_detail_tiles/roads_lon+34_lat+00.geojson.gz",
+      "bbox": [
+        34,
+        0,
+        35,
+        1
+      ],
+      "features": 572,
+      "gzip_bytes": 694822
+    },
+    {
+      "id": "34:1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+34_lat+01.geojson.gz",
+      "bbox": [
+        34,
+        1,
+        35,
+        2
+      ],
+      "features": 712,
+      "gzip_bytes": 909714
+    },
+    {
+      "id": "34:2",
+      "url": "./data/hotosm_detail_tiles/roads_lon+34_lat+02.geojson.gz",
+      "bbox": [
+        34,
+        2,
+        35,
+        3
+      ],
+      "features": 169,
+      "gzip_bytes": 176076
+    },
+    {
+      "id": "34:3",
+      "url": "./data/hotosm_detail_tiles/roads_lon+34_lat+03.geojson.gz",
+      "bbox": [
+        34,
+        3,
+        35,
+        4
+      ],
+      "features": 103,
+      "gzip_bytes": 177215
+    },
+    {
+      "id": "34:4",
+      "url": "./data/hotosm_detail_tiles/roads_lon+34_lat+04.geojson.gz",
+      "bbox": [
+        34,
+        4,
+        35,
+        5
+      ],
+      "features": 1,
+      "gzip_bytes": 1056
+    },
+    {
+      "id": "35:1",
+      "url": "./data/hotosm_detail_tiles/roads_lon+35_lat+01.geojson.gz",
+      "bbox": [
+        35,
+        1,
+        36,
+        2
+      ],
+      "features": 6,
+      "gzip_bytes": 2381
+    },
+    {
+      "id": "35:2",
+      "url": "./data/hotosm_detail_tiles/roads_lon+35_lat+02.geojson.gz",
+      "bbox": [
+        35,
+        2,
+        36,
+        3
+      ],
+      "features": 2,
+      "gzip_bytes": 1124
+    }
+  ]
+}

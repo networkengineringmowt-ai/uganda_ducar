@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import math
 from pathlib import Path
 
 import geopandas as gpd
@@ -18,9 +19,15 @@ DATA = ROOT / "data"
 SOURCE = ROOT.parent / "Merged HOTOSM Routes 2026" / "uganda_hotosm_merged_routes_2026.gpkg"
 OUTPUT = DATA / "hotosm_vehicular_map.geojson"
 OUTPUT_GZIP = DATA / "hotosm_vehicular_map.geojson.gz"
+DETAIL_TILE_DIR = DATA / "hotosm_detail_tiles"
+DETAIL_MANIFEST = DATA / "hotosm_detail_tiles_manifest.json"
 ENRICHED_ROUTES = DATA / "hotosm_vehicular_route_register.csv.gz"
 TOPOLOGY_CHUNK_KM = 45.0
+# Overview linework stays compact at national scale. At zoom 11+, the map
+# swaps in 1-degree tiles made from the same geometry with a 2 m tolerance.
 DISPLAY_SIMPLIFICATION_M = 45.0
+DETAIL_SIMPLIFICATION_M = 2.0
+DETAIL_MIN_ZOOM = 11
 GROUP_FIELDS = ["region", "district", "county", "subcounty", "parish", "functional_class", "highway", "road_management_class", "surface", "pavement_class", "condition", "national_aligned"]
 TOPOLOGY_GROUP_FIELDS = ["region", "district", "county", "functional_class", "highway", "road_management_class", "surface", "pavement_class", "condition", "national_aligned"]
 NUMERIC_FIELDS = [
@@ -116,11 +123,53 @@ def main() -> None:
             output.append(aggregate(frame, f"TOPO-{collection_number:05d}", f"{county} {road_class} Route Collection {collection_number:05d}", "County topology route collection"))
 
     web = gpd.GeoDataFrame(output, geometry="geometry", crs=32636)
+    detail = web.copy()
+    detail.geometry = detail.geometry.simplify(DETAIL_SIMPLIFICATION_M, preserve_topology=True)
+    detail = detail.to_crs(4326)
+    detail.geometry = shapely.set_precision(detail.geometry.array, 0.000001)
+    DETAIL_TILE_DIR.mkdir(parents=True, exist_ok=True)
+    for old_tile in DETAIL_TILE_DIR.glob("*.geojson.gz"):
+        old_tile.unlink()
+    tiles = []
+    min_x, min_y, max_x, max_y = detail.total_bounds
+    spatial_index = detail.sindex
+    for longitude in range(math.floor(min_x), math.ceil(max_x)):
+        for latitude in range(math.floor(min_y), math.ceil(max_y)):
+            cell = shapely.box(longitude, latitude, longitude + 1, latitude + 1)
+            indices = spatial_index.query(cell, predicate="intersects")
+            if not len(indices):
+                continue
+            tile = detail.iloc[indices].copy()
+            tile.geometry = shapely.intersection(tile.geometry.array, cell)
+            tile = tile[~tile.geometry.is_empty & tile.geometry.geom_type.isin(["LineString", "MultiLineString"])].copy()
+            if tile.empty:
+                continue
+            name = f"roads_lon{longitude:+03d}_lat{latitude:+03d}.geojson.gz"
+            serialized_tile = tile.to_json(drop_id=True, ensure_ascii=False, separators=(",", ":"))
+            destination = DETAIL_TILE_DIR / name
+            with gzip.open(destination, "wt", encoding="utf-8", compresslevel=9) as stream:
+                stream.write(serialized_tile)
+            tiles.append({
+                "id": f"{longitude}:{latitude}",
+                "url": f"./data/hotosm_detail_tiles/{name}",
+                "bbox": [longitude, latitude, longitude + 1, latitude + 1],
+                "features": int(len(tile)),
+                "gzip_bytes": destination.stat().st_size,
+            })
+    DETAIL_MANIFEST.write_text(json.dumps({
+        "name": "Uganda source-faithful vehicular road detail tiles",
+        "source": str(SOURCE),
+        "minimum_zoom": DETAIL_MIN_ZOOM,
+        "display_simplification_m": DETAIL_SIMPLIFICATION_M,
+        "display_coordinate_precision_dd": 0.000001,
+        "tile_count": len(tiles),
+        "tiles": tiles,
+    }, indent=2), encoding="utf-8")
+
     web.geometry = web.geometry.simplify(DISPLAY_SIMPLIFICATION_M, preserve_topology=True)
     web = web.to_crs(4326)
-    # Five-decimal-degree display precision is sub-metre to metre scale in
-    # Uganda and dramatically reduces transfer/parsing time. Exact analytical
-    # lengths remain stored in geometry_length_km from EPSG:32636.
+    # The national overview uses metre-scale coordinate precision for a fast
+    # first paint. Zoomed detail tiles retain six-decimal-degree coordinates.
     web.geometry = shapely.set_precision(web.geometry.array, 0.00001)
     payload = json.loads(web.to_json(drop_id=True))
     payload.update({
@@ -137,6 +186,9 @@ def main() -> None:
             "display_groups": int(len(web)),
             "display_simplification_m": DISPLAY_SIMPLIFICATION_M,
             "display_coordinate_precision_dd": 0.00001,
+            "detail_tile_count": len(tiles),
+            "detail_minimum_zoom": DETAIL_MIN_ZOOM,
+            "detail_simplification_m": DETAIL_SIMPLIFICATION_M,
             "reporting_note": "Every source segment is retained in route lineage. Identified routes remain discrete; unnamed topology routes use county/class web collections to keep the complete map responsive.",
         },
     })
