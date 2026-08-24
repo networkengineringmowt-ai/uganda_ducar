@@ -21,13 +21,25 @@
     {"id":"socio_data","label":"Socioeconomic Geospatial Joins","type":"data","records":7733},
     {"id":"sql","label":"SQLite Database & Schema","type":"data"},
     {"id":"evidence","label":"Evidence, Manuals & Source Register","type":"data"},
-    {"id":"ml_registry","label":"Road Attribute Model Registry - 404,047 Features","type":"data","records":404047}
+    {"id":"ml_registry","label":"Road Attribute Model Registry - 404,047 Features","type":"data","records":404047},
+    {"id":"merged_routes","label":"County-Bounded Merged Route Register - 266,896 Routes","type":"data","records":266896},
+    {"id":"segment_lineage","label":"HOTOSM Segment-to-Route Lineage","type":"data","records":404047},
+    {"id":"road_source_library","label":"Road Shapefile and Workbook Source Library","type":"data","records":705},
+    {"id":"spatial_conflation","label":"Spatial Alignment & Conflation","type":"process"},
+    {"id":"route_engine","label":"County-Bounded Route Assembly","type":"process"},
+    {"id":"name_join","label":"Established Route Name Resolution","type":"process"},
+    {"id":"traffic_engine","label":"Traffic Assignment & Projection","type":"process"},
+    {"id":"condition_engine","label":"Surface-Condition Decision Engine","type":"process"},
+    {"id":"priority_engine","label":"PIMS / HDM-4 Priority Engine","type":"process"},
+    {"id":"map_renderer","label":"Thematic Map & Hybrid Basemap","type":"process"},
+    {"id":"export_service","label":"CSV · GIS · SQL · PDF Export Service","type":"process"}
   ],
   "edges": [
     {"from":"studio","to":"ducar"},{"from":"studio","to":"traffic"},{"from":"studio","to":"condition"},{"from":"studio","to":"structures"},{"from":"studio","to":"pims"},{"from":"studio","to":"hdm4"},{"from":"studio","to":"global"},{"from":"studio","to":"socioeconomic"},{"from":"studio","to":"priority"},{"from":"studio","to":"admin"},
     {"from":"approved_inventory","to":"ducar"},{"from":"approved_inventory","to":"admin"},{"from":"hotosm_vehicular","to":"ducar"},{"from":"hotosm_vehicular","to":"traffic"},{"from":"hotosm_vehicular","to":"condition"},{"from":"hotosm_vehicular","to":"structures"},{"from":"hotosm_vehicular","to":"pims"},{"from":"hotosm_vehicular","to":"hdm4"},{"from":"hotosm_vehicular","to":"global"},{"from":"hotosm_vehicular","to":"socioeconomic"},{"from":"hotosm_vehicular","to":"priority"},{"from":"hotosm_vehicular","to":"admin"},{"from":"master_attributes","to":"ducar"},{"from":"master_attributes","to":"admin"},
     {"from":"verified_links","to":"traffic"},{"from":"verified_links","to":"condition"},{"from":"verified_links","to":"pims"},{"from":"verified_links","to":"hdm4"},{"from":"verified_links","to":"priority"},
-    {"from":"structures_data","to":"structures"},{"from":"relations","to":"admin"},{"from":"global_evidence","to":"global"},{"from":"socio_data","to":"socioeconomic"},{"from":"sql","to":"admin"},{"from":"evidence","to":"global"},{"from":"evidence","to":"admin"},{"from":"ml_registry","to":"traffic"},{"from":"ml_registry","to":"hdm4"},{"from":"ml_registry","to":"admin"}
+    {"from":"structures_data","to":"structures"},{"from":"relations","to":"admin"},{"from":"global_evidence","to":"global"},{"from":"socio_data","to":"socioeconomic"},{"from":"sql","to":"admin"},{"from":"evidence","to":"global"},{"from":"evidence","to":"admin"},{"from":"ml_registry","to":"traffic"},{"from":"ml_registry","to":"hdm4"},{"from":"ml_registry","to":"admin"},
+    {"from":"road_source_library","to":"spatial_conflation"},{"from":"hotosm_vehicular","to":"spatial_conflation"},{"from":"spatial_conflation","to":"route_engine"},{"from":"route_engine","to":"merged_routes"},{"from":"route_engine","to":"segment_lineage"},{"from":"road_source_library","to":"name_join"},{"from":"merged_routes","to":"name_join"},{"from":"name_join","to":"ducar"},{"from":"ml_registry","to":"traffic_engine"},{"from":"traffic_engine","to":"traffic"},{"from":"merged_routes","to":"condition_engine"},{"from":"condition_engine","to":"condition"},{"from":"traffic_engine","to":"priority_engine"},{"from":"condition_engine","to":"priority_engine"},{"from":"priority_engine","to":"pims"},{"from":"priority_engine","to":"hdm4"},{"from":"priority_engine","to":"priority"},{"from":"merged_routes","to":"map_renderer"},{"from":"map_renderer","to":"ducar"},{"from":"map_renderer","to":"admin"},{"from":"sql","to":"export_service"},{"from":"merged_routes","to":"export_service"},{"from":"export_service","to":"admin"}
   ],
   "record_policy": "The 248,616.15 km HOTOSM vehicular inventory drives public national geometry and map reporting. Governed DUCAR links drive Link-ID, structure, cost and intervention relations. Supplied traffic remains Observed; gaps are explicitly Model estimated with confidence and percentile bounds."
 }

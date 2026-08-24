@@ -28,8 +28,12 @@ DATA = ROOT / "data"
 DUCAR = ROOT.parent
 HOTOSM = DUCAR / "hotosm_uga_roads_osm_shp" / "roads_lines.shp"
 ATTRIBUTES = DATA / "hotosm_vehicular_link_attributes.csv.gz"
-DISTRICT = DUCAR / "district roads" / "Final_Merged_2026" / "uganda_district_roads_2026_merged.shp"
-KCCA = DUCAR / "KCCA" / "kcca_nrn" / "kccanrn.shp"
+# Use the full 31,106-link district register and the detailed Kampala road
+# inventory directly.  The previous condensed references contained only
+# 4,259 district and 80 Kampala alignments, which discarded many established
+# route names before conflation.
+DISTRICT = DUCAR / "district roads" / "dcroads2025.shp"
+KCCA = DUCAR / "shapefiles" / "Kampala_Roads.shp"
 COUNTIES = DUCAR / "Administrative units - Uganda" / "ug_counties.shp"
 WEB = DATA / "hotosm_vehicular_map.geojson"
 ROUTE_CSV = DATA / "hotosm_vehicular_route_register.csv.gz"
@@ -108,6 +112,10 @@ def match_reference(
         f"{source_label}_bearing_difference_deg": np.nan,
     })
     refs = gpd.read_file(reference_path, columns=[id_field, name_field], engine="pyogrio").to_crs(32636)
+    refs = refs[
+        refs[id_field].fillna("").astype(str).str.strip().ne("")
+        | refs[name_field].fillna("").astype(str).str.strip().ne("")
+    ].copy()
     refs.geometry = refs.geometry.make_valid()
     refs = refs.explode(index_parts=False, ignore_index=True)
     selected = np.flatnonzero(eligible)
@@ -295,10 +303,10 @@ def main() -> None:
 
     national = roads["national_match"].fillna(False).astype(bool).to_numpy()
     kcca_eligible = (~national) & roads["district"].fillna("").astype(str).str.upper().str.contains("KAMPALA").to_numpy()
-    kcca = match_reference(roads, kcca_eligible, KCCA, "Link_ID_1", "Link_Name", "kcca")
+    kcca = match_reference(roads, kcca_eligible, KCCA, "Rd_name", "Rd_name", "kcca")
     roads = pd.concat([roads, kcca], axis=1)
     district_eligible = (~national) & (~roads["kcca_match"].to_numpy())
-    district = match_reference(roads, district_eligible, DISTRICT, "LINK_ID", "ROAD_NAME", "district_ref")
+    district = match_reference(roads, district_eligible, DISTRICT, "RdCode", "Rdname", "district_ref")
     roads = pd.concat([roads, district], axis=1)
 
     supplied_name = roads["road_name"].map(norm)
@@ -435,6 +443,19 @@ def main() -> None:
         "district_aligned_segments": int(roads["district_ref_match"].sum()),
         "named_osm_segments": int((roads["road_name"].map(clean) != "Not supplied").sum()),
         "route_basis_counts": route_frame["route_assignment_basis"].value_counts().to_dict(),
+        "source_file_inventory": {
+            "shapefiles": sum(1 for _ in DUCAR.rglob("*.shp")),
+            "xlsx_workbooks": sum(1 for _ in DUCAR.rglob("*.xlsx")),
+            "xls_workbooks": sum(1 for _ in DUCAR.rglob("*.xls")),
+            "csv_tables": sum(1 for _ in DUCAR.rglob("*.csv")),
+        },
+        "selected_alignment_sources": {
+            "hotosm_vehicular_segments": int(len(attributes)),
+            "district_register_links": 31106,
+            "kampala_inventory_features": 9431,
+            "national_aligned_segments": int(national.sum()),
+            "county_boundary_rule": "District and county are mandatory components of every route identity",
+        },
         "gis_geopackage": str(GIS_GPKG),
         "web_geojson": str(WEB),
     }

@@ -1,21 +1,34 @@
 {
   "source_segments": 404047,
   "source_length_km": 248616.148981,
-  "merged_routes": 267903,
+  "merged_routes": 266896,
   "merged_route_length_km": 248616.148981,
-  "length_variance_km": -0.0,
-  "source_segments_per_route_mean": 1.508,
-  "single_segment_routes": 214299,
+  "length_variance_km": 0.0,
+  "source_segments_per_route_mean": 1.514,
+  "single_segment_routes": 213374,
   "national_aligned_segments": 42460,
-  "kcca_aligned_segments": 28,
-  "district_aligned_segments": 19818,
+  "kcca_aligned_segments": 3329,
+  "district_aligned_segments": 18373,
   "named_osm_segments": 7260,
   "route_basis_counts": {
-    "County-bounded straight-through topology": 259552,
-    "District-road alignment": 4112,
-    "Supplied OSM road name": 2932,
+    "County-bounded straight-through topology": 258530,
+    "District-road alignment": 4104,
+    "Supplied OSM road name": 2699,
     "National alignment": 1288,
-    "KCCA alignment": 19
+    "KCCA alignment": 275
+  },
+  "source_file_inventory": {
+    "shapefiles": 155,
+    "xlsx_workbooks": 523,
+    "xls_workbooks": 3,
+    "csv_tables": 44
+  },
+  "selected_alignment_sources": {
+    "hotosm_vehicular_segments": 404047,
+    "district_register_links": 31106,
+    "kampala_inventory_features": 9431,
+    "national_aligned_segments": 42460,
+    "county_boundary_rule": "District and county are mandatory components of every route identity"
   },
   "gis_geopackage": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\Merged HOTOSM Routes 2026\\uganda_hotosm_merged_routes_2026.gpkg",
   "web_geojson": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\uganda_ducar_global\\data\\hotosm_vehicular_map.geojson"
