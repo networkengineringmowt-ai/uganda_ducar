@@ -21,7 +21,8 @@ OUTPUT_GZIP = DATA / "hotosm_vehicular_map.geojson.gz"
 ENRICHED_ROUTES = DATA / "hotosm_vehicular_route_register.csv.gz"
 TOPOLOGY_CHUNK_KM = 45.0
 DISPLAY_SIMPLIFICATION_M = 45.0
-GROUP_FIELDS = ["region", "district", "county", "functional_class", "highway", "road_management_class", "surface", "pavement_class", "condition", "national_aligned"]
+GROUP_FIELDS = ["region", "district", "county", "subcounty", "parish", "functional_class", "highway", "road_management_class", "surface", "pavement_class", "condition", "national_aligned"]
+TOPOLOGY_GROUP_FIELDS = ["region", "district", "county", "functional_class", "highway", "road_management_class", "surface", "pavement_class", "condition", "national_aligned"]
 NUMERIC_FIELDS = [
     "registry_aadt", "registry_pcu", "registry_speed_kmh", "adt_total",
     "adt_excluding_motorcycles", "adt_motorcycles", "heavy_vehicle_adt",
@@ -77,10 +78,14 @@ def main() -> None:
     # current attribute authority. Join by stable route ID before aggregating so
     # every web collection retains the exact length-weighted categories.
     enriched = pd.read_csv(ENRICHED_ROUTES, low_memory=False).set_index("route_id")
-    for field in GROUP_FIELDS + NUMERIC_FIELDS + ["traffic_value_status", "road_safety_risk_band"]:
+    enrichment_fields = list(dict.fromkeys(GROUP_FIELDS + TOPOLOGY_GROUP_FIELDS + NUMERIC_FIELDS + ["traffic_value_status", "road_safety_risk_band"]))
+    for field in enrichment_fields:
         if field in enriched:
             values = routes["route_id"].map(enriched[field])
-            routes[field] = values.where(values.notna(), routes.get(field))
+            existing = routes[field] if field in routes else pd.Series(index=routes.index, dtype=object)
+            routes[field] = values.where(values.notna(), existing)
+        elif field not in routes:
+            routes[field] = "Not supplied"
     known = routes[routes["route_assignment_basis"] != "County-bounded straight-through topology"].copy()
     topology = routes[routes["route_assignment_basis"] == "County-bounded straight-through topology"].copy()
     output = []
@@ -88,7 +93,7 @@ def main() -> None:
         output.append(aggregate(known.loc[[index]], str(row["route_id"]), str(row["road_name"]), str(row["route_assignment_basis"])))
 
     collection_number = 0
-    for group_key, group in topology.groupby(GROUP_FIELDS, dropna=False, sort=True):
+    for group_key, group in topology.groupby(TOPOLOGY_GROUP_FIELDS, dropna=False, sort=True):
         centroids = group.geometry.centroid
         group = group.assign(_x=centroids.x, _y=centroids.y).sort_values(["_x", "_y"])
         chunk, chunk_km = [], 0.0

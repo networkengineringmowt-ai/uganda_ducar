@@ -23,7 +23,8 @@
     hotosmAnalysis: "./data/hotosm_vehicular_analysis.json",
     nationalMap: "./data/uganda_national_roads_2026.geojson.gz?v=20260824-national-register-3"
   };
-  const COLORS = ["#0a84ff", "#30d158", "#ff9f0a", "#ff375f", "#bf5af2", "#64d2ff", "#ffd60a", "#5e5ce6"];
+  const RISK_SCALE = ["#22c55e", "#84cc16", "#eab308", "#f97316", "#ef4444"];
+  const COLORS = [...RISK_SCALE, "#0ea5e9", "#8b5cf6"];
   // Reference district land-area (km2) and approximate HQ-town centroid (WGS84 DD), used only for
   // #ducar:records completeness: a coordinate fallback when a link has no mapped geometry, and a
   // nearest-district lookup when the administrative unit is not supplied. Areas are UBOS/Wikipedia
@@ -186,25 +187,26 @@
     summaries: ["Summaries & Admin Tools", "Administrative relations, site topology, SQLite tables and database schema."]
   };
   const LINK_FIELDS = [
-    "link_id", "road_name", "x_coordinate_dd", "y_coordinate_dd", "coordinate_basis", "district", "county", "subcounty", "parish",
+    "link_id", "road_name", "x_coordinate_dd", "y_coordinate_dd", "district", "county", "subcounty", "parish",
     "surface", "pavement_class", "condition", "source_length_km", "geometry_length_km",
     "registry_speed_kmh", "registry_aadt", "registry_pcu", "condition_risk",
     "surface_risk", "planning_priority_score", "priority_band", "priority_basis", "recommended_intervention",
-    "planning_unit_cost_ugx_km", "planning_cost_ugx", "cost_basis", "admin_coverage"
+    "planning_unit_cost_ugx_km", "planning_cost_per_km_ugx", "planning_works_cost_ugx", "planning_preparation_supervision_ugx", "planning_risk_contingency_ugx", "planning_cost_ugx", "planning_cost_price_base_year", "planning_cost_status"
   ];
   const RECORD_FIELDS = {
     overview: LINK_FIELDS,
-    ducar: ["link_id", "road_name", "district", "county", "subcounty", "parish", "surface", "pavement_class", "condition", "geometry_length_km", "registry_aadt", "registry_pcu", "planning_priority_score", "priority_band", "recommended_intervention", "planning_cost_ugx", "admin_coverage"],
-    network: ["link_id", "road_name", "surface", "pavement_class", "source_length_km", "geometry_length_km", "district", "county", "subcounty", "parish", "registry_aadt", "condition", "recommended_intervention", "admin_coverage"],
+    ducar: ["link_id", "road_name", "district", "county", "subcounty", "parish", "surface", "pavement_class", "condition", "geometry_length_km", "registry_aadt", "registry_pcu", "planning_priority_score", "priority_band", "recommended_intervention", "planning_cost_per_km_ugx", "planning_cost_ugx"],
+    network: ["link_id", "road_name", "surface", "pavement_class", "source_length_km", "geometry_length_km", "district", "county", "subcounty", "parish", "registry_aadt", "condition", "recommended_intervention"],
     traffic: ["link_id", "road_name", "registry_aadt", "registry_pcu", "registry_speed_kmh", "geometry_length_km", "surface", "pavement_class", "condition", "district", "county", "subcounty", "parish", "planning_priority_score", "recommended_intervention"],
     condition: ["link_id", "road_name", "condition", "surface", "pavement_class", "condition_risk", "surface_risk", "recommended_intervention", "planning_priority_score", "priority_band", "geometry_length_km", "district", "county", "subcounty", "parish", "planning_cost_ugx"],
-    structures: ["structure_id", "link_id", "linked_road_name", "x_coordinate_dd", "y_coordinate_dd", "coordinate_basis", "district", "structure_name", "structure_location", "chainage_km", "structure_class", "structure_type", "structure_age", "current_condition", "risk_band", "last_major_works", "last_major_work_year", "remarks", "recommended_intervention", "programme_cost_ugx", "linked_road_length_km", "allocated_road_length_km", "link_match_score", "linkage_quality", "map_location_method", "source_occurrence_index", "source_occurrence_count", "source_file", "source_sheet", "source_row"],
-    pims: ["link_id", "road_name", "priority_band", "planning_priority_score", "priority_basis", "recommended_intervention", "planning_cost_ugx", "condition", "surface", "pavement_class", "geometry_length_km", "district", "county", "subcounty", "parish", "cost_basis"],
-    hdm4: ["link_id", "road_name", "geometry_length_km", "source_length_km", "registry_speed_kmh", "registry_aadt", "registry_pcu", "surface", "pavement_class", "condition", "planning_priority_score", "recommended_intervention", "planning_unit_cost_ugx_km", "planning_cost_ugx", "cost_basis"],
-    framework: ["link_id", "road_name", "district", "county", "subcounty", "parish", "surface", "pavement_class", "condition", "geometry_length_km", "registry_aadt", "planning_priority_score", "priority_band", "recommended_intervention", "priority_basis", "cost_basis", "admin_coverage"],
-    budgets: ["link_id", "road_name", "priority_band", "planning_priority_score", "recommended_intervention", "planning_cost_ugx", "planning_unit_cost_ugx_km", "cost_basis", "condition", "surface", "pavement_class", "geometry_length_km", "district", "county", "subcounty", "parish"],
-    socioeconomic: ["link_id", "road_name", "x_coordinate_dd", "y_coordinate_dd", "coordinate_basis", "district", "county", "subcounty", "parish", "geometry_length_km", "surface", "pavement_class", "condition", "registry_aadt", "planning_priority_score", "recommended_intervention", "socioeconomic_exposure_score", "exposure_band", "primary_socioeconomic_factor", "nearest_school_km", "school_sites_within_5km", "nearest_health_km", "health_sites_within_5km", "nearest_market_km", "market_sites_within_5km", "nearest_industry_km", "industry_sites_within_10km", "nearest_mineral_km", "mineral_sites_within_25km", "nearest_agriculture_km", "agriculture_sites_within_10km", "nearest_energy_km", "energy_sites_within_25km", "nearest_logistics_km", "logistics_sites_within_10km"]
+    structures: ["structure_id", "link_id", "linked_road_name", "x_coordinate_dd", "y_coordinate_dd", "district", "structure_name", "structure_location", "chainage_km", "structure_class", "structure_type", "structure_age", "current_condition", "risk_band", "last_major_works", "last_major_work_year", "remarks", "recommended_intervention", "programme_cost_ugx", "linked_road_length_km", "allocated_road_length_km", "link_match_score", "linkage_quality", "map_location_method", "source_occurrence_index", "source_occurrence_count", "source_file", "source_sheet", "source_row"],
+    pims: ["link_id", "road_name", "priority_band", "planning_priority_score", "priority_basis", "recommended_intervention", "planning_cost_per_km_ugx", "planning_works_cost_ugx", "planning_preparation_supervision_ugx", "planning_risk_contingency_ugx", "planning_cost_ugx", "planning_cost_price_base_year", "condition", "surface", "pavement_class", "geometry_length_km", "district", "county", "subcounty", "parish"],
+    hdm4: ["link_id", "road_name", "geometry_length_km", "source_length_km", "registry_speed_kmh", "registry_aadt", "registry_pcu", "surface", "pavement_class", "condition", "planning_priority_score", "recommended_intervention", "planning_cost_per_km_ugx", "planning_cost_ugx", "planning_cost_price_base_year"],
+    framework: ["link_id", "road_name", "district", "county", "subcounty", "parish", "surface", "pavement_class", "condition", "geometry_length_km", "registry_aadt", "planning_priority_score", "priority_band", "recommended_intervention", "priority_basis"],
+    budgets: ["link_id", "road_name", "priority_band", "planning_priority_score", "recommended_intervention", "planning_cost_per_km_ugx", "planning_works_cost_ugx", "planning_preparation_supervision_ugx", "planning_risk_contingency_ugx", "planning_cost_ugx", "planning_cost_price_base_year", "planning_cost_status", "condition", "surface", "pavement_class", "geometry_length_km", "district", "county", "subcounty", "parish"],
+    socioeconomic: ["link_id", "road_name", "x_coordinate_dd", "y_coordinate_dd", "district", "county", "subcounty", "parish", "geometry_length_km", "surface", "pavement_class", "condition", "registry_aadt", "planning_priority_score", "recommended_intervention", "socioeconomic_exposure_score", "exposure_band", "primary_socioeconomic_factor", "nearest_school_km", "school_sites_within_5km", "nearest_health_km", "health_sites_within_5km", "nearest_market_km", "market_sites_within_5km", "nearest_industry_km", "industry_sites_within_10km", "nearest_mineral_km", "mineral_sites_within_25km", "nearest_agriculture_km", "agriculture_sites_within_10km", "nearest_energy_km", "energy_sites_within_25km", "nearest_logistics_km", "logistics_sites_within_10km"]
   };
+  const HIDDEN_RECORD_FIELDS = new Set(["coordinate_basis", "cost_basis", "admin_coverage"]);
   const SECTION_SQL = {
     overview: ["ducar_link_register", "master_road_sections"], ducar: ["ducar_link_register", "master_road_sections"],
     network: ["ducar_link_register", "ducar_link_admin_relations", "admin_unit_distance_matrix"],
@@ -234,7 +236,25 @@
     return eq(row.region,filters.region)&&eq(row.district||row.admin_district,filters.district)&&eq(row.surface,filters.surface)&&eq(row.pavement_class,filters.pavement)&&eq(row.condition||row.current_condition,filters.condition)&&(!query||searchable.some(value=>String(value||"").toLowerCase().includes(query)));
   }
   function applyHeaderFilters(rows) { return (rows||[]).filter(headerMatches); }
-  function activeLinkRows() { return applyHeaderFilters(cache.links||[]); }
+  function canonicalSurface(value) {
+    const surface=properText(value);
+    if(/^bituminous$/i.test(surface))return "Bituminous";
+    if(/^concrete$/i.test(surface))return "Concrete";
+    if(/^gravel$/i.test(surface))return "Gravel";
+    if(/^earth$/i.test(surface))return "Earth";
+    return surface;
+  }
+  function canonicalPavement(surface,value) {
+    if(/^(Bituminous|Concrete)$/i.test(surface))return "Paved";
+    if(/^(Gravel|Earth)$/i.test(surface))return "Unpaved";
+    return properText(value);
+  }
+  function enrichPlanningCost(row) {
+    const surface=canonicalSurface(row.surface),pavement_class=canonicalPavement(surface,row.pavement_class),length=Math.max(0,Number(row.geometry_length_km||row.length_km||0));
+    const total=Math.max(0,Number(row.planning_cost_ugx||0)),works=Math.round(total/1.20),preparation=Math.round(works*.08),contingency=Math.max(0,Math.round(total-works-preparation));
+    return {...row,surface,pavement_class,planning_cost_per_km_ugx:length>0?Math.round(total/length):0,planning_works_cost_ugx:works,planning_preparation_supervision_ugx:preparation,planning_risk_contingency_ugx:contingency,planning_cost_price_base_year:2026,planning_cost_status:"Screening Allowance"};
+  }
+  function activeLinkRows() { return applyHeaderFilters(cache.links||[]).map(enrichPlanningCost); }
   function filteredSocioPayload() {
     const source=cache.socio||{},rows=applyHeaderFilters(source.rows||[]),length=rows.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0);
     const exposure_summary=aggregate(rows,"exposure_band").map(item=>({band:item.name,links:item.count,affected_length_km:item.value}));
@@ -246,10 +266,11 @@
     return {...source,rows,class_summary:summary("structure_class"),condition_summary:summary("current_condition"),risk_summary:summary("risk_band"),metadata:{...(source.metadata||{}),structure_occurrences:rows.length,linked_structure_occurrences:rows.filter(row=>shown(row.link_id)!=="Not supplied").length,road_length_with_structures_km:rows.reduce((sum,row)=>sum+Number(row.allocated_road_length_km||0),0)}};
   }
   const DISPLAY_ACRONYMS={aadt:"AADT",pcu:"PCU",adt:"ADT",id:"ID",ids:"IDs",km:"km",kmh:"km/h",dd:"DD",ugx:"UGX",kcca:"KCCA",ducar:"DUCAR",pims:"PIMS",hdm4:"HDM-4",osm:"OSM",hotosm:"HOTOSM",sql:"SQL",gis:"GIS",mowt:"MoWT",wgs84:"WGS84"};
-  function label(value) { return String(value).replaceAll("_", " ").split(/\s+/).map(word=>DISPLAY_ACRONYMS[word.toLowerCase()]||word.charAt(0).toUpperCase()+word.slice(1).toLowerCase()).join(" "); }
+  const FIELD_LABELS={planning_cost_per_km_ugx:"Planning Cost per km (UGX/km)",planning_unit_cost_ugx_km:"Planning Unit Cost (UGX/km)",planning_works_cost_ugx:"Planning Works Cost (UGX)",planning_preparation_supervision_ugx:"Preparation and Supervision (UGX)",planning_risk_contingency_ugx:"Risk Contingency (UGX)",planning_cost_ugx:"Total Planning Allowance (UGX)",geometry_length_km:"Geometry Length (km)",source_length_km:"Source Length (km)",allocated_road_length_km:"Allocated Road Length (km)"};
+  function label(value) { const key=String(value);return FIELD_LABELS[key]||key.replaceAll("_", " ").split(/\s+/).map(word=>DISPLAY_ACRONYMS[word.toLowerCase()]||word.charAt(0).toUpperCase()+word.slice(1).toLowerCase()).join(" "); }
   function properText(value) {
     const text=shown(value);if(text==="Not supplied")return text;
-    return text.split(/(\s+|[-/])/).map(token=>{const key=token.toLowerCase().replace(/[^a-z0-9]/g,"");if(!key||/^\s+$|^[-/]$/.test(token))return token;return DISPLAY_ACRONYMS[key]||(/^[A-Z0-9]{2,8}$/.test(token)?token:token.charAt(0).toUpperCase()+token.slice(1).toLowerCase());}).join("");
+    return text.split(/(\s+|[-/])/).map(token=>{const key=token.toLowerCase().replace(/[^a-z0-9]/g,"");if(!key||/^\s+$|^[-/]$/.test(token))return token;return DISPLAY_ACRONYMS[key]||(/^[A-Z0-9]{2,8}$/.test(token)?token:token.charAt(0).toUpperCase()+token.slice(1).toLowerCase());}).join("").replace(/\bkm\/H\b/g,"km/h");
   }
   function properRoadName(value) {
     const acronyms=new Map([["kcca","KCCA"],["hq","HQ"],["hqtrs","Headquarters"],["ps","P/S"],["tc","Town Council"]]);
@@ -314,7 +335,7 @@
   function aggregate(rows, category, metric) {
     const totals = new Map();
     rows.forEach(row => {
-      const key = shown(typeof category === "function" ? category(row) : row[category]);
+      const key = properText(shown(typeof category === "function" ? category(row) : row[category]));
       const amount = metric ? Number(row[metric] || 0) : Object.prototype.hasOwnProperty.call(row,"geometry_length_km") ? Number(row.geometry_length_km || 0) : Object.prototype.hasOwnProperty.call(row,"covered_length_km") ? Number(row.covered_length_km || 0) : 1;
       const item=totals.get(key)||{value:0,count:0,length:0};item.value+=amount;item.count+=1;item.length+=Object.prototype.hasOwnProperty.call(row,"geometry_length_km")?Number(row.geometry_length_km||0):Object.prototype.hasOwnProperty.call(row,"covered_length_km")?Number(row.covered_length_km||0):0;totals.set(key,item);
     });
@@ -337,6 +358,20 @@
     const categories=(values||[]).filter(item=>Number(item.value||0)>0).length;
     return `<article class="chart-card chart-routing-card"><small>COMPLETE-DIMENSION ROUTING</small><h3>${esc(title)}</h3><p>${esc(subtitle)}</p><strong>${number(categories)} categories</strong><span>All categories, affected length and record frequency are retained in Full Exhaustive Table and Deep Analytics. No category was selected, hidden or reduced to a Top-N chart.</span></article>`;
   }
+  function measureSummary(unit) {
+    if(String(unit).toLowerCase().includes("km"))return "Affected km + record count";
+    if(unit==="UGX")return "Planning allowance (UGX) + record count + affected km";
+    return `${properText(unit)} + record count${unit==="records"||String(unit).includes("count")?"":" + affected km where applicable"}`;
+  }
+  function categoryScaleColor(name,index,count){
+    const value=String(name||"").toLowerCase();
+    if(/critical|severe|very poor|failed|\bearth\b/.test(value))return RISK_SCALE[4];
+    if(/\bhigh\b|\bpoor\b|\bgravel\b|\bunpaved\b/.test(value))return RISK_SCALE[3];
+    if(/moderate|\bfair\b/.test(value))return RISK_SCALE[2];
+    if(/low-moderate|\bconcrete\b/.test(value))return RISK_SCALE[1];
+    if(/\blow\b|\bgood\b|\bbituminous\b|\bpaved\b/.test(value))return RISK_SCALE[0];
+    return RISK_SCALE[Math.round(index/Math.max(count-1,1)*4)];
+  }
   function barChart(title, subtitle, values, unit, color = COLORS[0]) {
     const populated=(values||[]).filter(item=>Number(item.value||0)>0||Number(item.count||0)>0);
     if (!chartable(populated)) return tableRoutingCard(title,subtitle,populated);
@@ -357,12 +392,19 @@
       const lengthNote=row.length>0&&!unit.includes("km")?` · ${number(row.length,1)} km`:"";
       return `<text class="chart-label" x="${left-10}" y="${y+18}" text-anchor="end">${esc(row.name.length > 27 ? row.name.slice(0,26)+"…" : row.name)}</text><rect class="chart-bar" x="${left}" y="${y+5}" width="${barW}" height="19" rx="4" fill="${color}"/><text class="chart-value" x="${valueX}" y="${y+19}">${esc(chartNumber(row.value, unit))}${row.count!==undefined?` · ${number(row.count)} records`:""}${lengthNote}</text>`;
     }).join("");
-    return `<article class="chart-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><h3>${esc(title)}</h3><p class="chart-subtitle">${esc(subtitle)}</p><svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}"><line class="chart-axis" x1="${left}" y1="${height-bottom+4}" x2="${width-right}" y2="${height-bottom+4}"/>${svgTicks}${bars}</svg><div class="axis-title">Horizontal axis · ${esc(unit)} · complete category frequency and affected length shown</div><div class="chart-legend"><span class="legend-key"><i class="legend-swatch" style="background:${color}"></i>${esc(unit)} + record count + affected km where applicable</span></div></article>`;
+    return `<article class="chart-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><h3>${esc(title)}</h3><p class="chart-subtitle">${esc(subtitle)}</p><svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}"><line class="chart-axis" x1="${left}" y1="${top-4}" x2="${left}" y2="${height-bottom+4}"/><line class="chart-axis" x1="${left}" y1="${height-bottom+4}" x2="${width-right}" y2="${height-bottom+4}"/>${svgTicks}${bars}</svg><div class="axis-title">Horizontal Axis: ${esc(properText(unit))} · Vertical Axis: Categories · Scale: 0 to ${esc(chartNumber(max,unit))}</div><div class="chart-legend"><span class="legend-key"><i class="legend-swatch" style="background:${color}"></i>${esc(measureSummary(unit))}</span></div></article>`;
+  }
+  function clusteredColumnChart(title,subtitle,values,unit){
+    const rows=sortData((values||[]).filter(item=>Number(item.value||0)>0||Number(item.count||0)>0));if(!chartable(rows))return tableRoutingCard(title,subtitle,rows);
+    const width=760,height=390,left=82,right=28,top=28,bottom=118,plotW=width-left-right,plotH=height-top-bottom,max=Math.max(...rows.map(row=>Number(row.value||0)),1),slot=plotW/Math.max(rows.length,1),barW=Math.min(72,slot*.58),ticks=[0,.25,.5,.75,1];
+    const grid=ticks.map(t=>{const y=top+plotH*(1-t);return `<line class="chart-gridline" x1="${left}" y1="${y}" x2="${width-right}" y2="${y}"/><line class="chart-tick-mark" x1="${left-6}" y1="${y}" x2="${left}" y2="${y}"/><text class="chart-tick" x="${left-10}" y="${y+4}" text-anchor="end">${esc(chartNumber(max*t,unit))}</text>`;}).join("");
+    const columns=rows.map((row,index)=>{const x=left+slot*index+(slot-barW)/2,h=Math.max(2,Number(row.value||0)/max*plotH),y=top+plotH-h,color=categoryScaleColor(row.name,index,rows.length),name=properText(row.name),short=name.length>20?name.slice(0,19)+"…":name;return `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="6" fill="${color}"><title>${esc(name)}: ${esc(chartNumber(row.value,unit))} · ${number(row.count||0)} records</title></rect><text class="chart-value" x="${x+barW/2}" y="${Math.max(top+12,y-7)}" text-anchor="middle">${esc(chartNumber(row.value,unit))}</text><text class="chart-column-label" transform="translate(${x+barW/2},${top+plotH+17}) rotate(38)" text-anchor="start">${esc(short)}</text>`;}).join("");
+    return `<article class="chart-card clustered-column-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><h3>${esc(title)}</h3><p class="chart-subtitle">${esc(subtitle)}</p><svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}"><line class="chart-axis" x1="${left}" y1="${top}" x2="${left}" y2="${top+plotH}"/><line class="chart-axis" x1="${left}" y1="${top+plotH}" x2="${width-right}" y2="${top+plotH}"/>${grid}${columns}<text class="chart-axis-label" x="${left+plotW/2}" y="${height-8}" text-anchor="middle">Horizontal Axis: Categories</text><text class="chart-axis-label" transform="translate(16,${top+plotH/2}) rotate(-90)" text-anchor="middle">Vertical Axis: ${esc(properText(unit))}</text></svg><div class="chart-legend risk-scale-key">${RISK_SCALE.map((color,index)=>`<span><i style="background:${color}"></i>${["Low / Good","Low-Moderate","Moderate","High","Critical / Severe"][index]}</span>`).join("")}</div><div class="axis-title">${esc(measureSummary(unit))} · Five-step scale with major ticks at 0%, 25%, 50%, 75% and 100%</div></article>`;
   }
   function vizValues(values) { return sortData(values.filter(item=>Number(item.value)>0)); }
   function vizLegend(values, unit) {
     const total=values.reduce((sum,item)=>sum+Number(item.value||0),0);
-    return `<div class="dynamic-legend">${values.map((item,index)=>`<span title="${esc(item.name)}: ${esc(chartNumber(item.value,unit))}"><i style="background:${COLORS[index%COLORS.length]}"></i><b>${esc(item.name)}</b><small>${esc(chartNumber(item.value,unit))}${item.count!==undefined?` · ${number(item.count)} records`:""} · ${number(item.value/Math.max(total,1)*100,1)}%</small></span>`).join("")}</div>`;
+    return `<div class="dynamic-legend">${values.map((item,index)=>`<span title="${esc(properText(item.name))}: ${esc(chartNumber(item.value,unit))}"><i style="background:${COLORS[index%COLORS.length]}"></i><b>${esc(properText(item.name))}</b><small>${esc(chartNumber(item.value,unit))}${item.count!==undefined?` · ${number(item.count)} records`:""} · ${number(item.value/Math.max(total,1)*100,1)}%</small></span>`).join("")}</div>`;
   }
   function radialViz(values, unit, donut) {
     const rows=vizValues(values), total=rows.reduce((sum,item)=>sum+item.value,0); let cursor=0;
@@ -375,8 +417,10 @@
     return `<svg class="funnel-chart" viewBox="0 0 ${width} ${Math.max(80,rows.length*rowH+8)}" role="img" aria-label="Funnel chart">${shapes}</svg>`;
   }
   function clusteredViz(values, unit) {
-    const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1);
-    return `<div class="clustered-wrap"><div class="clustered-chart" style="grid-template-columns:repeat(${Math.max(rows.length,1)},minmax(42px,1fr))">${rows.map((item,index)=>`<div class="column-item" title="${esc(item.name)}: ${esc(chartNumber(item.value,unit))}${item.count!==undefined?` · ${number(item.count)} records`:""}"><strong>${esc(chartNumber(item.value,unit))}${item.count!==undefined?`<small>${number(item.count)} rec.</small>`:""}</strong><div class="column-track"><i style="height:${Math.max(2,item.value/max*100)}%;background:${COLORS[index%COLORS.length]}"></i></div><small>${esc(item.name)}</small></div>`).join("")}</div></div>`;
+    const rows=vizValues(values),max=Math.max(...rows.map(item=>item.value),1),width=640,height=315,left=74,right=20,top=24,bottom=100,plotW=width-left-right,plotH=height-top-bottom,slot=plotW/Math.max(rows.length,1),barW=Math.min(58,slot*.58);
+    const grid=[0,.25,.5,.75,1].map(t=>{const y=top+plotH*(1-t);return `<line class="chart-gridline" x1="${left}" y1="${y}" x2="${width-right}" y2="${y}"/><line class="chart-tick-mark" x1="${left-5}" y1="${y}" x2="${left}" y2="${y}"/><text class="chart-tick" x="${left-9}" y="${y+4}" text-anchor="end">${esc(chartNumber(max*t,unit))}</text>`;}).join("");
+    const bars=rows.map((item,index)=>{const x=left+slot*index+(slot-barW)/2,h=Math.max(2,item.value/max*plotH),y=top+plotH-h,name=properText(item.name),color=categoryScaleColor(item.name,index,rows.length);return `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="5" fill="${color}"><title>${esc(name)}: ${esc(chartNumber(item.value,unit))} · ${number(item.count||0)} records</title></rect><text class="chart-value" x="${x+barW/2}" y="${Math.max(top+11,y-6)}" text-anchor="middle">${esc(chartNumber(item.value,unit))}</text><text class="chart-column-label" transform="translate(${x+barW/2},${top+plotH+15}) rotate(38)" text-anchor="start">${esc(name.length>18?name.slice(0,17)+"…":name)}</text>`;}).join("");
+    return `<div class="advanced-viz clustered-wrap"><svg class="clustered-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Clustered category columns"><line class="chart-axis" x1="${left}" y1="${top}" x2="${left}" y2="${top+plotH}"/><line class="chart-axis" x1="${left}" y1="${top+plotH}" x2="${width-right}" y2="${top+plotH}"/>${grid}${bars}<text class="chart-axis-label" x="${left+plotW/2}" y="${height-7}" text-anchor="middle">Horizontal Axis: Categories</text><text class="chart-axis-label" transform="translate(14,${top+plotH/2}) rotate(-90)" text-anchor="middle">Vertical Axis: ${esc(properText(unit))}</text></svg>${vizLegend(rows,unit)}</div>`;
   }
   function stackedViz(values, unit) {
     const rows=vizValues(values), total=rows.reduce((sum,item)=>sum+item.value,0);
@@ -405,12 +449,14 @@
   }
   function scatterViz(values, unit) {
     const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1), maxCount=Math.max(...rows.map(item=>Number(item.count||1)),1), width=640, height=250, pad=34;
-    return `<div class="advanced-viz"><svg class="scatter-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Category value and frequency scatter"><line x1="${pad}" y1="${height-pad}" x2="${width-pad}" y2="${height-pad}"/><line x1="${pad}" y1="${pad}" x2="${pad}" y2="${height-pad}"/>${rows.map((item,index)=>{const x=pad+(width-pad*2)*(index/Math.max(rows.length-1,1)),y=height-pad-(height-pad*2)*(item.value/max),r=5+13*Math.sqrt(Number(item.count||1)/maxCount);return `<circle cx="${x}" cy="${y}" r="${r}" fill="${COLORS[index%COLORS.length]}" fill-opacity=".78" stroke="#fff" stroke-opacity=".38"><title>${esc(item.name)}: ${esc(chartNumber(item.value,unit))} · ${number(item.count||0)} records</title></circle>`;}).join("")}</svg>${vizLegend(rows,unit)}</div>`;
+    const ticks=[0,.25,.5,.75,1].map(t=>{const y=height-pad-(height-pad*2)*t;return `<line class="chart-gridline" x1="${pad}" y1="${y}" x2="${width-pad}" y2="${y}"/><text class="chart-tick" x="${pad-5}" y="${y+4}" text-anchor="end">${esc(chartNumber(max*t,unit))}</text>`;}).join("");
+    return `<div class="advanced-viz"><svg class="scatter-chart" viewBox="0 0 ${width} ${height+34}" role="img" aria-label="Category value and frequency scatter"><line class="chart-axis" x1="${pad}" y1="${height-pad}" x2="${width-pad}" y2="${height-pad}"/><line class="chart-axis" x1="${pad}" y1="${pad}" x2="${pad}" y2="${height-pad}"/>${ticks}${rows.map((item,index)=>{const x=pad+(width-pad*2)*(index/Math.max(rows.length-1,1)),y=height-pad-(height-pad*2)*(item.value/max),r=5+13*Math.sqrt(Number(item.count||1)/maxCount);return `<circle cx="${x}" cy="${y}" r="${r}" fill="${COLORS[index%COLORS.length]}" fill-opacity=".78" stroke="#fff" stroke-opacity=".38"><title>${esc(properText(item.name))}: ${esc(chartNumber(item.value,unit))} · ${number(item.count||0)} records</title></circle>`;}).join("")}<text class="chart-axis-label" x="${width/2}" y="${height+20}" text-anchor="middle">Horizontal Axis: Categories</text><text class="chart-axis-label" transform="translate(10,${height/2}) rotate(-90)" text-anchor="middle">Vertical Axis: ${esc(properText(unit))}</text></svg>${vizLegend(rows,unit)}</div>`;
   }
   function composedViz(values, unit) {
     const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1), total=rows.reduce((sum,item)=>sum+item.value,0), width=640, height=250, pad=34, slot=(width-pad*2)/Math.max(rows.length,1);let running=0;
     const cumulative=rows.map((item,index)=>{running+=item.value;return `${pad+slot*(index+.5)},${height-pad-(height-pad*2)*(running/Math.max(total,1))}`;}).join(" ");
-    return `<div class="advanced-viz"><svg class="composed-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Affected length bars and cumulative share line"><line x1="${pad}" y1="${height-pad}" x2="${width-pad}" y2="${height-pad}"/>${rows.map((item,index)=>{const h=(height-pad*2)*(item.value/max),x=pad+slot*index+slot*.14;return `<rect x="${x}" y="${height-pad-h}" width="${Math.max(slot*.72,2)}" height="${h}" rx="4" fill="${COLORS[index%COLORS.length]}"><title>${esc(item.name)}: ${esc(chartNumber(item.value,unit))}</title></rect>`;}).join("")}<polyline points="${cumulative}" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="8 5"/></svg>${vizLegend(rows,unit)}</div>`;
+    const ticks=[0,.25,.5,.75,1].map(t=>{const y=height-pad-(height-pad*2)*t;return `<line class="chart-gridline" x1="${pad}" y1="${y}" x2="${width-pad}" y2="${y}"/><text class="chart-tick" x="${pad-5}" y="${y+4}" text-anchor="end">${esc(chartNumber(max*t,unit))}</text>`;}).join("");
+    return `<div class="advanced-viz"><svg class="composed-chart" viewBox="0 0 ${width} ${height+34}" role="img" aria-label="Affected length bars and cumulative share line"><line class="chart-axis" x1="${pad}" y1="${height-pad}" x2="${width-pad}" y2="${height-pad}"/><line class="chart-axis" x1="${pad}" y1="${pad}" x2="${pad}" y2="${height-pad}"/>${ticks}${rows.map((item,index)=>{const h=(height-pad*2)*(item.value/max),x=pad+slot*index+slot*.14;return `<rect x="${x}" y="${height-pad-h}" width="${Math.max(slot*.72,2)}" height="${h}" rx="4" fill="${COLORS[index%COLORS.length]}"><title>${esc(properText(item.name))}: ${esc(chartNumber(item.value,unit))}</title></rect>`;}).join("")}<polyline points="${cumulative}" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="8 5"/><text class="chart-axis-label" x="${width/2}" y="${height+20}" text-anchor="middle">Horizontal Axis: Categories</text><text class="chart-axis-label" transform="translate(10,${height/2}) rotate(-90)" text-anchor="middle">Vertical Axis: ${esc(properText(unit))}</text></svg>${vizLegend(rows,unit)}</div>`;
   }
   function rankedViz(values, unit) {
     const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1);
@@ -419,7 +465,7 @@
   function vizCard(series, type) {
     const renderers={donut:()=>radialViz(series.values,series.unit,true),pie:()=>radialViz(series.values,series.unit,false),funnel:()=>funnelViz(series.values,series.unit),clustered:()=>clusteredViz(series.values,series.unit),stacked:()=>stackedViz(series.values,series.unit),sparkline:()=>sparklineViz(series.values,series.unit),gauge:()=>gaugeViz(series.values,series.unit),radar:()=>radarViz(series.values,series.unit),treemap:()=>treemapViz(series.values,series.unit),scatter:()=>scatterViz(series.values,series.unit),composed:()=>composedViz(series.values,series.unit),ranked:()=>rankedViz(series.values,series.unit)};
     const renderer=(renderers[type]||renderers.stacked)();
-    return `<article class="dynamic-chart-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><header><h4>${esc(series.name)}</h4><span>${esc(series.unit)} + count</span></header>${renderer}</article>`;
+    return `<article class="dynamic-chart-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><header><h4>${esc(series.name)}</h4><span>${esc(measureSummary(series.unit))}</span></header>${renderer}</article>`;
   }
   function interactiveGallery(title, series) {
     const types=[["donut","Donuts"],["pie","Pies"],["funnel","Funnels"],["clustered","Clustered columns"],["stacked","Stacked columns"],["sparkline","Sparklines"],["gauge","Gauges"],["radar","Radar profiles"],["treemap","Treemaps"],["scatter","Scatter and frequency bubbles"],["composed","Composed length and cumulative share"],["ranked","Complete ranked matrices"]];
@@ -652,7 +698,7 @@
     ])}<div class="chart-grid">${barChart("Published category references","The four MoWT-published components total 159,795 km, 172 km above the separately published 159,623 km headline; source values are retained without silent adjustment.",[{name:"National roads",value:official.national},{name:"Urban roads",value:official.urban},{name:"District roads",value:official.district},{name:"Community access roads",value:official.community}],"km",COLORS[0])}${barChart("DUCAR reconciliation coverage","Verified, candidate-expansion and unresolved lengths reconcile exactly to 138,503 km.",[{name:"Verified link register",value:verified,count:fullRows.length},{name:"Additional candidate geometry",value:additional},{name:"Unresolved benchmark gap",value:unresolved}],"km",COLORS[4])}</div>${controls}<div class="table-export-wrap"><button type="button" class="csv-download" data-table-csv>CSV</button><div class="table-wrap benchmark-table"><table class="data-table"><thead><tr><th>Reconciliation class</th><th>Length km</th><th>Benchmark share</th><th>Interpretation</th></tr></thead><tbody>${rowsHtml.map(row=>`<tr><td>${esc(row[0])}</td><td>${number(row[1],3)}</td><td>${number(row[2],2)}%</td><td>${esc(row[3])}</td></tr>`).join("")}</tbody></table></div></div><div class="benchmark-audit"><strong>Published-source arithmetic disclosure</strong><span>MoWT-published national roads ${number(official.national)} km + DUCAR ${number(official.ducar)} km = ${number(componentTotal)} km, which is ${number(componentTotal-official.total)} km above the separately published ${number(official.total)} km headline.</span><span>The supplied July 2026 paved/unpaved split ${number(official.pavedNational)} + ${number(official.unpavedNational)} = ${number(pavedTotal)} km, which is ${number(pavedTotal-official.national)} km above MoWT’s ${number(official.national)} km national-road reference.</span><span>Source: <a href="https://works.go.ug/" target="_blank" rel="noreferrer">MoWT homepage</a> and <a href="https://works.go.ug/wp-content/uploads/2026/05/MoWT-Strategic-Plan-2026_30-Draft-v6.pdf" target="_blank" rel="noreferrer">Strategic Plan 2025/26–2029/30 draft</a>.</span></div></section>`;
   }
   function hotosmValues(dimension) {
-    return (cache.hotosmAnalysis?.summaries?.[dimension]||[]).map(row=>({name:row.category,value:Number(row.length_km||0),length:Number(row.length_km||0),count:Number(row.feature_count||0)}));
+    return (cache.hotosmAnalysis?.summaries?.[dimension]||[]).map(row=>({name:properText(row.category),value:Number(row.length_km||0),length:Number(row.length_km||0),count:Number(row.feature_count||0)}));
   }
   function hotosmLength(dimension,category) {
     return Number((cache.hotosmAnalysis?.summaries?.[dimension]||[]).find(row=>row.category===category)?.length_km||0);
@@ -737,7 +783,7 @@
     ];
     else charts = (common[state.section]||common.overview).map(c=>barChart(c[0],c[1],sectionChartValues(c[2],rows),"affected km",c[3]));
     const interactiveSeries=roadInteractiveSeries(rows,state.section),insightSeries=roadInsightSeries(rows,state.section);
-    return (authoritativeSection?authoritativeNetworkOverview():"")+(authoritativeSection?"":metricCards(metrics))+`<div class="chart-grid">${charts.join("")}</div>`+interactiveGallery(`${SECTION_META[state.section][0]} · complete mixed-chart atlas`,authoritativePopulationSeries(interactiveSeries,rows))+insightWall(`${SECTION_META[state.section][0]} · 50+ insight atlas`,authoritativePopulationSeries(insightSeries,rows))+`<div class="method-note">Every road chart uses cumulative geometry length and shows complete category frequency. The authoritative national inventory total is reported separately and consistently. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are modelling allowances, not bills of quantities.</div>`;
+    return (authoritativeSection?authoritativeNetworkOverview():"")+(authoritativeSection?"":metricCards(metrics))+`<div class="chart-grid">${charts.join("")}</div>`+interactiveGallery(`${SECTION_META[state.section][0]} · complete mixed-chart atlas`,authoritativePopulationSeries(interactiveSeries,rows))+insightWall(`${SECTION_META[state.section][0]} · 50+ insight atlas`,authoritativePopulationSeries(insightSeries,rows))+`<div class="method-note">Every road chart uses cumulative geometry length and shows complete category frequency. The authoritative national inventory total is reported separately and consistently. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are 2026 screening allowances: works comprise 83.33%, preparation and supervision 6.67%, and risk contingency 10% of the displayed total. They are not bills of quantities.</div>`;
   }
 
   function socioeconomicDashboard(payload) {
@@ -873,11 +919,15 @@
     return metricCards([{label:"Network geometry health",value:number(networkKm,1)+" km",note:"Complete DUCAR reporting denominator"},{label:"Valid Link-ID length",value:number(validIdKm,1)+" km",note:number(validIdKm/Math.max(networkKm,1)*100,1)+"% standard compliance"},{label:"Spatial admin length",value:number(spatial,1)+" km",note:"Polygon-intersected coverage"},{label:"Traffic parameter length",value:number(trafficKm,1)+" km",note:"Exact-match observation coverage"}]) + `<div class="chart-grid">${charts}</div>`+interactiveGallery("System health · animated chart gallery",healthSeries)+insightWall("System health & administration · 50+ insight atlas",adminInsights);
   }
   function dashboardHtml() {
-    if (state.section === "global") return globalDashboard(cache.global);
-    if (state.section === "summaries") return summaryDashboard(cache.relations, cache.mindmap);
-    if (state.section === "socioeconomic") return socioeconomicDashboard(filteredSocioPayload());
-    if (state.section === "structures") return structuresDashboard(filteredStructurePayload());
-    return lengthDashboard(activeLinkRows());
+    let content;
+    if (state.section === "global") content=globalDashboard(cache.global);
+    else if (state.section === "summaries") content=summaryDashboard(cache.relations, cache.mindmap);
+    else if (state.section === "socioeconomic") content=socioeconomicDashboard(filteredSocioPayload());
+    else if (state.section === "structures") content=structuresDashboard(filteredStructurePayload());
+    else content=lengthDashboard(activeLinkRows());
+    const surface=hotosmValues("surface"),functional=hotosmValues("management_class");
+    const crossCut=`<section class="mandatory-breakdowns"><header><small>COMPLETE NETWORK CROSS-CUT</small><h3>Surface Type and Functional Class</h3><p>Every dashboard retains the complete 248,616.15 km vehicular-road population. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved.</p></header><div class="chart-grid">${clusteredColumnChart("Complete Surface-Type Distribution","Every road kilometre and source-record frequency grouped by canonical surface type.",surface,"affected km")}${clusteredColumnChart("Complete Functional-Class Distribution","Every road kilometre and source-record frequency grouped by functional road-management class.",functional,"affected km")}</div></section>`;
+    return crossCut+content;
   }
   function haversineKm(lat1, lng1, lat2, lng2) {
     const R = 6371, toRad = d => d * Math.PI / 180;
@@ -1022,12 +1072,13 @@
     });
   }
   function recordDataset() {
-    if (state.section === "global") { const rows=globalRows(); return { rows, fields: Object.keys(rows[0]) }; }
-    if (state.section === "summaries") return { rows: applyHeaderFilters(cache.relations), fields: Object.keys(cache.relations[0]) };
-    if (state.section === "socioeconomic") return { rows: applyHeaderFilters(cache.socio.rows), fields: RECORD_FIELDS.socioeconomic };
-    if (state.section === "structures") return { rows: applyHeaderFilters(cache.structures.rows), fields: RECORD_FIELDS.structures };
-    const fields=[...(RECORD_FIELDS[state.section] || LINK_FIELDS)];
-    ["coordinate_basis","start_x_coordinate_dd","start_y_coordinate_dd","end_x_coordinate_dd","end_y_coordinate_dd"].reverse().forEach(field=>{if(!fields.includes(field))fields.splice(Math.min(2,fields.length),0,field);});
+    const visible=fields=>fields.filter(field=>!HIDDEN_RECORD_FIELDS.has(field));
+    if (state.section === "global") { const rows=globalRows(); return { rows, fields: visible(Object.keys(rows[0])) }; }
+    if (state.section === "summaries") return { rows: applyHeaderFilters(cache.relations), fields: visible(Object.keys(cache.relations[0])) };
+    if (state.section === "socioeconomic") return { rows: applyHeaderFilters(cache.socio.rows), fields: visible(RECORD_FIELDS.socioeconomic) };
+    if (state.section === "structures") return { rows: applyHeaderFilters(cache.structures.rows), fields: visible(RECORD_FIELDS.structures) };
+    const fields=visible([...(RECORD_FIELDS[state.section] || LINK_FIELDS)]);
+    ["start_x_coordinate_dd","start_y_coordinate_dd","end_x_coordinate_dd","end_y_coordinate_dd"].reverse().forEach(field=>{if(!fields.includes(field))fields.splice(Math.min(2,fields.length),0,field);});
     let rows = activeLinkRows();
     if (state.section === "ducar") {
       rows = augmentDucarRows(rows);
@@ -1064,6 +1115,7 @@
     if(field.includes("road_name")&&shown(value)!=="Not supplied")return properRoadName(value);
     if(typeof value==="number"){
       const formatted=value.toLocaleString(undefined,{maximumFractionDigits:6});
+      if(/_ugx(?:_km)?$/.test(field))return "UGX "+formatted;
       const isLength=/(^|_)(length|distance|chainage)_km$/.test(field)||/^(length_km|geometry_length_km|covered_length_km|allocated_road_length_km)$/.test(field);
       return formatted+(isLength?" km":"");
     }
