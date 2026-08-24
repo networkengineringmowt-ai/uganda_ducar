@@ -27230,7 +27230,7 @@
   "traffic_2026": {
     "aadt_band": [
       {
-        "category": "0\u2013149",
+        "category": "0–149",
         "feature_count": 96976,
         "length_km": 46131.467428,
         "minimum": 105.0,
@@ -27238,7 +27238,7 @@
         "mean": 109.11
       },
       {
-        "category": "150\u2013499",
+        "category": "150–499",
         "feature_count": 295090,
         "length_km": 164283.225352,
         "minimum": 150.0,
@@ -27246,7 +27246,7 @@
         "mean": 347.148
       },
       {
-        "category": "500\u2013999",
+        "category": "500–999",
         "feature_count": 7204,
         "length_km": 21897.763361,
         "minimum": 519.0,
@@ -27264,7 +27264,7 @@
     ],
     "adt_excluding_motorcycles_band": [
       {
-        "category": "0\u201399",
+        "category": "0–99",
         "feature_count": 96981,
         "length_km": 46133.660938,
         "minimum": 69.0,
@@ -27272,7 +27272,7 @@
         "mean": 71.993
       },
       {
-        "category": "100\u2013299",
+        "category": "100–299",
         "feature_count": 294916,
         "length_km": 164115.562436,
         "minimum": 101.0,
@@ -27280,7 +27280,7 @@
         "mean": 220.236
       },
       {
-        "category": "300\u2013749",
+        "category": "300–749",
         "feature_count": 7425,
         "length_km": 22065.193599,
         "minimum": 300.0,
@@ -27298,7 +27298,7 @@
     ],
     "motorcycle_adt_band": [
       {
-        "category": "0\u201324",
+        "category": "0–24",
         "feature_count": 0,
         "length_km": 0.0,
         "minimum": 0,
@@ -27306,7 +27306,7 @@
         "mean": 0
       },
       {
-        "category": "25\u201399",
+        "category": "25–99",
         "feature_count": 122310,
         "length_km": 48783.555218,
         "minimum": 36.0,
@@ -27314,7 +27314,7 @@
         "mean": 47.788
       },
       {
-        "category": "100\u2013249",
+        "category": "100–249",
         "feature_count": 270532,
         "length_km": 161847.2881,
         "minimum": 104.0,
@@ -27332,7 +27332,7 @@
     ],
     "heavy_vehicle_adt_band": [
       {
-        "category": "0\u20139",
+        "category": "0–9",
         "feature_count": 96697,
         "length_km": 45644.06478,
         "minimum": 9.0,
@@ -27340,7 +27340,7 @@
         "mean": 9.0
       },
       {
-        "category": "10\u201329",
+        "category": "10–29",
         "feature_count": 276905,
         "length_km": 158389.907975,
         "minimum": 10.0,
@@ -27348,7 +27348,7 @@
         "mean": 25.576
       },
       {
-        "category": "30\u201374",
+        "category": "30–74",
         "feature_count": 25661,
         "length_km": 28276.461216,
         "minimum": 30.0,
@@ -27374,7 +27374,7 @@
         "mean": 8.434
       },
       {
-        "category": "20\u201329.9 km/h",
+        "category": "20–29.9 km/h",
         "feature_count": 1307,
         "length_km": 3404.735436,
         "minimum": 20.5,
@@ -27382,7 +27382,7 @@
         "mean": 23.856
       },
       {
-        "category": "30\u201339.9 km/h",
+        "category": "30–39.9 km/h",
         "feature_count": 838,
         "length_km": 1064.812047,
         "minimum": 30.0,
@@ -27408,7 +27408,7 @@
         "mean": 10.349
       },
       {
-        "category": "30\u201339.9 km/h",
+        "category": "30–39.9 km/h",
         "feature_count": 501,
         "length_km": 914.170211,
         "minimum": 33.6,
@@ -27416,7 +27416,7 @@
         "mean": 36.297
       },
       {
-        "category": "40\u201349.9 km/h",
+        "category": "40–49.9 km/h",
         "feature_count": 409,
         "length_km": 171.310877,
         "minimum": 41.4,
@@ -27442,7 +27442,7 @@
         "mean": 0.0
       },
       {
-        "category": "0.1\u20139.9%",
+        "category": "0.1–9.9%",
         "feature_count": 3,
         "length_km": 3.180201,
         "minimum": 2.4,
@@ -27450,7 +27450,7 @@
         "mean": 5.333
       },
       {
-        "category": "10\u201324.9%",
+        "category": "10–24.9%",
         "feature_count": 52,
         "length_km": 6.124939,
         "minimum": 10.2,
@@ -27476,7 +27476,7 @@
         "mean": 0
       },
       {
-        "category": "4\u20134.4%",
+        "category": "4–4.4%",
         "feature_count": 400180,
         "length_km": 233056.315678,
         "minimum": 4.0,
@@ -27484,7 +27484,7 @@
         "mean": 4.0
       },
       {
-        "category": "4.5\u20134.9%",
+        "category": "4.5–4.9%",
         "feature_count": 0,
         "length_km": 0.0,
         "minimum": 0,
@@ -28090,5 +28090,572 @@
     "surface_complete_features": 404047,
     "pavement_complete_features": 404047,
     "condition_complete_features": 404047
+  },
+  "grouped_clustered_2026": {
+    "source": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\uganda_ducar_global\\data\\hotosm_vehicular_link_attributes.csv.gz",
+    "population": "All 404,047 vehicular HOTOSM source records; no Top-N selection",
+    "geometry_length_km": 248616.148981,
+    "source_record_count": 404047,
+    "aggregation": "Affected length sums; length-weighted means for traffic, speed and rate metrics; annual event estimates are summed.",
+    "dimensions": {
+      "surface": [
+        {
+          "category": "Concrete",
+          "affected_length_km": 16.424498,
+          "source_record_count": 165,
+          "weighted_mean": {
+            "registry_aadt": 947.306,
+            "registry_pcu": 1655.335,
+            "adt_total": 947.306,
+            "adt_excluding_motorcycles": 676.51,
+            "adt_motorcycles": 270.796,
+            "adt_passenger_cars": 237.11,
+            "adt_taxis": 52.652,
+            "adt_minibuses": 79.005,
+            "adt_large_buses": 12.448,
+            "adt_light_goods": 89.432,
+            "adt_medium_goods": 27.606,
+            "adt_heavy_goods": 47.676,
+            "adt_articulated_trucks": 43.287,
+            "adt_tractors": 10.783,
+            "adt_special_vehicles": 7.851,
+            "adt_other_motorised": 68.66,
+            "heavy_vehicle_adt": 141.801,
+            "speed_mean_kmh": 12.683,
+            "speed_limit_kmh": 44.074,
+            "speed_p85_kmh": 15.471,
+            "speed_over_limit_pct": 1.075,
+            "heavy_vehicle_overload_rate_pct": 4.223,
+            "overloaded_heavy_vehicle_adt": 6.686,
+            "estimated_overload_tonnes_day": 21.394,
+            "crash_rate_per_100m_vehicle_km": 110.688
+          },
+          "sum": {
+            "annual_crashes_estimate": 8.0,
+            "annual_fatal_crashes_estimate": 2.0,
+            "annual_serious_crashes_estimate": 4.0,
+            "annual_minor_crashes_estimate": 2.0
+          },
+          "condition_length_km": {
+            "Good": 3.764424,
+            "Fair": 12.584971,
+            "Poor": 0.075103
+          },
+          "condition_risk_score": 38.769,
+          "poor_condition_share_pct": 0.457,
+          "surface_risk_score": 0.0
+        },
+        {
+          "category": "Bituminous",
+          "affected_length_km": 17158.251919,
+          "source_record_count": 60442,
+          "weighted_mean": {
+            "registry_aadt": 1068.213,
+            "registry_pcu": 2175.098,
+            "adt_total": 1068.213,
+            "adt_excluding_motorcycles": 743.851,
+            "adt_motorcycles": 324.362,
+            "adt_passenger_cars": 260.082,
+            "adt_taxis": 57.773,
+            "adt_minibuses": 86.789,
+            "adt_large_buses": 13.391,
+            "adt_light_goods": 98.359,
+            "adt_medium_goods": 30.94,
+            "adt_heavy_goods": 53.075,
+            "adt_articulated_trucks": 47.978,
+            "adt_tractors": 11.88,
+            "adt_special_vehicles": 8.589,
+            "adt_other_motorised": 74.994,
+            "heavy_vehicle_adt": 157.264,
+            "speed_mean_kmh": 15.99,
+            "speed_limit_kmh": 37.99,
+            "speed_p85_kmh": 19.215,
+            "speed_over_limit_pct": 1.564,
+            "heavy_vehicle_overload_rate_pct": 4.316,
+            "overloaded_heavy_vehicle_adt": 7.548,
+            "estimated_overload_tonnes_day": 24.154,
+            "crash_rate_per_100m_vehicle_km": 38.079
+          },
+          "sum": {
+            "annual_crashes_estimate": 4690.0,
+            "annual_fatal_crashes_estimate": 933.0,
+            "annual_serious_crashes_estimate": 2310.0,
+            "annual_minor_crashes_estimate": 1447.0
+          },
+          "condition_length_km": {
+            "Good": 4077.756169,
+            "Fair": 13054.12931,
+            "Poor": 26.36644
+          },
+          "condition_risk_score": 38.194,
+          "poor_condition_share_pct": 0.154,
+          "surface_risk_score": 25.0
+        },
+        {
+          "category": "Gravel",
+          "affected_length_km": 186579.627567,
+          "source_record_count": 257045,
+          "weighted_mean": {
+            "registry_aadt": 425.978,
+            "registry_pcu": 984.863,
+            "adt_total": 425.978,
+            "adt_excluding_motorcycles": 277.579,
+            "adt_motorcycles": 148.399,
+            "adt_passenger_cars": 106.971,
+            "adt_taxis": 23.714,
+            "adt_minibuses": 35.609,
+            "adt_large_buses": 3.192,
+            "adt_light_goods": 40.432,
+            "adt_medium_goods": 7.487,
+            "adt_heavy_goods": 12.828,
+            "adt_articulated_trucks": 11.534,
+            "adt_tractors": 2.997,
+            "adt_special_vehicles": 1.897,
+            "adt_other_motorised": 30.918,
+            "heavy_vehicle_adt": 38.038,
+            "speed_mean_kmh": 9.968,
+            "speed_limit_kmh": 45.907,
+            "speed_p85_kmh": 12.165,
+            "speed_over_limit_pct": 0.16,
+            "heavy_vehicle_overload_rate_pct": 4.05,
+            "overloaded_heavy_vehicle_adt": 1.597,
+            "estimated_overload_tonnes_day": 5.111,
+            "crash_rate_per_100m_vehicle_km": 59.056
+          },
+          "sum": {
+            "annual_crashes_estimate": 20731.0,
+            "annual_fatal_crashes_estimate": 3530.0,
+            "annual_serious_crashes_estimate": 10974.0,
+            "annual_minor_crashes_estimate": 6227.0
+          },
+          "condition_length_km": {
+            "Good": 151.82231,
+            "Fair": 177423.090374,
+            "Poor": 9004.714883
+          },
+          "condition_risk_score": 52.372,
+          "poor_condition_share_pct": 4.826,
+          "surface_risk_score": 75.0
+        },
+        {
+          "category": "Earth",
+          "affected_length_km": 44861.844997,
+          "source_record_count": 86395,
+          "weighted_mean": {
+            "registry_aadt": 188.538,
+            "registry_pcu": 406.795,
+            "adt_total": 188.538,
+            "adt_excluding_motorcycles": 123.965,
+            "adt_motorcycles": 64.573,
+            "adt_passenger_cars": 47.932,
+            "adt_taxis": 10.426,
+            "adt_minibuses": 15.641,
+            "adt_large_buses": 1.696,
+            "adt_light_goods": 18.326,
+            "adt_medium_goods": 3.624,
+            "adt_heavy_goods": 5.807,
+            "adt_articulated_trucks": 4.708,
+            "adt_tractors": 1.594,
+            "adt_special_vehicles": 0.509,
+            "adt_other_motorised": 13.702,
+            "heavy_vehicle_adt": 17.43,
+            "speed_mean_kmh": 6.147,
+            "speed_limit_kmh": 49.581,
+            "speed_p85_kmh": 7.502,
+            "speed_over_limit_pct": 0.087,
+            "heavy_vehicle_overload_rate_pct": 4.02,
+            "overloaded_heavy_vehicle_adt": 0.453,
+            "estimated_overload_tonnes_day": 1.448,
+            "crash_rate_per_100m_vehicle_km": 17.855
+          },
+          "sum": {
+            "annual_crashes_estimate": 1587.0,
+            "annual_fatal_crashes_estimate": 309.0,
+            "annual_serious_crashes_estimate": 781.0,
+            "annual_minor_crashes_estimate": 497.0
+          },
+          "condition_length_km": {
+            "Good": 6.633171,
+            "Fair": 73.501241,
+            "Poor": 44781.710585
+          },
+          "condition_risk_score": 99.903,
+          "poor_condition_share_pct": 99.821,
+          "surface_risk_score": 100.0
+        }
+      ],
+      "functional_class": [
+        {
+          "category": "Community Access",
+          "affected_length_km": 152687.813228,
+          "source_record_count": 204816,
+          "weighted_mean": {
+            "registry_aadt": 259.685,
+            "registry_pcu": 612.833,
+            "adt_total": 259.685,
+            "adt_excluding_motorcycles": 171.188,
+            "adt_motorcycles": 88.497,
+            "adt_passenger_cars": 67.967,
+            "adt_taxis": 14.968,
+            "adt_minibuses": 22.493,
+            "adt_large_buses": 1.718,
+            "adt_light_goods": 25.736,
+            "adt_medium_goods": 3.899,
+            "adt_heavy_goods": 6.586,
+            "adt_articulated_trucks": 5.734,
+            "adt_tractors": 1.717,
+            "adt_special_vehicles": 0.718,
+            "adt_other_motorised": 19.651,
+            "heavy_vehicle_adt": 19.655,
+            "speed_mean_kmh": 7.532,
+            "speed_limit_kmh": 50.0,
+            "speed_p85_kmh": 9.21,
+            "speed_over_limit_pct": 0.007,
+            "heavy_vehicle_overload_rate_pct": 4.0,
+            "overloaded_heavy_vehicle_adt": 0.716,
+            "estimated_overload_tonnes_day": 2.291,
+            "crash_rate_per_100m_vehicle_km": 49.144
+          },
+          "sum": {
+            "annual_crashes_estimate": 8697.0,
+            "annual_fatal_crashes_estimate": 862.0,
+            "annual_serious_crashes_estimate": 5365.0,
+            "annual_minor_crashes_estimate": 2470.0
+          },
+          "condition_length_km": {
+            "Good": 24.953063,
+            "Fair": 105224.803436,
+            "Poor": 47438.056729
+          },
+          "condition_risk_score": 65.526,
+          "poor_condition_share_pct": 31.069,
+          "surface_risk_score": 81.357
+        },
+        {
+          "category": "Other Vehicular",
+          "affected_length_km": 62.716366,
+          "source_record_count": 56,
+          "weighted_mean": {
+            "registry_aadt": 404.476,
+            "registry_pcu": 1065.803,
+            "adt_total": 404.476,
+            "adt_excluding_motorcycles": 266.592,
+            "adt_motorcycles": 137.884,
+            "adt_passenger_cars": 105.953,
+            "adt_taxis": 23.331,
+            "adt_minibuses": 35.196,
+            "adt_large_buses": 2.879,
+            "adt_light_goods": 39.851,
+            "adt_medium_goods": 6.0,
+            "adt_heavy_goods": 10.017,
+            "adt_articulated_trucks": 9.017,
+            "adt_tractors": 2.0,
+            "adt_special_vehicles": 2.0,
+            "adt_other_motorised": 30.347,
+            "heavy_vehicle_adt": 29.914,
+            "speed_mean_kmh": 9.0,
+            "speed_limit_kmh": 50.0,
+            "speed_p85_kmh": 11.0,
+            "speed_over_limit_pct": 0.0,
+            "heavy_vehicle_overload_rate_pct": 4.0,
+            "overloaded_heavy_vehicle_adt": 1.0,
+            "estimated_overload_tonnes_day": 3.2,
+            "crash_rate_per_100m_vehicle_km": 140.56
+          },
+          "sum": {
+            "annual_crashes_estimate": 13.0,
+            "annual_fatal_crashes_estimate": 3.0,
+            "annual_serious_crashes_estimate": 5.0,
+            "annual_minor_crashes_estimate": 5.0
+          },
+          "condition_length_km": {
+            "Good": 0.0,
+            "Fair": 62.716366,
+            "Poor": 0.0
+          },
+          "condition_risk_score": 50.0,
+          "poor_condition_share_pct": 0.0,
+          "surface_risk_score": 75.0
+        },
+        {
+          "category": "Urban / Local",
+          "affected_length_km": 43944.586978,
+          "source_record_count": 149843,
+          "weighted_mean": {
+            "registry_aadt": 385.092,
+            "registry_pcu": 967.095,
+            "adt_total": 385.092,
+            "adt_excluding_motorcycles": 238.618,
+            "adt_motorcycles": 146.474,
+            "adt_passenger_cars": 93.661,
+            "adt_taxis": 20.793,
+            "adt_minibuses": 31.298,
+            "adt_large_buses": 2.128,
+            "adt_light_goods": 35.497,
+            "adt_medium_goods": 5.894,
+            "adt_heavy_goods": 9.841,
+            "adt_articulated_trucks": 8.854,
+            "adt_tractors": 1.966,
+            "adt_special_vehicles": 1.785,
+            "adt_other_motorised": 26.901,
+            "heavy_vehicle_adt": 28.683,
+            "speed_mean_kmh": 10.427,
+            "speed_limit_kmh": 30.0,
+            "speed_p85_kmh": 12.71,
+            "speed_over_limit_pct": 0.223,
+            "heavy_vehicle_overload_rate_pct": 4.0,
+            "overloaded_heavy_vehicle_adt": 1.008,
+            "estimated_overload_tonnes_day": 3.227,
+            "crash_rate_per_100m_vehicle_km": 9.737
+          },
+          "sum": {
+            "annual_crashes_estimate": 624.0,
+            "annual_fatal_crashes_estimate": 36.0,
+            "annual_serious_crashes_estimate": 463.0,
+            "annual_minor_crashes_estimate": 125.0
+          },
+          "condition_length_km": {
+            "Good": 23.169765,
+            "Fair": 43108.400919,
+            "Poor": 813.016294
+          },
+          "condition_risk_score": 50.899,
+          "poor_condition_share_pct": 1.85,
+          "surface_risk_score": 65.348
+        },
+        {
+          "category": "District / Collector",
+          "affected_length_km": 27862.421005,
+          "source_record_count": 6274,
+          "weighted_mean": {
+            "registry_aadt": 994.986,
+            "registry_pcu": 2111.604,
+            "adt_total": 994.986,
+            "adt_excluding_motorcycles": 659.69,
+            "adt_motorcycles": 335.296,
+            "adt_passenger_cars": 243.263,
+            "adt_taxis": 54.104,
+            "adt_minibuses": 81.081,
+            "adt_large_buses": 9.767,
+            "adt_light_goods": 91.881,
+            "adt_medium_goods": 22.081,
+            "adt_heavy_goods": 38.079,
+            "adt_articulated_trucks": 34.464,
+            "adt_tractors": 8.746,
+            "adt_special_vehicles": 5.971,
+            "adt_other_motorised": 70.254,
+            "heavy_vehicle_adt": 113.136,
+            "speed_mean_kmh": 16.36,
+            "speed_limit_kmh": 50.0,
+            "speed_p85_kmh": 19.885,
+            "speed_over_limit_pct": 0.789,
+            "heavy_vehicle_overload_rate_pct": 4.3,
+            "overloaded_heavy_vehicle_adt": 5.132,
+            "estimated_overload_tonnes_day": 16.422,
+            "crash_rate_per_100m_vehicle_km": 111.871
+          },
+          "sum": {
+            "annual_crashes_estimate": 11033.0,
+            "annual_fatal_crashes_estimate": 2502.0,
+            "annual_serious_crashes_estimate": 5038.0,
+            "annual_minor_crashes_estimate": 3493.0
+          },
+          "condition_length_km": {
+            "Good": 123.708397,
+            "Fair": 25427.737712,
+            "Poor": 2310.974896
+          },
+          "condition_risk_score": 53.925,
+          "poor_condition_share_pct": 8.294,
+          "surface_risk_score": 73.598
+        },
+        {
+          "category": "Other Trunk / Primary",
+          "affected_length_km": 2688.219189,
+          "source_record_count": 598,
+          "weighted_mean": {
+            "registry_aadt": 2593.235,
+            "registry_pcu": 4719.753,
+            "adt_total": 2593.235,
+            "adt_excluding_motorcycles": 1859.403,
+            "adt_motorcycles": 733.832,
+            "adt_passenger_cars": 621.107,
+            "adt_taxis": 137.997,
+            "adt_minibuses": 207.092,
+            "adt_large_buses": 39.601,
+            "adt_light_goods": 234.767,
+            "adt_medium_goods": 88.889,
+            "adt_heavy_goods": 152.859,
+            "adt_articulated_trucks": 138.379,
+            "adt_tractors": 34.635,
+            "adt_special_vehicles": 24.698,
+            "adt_other_motorised": 179.38,
+            "heavy_vehicle_adt": 454.362,
+            "speed_mean_kmh": 27.676,
+            "speed_limit_kmh": 50.0,
+            "speed_p85_kmh": 33.076,
+            "speed_over_limit_pct": 3.241,
+            "heavy_vehicle_overload_rate_pct": 4.994,
+            "overloaded_heavy_vehicle_adt": 22.803,
+            "estimated_overload_tonnes_day": 72.971,
+            "crash_rate_per_100m_vehicle_km": 75.598
+          },
+          "sum": {
+            "annual_crashes_estimate": 1920.0,
+            "annual_fatal_crashes_estimate": 365.0,
+            "annual_serious_crashes_estimate": 970.0,
+            "annual_minor_crashes_estimate": 585.0
+          },
+          "condition_length_km": {
+            "Good": 2423.656975,
+            "Fair": 212.960249,
+            "Poor": 51.601965
+          },
+          "condition_risk_score": 5.881,
+          "poor_condition_share_pct": 1.92,
+          "surface_risk_score": 30.293
+        },
+        {
+          "category": "Primary / National",
+          "affected_length_km": 21370.392215,
+          "source_record_count": 42460,
+          "weighted_mean": {
+            "registry_aadt": 701.368,
+            "registry_pcu": 1483.054,
+            "adt_total": 701.368,
+            "adt_excluding_motorcycles": 472.907,
+            "adt_motorcycles": 228.461,
+            "adt_passenger_cars": 169.75,
+            "adt_taxis": 37.684,
+            "adt_minibuses": 56.542,
+            "adt_large_buses": 7.817,
+            "adt_light_goods": 64.196,
+            "adt_medium_goods": 17.865,
+            "adt_heavy_goods": 30.637,
+            "adt_articulated_trucks": 27.604,
+            "adt_tractors": 6.983,
+            "adt_special_vehicles": 4.835,
+            "adt_other_motorised": 48.994,
+            "heavy_vehicle_adt": 90.906,
+            "speed_mean_kmh": 12.681,
+            "speed_limit_kmh": 44.862,
+            "speed_p85_kmh": 15.339,
+            "speed_over_limit_pct": 0.894,
+            "heavy_vehicle_overload_rate_pct": 4.212,
+            "overloaded_heavy_vehicle_adt": 4.208,
+            "estimated_overload_tonnes_day": 13.466,
+            "crash_rate_per_100m_vehicle_km": 56.814
+          },
+          "sum": {
+            "annual_crashes_estimate": 4729.0,
+            "annual_fatal_crashes_estimate": 1006.0,
+            "annual_serious_crashes_estimate": 2228.0,
+            "annual_minor_crashes_estimate": 1495.0
+          },
+          "condition_length_km": {
+            "Good": 1644.487874,
+            "Fair": 16526.687214,
+            "Poor": 3199.217127
+          },
+          "condition_risk_score": 53.638,
+          "poor_condition_share_pct": 14.97,
+          "surface_risk_score": 69.162
+        }
+      ],
+      "pavement_class": [
+        {
+          "category": "Paved",
+          "affected_length_km": 17174.676417,
+          "source_record_count": 60607,
+          "weighted_mean": {
+            "registry_aadt": 1068.097,
+            "registry_pcu": 2174.601,
+            "adt_total": 1068.097,
+            "adt_excluding_motorcycles": 743.786,
+            "adt_motorcycles": 324.311,
+            "adt_passenger_cars": 260.06,
+            "adt_taxis": 57.768,
+            "adt_minibuses": 86.782,
+            "adt_large_buses": 13.39,
+            "adt_light_goods": 98.351,
+            "adt_medium_goods": 30.937,
+            "adt_heavy_goods": 53.069,
+            "adt_articulated_trucks": 47.974,
+            "adt_tractors": 11.879,
+            "adt_special_vehicles": 8.589,
+            "adt_other_motorised": 74.988,
+            "heavy_vehicle_adt": 157.249,
+            "speed_mean_kmh": 15.987,
+            "speed_limit_kmh": 37.995,
+            "speed_p85_kmh": 19.212,
+            "speed_over_limit_pct": 1.564,
+            "heavy_vehicle_overload_rate_pct": 4.316,
+            "overloaded_heavy_vehicle_adt": 7.547,
+            "estimated_overload_tonnes_day": 24.152,
+            "crash_rate_per_100m_vehicle_km": 38.148
+          },
+          "sum": {
+            "annual_crashes_estimate": 4698.0,
+            "annual_fatal_crashes_estimate": 935.0,
+            "annual_serious_crashes_estimate": 2314.0,
+            "annual_minor_crashes_estimate": 1449.0
+          },
+          "condition_length_km": {
+            "Good": 4081.520593,
+            "Fair": 13066.714281,
+            "Poor": 26.441543
+          },
+          "condition_risk_score": 38.195,
+          "poor_condition_share_pct": 0.154,
+          "surface_risk_score": 24.976
+        },
+        {
+          "category": "Unpaved",
+          "affected_length_km": 231441.472564,
+          "source_record_count": 343440,
+          "weighted_mean": {
+            "registry_aadt": 379.953,
+            "registry_pcu": 872.813,
+            "adt_total": 379.953,
+            "adt_excluding_motorcycles": 247.803,
+            "adt_motorcycles": 132.15,
+            "adt_passenger_cars": 95.527,
+            "adt_taxis": 21.138,
+            "adt_minibuses": 31.739,
+            "adt_large_buses": 2.902,
+            "adt_light_goods": 36.147,
+            "adt_medium_goods": 6.738,
+            "adt_heavy_goods": 11.467,
+            "adt_articulated_trucks": 10.211,
+            "adt_tractors": 2.725,
+            "adt_special_vehicles": 1.628,
+            "adt_other_motorised": 27.581,
+            "heavy_vehicle_adt": 34.043,
+            "speed_mean_kmh": 9.227,
+            "speed_limit_kmh": 46.619,
+            "speed_p85_kmh": 11.261,
+            "speed_over_limit_pct": 0.146,
+            "heavy_vehicle_overload_rate_pct": 4.044,
+            "overloaded_heavy_vehicle_adt": 1.375,
+            "estimated_overload_tonnes_day": 4.401,
+            "crash_rate_per_100m_vehicle_km": 51.069
+          },
+          "sum": {
+            "annual_crashes_estimate": 22318.0,
+            "annual_fatal_crashes_estimate": 3839.0,
+            "annual_serious_crashes_estimate": 11755.0,
+            "annual_minor_crashes_estimate": 6724.0
+          },
+          "condition_length_km": {
+            "Good": 158.455481,
+            "Fair": 177496.591615,
+            "Poor": 53786.425468
+          },
+          "condition_risk_score": 61.586,
+          "poor_condition_share_pct": 23.24,
+          "surface_risk_score": 79.846
+        }
+      ]
+    }
   }
 }

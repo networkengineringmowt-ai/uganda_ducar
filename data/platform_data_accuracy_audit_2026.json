@@ -69,6 +69,13 @@
     "blank_route_ids": 0,
     "duplicate_route_ids": 0
   },
+  "grouped_clustered_checks": {
+    "missing_grouped_analysis": 0,
+    "source_record_count_variance": 0,
+    "geometry_length_variance_m": 0.0,
+    "dimension_length_variance_m": 0.0,
+    "condition_matrix_variance_m": 0.0
+  },
   "provenance_policy": "Observed/source values are retained. Completed values carry status, method, confidence and assignment-basis fields; evidence scopes are never rescaled to force agreement.",
   "national_register_audit": {
     "source": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\National Roads\\network2026\\network2026.shp",

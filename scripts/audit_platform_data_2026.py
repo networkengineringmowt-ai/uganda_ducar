@@ -36,6 +36,8 @@ def main() -> None:
     routes = pd.read_csv(DATA / "hotosm_vehicular_route_register.csv.gz", low_memory=False)
     ducar = pd.read_csv(DATA / "ducar_link_register.csv", low_memory=False)
     national = json.loads((DATA / "national_road_accuracy_audit_2026.json").read_text(encoding="utf-8"))
+    analysis = json.loads((DATA / "hotosm_vehicular_analysis.json").read_text(encoding="utf-8"))
+    grouped = analysis.get("grouped_clustered_2026", {})
     web = json.loads((DATA / "hotosm_vehicular_map.geojson").read_text(encoding="utf-8"))
     web_rows = pd.DataFrame(feature["properties"] for feature in web["features"])
 
@@ -79,10 +81,17 @@ def main() -> None:
             "blank_route_ids": missing(routes["route_id"]),
             "duplicate_route_ids": int(routes["route_id"].duplicated().sum()),
         },
+        "grouped_clustered_checks": {
+            "missing_grouped_analysis": int(not bool(grouped)),
+            "source_record_count_variance": abs(int(grouped.get("source_record_count", 0)) - int(len(source))),
+            "geometry_length_variance_m": round(abs(float(grouped.get("geometry_length_km", 0)) - float(pd.to_numeric(source["length_km"], errors="coerce").sum())) * 1000, 6),
+            "dimension_length_variance_m": round(sum(abs(sum(float(row.get("affected_length_km", 0)) for row in rows) - float(grouped.get("geometry_length_km", 0))) for rows in grouped.get("dimensions", {}).values()) * 1000, 6),
+            "condition_matrix_variance_m": round(sum(abs(sum(sum(float(value) for value in row.get("condition_length_km", {}).values()) for row in rows) - float(grouped.get("geometry_length_km", 0))) for rows in grouped.get("dimensions", {}).values()) * 1000, 6),
+        },
         "provenance_policy": "Observed/source values are retained. Completed values carry status, method, confidence and assignment-basis fields; evidence scopes are never rescaled to force agreement.",
         "national_register_audit": national,
     }
-    report["status"] = "PASS" if all(value == 0 for value in report["core_missing_records"].values()) and all(value == 0 for value in report["web_map_missing_records"].values()) and all(value == 0 for value in report["consistency_checks"].values()) else "REVIEW"
+    report["status"] = "PASS" if all(value == 0 for value in report["core_missing_records"].values()) and all(value == 0 for value in report["web_map_missing_records"].values()) and all(value == 0 for value in report["consistency_checks"].values()) and all(value == 0 for value in report["grouped_clustered_checks"].values()) else "REVIEW"
     OUTPUT.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
 
