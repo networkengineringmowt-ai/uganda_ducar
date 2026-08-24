@@ -1,0 +1,14 @@
+{
+  "model_year": 2026,
+  "method": "Observed-first deterministic road-name, surface, pavement and condition completion",
+  "source_segments": 404047,
+  "routes": 266896,
+  "ducar_links": 7733,
+  "source_segment_length_km": 248616.148981,
+  "model_estimated_surface_segments": 315247,
+  "model_estimated_condition_segments": 402774,
+  "unclassified_pavement_segments": 0,
+  "unclassified_condition_segments": 0,
+  "blank_public_road_names": 0,
+  "provenance_policy": "Observed values retained; estimates identified by status, assignment basis and confidence."
+}
