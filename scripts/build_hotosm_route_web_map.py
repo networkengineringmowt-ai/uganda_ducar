@@ -8,6 +8,7 @@ from pathlib import Path
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+import shapely
 from shapely.geometry import MultiLineString
 
 
@@ -17,7 +18,8 @@ SOURCE = ROOT.parent / "Merged HOTOSM Routes 2026" / "uganda_hotosm_merged_route
 OUTPUT = DATA / "hotosm_vehicular_map.geojson"
 ENRICHED_ROUTES = DATA / "hotosm_vehicular_route_register.csv.gz"
 TOPOLOGY_CHUNK_KM = 45.0
-GROUP_FIELDS = ["region", "district", "county", "functional_class", "highway", "road_management_class", "surface", "pavement_class", "condition"]
+DISPLAY_SIMPLIFICATION_M = 45.0
+GROUP_FIELDS = ["region", "district", "county", "functional_class", "highway", "road_management_class", "surface", "pavement_class", "condition", "national_aligned"]
 NUMERIC_FIELDS = [
     "registry_aadt", "registry_pcu", "registry_speed_kmh", "adt_total",
     "adt_excluding_motorcycles", "adt_motorcycles", "heavy_vehicle_adt",
@@ -58,6 +60,7 @@ def aggregate(frame: gpd.GeoDataFrame, identifier: str, name: str, basis: str) -
         values = frame[field].fillna("Not supplied").astype(str)
         weighted = pd.DataFrame({"value": values, "length": lengths}).groupby("value")["length"].sum()
         props[field] = weighted.idxmax() if len(weighted) else "Not supplied"
+    props["national_aligned"] = bool(frame["national_aligned"].fillna(False).astype(bool).any())
     for field in NUMERIC_FIELDS:
         values = pd.to_numeric(frame[field], errors="coerce").fillna(0).to_numpy()
         props[field] = round(float(np.average(values, weights=lengths)), 1) if total > 0 else 0
@@ -106,8 +109,12 @@ def main() -> None:
             output.append(aggregate(frame, f"TOPO-{collection_number:05d}", f"{county} {road_class} Route Collection {collection_number:05d}", "County topology route collection"))
 
     web = gpd.GeoDataFrame(output, geometry="geometry", crs=32636)
-    web.geometry = web.geometry.simplify(30.0, preserve_topology=True)
+    web.geometry = web.geometry.simplify(DISPLAY_SIMPLIFICATION_M, preserve_topology=True)
     web = web.to_crs(4326)
+    # Five-decimal-degree display precision is sub-metre to metre scale in
+    # Uganda and dramatically reduces transfer/parsing time. Exact analytical
+    # lengths remain stored in geometry_length_km from EPSG:32636.
+    web.geometry = shapely.set_precision(web.geometry.array, 0.00001)
     payload = json.loads(web.to_json(drop_id=True))
     payload.update({
         "name": "Uganda complete vehicular road route map",
@@ -121,7 +128,8 @@ def main() -> None:
             "topology_route_features": int(len(topology)),
             "topology_web_collections": int(collection_number),
             "display_groups": int(len(web)),
-            "display_simplification_m": 30.0,
+            "display_simplification_m": DISPLAY_SIMPLIFICATION_M,
+            "display_coordinate_precision_dd": 0.00001,
             "reporting_note": "Every source segment is retained in route lineage. Identified routes remain discrete; unnamed topology routes use county/class web collections to keep the complete map responsive.",
         },
     })

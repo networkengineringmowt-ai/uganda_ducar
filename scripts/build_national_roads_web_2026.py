@@ -9,6 +9,7 @@ from pathlib import Path
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+import shapely
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -87,6 +88,7 @@ def main() -> None:
     fields = ["link_id", "source_link_id", "road_number", "road_name", "road_class", "surface_source_value", "surface", "pavement_class", "condition", "condition_value_status", "condition_model_confidence_pct", "condition_assignment_basis", "maintenance_station", "region", "registry_length_km", "geometry_length_km", "registry_geometry_variance_pct", "chainage_start_km", "chainage_end_km", "completion_year", "rehabilitation_year", "last_intervention_year", "comments", "start_x_coordinate_dd", "start_y_coordinate_dd", "end_x_coordinate_dd", "end_y_coordinate_dd", "source", "length_measurement_crs", "coordinate_reference_system", "geometry"]
     public = roads[fields].copy()
     public.geometry = public.geometry.simplify(0.00002, preserve_topology=True)
+    public.geometry = shapely.set_precision(public.geometry.array, 0.00001)
     payload = json.loads(public.to_json(drop_id=True))
     registry_total = float(roads["registry_length_km"].sum())
     geometry_total = float(roads["geometry_length_km"].sum())
