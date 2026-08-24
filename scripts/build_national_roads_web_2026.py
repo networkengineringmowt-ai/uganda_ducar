@@ -89,11 +89,14 @@ def main() -> None:
 
     fields = ["link_id", "source_link_id", "road_number", "road_name", "road_class", "surface_source_value", "surface", "pavement_class", "condition", "condition_value_status", "condition_model_confidence_pct", "condition_assignment_basis", "maintenance_station", "region", "registry_length_km", "geometry_length_km", "registry_geometry_variance_pct", "chainage_start_km", "chainage_end_km", "completion_year", "rehabilitation_year", "last_intervention_year", "comments", "start_x_coordinate_dd", "start_y_coordinate_dd", "end_x_coordinate_dd", "end_y_coordinate_dd", "source", "length_measurement_crs", "coordinate_reference_system", "geometry"]
     public = roads[fields].copy()
-    # Preserve the authoritative source alignment for map inspection.  The
-    # layer contains only 1,014 links, so display simplification is unnecessary
-    # and visibly degrades bends and junction approaches at large scales. Six
-    # decimal degrees retains sub-metre display precision without bloating the
-    # transfer with analytically irrelevant floating-point noise.
+    # Preserve the authoritative source alignment for map inspection while
+    # removing only sub-25-centimetre digitising noise. This resolution is well
+    # below the source's practical survey/display accuracy and keeps the layer
+    # responsive without the visibly degraded bends caused by metre-scale
+    # simplification.
+    public = public.to_crs(32636)
+    public.geometry = public.geometry.simplify(0.25, preserve_topology=True)
+    public = public.to_crs(4326)
     public.geometry = shapely.set_precision(public.geometry.array, 0.000001)
     payload = json.loads(public.to_json(drop_id=True))
     registry_total = float(roads["registry_length_km"].sum())
@@ -105,7 +108,7 @@ def main() -> None:
         "paved_registry_length_km": round(float(roads.loc[roads["pavement_class"] == "Paved", "registry_length_km"].sum()), 6),
         "unpaved_registry_length_km": round(float(roads.loc[roads["pavement_class"] == "Unpaved", "registry_length_km"].sum()), 6),
         "public_official_headline_km": 21292, "public_official_headline_source": "https://works.go.ug/",
-        "display_geometry": "Exact source alignment reprojected to EPSG:4326 at six-decimal-degree precision; no cartographic simplification",
+        "display_geometry": "Authoritative source alignment with 0.25 m sub-survey-noise reduction and six-decimal-degree output precision",
         "scope_note": "The local FY2025/26 link-register total and the current MoWT public headline are retained as separate evidence scopes; neither is rescaled.",
     }
     serialized = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
