@@ -2,6 +2,7 @@ from __future__ import annotations
 
 """Build the public national-road layer from the MoWT FY2025/26 link register."""
 
+import gzip
 import json
 import re
 from pathlib import Path
@@ -15,6 +16,7 @@ import shapely
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT.parent / "National Roads" / "network2026" / "network2026.shp"
 OUTPUT = ROOT / "data" / "uganda_national_roads_2026.geojson"
+OUTPUT_GZIP = ROOT / "data" / "uganda_national_roads_2026.geojson.gz"
 AUDIT = ROOT / "data" / "national_road_accuracy_audit_2026.json"
 MODEL_YEAR = 2026
 
@@ -101,7 +103,10 @@ def main() -> None:
         "public_official_headline_km": 21292, "public_official_headline_source": "https://works.go.ug/",
         "scope_note": "The local FY2025/26 link-register total and the current MoWT public headline are retained as separate evidence scopes; neither is rescaled.",
     }
-    OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    serialized = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    OUTPUT.write_text(serialized, encoding="utf-8")
+    with gzip.open(OUTPUT_GZIP, "wt", encoding="utf-8", compresslevel=9) as stream:
+        stream.write(serialized)
 
     audit = {
         "source": str(SOURCE), "records": int(len(roads)), "unique_public_link_ids": int(roads["link_id"].nunique()),

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 """Build a compact complete-population web map from the merged route GeoPackage."""
 
+import gzip
 import json
 from pathlib import Path
 
@@ -16,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 SOURCE = ROOT.parent / "Merged HOTOSM Routes 2026" / "uganda_hotosm_merged_routes_2026.gpkg"
 OUTPUT = DATA / "hotosm_vehicular_map.geojson"
+OUTPUT_GZIP = DATA / "hotosm_vehicular_map.geojson.gz"
 ENRICHED_ROUTES = DATA / "hotosm_vehicular_route_register.csv.gz"
 TOPOLOGY_CHUNK_KM = 45.0
 DISPLAY_SIMPLIFICATION_M = 45.0
@@ -133,7 +135,10 @@ def main() -> None:
             "reporting_note": "Every source segment is retained in route lineage. Identified routes remain discrete; unnamed topology routes use county/class web collections to keep the complete map responsive.",
         },
     })
-    OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    serialized = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    OUTPUT.write_text(serialized, encoding="utf-8")
+    with gzip.open(OUTPUT_GZIP, "wt", encoding="utf-8", compresslevel=9) as stream:
+        stream.write(serialized)
     print(json.dumps(payload["metadata"], indent=2))
 
 

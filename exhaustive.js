@@ -19,9 +19,9 @@
     mapRoads: "./data/ducar_socioeconomic_roads.geojson",
     structures: "./data/ducar_structure_analysis.json",
     structureMap: "./data/ducar_structures.geojson",
-    hotosmMap: "./data/hotosm_vehicular_map.geojson?v=20260824-functional-fast-27",
+    hotosmMap: "./data/hotosm_vehicular_map.geojson.gz?v=20260824-functional-fast-28",
     hotosmAnalysis: "./data/hotosm_vehicular_analysis.json",
-    nationalMap: "./data/uganda_national_roads_2026.geojson?v=20260824-national-register-2"
+    nationalMap: "./data/uganda_national_roads_2026.geojson.gz?v=20260824-national-register-3"
   };
   const COLORS = ["#0a84ff", "#30d158", "#ff9f0a", "#ff375f", "#bf5af2", "#64d2ff", "#ffd60a", "#5e5ce6"];
   // Reference district land-area (km2) and approximate HQ-town centroid (WGS84 DD), used only for
@@ -273,7 +273,16 @@
     if (!cache[key]) {
       const response = await fetch(PATHS[key]);
       if (!response.ok) throw new Error("Unable to load " + PATHS[key]);
-      cache[key] = await response.json();
+      if(PATHS[key].includes(".gz")){
+        if(typeof DecompressionStream==="undefined"){
+          const fallback=await fetch(PATHS[key].replace(".geojson.gz",".geojson"));
+          if(!fallback.ok)throw new Error("Unable to load uncompressed fallback for "+PATHS[key]);
+          cache[key]=await fallback.json();
+        }else{
+          const decoded=response.body.pipeThrough(new DecompressionStream("gzip"));
+          cache[key]=await new Response(decoded).json();
+        }
+      }else cache[key] = await response.json();
     }
     return cache[key];
   }
