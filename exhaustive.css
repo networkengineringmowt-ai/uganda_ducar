@@ -216,6 +216,16 @@ body:not(.network-map-mode) .section-tabs{position:fixed;top:64px;left:225px;rig
 .layer-national_roads{height:7px;background:#ff2d55;box-shadow:0 0 0 1px #fff,0 0 10px #ff2d55}
 .catalogue-scroll label span{overflow:visible;text-overflow:clip;white-space:normal;line-height:1.25}
 
+/* Animated, high-contrast Admin Tools architecture mind map. */
+.platform-mind-svg{min-width:1200px}.mind-edge{stroke:#4f90ba;stroke-width:1.5;stroke-dasharray:10 8;stroke-dashoffset:0;opacity:.55;animation:mindEdgeFlow 4.8s linear infinite;animation-delay:calc(var(--edge-index)*-90ms)}.mind-edge:nth-child(3n){stroke:#ff5f8f}.mind-edge:nth-child(4n){stroke:#50e987}.mind-edge:nth-child(5n){stroke:#ffd45a}.mind-edge.connected{stroke:#7ee3ff;animation-duration:1.7s}.platform-mind-svg marker path{fill:#89dbff}.mind-svg-node{opacity:0;transform-box:fill-box;transform-origin:center;animation:mindNodeReveal .55s cubic-bezier(.2,.75,.25,1) forwards,mindNodeBreathe 4.5s ease-in-out infinite;animation-delay:calc(var(--node-index)*35ms),calc(1s + var(--node-index)*75ms)}.mind-svg-node .mind-node-meta{fill:#b3c1d3}.mind-svg-node:hover,.mind-svg-node:focus,.mind-svg-node.selected{animation-play-state:paused;opacity:1}.mind-root rect{animation:mindRootPulse 2.8s ease-in-out infinite}
+@keyframes mindEdgeFlow{to{stroke-dashoffset:-144}}
+@keyframes mindNodeReveal{from{opacity:0;transform:translateY(10px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes mindNodeBreathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes mindRootPulse{0%,100%{filter:drop-shadow(0 0 4px var(--node-color))}50%{filter:drop-shadow(0 0 15px var(--node-color))}}
+
+/* Keep chart/table typography inside its owning panel at narrow and zoomed viewports. */
+.chart-card,.dynamic-chart-card,.metric-card,.insight-card{min-width:0;contain:paint}.chart-card h3,.dynamic-chart-card h4,.metric-card small,.metric-card em{overflow-wrap:anywhere}.chart-svg text,.advanced-viz svg text{pointer-events:none}.chart-value{font-size:9px!important}.chart-card svg{max-width:100%}.data-table th,.data-table td{vertical-align:top}.data-table td{line-height:1.35}
+
 /* Exhaustive tables and mobile controls */
 [data-collapse],[data-card-collapse],.card-collapse,.chart-collapse,.map-details-toggle{display:none!important}
 @media(max-width:800px){
@@ -230,3 +240,4 @@ body:not(.network-map-mode) .section-tabs{position:fixed;top:64px;left:225px;rig
   .metric-grid{grid-template-columns:1fr}.chart-grid{grid-template-columns:1fr}.section-tabs{gap:4px}.section-tab{padding:8px 9px}.monolithic-section{padding:6px}.monolithic-title{margin:-6px -6px 7px;padding:9px}.monolithic-title h2{font-size:16px}
   .map-workspace{gap:6px}.map-stage{height:58vh;min-height:350px}.section-map{min-height:350px}.map-toolrail{grid-template-columns:repeat(5,32px);top:7px}.map-toolrail button{width:32px;height:32px}.map-compass{width:40px;height:40px}.selection-insights{grid-template-columns:1fr 1fr}
 }
+@media(prefers-reduced-motion:reduce){.mind-link,.mind-edge,.mind-svg-node,.mind-root rect{animation:none!important;opacity:1!important}}

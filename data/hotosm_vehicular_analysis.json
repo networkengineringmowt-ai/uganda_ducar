@@ -33,16 +33,18 @@
   "total": {
     "feature_count": 404047,
     "length_km": 248616.148902,
-    "paved_km": 5343.494862,
-    "unpaved_km": 68818.167535,
-    "unclassified_pavement_km": 174454.486504,
-    "good_condition_km": 405.515229,
-    "fair_condition_km": 149.055664,
-    "poor_condition_km": 344.37783,
-    "unclassified_condition_km": 247717.200179,
+    "paved_km": 17172.057003,
+    "unpaved_km": 231444.091978,
+    "unclassified_pavement_km": 0.0,
+    "good_condition_km": 4239.976074,
+    "fair_condition_km": 190563.305896,
+    "poor_condition_km": 53812.867011,
+    "unclassified_condition_km": 0.0,
     "named_feature_count": 7260,
     "bridge_feature_count": 2090,
-    "oneway_feature_count": 2778
+    "oneway_feature_count": 2778,
+    "model_estimated_surface_km": 174410.088202,
+    "model_estimated_condition_km": 247717.200256
   },
   "attribute_completeness": {
     "name": {
@@ -27079,636 +27081,216 @@
       {
         "category": "1",
         "feature_count": 2,
-        "length_km": 0.174933,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.174933,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.174933,
-        "named_feature_count": 0,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 0.174932
       },
       {
         "category": "2",
         "feature_count": 1,
-        "length_km": 0.108193,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.108193,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.108193,
-        "named_feature_count": 0,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 0.108193
       },
       {
-        "category": "Not supplied",
-        "feature_count": 315247,
-        "length_km": 174410.088145,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 174410.088145,
-        "good_condition_km": 3.430776,
-        "fair_condition_km": 1.464139,
-        "poor_condition_km": 45.213865,
-        "unclassified_condition_km": 174359.979364,
-        "named_feature_count": 3418,
-        "bridge_feature_count": 950,
-        "oneway_feature_count": 1599
+        "category": "Asphalt",
+        "feature_count": 55986,
+        "length_km": 11831.18156
+      },
+      {
+        "category": "Earth",
+        "feature_count": 78708,
+        "length_km": 36569.691797
+      },
+      {
+        "category": "Gravel",
+        "feature_count": 180553,
+        "length_km": 126009.214845
       },
       {
         "category": "asphalt",
         "feature_count": 2959,
-        "length_km": 4282.031972,
-        "paved_km": 4282.031972,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 228.971739,
-        "fair_condition_km": 17.144321,
-        "poor_condition_km": 8.80265,
-        "unclassified_condition_km": 4027.113262,
-        "named_feature_count": 1620,
-        "bridge_feature_count": 142,
-        "oneway_feature_count": 903
+        "length_km": 4282.031977
       },
       {
         "category": "chipseal",
         "feature_count": 6,
-        "length_km": 11.440766,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 11.440766,
-        "good_condition_km": 0.338345,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 11.102421,
-        "named_feature_count": 1,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 11.440765
       },
       {
         "category": "clay",
         "feature_count": 2,
-        "length_km": 2.780171,
-        "paved_km": 0.0,
-        "unpaved_km": 2.780171,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 2.780171,
-        "named_feature_count": 2,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 2.780171
       },
       {
         "category": "cobblestone",
         "feature_count": 6,
-        "length_km": 7.231298,
-        "paved_km": 7.231298,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 7.231298,
-        "named_feature_count": 1,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 1
+        "length_km": 7.231299
       },
       {
         "category": "compacted",
         "feature_count": 387,
-        "length_km": 932.837701,
-        "paved_km": 0.0,
-        "unpaved_km": 932.837701,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 5.962561,
-        "fair_condition_km": 14.194759,
-        "poor_condition_km": 1.295684,
-        "unclassified_condition_km": 911.384697,
-        "named_feature_count": 61,
-        "bridge_feature_count": 53,
-        "oneway_feature_count": 9
+        "length_km": 932.837698
       },
       {
         "category": "concrete",
         "feature_count": 165,
-        "length_km": 16.4245,
-        "paved_km": 16.4245,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.129515,
-        "fair_condition_km": 0.111658,
-        "poor_condition_km": 0.075104,
-        "unclassified_condition_km": 16.108222,
-        "named_feature_count": 25,
-        "bridge_feature_count": 83,
-        "oneway_feature_count": 6
+        "length_km": 16.424498
       },
       {
         "category": "dirt",
         "feature_count": 2702,
-        "length_km": 2236.645663,
-        "paved_km": 0.0,
-        "unpaved_km": 2236.645663,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 1.582747,
-        "fair_condition_km": 1.814455,
-        "poor_condition_km": 45.26733,
-        "unclassified_condition_km": 2187.981132,
-        "named_feature_count": 181,
-        "bridge_feature_count": 14,
-        "oneway_feature_count": 15
+        "length_km": 2236.645681
       },
       {
         "category": "earth",
         "feature_count": 27,
-        "length_km": 28.391578,
-        "paved_km": 0.0,
-        "unpaved_km": 28.391578,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.898966,
-        "poor_condition_km": 0.186918,
-        "unclassified_condition_km": 27.305694,
-        "named_feature_count": 9,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 1
+        "length_km": 28.391579
       },
       {
         "category": "fine_gravel",
         "feature_count": 10,
-        "length_km": 0.81146,
-        "paved_km": 0.0,
-        "unpaved_km": 0.81146,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.81146,
-        "named_feature_count": 5,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 5
+        "length_km": 0.81146
       },
       {
         "category": "footway",
         "feature_count": 1,
-        "length_km": 0.243821,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.243821,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.243821,
-        "named_feature_count": 0,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 0.243821
       },
       {
         "category": "g",
         "feature_count": 1,
-        "length_km": 0.415499,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.415499,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.415499,
-        "named_feature_count": 0,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 0.415499
       },
       {
         "category": "grass",
         "feature_count": 14,
-        "length_km": 21.020329,
-        "paved_km": 0.0,
-        "unpaved_km": 21.020329,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.091691,
-        "unclassified_condition_km": 20.928639,
-        "named_feature_count": 2,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 21.02033
       },
       {
         "category": "grass_paver",
         "feature_count": 4,
-        "length_km": 4.398598,
-        "paved_km": 0.0,
-        "unpaved_km": 4.398598,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 4.398598,
-        "named_feature_count": 0,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 4.398598
       },
       {
         "category": "gravel",
         "feature_count": 431,
-        "length_km": 813.599504,
-        "paved_km": 0.0,
-        "unpaved_km": 813.599504,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 43.513525,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 2.75443,
-        "unclassified_condition_km": 767.331549,
-        "named_feature_count": 139,
-        "bridge_feature_count": 28,
-        "oneway_feature_count": 2
+        "length_km": 813.599501
       },
       {
         "category": "ground",
         "feature_count": 4849,
-        "length_km": 5897.335713,
-        "paved_km": 0.0,
-        "unpaved_km": 5897.335713,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 3.969157,
-        "fair_condition_km": 21.711403,
-        "poor_condition_km": 53.308619,
-        "unclassified_condition_km": 5818.346534,
-        "named_feature_count": 115,
-        "bridge_feature_count": 71,
-        "oneway_feature_count": 17
+        "length_km": 5897.335739
       },
       {
         "category": "laterite",
         "feature_count": 6,
-        "length_km": 1.728774,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 1.728774,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 1.728774,
-        "named_feature_count": 2,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 1.728774
       },
       {
         "category": "marum",
         "feature_count": 3,
-        "length_km": 4.421792,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 4.421792,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 4.421792,
-        "named_feature_count": 3,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 4.421792
       },
       {
         "category": "mud",
         "feature_count": 14,
-        "length_km": 0.949177,
-        "paved_km": 0.0,
-        "unpaved_km": 0.949177,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.949177,
-        "named_feature_count": 0,
-        "bridge_feature_count": 5,
-        "oneway_feature_count": 0
+        "length_km": 0.949177
       },
       {
         "category": "murrum",
         "feature_count": 1,
-        "length_km": 2.018014,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 2.018014,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 2.018014,
-        "named_feature_count": 1,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 2.018014
       },
       {
         "category": "paved",
         "feature_count": 1447,
-        "length_km": 1033.252781,
-        "paved_km": 1033.252781,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 14.527721,
-        "fair_condition_km": 0.82435,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 1017.90071,
-        "named_feature_count": 227,
-        "bridge_feature_count": 148,
-        "oneway_feature_count": 69
+        "length_km": 1033.252772
       },
       {
         "category": "paving_stones",
         "feature_count": 29,
-        "length_km": 0.980334,
-        "paved_km": 0.980334,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.075418,
-        "unclassified_condition_km": 0.904915,
-        "named_feature_count": 2,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 3
+        "length_km": 0.980335
       },
       {
         "category": "pebblestone",
         "feature_count": 5,
-        "length_km": 1.257522,
-        "paved_km": 0.0,
-        "unpaved_km": 1.257522,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 1.257522,
-        "named_feature_count": 2,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 1.257522
       },
       {
         "category": "residential",
         "feature_count": 1,
-        "length_km": 0.070255,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.070255,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.070255,
-        "named_feature_count": 0,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 0.070255
       },
       {
         "category": "road",
         "feature_count": 1,
-        "length_km": 0.234124,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.234124,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.234124,
-        "named_feature_count": 1,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 0.234124
       },
       {
         "category": "sand",
         "feature_count": 41,
-        "length_km": 56.233564,
-        "paved_km": 0.0,
-        "unpaved_km": 56.233564,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.742923,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.659525,
-        "unclassified_condition_km": 54.831116,
-        "named_feature_count": 4,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 1
+        "length_km": 56.233567
       },
       {
         "category": "sett",
         "feature_count": 4,
-        "length_km": 0.954563,
-        "paved_km": 0.954563,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.954563,
-        "named_feature_count": 1,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 0.954562
       },
       {
         "category": "soil",
         "feature_count": 3,
-        "length_km": 16.908863,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 16.908863,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 16.908863,
-        "named_feature_count": 0,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 16.908863
       },
       {
         "category": "surface",
         "feature_count": 3,
-        "length_km": 0.965029,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.965029,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.965029,
-        "named_feature_count": 0,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 0.965029
       },
       {
         "category": "tarmac",
         "feature_count": 3,
-        "length_km": 5.49823,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 5.49823,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 5.49823,
-        "named_feature_count": 3,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 2
+        "length_km": 5.498231
       },
       {
         "category": "unpaved",
         "feature_count": 75659,
-        "length_km": 58821.906556,
-        "paved_km": 0.0,
-        "unpaved_km": 58821.906556,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 102.34622,
-        "fair_condition_km": 90.891613,
-        "poor_condition_km": 186.646595,
-        "unclassified_condition_km": 58442.022127,
-        "named_feature_count": 1434,
-        "bridge_feature_count": 594,
-        "oneway_feature_count": 145
+        "length_km": 58821.906541
       },
       {
         "category": "unpaved_dirt",
         "feature_count": 2,
-        "length_km": 0.170066,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.170066,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.170066,
-        "named_feature_count": 0,
-        "bridge_feature_count": 0,
-        "oneway_feature_count": 0
+        "length_km": 0.170066
       },
       {
         "category": "wood",
         "feature_count": 11,
-        "length_km": 2.619415,
-        "paved_km": 2.619415,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 2.619415,
-        "named_feature_count": 1,
-        "bridge_feature_count": 2,
-        "oneway_feature_count": 0
+        "length_km": 2.619414
       }
     ],
     "pavement": [
       {
         "category": "Paved",
-        "feature_count": 4621,
-        "length_km": 5343.494862,
-        "paved_km": 5343.494862,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 243.628975,
-        "fair_condition_km": 18.080329,
-        "poor_condition_km": 8.953173,
-        "unclassified_condition_km": 5072.832385,
-        "named_feature_count": 1877,
-        "bridge_feature_count": 375,
-        "oneway_feature_count": 982
-      },
-      {
-        "category": "Unclassified",
-        "feature_count": 315281,
-        "length_km": 174454.486504,
-        "paved_km": 0.0,
-        "unpaved_km": 0.0,
-        "unclassified_pavement_km": 174454.486504,
-        "good_condition_km": 3.769121,
-        "fair_condition_km": 1.464139,
-        "poor_condition_km": 45.213865,
-        "unclassified_condition_km": 174404.039379,
-        "named_feature_count": 3429,
-        "bridge_feature_count": 950,
-        "oneway_feature_count": 1601
+        "feature_count": 60596,
+        "length_km": 17172.057003
       },
       {
         "category": "Unpaved",
-        "feature_count": 84145,
-        "length_km": 68818.167535,
-        "paved_km": 0.0,
-        "unpaved_km": 68818.167535,
-        "unclassified_pavement_km": 0.0,
-        "good_condition_km": 158.117133,
-        "fair_condition_km": 129.511196,
-        "poor_condition_km": 290.210792,
-        "unclassified_condition_km": 68240.328415,
-        "named_feature_count": 1954,
-        "bridge_feature_count": 765,
-        "oneway_feature_count": 195
+        "feature_count": 343451,
+        "length_km": 231444.091978
       }
     ],
     "condition": [
       {
         "category": "Fair",
-        "feature_count": 263,
-        "length_km": 149.055664,
-        "paved_km": 18.080329,
-        "unpaved_km": 129.511196,
-        "unclassified_pavement_km": 1.464139,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 149.055664,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.0,
-        "named_feature_count": 104,
-        "bridge_feature_count": 1,
-        "oneway_feature_count": 29
+        "feature_count": 298238,
+        "length_km": 190563.305896
       },
       {
         "category": "Good",
-        "feature_count": 363,
-        "length_km": 405.515229,
-        "paved_km": 243.628975,
-        "unpaved_km": 158.117133,
-        "unclassified_pavement_km": 3.769121,
-        "good_condition_km": 405.515229,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 0.0,
-        "named_feature_count": 182,
-        "bridge_feature_count": 26,
-        "oneway_feature_count": 130
+        "feature_count": 2058,
+        "length_km": 4239.976074
       },
       {
         "category": "Poor",
-        "feature_count": 647,
-        "length_km": 344.37783,
-        "paved_km": 8.953173,
-        "unpaved_km": 290.210792,
-        "unclassified_pavement_km": 45.213865,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 344.37783,
-        "unclassified_condition_km": 0.0,
-        "named_feature_count": 250,
-        "bridge_feature_count": 14,
-        "oneway_feature_count": 10
-      },
-      {
-        "category": "Unclassified",
-        "feature_count": 402774,
-        "length_km": 247717.200179,
-        "paved_km": 5072.832385,
-        "unpaved_km": 68240.328415,
-        "unclassified_pavement_km": 174404.039379,
-        "good_condition_km": 0.0,
-        "fair_condition_km": 0.0,
-        "poor_condition_km": 0.0,
-        "unclassified_condition_km": 247717.200179,
-        "named_feature_count": 6724,
-        "bridge_feature_count": 2049,
-        "oneway_feature_count": 2609
+        "feature_count": 103751,
+        "length_km": 53812.867011
       }
     ],
     "management_class": [
@@ -27805,10 +27387,10 @@
     ]
   },
   "derivation_policy": {
-    "pavement": "Paved and Unpaved are derived only from supplied OSM surface tags; missing or unfamiliar surfaces remain Unclassified.",
-    "condition": "Good, Fair and Poor are derived only from supplied OSM smoothness tags; missing values remain Unclassified.",
+    "pavement": "Observed surfaces are retained; missing surfaces receive a functional-class/context estimate, then map to Paved or Unpaved.",
+    "condition": "Observed condition is retained; missing values receive a surface and functional-class planning estimate.",
     "management_class": "National-road membership is assigned by the reproducible 2026 authoritative-alignment spatial join. Remaining management classes retain OSM functional-class candidate status.",
-    "missing_values": "Not supplied values remain explicit and are never imputed."
+    "missing_values": "Public analytical categories are complete. Estimated values carry status, basis and confidence; evidence is never overwritten silently."
   },
   "traffic_2026": {
     "aadt_band": [
@@ -28665,5 +28247,13 @@
     "matched_hotosm_length_km": 21370.392215,
     "reference_coverage_pct": 100.321,
     "method": "Nearest authoritative alignment midpoint within 500 m and local bearing difference no greater than 44 degrees in EPSG:32636."
+  },
+  "attribute_completion": {
+    "status": "Complete observed-plus-modelled planning classification",
+    "model_year": 2026,
+    "road_name_complete_features": 404047,
+    "surface_complete_features": 404047,
+    "pavement_complete_features": 404047,
+    "condition_complete_features": 404047
   }
 }
