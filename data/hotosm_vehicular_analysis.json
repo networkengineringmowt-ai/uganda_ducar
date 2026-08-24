@@ -33,8 +33,8 @@
   "total": {
     "feature_count": 404047,
     "length_km": 248616.148902,
-    "paved_km": 17172.057003,
-    "unpaved_km": 231444.091978,
+    "paved_km": 17174.676417,
+    "unpaved_km": 231441.472564,
     "unclassified_pavement_km": 0.0,
     "good_condition_km": 4239.976074,
     "fair_condition_km": 190563.305896,
@@ -27079,201 +27079,36 @@
     ],
     "surface": [
       {
-        "category": "1",
-        "feature_count": 2,
-        "length_km": 0.174932
+        "category": "Bituminous",
+        "feature_count": 60442,
+        "length_km": 17158.251919
       },
       {
-        "category": "2",
-        "feature_count": 1,
-        "length_km": 0.108193
-      },
-      {
-        "category": "Asphalt",
-        "feature_count": 55986,
-        "length_km": 11831.18156
-      },
-      {
-        "category": "Earth",
-        "feature_count": 78708,
-        "length_km": 36569.691797
-      },
-      {
-        "category": "Gravel",
-        "feature_count": 180553,
-        "length_km": 126009.214845
-      },
-      {
-        "category": "asphalt",
-        "feature_count": 2959,
-        "length_km": 4282.031977
-      },
-      {
-        "category": "chipseal",
-        "feature_count": 6,
-        "length_km": 11.440765
-      },
-      {
-        "category": "clay",
-        "feature_count": 2,
-        "length_km": 2.780171
-      },
-      {
-        "category": "cobblestone",
-        "feature_count": 6,
-        "length_km": 7.231299
-      },
-      {
-        "category": "compacted",
-        "feature_count": 387,
-        "length_km": 932.837698
-      },
-      {
-        "category": "concrete",
+        "category": "Concrete",
         "feature_count": 165,
         "length_km": 16.424498
       },
       {
-        "category": "dirt",
-        "feature_count": 2702,
-        "length_km": 2236.645681
+        "category": "Earth",
+        "feature_count": 86395,
+        "length_km": 44861.844997
       },
       {
-        "category": "earth",
-        "feature_count": 27,
-        "length_km": 28.391579
-      },
-      {
-        "category": "fine_gravel",
-        "feature_count": 10,
-        "length_km": 0.81146
-      },
-      {
-        "category": "footway",
-        "feature_count": 1,
-        "length_km": 0.243821
-      },
-      {
-        "category": "g",
-        "feature_count": 1,
-        "length_km": 0.415499
-      },
-      {
-        "category": "grass",
-        "feature_count": 14,
-        "length_km": 21.02033
-      },
-      {
-        "category": "grass_paver",
-        "feature_count": 4,
-        "length_km": 4.398598
-      },
-      {
-        "category": "gravel",
-        "feature_count": 431,
-        "length_km": 813.599501
-      },
-      {
-        "category": "ground",
-        "feature_count": 4849,
-        "length_km": 5897.335739
-      },
-      {
-        "category": "laterite",
-        "feature_count": 6,
-        "length_km": 1.728774
-      },
-      {
-        "category": "marum",
-        "feature_count": 3,
-        "length_km": 4.421792
-      },
-      {
-        "category": "mud",
-        "feature_count": 14,
-        "length_km": 0.949177
-      },
-      {
-        "category": "murrum",
-        "feature_count": 1,
-        "length_km": 2.018014
-      },
-      {
-        "category": "paved",
-        "feature_count": 1447,
-        "length_km": 1033.252772
-      },
-      {
-        "category": "paving_stones",
-        "feature_count": 29,
-        "length_km": 0.980335
-      },
-      {
-        "category": "pebblestone",
-        "feature_count": 5,
-        "length_km": 1.257522
-      },
-      {
-        "category": "residential",
-        "feature_count": 1,
-        "length_km": 0.070255
-      },
-      {
-        "category": "road",
-        "feature_count": 1,
-        "length_km": 0.234124
-      },
-      {
-        "category": "sand",
-        "feature_count": 41,
-        "length_km": 56.233567
-      },
-      {
-        "category": "sett",
-        "feature_count": 4,
-        "length_km": 0.954562
-      },
-      {
-        "category": "soil",
-        "feature_count": 3,
-        "length_km": 16.908863
-      },
-      {
-        "category": "surface",
-        "feature_count": 3,
-        "length_km": 0.965029
-      },
-      {
-        "category": "tarmac",
-        "feature_count": 3,
-        "length_km": 5.498231
-      },
-      {
-        "category": "unpaved",
-        "feature_count": 75659,
-        "length_km": 58821.906541
-      },
-      {
-        "category": "unpaved_dirt",
-        "feature_count": 2,
-        "length_km": 0.170066
-      },
-      {
-        "category": "wood",
-        "feature_count": 11,
-        "length_km": 2.619414
+        "category": "Gravel",
+        "feature_count": 257045,
+        "length_km": 186579.627567
       }
     ],
     "pavement": [
       {
         "category": "Paved",
-        "feature_count": 60596,
-        "length_km": 17172.057003
+        "feature_count": 60607,
+        "length_km": 17174.676417
       },
       {
         "category": "Unpaved",
-        "feature_count": 343451,
-        "length_km": 231444.091978
+        "feature_count": 343440,
+        "length_km": 231441.472564
       }
     ],
     "condition": [

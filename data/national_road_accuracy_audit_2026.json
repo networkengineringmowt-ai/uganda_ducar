@@ -1,0 +1,22 @@
+{
+  "source": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\National Roads\\network2026\\network2026.shp",
+  "records": 1014,
+  "unique_public_link_ids": 1014,
+  "duplicate_source_link_id_records": 6,
+  "blank_road_names": 0,
+  "null_geometries": 0,
+  "registry_length_km": 21136.748162,
+  "geometry_length_km": 21091.23854,
+  "length_variance_km": -45.509621,
+  "paved_registry_length_km": 6405.053853,
+  "unpaved_registry_length_km": 14731.694308,
+  "noncanonical_surface_records": 0,
+  "unclassified_pavement_records": 0,
+  "unclassified_condition_records": 0,
+  "official_comparison": {
+    "mowt_public_headline_km": 21292,
+    "ubos_2023_24_km": 21200,
+    "local_fy2025_26_link_register_km": 21136.748162,
+    "reason_for_separate_values": "Different publication dates and evidence scopes; no forced reconciliation."
+  }
+}

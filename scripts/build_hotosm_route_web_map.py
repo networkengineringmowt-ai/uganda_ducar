@@ -15,8 +15,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 SOURCE = ROOT.parent / "Merged HOTOSM Routes 2026" / "uganda_hotosm_merged_routes_2026.gpkg"
 OUTPUT = DATA / "hotosm_vehicular_map.geojson"
+ENRICHED_ROUTES = DATA / "hotosm_vehicular_route_register.csv.gz"
 TOPOLOGY_CHUNK_KM = 45.0
-GROUP_FIELDS = ["region", "district", "county", "functional_class", "highway", "road_management_class", "pavement_class", "condition"]
+GROUP_FIELDS = ["region", "district", "county", "functional_class", "highway", "road_management_class", "surface", "pavement_class", "condition"]
 NUMERIC_FIELDS = [
     "registry_aadt", "registry_pcu", "registry_speed_kmh", "adt_total",
     "adt_excluding_motorcycles", "adt_motorcycles", "heavy_vehicle_adt",
@@ -67,6 +68,14 @@ def aggregate(frame: gpd.GeoDataFrame, identifier: str, name: str, basis: str) -
 
 def main() -> None:
     routes = gpd.read_file(SOURCE, layer="merged_routes", engine="pyogrio").to_crs(32636)
+    # The GeoPackage is the geometry authority; the enriched register is the
+    # current attribute authority. Join by stable route ID before aggregating so
+    # every web collection retains the exact length-weighted categories.
+    enriched = pd.read_csv(ENRICHED_ROUTES, low_memory=False).set_index("route_id")
+    for field in GROUP_FIELDS + NUMERIC_FIELDS + ["traffic_value_status", "road_safety_risk_band"]:
+        if field in enriched:
+            values = routes["route_id"].map(enriched[field])
+            routes[field] = values.where(values.notna(), routes.get(field))
     known = routes[routes["route_assignment_basis"] != "County-bounded straight-through topology"].copy()
     topology = routes[routes["route_assignment_basis"] == "County-bounded straight-through topology"].copy()
     output = []

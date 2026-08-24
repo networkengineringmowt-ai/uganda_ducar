@@ -1,0 +1,95 @@
+{
+  "audit_year": 2026,
+  "status": "PASS",
+  "scope": {
+    "hotosm_source_segments": 404047,
+    "merged_routes": 266896,
+    "ducar_links": 7733,
+    "national_register_links": 1014,
+    "hotosm_geometry_length_km": 248616.148981,
+    "national_registry_length_km": 21136.748162,
+    "national_geometry_length_km": 21091.23854
+  },
+  "core_missing_records": {
+    "road_name": 0,
+    "surface": 0,
+    "pavement_class": 0,
+    "condition": 0,
+    "region": 0,
+    "district": 0,
+    "county": 0,
+    "subcounty": 0,
+    "parish": 0,
+    "registry_aadt": 0,
+    "registry_pcu": 0,
+    "start_x_coordinate_dd": 0,
+    "start_y_coordinate_dd": 0,
+    "end_x_coordinate_dd": 0,
+    "end_y_coordinate_dd": 0
+  },
+  "categorical_domains": {
+    "surface": {
+      "Gravel": 257045,
+      "Earth": 86395,
+      "Bituminous": 60442,
+      "Concrete": 165
+    },
+    "pavement_class": {
+      "Unpaved": 343440,
+      "Paved": 60607
+    },
+    "condition": {
+      "Fair": 298238,
+      "Poor": 103751,
+      "Good": 2058
+    }
+  },
+  "web_map_missing_records": {
+    "road_name": 0,
+    "surface": 0,
+    "pavement_class": 0,
+    "condition": 0,
+    "region": 0,
+    "district": 0,
+    "county": 0,
+    "subcounty": 0,
+    "parish": 0,
+    "registry_aadt": 0
+  },
+  "consistency_checks": {
+    "noncanonical_surface_records": 0,
+    "pavement_surface_mismatch_records": 0,
+    "invalid_condition_records": 0,
+    "negative_traffic_or_safety_values": 0,
+    "traffic_class_sum_mismatch_records": 0,
+    "excluding_motorcycle_mismatch_records": 0,
+    "coordinate_range_error_records": 0,
+    "blank_ducar_link_ids": 0,
+    "duplicate_ducar_link_ids": 0,
+    "blank_route_ids": 0,
+    "duplicate_route_ids": 0
+  },
+  "provenance_policy": "Observed/source values are retained. Completed values carry status, method, confidence and assignment-basis fields; evidence scopes are never rescaled to force agreement.",
+  "national_register_audit": {
+    "source": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\National Roads\\network2026\\network2026.shp",
+    "records": 1014,
+    "unique_public_link_ids": 1014,
+    "duplicate_source_link_id_records": 6,
+    "blank_road_names": 0,
+    "null_geometries": 0,
+    "registry_length_km": 21136.748162,
+    "geometry_length_km": 21091.23854,
+    "length_variance_km": -45.509621,
+    "paved_registry_length_km": 6405.053853,
+    "unpaved_registry_length_km": 14731.694308,
+    "noncanonical_surface_records": 0,
+    "unclassified_pavement_records": 0,
+    "unclassified_condition_records": 0,
+    "official_comparison": {
+      "mowt_public_headline_km": 21292,
+      "ubos_2023_24_km": 21200,
+      "local_fy2025_26_link_register_km": 21136.748162,
+      "reason_for_separate_values": "Different publication dates and evidence scopes; no forced reconciliation."
+    }
+  }
+}
