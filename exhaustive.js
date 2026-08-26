@@ -7,7 +7,7 @@
   const MAX_CHART_CATEGORIES = 12;
   const PAGE_SIZE = 500;
   const PATHS = {
-    links: "./data/ducar_link_register.json",
+    links: "./data/ducar_link_register.json?v=20260826-road-names-1",
     relations: "./data/ducar_link_admin_relations.json",
     global: "./data/global_country_matrix.json",
     governance: "./data/global_local_road_governance.json",
