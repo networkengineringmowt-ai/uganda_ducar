@@ -1,0 +1,34 @@
+{
+  "model_year": 2026,
+  "retrieval_date": "2026-08-26",
+  "links": 7733,
+  "unique_link_ids": 7733,
+  "unique_public_road_names": 7733,
+  "duplicate_public_road_names": 0,
+  "blank_public_road_names": 0,
+  "official_start_endpoint_names": 7720,
+  "official_end_endpoint_names": 7715,
+  "established_route_names": 5966,
+  "sources": [
+    {
+      "name": "MoWT/district road register",
+      "path": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\district roads\\dcroads2025.shp"
+    },
+    {
+      "name": "Uganda village and parish polygons",
+      "path": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\Administrative units - Uganda\\ug_villages.shp"
+    },
+    {
+      "name": "OpenStreetMap/HOTOSM populated places",
+      "path": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\gis_osm_places_free_1.shp",
+      "url": "https://data.humdata.org/dataset/hotosm_uga_populated_places"
+    },
+    {
+      "name": "GeoNames Uganda gazetteer",
+      "path": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\uganda_ducar_global\\data\\external\\geonames_uganda_2026\\UG.txt",
+      "url": "https://download.geonames.org/export/dump/UG.zip",
+      "license": "CC BY 4.0"
+    }
+  ],
+  "policy": "Every public link label contains endpoint/access detail and LINK_ID. Established route names remain separate and are not overwritten by model labels."
+}

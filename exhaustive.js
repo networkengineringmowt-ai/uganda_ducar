@@ -188,7 +188,7 @@
     summaries: ["Summaries & Admin Tools", "Administrative relations, site topology, SQLite tables and database schema."]
   };
   const LINK_FIELDS = [
-    "link_id", "road_name", "x_coordinate_dd", "y_coordinate_dd", "district", "county", "subcounty", "parish",
+    "link_id", "road_name", "established_route_name", "start_place_name", "end_place_name", "x_coordinate_dd", "y_coordinate_dd", "district", "county", "subcounty", "parish",
     "surface", "pavement_class", "condition", "source_length_km", "geometry_length_km",
     "registry_speed_kmh", "registry_aadt", "registry_pcu", "condition_risk",
     "surface_risk", "planning_priority_score", "priority_band", "priority_basis", "recommended_intervention",
@@ -277,8 +277,8 @@
   function properRoadName(value) {
     const acronyms=new Map([["kcca","KCCA"],["hq","HQ"],["hqtrs","Headquarters"],["ps","P/S"],["tc","Town Council"]]);
     let text=shown(value);if(text==="Not supplied")return text;
-    text=text.replace(/�|–|—/g," - ").replace(/([a-z])([A-Z])/g,"$1 $2").replace(/[_/\\|]+/g," - ").replace(/\s*-+\s*/g," - ").replace(/\s+/g," ").replace(/^[ ._-]+|[ ._-]+$/g,"");
-    return text.split(" - ").filter(Boolean).map(part=>part.split(" ").filter(Boolean).map(word=>acronyms.get(word.toLowerCase().replace(/\.$/,""))||word.toLowerCase().replace(/^([^a-z]*)([a-z])/,(_,prefix,letter)=>prefix+letter.toUpperCase())).join(" ")).filter((part,index,array)=>array.findIndex(item=>item.toLowerCase()===part.toLowerCase())===index).join(" - ");
+    text=text.replace(/\bP\/S\b/gi,"PSSCHOOLTOKEN").replace(/�|–|—/g," - ").replace(/([a-z])([A-Z])/g,"$1 $2").replace(/[_/\\|]+/g," - ").replace(/\s*-+\s*/g," - ").replace(/\s+/g," ").replace(/^[ ._-]+|[ ._-]+$/g,"");
+    return text.split(" - ").filter(Boolean).map(part=>part.split(" ").filter(Boolean).map(word=>{const bare=word.replace(/[^A-Za-z0-9]/g,"");if(/^([A-Z]{4}\d{3}|[IVX]{1,5})$/.test(bare))return word;if(bare==="PSSCHOOLTOKEN")return word.replace("PSSCHOOLTOKEN","P/S");return acronyms.get(word.toLowerCase().replace(/\.$/,""))||word.toLowerCase().replace(/^([^a-z]*)([a-z])/,(_,prefix,letter)=>prefix+letter.toUpperCase());}).join(" ")).filter((part,index,array)=>array.findIndex(item=>item.toLowerCase()===part.toLowerCase())===index).join(" - ");
   }
   function sectionFromHash() {
     const id = location.hash.slice(1).toLowerCase().split(":")[0];
@@ -1194,6 +1194,7 @@
     if (state.section === "socioeconomic") return { rows: applyHeaderFilters(cache.socio.rows), fields: visible(RECORD_FIELDS.socioeconomic) };
     if (state.section === "structures") return { rows: applyHeaderFilters(cache.structures.rows), fields: visible(RECORD_FIELDS.structures) };
     const fields=visible([...(RECORD_FIELDS[state.section] || LINK_FIELDS)]);
+    ["established_route_name","start_place_name","end_place_name"].reverse().forEach(field=>{if(!fields.includes(field))fields.splice(Math.min(2,fields.length),0,field);});
     ["start_x_coordinate_dd","start_y_coordinate_dd","end_x_coordinate_dd","end_y_coordinate_dd"].reverse().forEach(field=>{if(!fields.includes(field))fields.splice(Math.min(2,fields.length),0,field);});
     let rows = activeLinkRows();
     if (state.section === "ducar") {

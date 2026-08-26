@@ -1,0 +1,11 @@
+{
+  "traffic_safety_links": 7733,
+  "traffic_safety_unique_names": 7733,
+  "traffic_safety_blank_names": 0,
+  "structure_link_names_updated": 0,
+  "backup": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\DUCAR_Final_Deliverables_2026\\04_GIS_Shapefiles_Road_Name_Backup_20260826",
+  "database_backup": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\uganda_ducar_global\\data\\ducar_enterprise_unified_road_name_backup_20260826.sqlite",
+  "ducar_database_unique_names": 7733,
+  "master_database_unique_names": 31106,
+  "database_integrity_ok": 1
+}
