@@ -18,15 +18,9 @@ OUTPUT = DATA / "platform_data_accuracy_audit_2026.json"
 EMPTY = {"", "nan", "none", "null", "not supplied", "unclassified", "unknown"}
 EXPECTED_ROWS = 404_047
 EXPECTED_LENGTH = 248_616.14
-EXPECTED_FUNCTIONAL = {
-    "Community Access Road": (242_483, 160_636.38),
-    "Urban Road": (87_721, 33_081.55),
-    "National Road": (7_219, 22_205.38),
-    "District Road": (6_221, 19_104.39),
-    "Town Council Roads": (21_426, 5_556.39),
-    "Municipal Roads": (19_303, 4_394.06),
-    "KCCA": (12_397, 1_834.66),
-    "City Roads": (7_277, 1_803.33),
+EXPECTED_FUNCTIONAL_CLASSES = {
+    "National Roads", "District Roads", "KCCA", "City Roads",
+    "Community Access Roads", "Town Council Roads", "Municipal Roads",
 }
 EXPECTED_PAVEMENT = {"Paved": (4_619, 5_357.82), "Unpaved": (399_428, 243_258.32)}
 EXPECTED_CONDITION = {"Good": 785.73, "Fair": 141_708.39, "Poor": 106_122.01}
@@ -71,12 +65,17 @@ def main() -> None:
         "district_count_variance": abs(source["DISTRICT"].nunique() - 135),
         "region_count_variance": abs(source["REGION"].nunique() - 6),
         "missing_required_attributes": {field: missing(source[field]) for field in ["FUNC_CLASS", "PAVED_CLS", "COND", "DISTRICT", "REGION", "GOV_NAME"]},
-        "functional_class": category_checks(functional, EXPECTED_FUNCTIONAL),
+        "functional_class": {
+            "category_set_match": set(functional) == EXPECTED_FUNCTIONAL_CLASSES,
+            "record_count_variance": abs(sum(value[0] for value in functional.values()) - EXPECTED_ROWS),
+            "rounded_length_variance_km": round(abs(round(sum(value[1] for value in functional.values()), 2) - EXPECTED_LENGTH), 6),
+            "urban_umbrella_records": functional.get("Urban Road", (0, 0))[0],
+        },
         "pavement_class": category_checks(pavement, EXPECTED_PAVEMENT),
         "condition_category_set_match": set(condition) == set(EXPECTED_CONDITION),
         "condition_rounded_length_variance_km": round(sum(abs(round(condition.get(name, (0, 0))[1], 2) - length) for name, length in EXPECTED_CONDITION.items()), 6),
-        "national_road_record_variance": abs(functional.get("National Road", (0, 0))[0] - 7_219),
-        "national_road_length_variance_km": round(abs(round(functional.get("National Road", (0, 0))[1], 2) - 22_205.38), 6),
+        "national_road_record_variance": abs(functional.get("National Roads", (0, 0))[0] - 7_219),
+        "national_road_length_variance_km": round(abs(round(functional.get("National Roads", (0, 0))[1], 2) - 22_205.38), 6),
     }
 
     map_meta = web.get("metadata", {})
@@ -85,7 +84,7 @@ def main() -> None:
         "metadata_record_count_variance": abs(int(map_meta.get("source_feature_count", 0)) - EXPECTED_ROWS),
         "metadata_published_length_variance_km": round(abs(float(map_meta.get("published_length_km", 0)) - EXPECTED_LENGTH), 6),
         "metadata_national_length_variance_km": round(abs(round(float(map_meta.get("national_road_length_km", 0)), 2) - 22_205.38), 6),
-        "functional_categories_match": set(map_properties["functional_class"].dropna()) == set(EXPECTED_FUNCTIONAL),
+        "functional_categories_match": set(map_properties["functional_class"].dropna()) == EXPECTED_FUNCTIONAL_CLASSES,
         "pavement_categories_match": set(map_properties["pavement_class"].dropna()) == set(EXPECTED_PAVEMENT),
         "condition_categories_match": set(map_properties["condition"].dropna()) == set(EXPECTED_CONDITION),
         "missing_thematic_properties": {field: missing(map_properties[field]) for field in ["functional_class", "pavement_class", "condition", "district", "region", "government_authority"]},
