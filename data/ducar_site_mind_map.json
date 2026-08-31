@@ -12,7 +12,7 @@
     {"id":"priority","label":"Priority Studio","type":"section"},
     {"id":"admin","label":"Admin Tools","type":"section"},
     {"id":"approved_inventory","label":"Governed DUCAR Inventory - 31,106 Links","type":"data","records":31106},
-    {"id":"hotosm_vehicular","label":"HOTOSM Vehicular Source - 404,047 Features - 248,616.15 km","type":"data","records":404047},
+    {"id":"hotosm_vehicular","label":"Corrected Vehicular Network - 404,047 Ways - 248,616.14 km","type":"data","records":404047},
     {"id":"verified_links","label":"Verified Web Analytics Register · 7,733 Links","type":"data","records":7733},
     {"id":"master_attributes","label":"Master Workbook · 51 Link Attributes","type":"data","records":31106},
     {"id":"structures_data","label":"Structure Occurrences","type":"data","records":2290},
@@ -41,5 +41,5 @@
     {"from":"structures_data","to":"structures"},{"from":"relations","to":"admin"},{"from":"global_evidence","to":"global"},{"from":"socio_data","to":"socioeconomic"},{"from":"sql","to":"admin"},{"from":"evidence","to":"global"},{"from":"evidence","to":"admin"},{"from":"ml_registry","to":"traffic"},{"from":"ml_registry","to":"hdm4"},{"from":"ml_registry","to":"admin"},
     {"from":"road_source_library","to":"spatial_conflation"},{"from":"hotosm_vehicular","to":"spatial_conflation"},{"from":"spatial_conflation","to":"route_engine"},{"from":"route_engine","to":"merged_routes"},{"from":"route_engine","to":"segment_lineage"},{"from":"road_source_library","to":"name_join"},{"from":"merged_routes","to":"name_join"},{"from":"name_join","to":"ducar"},{"from":"ml_registry","to":"traffic_engine"},{"from":"traffic_engine","to":"traffic"},{"from":"merged_routes","to":"condition_engine"},{"from":"condition_engine","to":"condition"},{"from":"traffic_engine","to":"priority_engine"},{"from":"condition_engine","to":"priority_engine"},{"from":"priority_engine","to":"pims"},{"from":"priority_engine","to":"hdm4"},{"from":"priority_engine","to":"priority"},{"from":"merged_routes","to":"map_renderer"},{"from":"map_renderer","to":"ducar"},{"from":"map_renderer","to":"admin"},{"from":"sql","to":"export_service"},{"from":"merged_routes","to":"export_service"},{"from":"export_service","to":"admin"}
   ],
-  "record_policy": "The 248,616.15 km HOTOSM vehicular inventory drives public national geometry and map reporting. Governed DUCAR links drive Link-ID, structure, cost and intervention relations. Supplied traffic remains Observed; gaps are explicitly Model estimated with confidence and percentile bounds."
+  "record_policy": "The corrected 248,616.14 km and 404,047-way vehicular inventory drives public national geometry and map reporting. Governed DUCAR links drive Link-ID, structure, cost and intervention relations. Supplied traffic remains Observed; gaps are explicitly Model estimated with confidence and percentile bounds."
 }

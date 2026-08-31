@@ -5,7 +5,8 @@ from __future__ import annotations
 The public link name is a link-level label, not a claim that every short GIS
 section is a separately gazetted road. Established route names are retained in
 ``established_route_name`` while the link label uses its actual endpoint
-localities and LINK_ID so that every record is unambiguous.
+localities, intermediate settlements and administrative context. LINK_ID stays
+in its own field and is never appended to the visible road name.
 """
 
 import ast
@@ -185,6 +186,99 @@ def kcca_reference_names(frame: pd.DataFrame) -> pd.DataFrame:
     return joined[["kcca_route_name", "kcca_route_distance_m"]].reindex(frame.index)
 
 
+def intermediate_places(frame: pd.DataFrame) -> pd.Series:
+    """Return ordered official settlements crossed between each link endpoint."""
+    roads = gpd.read_file(DISTRICT_ROADS, columns=["RdCode"], engine="pyogrio").to_crs(32636)
+    roads["source_code_key"] = roads["RdCode"].map(canonical_code)
+    roads = roads.drop_duplicates("source_code_key", keep="first").set_index("source_code_key")
+    villages = gpd.read_file(
+        VILLAGES, columns=["VILLAGE", "PARISH", "SUBCOUNTY"], engine="pyogrio"
+    ).to_crs(32636)
+    spatial_index = villages.sindex
+    output = []
+    for row in frame.itertuples(index=False):
+        key = canonical_code(row.source_code)
+        if key not in roads.index:
+            output.append("")
+            continue
+        geometry = roads.at[key, "geometry"]
+        if isinstance(geometry, pd.Series):
+            geometry = geometry.iloc[0]
+        hits = list(spatial_index.query(geometry, predicate="intersects"))
+        ordered = []
+        for hit in hits:
+            polygon = villages.iloc[hit]
+            name = proper(polygon["VILLAGE"]) if valid_place(polygon["VILLAGE"]) else proper(polygon["PARISH"])
+            if not name:
+                name = proper(polygon["SUBCOUNTY"])
+            if name:
+                ordered.append((geometry.project(polygon.geometry.representative_point()), name))
+        names = []
+        for _, name in sorted(ordered):
+            if name.casefold() not in {item.casefold() for item in names}:
+                names.append(name)
+        output.append(" | ".join(names))
+    return pd.Series(output, index=frame.index, dtype="string")
+
+
+def number_words(value: int) -> str:
+    ones = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"]
+    tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
+    if value < 20:
+        return ones[value]
+    if value < 100:
+        return tens[value // 10] + ("-" + ones[value % 10] if value % 10 else "")
+    if value < 1000:
+        return ones[value // 100] + " Hundred" + (" " + number_words(value % 100) if value % 100 else "")
+    return f"{value:,}"
+
+
+def unique_visible_names(frame: pd.DataFrame, labels: list[str]) -> list[str]:
+    """Disambiguate genuine same-corridor links without exposing an ID code."""
+    result = pd.Series(labels, index=frame.index, dtype="string")
+    original_groups = result.groupby(result).groups
+    strategies = [
+        ("established_route_name",), ("parish",), ("subcounty",), ("county",),
+        ("established_route_name", "parish"),
+        ("established_route_name", "subcounty"),
+        ("parish", "subcounty"),
+    ]
+    for _, indices in original_groups.items():
+        if len(indices) == 1:
+            continue
+        base = result.at[indices[0]]
+        resolved = False
+        for fields in strategies:
+            candidates = []
+            for index in indices:
+                contexts = []
+                for field in fields:
+                    context = proper(frame.at[index, field])
+                    if context and context.casefold() not in base.casefold() and context.casefold() not in {item.casefold() for item in contexts}:
+                        contexts.append(context)
+                candidates.append(f"{base} - {' - '.join(contexts)} Section" if contexts else base)
+            if len(set(candidates)) == len(indices):
+                for index, candidate in zip(indices, candidates):
+                    result.at[index] = candidate
+                resolved = True
+                break
+        if resolved:
+            continue
+        preferred = []
+        for index in indices:
+            route = proper(frame.at[index, "established_route_name"])
+            preferred.append(f"{base} - {route} Section" if route and route.casefold() not in base.casefold() else base)
+        ordered = sorted(indices, key=lambda index: (
+            -float(frame.at[index, "start_y_coordinate_dd"]),
+            float(frame.at[index, "start_x_coordinate_dd"]),
+            -float(frame.at[index, "geometry_length_km"]),
+            plain(frame.at[index, "link_id"]),
+        ))
+        for position, index in enumerate(ordered, start=1):
+            result.at[index] = f"{preferred[list(indices).index(index)]} - Local Branch {number_words(position)}"
+    return result.tolist()
+
+
 def choose_endpoint(village: object, parish: object, nearest: pd.Series) -> tuple[str, str, str, float]:
     if valid_place(village):
         return proper(village), "Official Uganda village polygon", "UBOS/administrative village polygon", 0.0
@@ -222,6 +316,14 @@ def name_links(frame: pd.DataFrame) -> pd.DataFrame:
     frame["end_place_source"] = [item[1] for item in ends]
     frame["end_place_reference_id"] = [item[2] for item in ends]
     frame["end_place_distance_km"] = [item[3] for item in ends]
+    frame["intermediate_place_names"] = intermediate_places(frame)
+    for index, row in frame.loc[frame["intermediate_place_names"].fillna("").astype(str).str.strip().eq("")].iterrows():
+        route_places = []
+        for value in [row["start_place_name"], row["end_place_name"]]:
+            place = proper(value)
+            if place and place.casefold() not in {item.casefold() for item in route_places}:
+                route_places.append(place)
+        frame.at[index, "intermediate_place_names"] = "|".join(route_places)
 
     route_names = []
     route_sources = []
@@ -256,26 +358,35 @@ def name_links(frame: pd.DataFrame) -> pd.DataFrame:
     frame["established_route_name_source"] = route_sources
     frame["established_route_name_distance_m"] = route_distances
 
-    names = []
+    base_names = []
     for _, row in frame.iterrows():
-        origin, destination, link_id = proper(row["start_place_name"]), proper(row["end_place_name"]), plain(row["link_id"])
+        origin, destination = proper(row["start_place_name"]), proper(row["end_place_name"])
         parish = proper(row.get("parish"))
-        if origin.casefold() != destination.casefold():
-            label = f"{origin} - {destination}"
+        intermediates = [proper(item) for item in plain(row.get("intermediate_place_names")).split("|") if valid_place(item)]
+        if len(intermediates) > 3:
+            intermediates = [intermediates[0], intermediates[len(intermediates) // 2], intermediates[-1]]
+        ordered = []
+        for place in [origin, *intermediates, destination]:
+            if place and place.casefold() not in {item.casefold() for item in ordered}:
+                ordered.append(place)
+        if len(ordered) >= 2:
+            label = " - ".join(ordered)
             if not label.casefold().endswith(" road"):
                 label += " Road"
         elif parish and parish.casefold() != origin.casefold():
             label = f"{origin} - {parish} Access Road"
+        elif proper(row.get("established_route_name")):
+            label = f"{proper(row['established_route_name'])} - {origin} Section"
         else:
             label = f"{origin} Internal Access Road"
-        # LINK_ID is intentionally part of the public link label: road routes
-        # can span several GIS links, while every link label must be unique.
-        names.append(f"{label} ({link_id})")
+        base_names.append(label)
+
+    names = unique_visible_names(frame, base_names)
 
     frame["road_name"] = names
     frame["road_name_display"] = names
     frame["road_name_authoritative"] = [route or name for route, name in zip(route_names, names)]
-    frame["road_name_assignment_basis"] = "Unique endpoint-locality link label; established route retained separately"
+    frame["road_name_assignment_basis"] = "Unique ordered settlement route label; Link ID retained separately"
     frame["road_name_confidence_pct"] = [
         98 if start[1].startswith("Official") and end[1].startswith("Official") else 90
         for start, end in zip(starts, ends)
@@ -327,7 +438,7 @@ def main() -> None:
             {"name": "OpenStreetMap/HOTOSM populated places", "path": str(OSM_PLACES), "url": "https://data.humdata.org/dataset/hotosm_uga_populated_places"},
             {"name": "GeoNames Uganda gazetteer", "path": str(GEONAMES), "url": "https://download.geonames.org/export/dump/UG.zip", "license": "CC BY 4.0"},
         ],
-        "policy": "Every public link label contains endpoint/access detail and LINK_ID. Established route names remain separate and are not overwritten by model labels.",
+        "policy": "Every public road name uses ordered endpoint, intermediate-settlement and administrative context without appending LINK_ID. Established route names and LINK_ID remain separate attributes.",
     }
     AUDIT.write_text(json.dumps(audit, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(audit, indent=2))

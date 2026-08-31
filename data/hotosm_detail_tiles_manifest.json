@@ -1,10 +1,9 @@
 {
-  "name": "Uganda source-faithful vehicular road detail tiles",
-  "source": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\Merged HOTOSM Routes 2026\\uganda_hotosm_merged_routes_2026.gpkg",
+  "name": "Uganda corrected full vehicular road detail tiles",
+  "source": "MoWT corrected full vehicular network alignment, August 2026",
   "minimum_zoom": 11,
-  "display_simplification_m": 2.0,
-  "display_coordinate_precision_dd": 1e-06,
-  "tile_count": 33,
+  "display_simplification_m": 2,
+  "tile_count": 31,
   "tiles": [
     {
       "id": "29:-2",
@@ -15,8 +14,8 @@
         30,
         -1
       ],
-      "features": 267,
-      "gzip_bytes": 602695
+      "features": 152,
+      "gzip_bytes": 586781
     },
     {
       "id": "29:-1",
@@ -27,8 +26,8 @@
         30,
         0
       ],
-      "features": 282,
-      "gzip_bytes": 755821
+      "features": 109,
+      "gzip_bytes": 736037
     },
     {
       "id": "29:0",
@@ -39,8 +38,8 @@
         30,
         1
       ],
-      "features": 122,
-      "gzip_bytes": 277130
+      "features": 41,
+      "gzip_bytes": 268299
     },
     {
       "id": "30:-2",
@@ -51,8 +50,8 @@
         31,
         -1
       ],
-      "features": 182,
-      "gzip_bytes": 266733
+      "features": 75,
+      "gzip_bytes": 254005
     },
     {
       "id": "30:-1",
@@ -63,8 +62,8 @@
         31,
         0
       ],
-      "features": 1234,
-      "gzip_bytes": 2275934
+      "features": 552,
+      "gzip_bytes": 2183325
     },
     {
       "id": "30:0",
@@ -75,8 +74,8 @@
         31,
         1
       ],
-      "features": 894,
-      "gzip_bytes": 2790504
+      "features": 349,
+      "gzip_bytes": 2758423
     },
     {
       "id": "30:1",
@@ -87,8 +86,8 @@
         31,
         2
       ],
-      "features": 147,
-      "gzip_bytes": 309683
+      "features": 66,
+      "gzip_bytes": 303647
     },
     {
       "id": "30:2",
@@ -99,8 +98,8 @@
         31,
         3
       ],
-      "features": 167,
-      "gzip_bytes": 343767
+      "features": 54,
+      "gzip_bytes": 335584
     },
     {
       "id": "30:3",
@@ -111,8 +110,8 @@
         31,
         4
       ],
-      "features": 225,
-      "gzip_bytes": 420008
+      "features": 123,
+      "gzip_bytes": 406165
     },
     {
       "id": "31:-2",
@@ -123,8 +122,8 @@
         32,
         -1
       ],
-      "features": 28,
-      "gzip_bytes": 13712
+      "features": 12,
+      "gzip_bytes": 10125
     },
     {
       "id": "31:-1",
@@ -135,8 +134,8 @@
         32,
         0
       ],
-      "features": 920,
-      "gzip_bytes": 2529042
+      "features": 349,
+      "gzip_bytes": 2437719
     },
     {
       "id": "31:0",
@@ -147,8 +146,8 @@
         32,
         1
       ],
-      "features": 822,
-      "gzip_bytes": 2252343
+      "features": 255,
+      "gzip_bytes": 2193170
     },
     {
       "id": "31:1",
@@ -159,8 +158,8 @@
         32,
         2
       ],
-      "features": 577,
-      "gzip_bytes": 1027291
+      "features": 211,
+      "gzip_bytes": 990740
     },
     {
       "id": "31:2",
@@ -171,8 +170,8 @@
         32,
         3
       ],
-      "features": 402,
-      "gzip_bytes": 892023
+      "features": 193,
+      "gzip_bytes": 869412
     },
     {
       "id": "31:3",
@@ -183,8 +182,8 @@
         32,
         4
       ],
-      "features": 598,
-      "gzip_bytes": 1601087
+      "features": 219,
+      "gzip_bytes": 1570700
     },
     {
       "id": "32:-1",
@@ -195,8 +194,8 @@
         33,
         0
       ],
-      "features": 118,
-      "gzip_bytes": 145633
+      "features": 58,
+      "gzip_bytes": 135366
     },
     {
       "id": "32:0",
@@ -207,8 +206,8 @@
         33,
         1
       ],
-      "features": 3361,
-      "gzip_bytes": 4394863
+      "features": 3176,
+      "gzip_bytes": 4247027
     },
     {
       "id": "32:1",
@@ -219,8 +218,8 @@
         33,
         2
       ],
-      "features": 535,
-      "gzip_bytes": 1050416
+      "features": 197,
+      "gzip_bytes": 1004216
     },
     {
       "id": "32:2",
@@ -231,8 +230,8 @@
         33,
         3
       ],
-      "features": 745,
-      "gzip_bytes": 1605986
+      "features": 299,
+      "gzip_bytes": 1553616
     },
     {
       "id": "32:3",
@@ -243,8 +242,8 @@
         33,
         4
       ],
-      "features": 327,
-      "gzip_bytes": 804426
+      "features": 103,
+      "gzip_bytes": 784493
     },
     {
       "id": "33:-1",
@@ -255,8 +254,8 @@
         34,
         0
       ],
-      "features": 8,
-      "gzip_bytes": 18913
+      "features": 5,
+      "gzip_bytes": 18454
     },
     {
       "id": "33:0",
@@ -267,8 +266,8 @@
         34,
         1
       ],
-      "features": 1137,
-      "gzip_bytes": 1960784
+      "features": 493,
+      "gzip_bytes": 1853000
     },
     {
       "id": "33:1",
@@ -279,8 +278,8 @@
         34,
         2
       ],
-      "features": 934,
-      "gzip_bytes": 1403391
+      "features": 378,
+      "gzip_bytes": 1339265
     },
     {
       "id": "33:2",
@@ -291,8 +290,8 @@
         34,
         3
       ],
-      "features": 568,
-      "gzip_bytes": 1190553
+      "features": 190,
+      "gzip_bytes": 1157570
     },
     {
       "id": "33:3",
@@ -303,8 +302,8 @@
         34,
         4
       ],
-      "features": 263,
-      "gzip_bytes": 494203
+      "features": 120,
+      "gzip_bytes": 474821
     },
     {
       "id": "33:4",
@@ -316,7 +315,7 @@
         5
       ],
       "features": 11,
-      "gzip_bytes": 7984
+      "gzip_bytes": 7334
     },
     {
       "id": "34:0",
@@ -327,8 +326,8 @@
         35,
         1
       ],
-      "features": 572,
-      "gzip_bytes": 694822
+      "features": 424,
+      "gzip_bytes": 657177
     },
     {
       "id": "34:1",
@@ -339,8 +338,8 @@
         35,
         2
       ],
-      "features": 712,
-      "gzip_bytes": 909714
+      "features": 391,
+      "gzip_bytes": 855808
     },
     {
       "id": "34:2",
@@ -351,8 +350,8 @@
         35,
         3
       ],
-      "features": 169,
-      "gzip_bytes": 176076
+      "features": 104,
+      "gzip_bytes": 164238
     },
     {
       "id": "34:3",
@@ -363,20 +362,8 @@
         35,
         4
       ],
-      "features": 103,
-      "gzip_bytes": 177215
-    },
-    {
-      "id": "34:4",
-      "url": "./data/hotosm_detail_tiles/roads_lon+34_lat+04.geojson.gz",
-      "bbox": [
-        34,
-        4,
-        35,
-        5
-      ],
-      "features": 1,
-      "gzip_bytes": 1056
+      "features": 52,
+      "gzip_bytes": 169458
     },
     {
       "id": "35:1",
@@ -387,20 +374,8 @@
         36,
         2
       ],
-      "features": 6,
-      "gzip_bytes": 2381
-    },
-    {
-      "id": "35:2",
-      "url": "./data/hotosm_detail_tiles/roads_lon+35_lat+02.geojson.gz",
-      "bbox": [
-        35,
-        2,
-        36,
-        3
-      ],
       "features": 2,
-      "gzip_bytes": 1124
+      "gzip_bytes": 1288
     }
   ]
 }

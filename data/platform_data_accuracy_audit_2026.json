@@ -1,103 +1,90 @@
 {
   "audit_year": 2026,
+  "scope": "Corrected 404,047-way full vehicular network and governed DUCAR link register",
   "status": "PASS",
-  "scope": {
-    "hotosm_source_segments": 404047,
-    "merged_routes": 266896,
-    "ducar_links": 7733,
-    "national_register_links": 1014,
-    "hotosm_geometry_length_km": 248616.148981,
-    "national_registry_length_km": 21136.748162,
-    "national_geometry_length_km": 21091.23854
+  "authoritative_population": {
+    "ways": 404047,
+    "length_km_raw": 248616.137116,
+    "length_km_published": 248616.14,
+    "districts": 135,
+    "regions": 6
   },
-  "core_missing_records": {
-    "road_name": 0,
-    "surface": 0,
-    "pavement_class": 0,
-    "condition": 0,
-    "region": 0,
-    "district": 0,
-    "county": 0,
-    "subcounty": 0,
-    "parish": 0,
-    "registry_aadt": 0,
-    "registry_pcu": 0,
-    "start_x_coordinate_dd": 0,
-    "start_y_coordinate_dd": 0,
-    "end_x_coordinate_dd": 0,
-    "end_y_coordinate_dd": 0
-  },
-  "categorical_domains": {
-    "surface": {
-      "Gravel": 257045,
-      "Earth": 86395,
-      "Bituminous": 60442,
-      "Concrete": 165
+  "corrected_source": {
+    "record_count_variance": 0,
+    "published_length_variance_km": 0.0,
+    "district_count_variance": 0,
+    "region_count_variance": 0,
+    "missing_required_attributes": {
+      "FUNC_CLASS": 0,
+      "PAVED_CLS": 0,
+      "COND": 0,
+      "DISTRICT": 0,
+      "REGION": 0,
+      "GOV_NAME": 0
+    },
+    "functional_class": {
+      "category_set_match": true,
+      "record_count_variance": 0,
+      "rounded_length_variance_km": 0.0
     },
     "pavement_class": {
-      "Unpaved": 343440,
-      "Paved": 60607
+      "category_set_match": true,
+      "record_count_variance": 0,
+      "rounded_length_variance_km": 0.0
     },
-    "condition": {
-      "Fair": 298238,
-      "Poor": 103751,
-      "Good": 2058
-    }
+    "condition_category_set_match": true,
+    "condition_rounded_length_variance_km": 0.0,
+    "national_road_record_variance": 0,
+    "national_road_length_variance_km": 0.0
   },
-  "web_map_missing_records": {
-    "road_name": 0,
-    "surface": 0,
-    "pavement_class": 0,
-    "condition": 0,
-    "region": 0,
-    "district": 0,
-    "county": 0,
-    "subcounty": 0,
-    "parish": 0,
-    "registry_aadt": 0
+  "web_map": {
+    "metadata_record_count_variance": 0,
+    "metadata_published_length_variance_km": 0.0,
+    "metadata_national_length_variance_km": 0.0,
+    "functional_categories_match": true,
+    "pavement_categories_match": true,
+    "condition_categories_match": true,
+    "missing_thematic_properties": {
+      "functional_class": 0,
+      "pavement_class": 0,
+      "condition": 0,
+      "district": 0,
+      "region": 0,
+      "government_authority": 0
+    },
+    "manifest_tile_count_variance": 0,
+    "missing_detail_tile_files": 0
   },
-  "consistency_checks": {
-    "noncanonical_surface_records": 0,
-    "pavement_surface_mismatch_records": 0,
-    "invalid_condition_records": 0,
-    "negative_traffic_or_safety_values": 0,
-    "traffic_class_sum_mismatch_records": 0,
-    "excluding_motorcycle_mismatch_records": 0,
-    "coordinate_range_error_records": 0,
-    "blank_ducar_link_ids": 0,
-    "duplicate_ducar_link_ids": 0,
-    "blank_route_ids": 0,
-    "duplicate_route_ids": 0
+  "analysis": {
+    "published_total_variance_km": 0.0,
+    "missing_required_traffic_series": [],
+    "traffic_series_length_variance_km": {
+      "aadt_band": 0.0,
+      "adt_excluding_motorcycles_band": 0.0,
+      "motorcycle_adt_band": 0.0,
+      "heavy_vehicle_adt_band": 0.0,
+      "mean_speed_band": 0.0
+    },
+    "grouped_record_count_variance": 0,
+    "grouped_length_variance_km": 0.0,
+    "missing_cluster_dimensions": []
   },
-  "grouped_clustered_checks": {
-    "missing_grouped_analysis": 0,
-    "source_record_count_variance": 0,
-    "geometry_length_variance_m": 0.0,
-    "dimension_length_variance_m": 0.0,
-    "condition_matrix_variance_m": 0.0
-  },
-  "provenance_policy": "Observed/source values are retained. Completed values carry status, method, confidence and assignment-basis fields; evidence scopes are never rescaled to force agreement.",
-  "national_register_audit": {
-    "source": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\National Roads\\network2026\\network2026.shp",
-    "records": 1014,
-    "unique_public_link_ids": 1014,
-    "duplicate_source_link_id_records": 6,
+  "road_names": {
+    "governed_link_count_variance": 0,
+    "blank_link_ids": 0,
+    "invalid_official_link_ids": 0,
+    "duplicate_link_ids": 0,
     "blank_road_names": 0,
-    "null_geometries": 0,
-    "invalid_geometries_after_repair": 0,
-    "registry_length_km": 21136.748162,
-    "geometry_length_km": 21091.23854,
-    "length_variance_km": -45.509621,
-    "paved_registry_length_km": 6405.053853,
-    "unpaved_registry_length_km": 14731.694308,
-    "noncanonical_surface_records": 0,
-    "unclassified_pavement_records": 0,
-    "unclassified_condition_records": 0,
-    "official_comparison": {
-      "mowt_public_headline_km": 21292,
-      "ubos_2023_24_km": 21200,
-      "local_fy2025_26_link_register_km": 21136.748162,
-      "reason_for_separate_values": "Different publication dates and evidence scopes; no forced reconciliation."
-    }
+    "duplicate_road_names": 0,
+    "visible_link_id_suffixes": 0,
+    "missing_intermediate_place_names": 0,
+    "map_preview_record_variance": 0,
+    "map_preview_blank_road_names": 0,
+    "map_preview_duplicate_road_names": 0,
+    "map_preview_name_mismatches": 0
+  },
+  "delivery": {
+    "sqlite_integrity": "ok",
+    "missing_arcgis_components": []
   }
 }

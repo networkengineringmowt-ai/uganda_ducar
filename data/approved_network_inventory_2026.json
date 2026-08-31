@@ -1,13 +1,13 @@
 {
   "status": "approved_inventory_scope",
-  "as_of": "2026-08-20",
+  "as_of": "2026-08-28",
   "confirmed_all_road_inventory": {
-    "length_km": 248616.15,
-    "links": 31106,
+    "length_km": 248616.14,
+    "links": 404047,
     "districts": 135,
     "vehicular_source_features": 404047,
     "scope": "Vehicular road geometry only; pedestrian-only and proposed ways are excluded",
-    "source": "HOTOSM Uganda roads export snapshot 2026-08-07; projected length measured in EPSG:32636"
+    "source": "MoWT corrected 30-part full vehicular network alignment, August 2026"
   },
   "master_workbook_inventory": {
     "source_file": "MoWT_DUCAR_National_Road_Network_Master_Workbook_2026.xlsx",
@@ -25,18 +25,18 @@
     "publication_role": "Governed Link-ID, traffic, structures, cost and intervention relation scope"
   },
   "hotosm_vehicular_inventory": {
-    "source_file": "hotosm_uga_roads_osm_shp/roads_lines.shp",
-    "source_snapshot": "2026-08-07",
+    "source_file": "MoWT corrected full vehicular network alignment",
+    "source_snapshot": "2026-08-28",
     "source_crs": "EPSG:4326",
     "length_measurement_crs": "EPSG:32636",
-    "source_line_features": 681678,
+    "source_line_features": 404047,
     "vehicular_features": 404047,
-    "vehicular_length_km": 248616.148902,
-    "published_rounded_length_km": 248616.15,
+    "vehicular_length_km": 248616.137116,
+    "published_rounded_length_km": 248616.14,
     "assigned_districts": 135,
-    "unassigned_features": 17,
-    "unassigned_length_km": 315.593337,
-    "rule": "Include every HOTOSM vehicular highway class, including construction and passing_place; exclude pedestrian-only and proposed ways."
+    "unassigned_features": 0,
+    "unassigned_length_km": 0,
+    "rule": "Use all corrected ways with populated FUNC_CLASS, PAVED_CLS, COND, DISTRICT and REGION values."
   },
   "verified_web_analytics_register": {
     "links": 7733,
@@ -44,16 +44,15 @@
     "publication_role": "Backend and Admin Tools governed-link validation scope",
     "rule": "Never scale or duplicate governed geometry to force agreement with the national source inventory"
   },
-  "published_reference_scopes": {
-    "national_roads_km": 21302.0,
-    "ducar_composition_km": 138503,
-    "urban_km": 19952,
-    "district_km": 38603,
-    "community_access_km": 79948
+  "corrected_functional_class_scope": {
+    "national_roads_km": 22205.3794,
+    "national_road_ways": 7219,
+    "functional_class_categories": 8,
+    "pavement_class_categories": 2
   },
   "calculation_policy": [
-    "Use 248,616.15 km, 31,106 governed links and 135 districts for public vehicular-road inventory calculations.",
-    "Use all 404,047 HOTOSM vehicular features for national geometry, pavement, source-tag condition, administrative and map analytics.",
+    "Use 248,616.14 km, 404,047 vehicular ways and 135 districts for public vehicular-road inventory calculations.",
+    "Use all 404,047 corrected vehicular ways for national geometry, functional class, pavement, condition, administrative and map analytics.",
     "Use the governed web register for Link-ID, traffic, structures, cost and intervention analytics that require verified DUCAR relations.",
     "Show the denominator and scope beside any calculation that could otherwise be confused with the approved inventory.",
     "Retain missing observations as Not supplied; do not fabricate values or geometry.",
@@ -62,25 +61,25 @@
     "Treat structure exposure as allocated linked-road length so repeated structures on one link do not multiply the road-length total."
   ],
   "geospatial_reconciliation_policy": {
-    "authoritative_public_length_km": 248616.15,
-    "authoritative_public_links": 31106,
+    "authoritative_public_length_km": 248616.14,
+    "authoritative_public_links": 404047,
     "authoritative_public_districts": 135,
     "authoritative_source_features": 404047,
-    "classification_remainder_label": "HOTOSM feature attribute not supplied",
+    "classification_remainder_label": "No remainder; corrected classifications are complete",
     "geometry_rule": "Do not scale, clone or fabricate geometry to manufacture agreement with the approved inventory.",
-    "public_reporting_rule": "Public dashboards use the 248,616.15 km HOTOSM vehicular inventory; governed Link-ID and source-verification coverage remain explicit in Admin Tools.",
+    "public_reporting_rule": "Public dashboards use the corrected 248,616.14 km and 404,047-way vehicular inventory; governed Link-ID and source-verification coverage remain explicit in Admin Tools.",
     "high_cardinality_rule": "Complete dimensions remain available in tables and exports rather than selective charts.",
-    "methodology_note": "The superseded prior inventory figure has no reproducible match in the underlying HOTOSM shapefile under the tested highway-tag and district filters. The 248,616.15 km authority is reproducible from every included vehicular geometry in the source shapefile using EPSG:32636."
+    "methodology_note": "The authoritative public total is the rounded sum of LEN_KM across all 404,047 corrected vehicular ways."
   },
   "national_road_spatial_join_2026": {
-    "official_reference_km": 21302.0,
-    "authoritative_source_feature_count": 1014,
-    "authoritative_exploded_part_count": 1069,
-    "authoritative_geometry_km": 21091.23854,
-    "authoritative_length_field_km": 21136.748162,
-    "matched_hotosm_feature_count": 42460,
-    "matched_hotosm_length_km": 21370.392215,
-    "reference_coverage_pct": 100.321,
-    "method": "Nearest authoritative alignment midpoint within 500 m and local bearing difference no greater than 44 degrees in EPSG:32636."
+    "official_reference_km": 22205.3794,
+    "authoritative_source_feature_count": 7219,
+    "authoritative_exploded_part_count": 7219,
+    "authoritative_geometry_km": 22205.3794,
+    "authoritative_length_field_km": 22205.3794,
+    "matched_hotosm_feature_count": 7219,
+    "matched_hotosm_length_km": 22205.3794,
+    "reference_coverage_pct": 100.0,
+    "method": "National Road is preserved directly from corrected FUNC_CLASS within the full vehicular network."
   }
 }

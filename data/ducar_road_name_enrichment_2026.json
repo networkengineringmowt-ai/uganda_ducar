@@ -30,5 +30,5 @@
       "license": "CC BY 4.0"
     }
   ],
-  "policy": "Every public link label contains endpoint/access detail and LINK_ID. Established route names remain separate and are not overwritten by model labels."
+  "policy": "Every public road name uses ordered endpoint, intermediate-settlement and administrative context without appending LINK_ID. Established route names and LINK_ID remain separate attributes."
 }
