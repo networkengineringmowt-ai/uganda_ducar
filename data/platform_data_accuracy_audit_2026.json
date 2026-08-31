@@ -25,7 +25,8 @@
     "functional_class": {
       "category_set_match": true,
       "record_count_variance": 0,
-      "rounded_length_variance_km": 0.0
+      "rounded_length_variance_km": 0.0,
+      "urban_umbrella_records": 0
     },
     "pavement_class": {
       "category_set_match": true,

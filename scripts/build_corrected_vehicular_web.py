@@ -33,6 +33,17 @@ DETAIL_MANIFEST = DATA / "hotosm_detail_tiles_manifest.json"
 SOURCE_LABEL = "MoWT corrected full vehicular network alignment, August 2026"
 DISPLAY_TOTAL_KM = 248_616.14
 EXPECTED_ROWS = 404_047
+MOWT_ROAD_CLASSES = {
+    "National Roads", "District Roads", "KCCA", "City Roads",
+    "Community Access Roads", "Town Council Roads", "Municipal Roads",
+}
+MOWT_ROAD_CLASS_LABELS = {
+    "National Road": "National Roads",
+    "District Road": "District Roads",
+    "Community Access Road": "Community Access Roads",
+}
+URBAN_AUTHORITY_CLASSES = {"KCCA", "City Roads", "Town Council Roads", "Municipal Roads"}
+URBAN_MATCH_MAX_DISTANCE_M = 2_500
 FIELDS = [
     "LINK_ID", "ROAD_NAME", "HIGHWAY", "SURFACE", "PAVED_CLS", "COND",
     "FUNC_CLASS", "GOV_NAME", "LEN_KM", "GOV_DEPT", "GEOM_BASIS",
@@ -84,6 +95,67 @@ def canonical_surface(row: object) -> str:
     if row.PAVED_CLS == "Paved":
         return "Concrete" if any(token in raw for token in ["concrete", "cobble", "paver"]) else "Bituminous"
     return "Gravel" if any(token in raw for token in ["gravel", "murr", "marum", "laterite", "compacted"]) else "Earth"
+
+
+def urban_authority_references(paths: list[Path]) -> dict[str, gpd.GeoDataFrame]:
+    """Build same-district spatial references for the four gazetted urban authorities."""
+    frames = []
+    for path in paths:
+        frame = gpd.read_file(
+            path,
+            columns=["FUNC_CLASS", "GOV_NAME", "DISTRICT", "geometry"],
+            engine="pyogrio",
+        )
+        keep = frame["FUNC_CLASS"].isin(URBAN_AUTHORITY_CLASSES)
+        keep &= ~((frame["FUNC_CLASS"] == "KCCA") & (frame["DISTRICT"] != "Kampala"))
+        frames.append(frame.loc[keep, ["FUNC_CLASS", "GOV_NAME", "DISTRICT", "geometry"]])
+    references = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), crs=frames[0].crs).to_crs(32636)
+    return {str(district): group.copy() for district, group in references.groupby("DISTRICT", sort=False)}
+
+
+def apply_mowt_road_classes(
+    frame: gpd.GeoDataFrame,
+    metric: gpd.GeoDataFrame,
+    references: dict[str, gpd.GeoDataFrame],
+) -> gpd.GeoDataFrame:
+    """Remove the non-statutory Urban Road umbrella using spatial authority proximity."""
+    frame = frame.copy()
+    candidates = frame["FUNC_CLASS"].eq("Urban Road")
+    candidates |= frame["FUNC_CLASS"].eq("KCCA") & frame["DISTRICT"].ne("Kampala")
+    frame.loc[candidates, "FUNC_CLASS"] = "Community Access Roads"
+    frame.loc[candidates, "GOV_NAME"] = "Not Applicable"
+    kampala = candidates & frame["DISTRICT"].eq("Kampala")
+    frame.loc[kampala, "FUNC_CLASS"] = "KCCA"
+    frame.loc[kampala, "GOV_NAME"] = "KCCA"
+    for district, index in frame.loc[candidates & ~kampala].groupby("DISTRICT").groups.items():
+        reference = references.get(str(district))
+        if reference is None or reference.empty:
+            continue
+        points = gpd.GeoDataFrame(
+            {"source_index": list(index)},
+            geometry=metric.geometry.loc[index].interpolate(0.5, normalized=True),
+            crs=metric.crs,
+        )
+        matched = gpd.sjoin_nearest(
+            points,
+            reference[["FUNC_CLASS", "GOV_NAME", "geometry"]],
+            how="left",
+            max_distance=URBAN_MATCH_MAX_DISTANCE_M,
+            distance_col="authority_distance_m",
+        )
+        matched = matched.dropna(subset=["FUNC_CLASS"]).sort_values(
+            ["source_index", "authority_distance_m"]
+        ).drop_duplicates("source_index")
+        if matched.empty:
+            continue
+        source_index = matched["source_index"].astype(int).to_numpy()
+        frame.loc[source_index, "FUNC_CLASS"] = matched["FUNC_CLASS"].to_numpy()
+        frame.loc[source_index, "GOV_NAME"] = matched["GOV_NAME"].to_numpy()
+    frame["FUNC_CLASS"] = frame["FUNC_CLASS"].replace(MOWT_ROAD_CLASS_LABELS)
+    invalid = sorted(set(frame["FUNC_CLASS"].dropna()) - MOWT_ROAD_CLASSES)
+    if invalid:
+        raise RuntimeError(f"Non-MoWT road classes remain: {invalid}")
+    return frame
 
 
 def blank_summary() -> dict[str, float | int]:
@@ -140,7 +212,7 @@ def group_properties(key: tuple[str, ...], group: dict[str, object], detail: boo
         "road_management_class": functional,
         "government_authority": authority,
         "gov_name": authority,
-        "government_department": "DNR MoWT" if functional == "National Road" else "DDUCAR MoWT",
+        "government_department": "DNR MoWT" if functional == "National Roads" else "DDUCAR MoWT",
         "highway": highway,
         "surface": surface,
         "pavement_class": pavement,
@@ -150,7 +222,7 @@ def group_properties(key: tuple[str, ...], group: dict[str, object], detail: boo
         "registry_aadt": round(float(group["aadt_weighted"]) / traffic_length, 1) if traffic_length else 0,
         "adt_motorcycles": round(float(group["mc_weighted"]) / traffic_length, 1) if traffic_length else 0,
         "heavy_vehicle_adt": round(float(group["heavy_weighted"]) / traffic_length, 1) if traffic_length else 0,
-        "national_aligned": functional == "National Road",
+        "national_aligned": functional == "National Roads",
         "coordinate_reference_system": "EPSG:4326",
         "length_measurement_basis": "Corrected source LEN_KM field",
     }
@@ -199,10 +271,10 @@ def traffic_metrics(row: object) -> dict[str, float]:
     passenger = max(0.0, non_motorcycle - heavy)
     condition_factor = {"Good": 1.0, "Fair": 0.72, "Poor": 0.45}[row.COND]
     class_speed = {
-        "National Road": 60, "District Road": 38, "KCCA": 30,
+        "National Roads": 60, "District Roads": 38, "KCCA": 30,
         "City Roads": 30, "Municipal Roads": 28,
-        "Town Council Roads": 26, "Urban Road": 25,
-        "Community Access Road": 20,
+        "Town Council Roads": 26,
+        "Community Access Roads": 20,
     }[row.FUNC_CLASS]
     mean_speed = class_speed * condition_factor
     return {
@@ -275,6 +347,7 @@ def main() -> None:
     DATA.mkdir(exist_ok=True)
     DETAIL_DIR.mkdir(exist_ok=True)
     old = json.loads(ANALYSIS.read_text(encoding="utf-8")) if ANALYSIS.exists() else {}
+    authority_references = urban_authority_references(paths)
     total = blank_summary()
     summaries = {dimension: defaultdict(blank_summary) for dimension in SUMMARY_DIMENSIONS}
     completeness = {field: {"supplied_features": 0, "supplied_length_km": 0.0} for field in FIELDS}
@@ -304,7 +377,8 @@ def main() -> None:
         if missing:
             raise RuntimeError(f"{path.name} lacks fields: {missing}")
         metric = frame.to_crs(32636)
-        overview_geometry = gpd.GeoSeries(metric.geometry.simplify(25, preserve_topology=False), crs=32636).to_crs(4326)
+        frame = apply_mowt_road_classes(frame, metric, authority_references)
+        overview_geometry = gpd.GeoSeries(metric.geometry.simplify(75, preserve_topology=False), crs=32636).to_crs(4326)
         detail_geometry = gpd.GeoSeries(metric.geometry.simplify(2, preserve_topology=False), crs=32636).to_crs(4326)
         for index, row in enumerate(frame[FIELDS].itertuples(index=False), start=0):
             row_count += 1
@@ -354,7 +428,7 @@ def main() -> None:
     json_stream.close()
     if row_count != EXPECTED_ROWS:
         raise RuntimeError(f"Expected {EXPECTED_ROWS:,} ways, found {row_count:,}")
-    for dimension, expected in {"functional_class": 8, "pavement": 2, "district": 135, "region": 6}.items():
+    for dimension, expected in {"functional_class": 7, "pavement": 2, "district": 135, "region": 6}.items():
         actual = len(summaries[dimension])
         if actual != expected:
             raise RuntimeError(f"{dimension} expected {expected} categories, found {actual}")
@@ -371,13 +445,13 @@ def main() -> None:
             "source_feature_count": row_count,
             "geometry_length_km": round(float(total["length_km"]), 6),
             "published_length_km": DISPLAY_TOTAL_KM,
-            "functional_class_count": 8,
+            "functional_class_count": 7,
             "pavement_class_count": 2,
             "district_count": 135,
             "region_count": 6,
-            "national_road_length_km": round(float(summaries["functional_class"]["National Road"]["length_km"]), 6),
+            "national_road_length_km": round(float(summaries["functional_class"]["National Roads"]["length_km"]), 6),
             "display_groups": len(overview_features),
-            "display_simplification_m": 25,
+            "display_simplification_m": 75,
         },
         "features": overview_features,
     }
@@ -420,7 +494,7 @@ def main() -> None:
         "attribute_completeness": {field: rounded(values) for field, values in completeness.items()},
         "summaries": {dimension: [{"category": category, **rounded(values)} for category, values in sorted(groups.items())] for dimension, groups in summaries.items()},
         "derivation_policy": {
-            "functional_class": "FUNC_CLASS is used without reclassification.",
+            "functional_class": "Local access-road source categories are spatially assigned to KCCA, City Roads, Municipal Roads or Town Council Roads within 2.5 km of a same-district authority reference; remaining access roads are Community Access Roads.",
             "pavement": "PAVED_CLS is used without reclassification.",
             "condition": "COND is used without reclassification.",
             "administration": "DISTRICT, REGION and GOV_NAME are used without fallback buckets.",
@@ -432,9 +506,9 @@ def main() -> None:
         },
         "traffic_2026_sources": old.get("traffic_2026_sources", []),
         "national_road_spatial_join_2026": {
-            "matched_hotosm_feature_count": int(summaries["functional_class"]["National Road"]["feature_count"]),
-            "matched_hotosm_length_km": round(float(summaries["functional_class"]["National Road"]["length_km"]), 6),
-            "method": "National Road is preserved directly from corrected FUNC_CLASS within the full vehicular network.",
+            "matched_hotosm_feature_count": int(summaries["functional_class"]["National Roads"]["feature_count"]),
+            "matched_hotosm_length_km": round(float(summaries["functional_class"]["National Roads"]["length_km"]), 6),
+            "method": "National Roads are preserved directly from corrected FUNC_CLASS within the full vehicular network.",
         },
         "attribute_completion": {
             "status": "complete",
@@ -467,7 +541,7 @@ def main() -> None:
         "condition_classes": {key: rounded(value) for key, value in summaries["condition"].items()},
         "districts": len(summaries["district"]),
         "regions": len(summaries["region"]),
-        "national_roads_within_total_km": round(float(summaries["functional_class"]["National Road"]["length_km"]), 6),
+        "national_roads_within_total_km": round(float(summaries["functional_class"]["National Roads"]["length_km"]), 6),
         "overview_map_groups": len(overview_features),
         "detail_tiles": len(manifest_tiles),
     }
