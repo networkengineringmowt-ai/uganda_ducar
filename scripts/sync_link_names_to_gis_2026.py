@@ -2,6 +2,7 @@ from __future__ import annotations
 
 """Synchronise audited DUCAR link names into link-based GIS deliverables."""
 
+import gzip
 import json
 import shutil
 import sqlite3
@@ -11,7 +12,7 @@ import geopandas as gpd
 import pandas as pd
 from shapely.geometry import Point
 
-from enrich_ducar_link_names_2026 import canonical_code, proper, valid_place
+from enrich_ducar_link_names_2026 import canonical_code, number_words, proper, valid_place
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +24,7 @@ AUDIT = ROOT / "data" / "ducar_road_name_gis_sync_2026.json"
 DATABASE = ROOT / "data" / "ducar_enterprise_unified.sqlite"
 DATABASE_BACKUP = ROOT / "data" / "ducar_enterprise_unified_road_name_backup_20260826.sqlite"
 CATALOG = ROOT / "data" / "ducar_database_catalog.json"
+MAP_PREVIEW = ROOT / "data" / "ducar_map_preview.geojson.gz"
 DISTRICT_ROADS = DUCAR / "district roads" / "dcroads2025.shp"
 VILLAGES = DUCAR / "Administrative units - Uganda" / "ug_villages.shp"
 
@@ -85,8 +87,18 @@ def master_names(connection: sqlite3.Connection) -> pd.DataFrame:
         else:
             label = f"{origin} Internal Access Road"
         route = proper(source["Rdname"]) or f"{proper(source['VilStart'])} - {proper(source['VillEnd'])} Road"
-        output.append((record["section_id"], f"{label} ({record['section_id']})", route, origin, destination))
+        output.append((record["section_id"], label, route, origin, destination))
     result = pd.DataFrame(output, columns=["section_id", "road_name", "established_route_name", "start_place_name", "end_place_name"])
+    duplicated = result["road_name"].duplicated(keep=False)
+    for index in result.index[duplicated]:
+        route = proper(result.at[index, "established_route_name"])
+        if route and route.casefold() not in result.at[index, "road_name"].casefold():
+            result.at[index, "road_name"] = f"{result.at[index, 'road_name']} - {route} Section"
+    duplicated = result["road_name"].duplicated(keep=False)
+    for _, indices in result.loc[duplicated].groupby("road_name").groups.items():
+        ordered = sorted(indices, key=lambda index: str(result.at[index, "section_id"]))
+        for position, index in enumerate(ordered, start=1):
+            result.at[index, "road_name"] = f"{result.at[index, 'road_name']} - Local Branch {number_words(position)}"
     if result["road_name"].nunique() != len(result):
         raise RuntimeError("Master road-name labels are not unique")
     return result
@@ -122,7 +134,7 @@ def sync_database(names: pd.DataFrame) -> dict[str, int]:
         road_name=(SELECT road_name FROM road_name_sync WHERE link_id=ducar_link_register.link_id),
         road_name_display=(SELECT road_name FROM road_name_sync WHERE link_id=ducar_link_register.link_id),
         road_name_authoritative=COALESCE(NULLIF((SELECT route_name FROM road_name_sync WHERE link_id=ducar_link_register.link_id),''),(SELECT road_name FROM road_name_sync WHERE link_id=ducar_link_register.link_id)),
-        road_name_assignment_basis='Unique endpoint-locality link label; established route retained separately',
+        road_name_assignment_basis='Unique ordered settlement route label; Link ID retained separately',
         established_route_name=(SELECT route_name FROM road_name_sync WHERE link_id=ducar_link_register.link_id),
         established_route_name_source=(SELECT route_source FROM road_name_sync WHERE link_id=ducar_link_register.link_id),
         established_route_name_distance_m=(SELECT route_distance FROM road_name_sync WHERE link_id=ducar_link_register.link_id),
@@ -143,7 +155,7 @@ def sync_database(names: pd.DataFrame) -> dict[str, int]:
 
     master = master_names(connection)
     connection.executemany(
-        "UPDATE master_road_sections SET road_name=?, established_route_name=?, start_place_name=?, end_place_name=?, road_name_assignment_basis='Source-aligned endpoint-locality label with unique section ID' WHERE section_id=?",
+        "UPDATE master_road_sections SET road_name=?, established_route_name=?, start_place_name=?, end_place_name=?, road_name_assignment_basis='Source-aligned settlement route label; section ID retained separately' WHERE section_id=?",
         ((row.road_name, row.established_route_name, row.start_place_name, row.end_place_name, row.section_id) for row in master.itertuples()),
     )
     connection.commit()
@@ -153,6 +165,7 @@ def sync_database(names: pd.DataFrame) -> dict[str, int]:
         "master_database_unique_names": connection.execute("SELECT COUNT(DISTINCT road_name) FROM master_road_sections").fetchone()[0],
         "database_integrity_ok": int(integrity == "ok"),
     }
+    connection.execute("VACUUM")
     connection.close()
     return result
 
@@ -180,11 +193,54 @@ def rebuild_catalog() -> None:
     CATALOG.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 
+def sync_map_preview(names: pd.DataFrame) -> int:
+    with gzip.open(MAP_PREVIEW, "rt", encoding="utf-8") as stream:
+        payload = json.load(stream)
+    updated = 0
+    for feature in payload.get("features", []):
+        properties = feature.get("properties", {})
+        link_id = str(properties.get("link_id", ""))
+        if link_id not in names.index:
+            continue
+        row = names.loc[link_id]
+        properties["road_name"] = row["road_name"]
+        properties["road_name_display"] = row["road_name"]
+        properties["start_town"] = row["start_place_name"]
+        properties["end_town"] = row["end_place_name"]
+        updated += 1
+    payload["metadata"] = {
+        **payload.get("metadata", {}),
+        "source": "MoWT governed DUCAR link geometry and attribute register, August 2026",
+        "road_name_policy": "Unique ordered settlement route label; Link ID retained separately",
+    }
+    with gzip.GzipFile(filename=str(MAP_PREVIEW), mode="wb", compresslevel=7, mtime=0) as stream:
+        stream.write(json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+    return updated
+
+
 def main() -> None:
     names = pd.read_csv(REGISTER, low_memory=False).set_index("link_id")
     traffic_path = GIS / "DUCAR_Verified_Traffic_Safety_Register.shp"
     traffic = gpd.read_file(traffic_path)
     lookup = traffic["LINK_ID"].map(names["road_name"])
+    if lookup.isna().all() and len(traffic) == len(names):
+        geographic = traffic.to_crs(4326)
+        aligned = True
+        for position, geometry in enumerate(geographic.geometry):
+            row = names.iloc[position]
+            start = endpoint(geometry, False)
+            end = endpoint(geometry, True)
+            direct = max(abs(start.x - float(row.start_x_coordinate_dd)), abs(start.y - float(row.start_y_coordinate_dd)), abs(end.x - float(row.end_x_coordinate_dd)), abs(end.y - float(row.end_y_coordinate_dd)))
+            reverse = max(abs(start.x - float(row.end_x_coordinate_dd)), abs(start.y - float(row.end_y_coordinate_dd)), abs(end.x - float(row.start_x_coordinate_dd)), abs(end.y - float(row.start_y_coordinate_dd)))
+            if min(direct, reverse) > 1e-8:
+                aligned = False
+                break
+        if aligned:
+            # The older ArcGIS export padded the sequence to four digits.
+            # Exact geometry order proves the rows are identical, so restore
+            # the official three-digit LINK_ID without guessing a relation.
+            traffic["LINK_ID"] = names.index.to_list()
+            lookup = traffic["LINK_ID"].map(names["road_name"])
     if lookup.isna().any():
         raise RuntimeError(f"{int(lookup.isna().sum())} traffic GIS links lack a public road name")
     traffic["ROAD_NAME"] = lookup
@@ -209,12 +265,14 @@ def main() -> None:
 
     database_result = sync_database(names)
     rebuild_catalog()
+    map_preview_updates = sync_map_preview(names)
 
     result = {
         "traffic_safety_links": int(len(traffic)),
         "traffic_safety_unique_names": int(traffic["ROAD_NAME"].nunique()),
         "traffic_safety_blank_names": int(traffic["ROAD_NAME"].isna().sum()),
         "structure_link_names_updated": structure_updates,
+        "map_preview_road_names_updated": map_preview_updates,
         "backup": str(BACKUP),
         "database_backup": str(DATABASE_BACKUP),
         **database_result,

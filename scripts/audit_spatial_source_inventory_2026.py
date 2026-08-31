@@ -119,7 +119,7 @@ def main() -> None:
         "datasets": records,
         "selection_policy": {
             "national_roads": "MoWT National Roads/network2026/network2026.shp is the current authoritative FY2025/26 alignment and attribute register.",
-            "complete_vehicular_geometry": "HOTOSM roads_lines.shp is the exhaustive 248,616.15 km geometry population; other road layers supply names and classifications through spatial joins without replacing its geometry.",
+            "complete_vehicular_geometry": "The corrected 30-part full vehicular network is the authoritative 248,616.14 km, 404,047-way population. Its geometry and completed attributes are retained without rescaling.",
             "district_roads": "The 2025 district register and 2026 merged output are reference alignments; source lineage is retained.",
             "administrative_relations": "Administrative units - Uganda layers are used from district through village for spatial containment joins.",
         },
