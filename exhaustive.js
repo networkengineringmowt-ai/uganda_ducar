@@ -1787,5 +1787,10 @@
   window.addEventListener("hashchange",()=>{
     state.section=sectionFromHash();state.tab=tabFromHash();state.page=1;state.search="";state.filterField="";state.filterValue="";state.sortField="";render();setTimeout(syncPrimaryNav,0);
   });
+  window.addEventListener("ducar:leaflet-ready",()=>{
+    if(state.tab!=="map"||state.section==="summaries")return;
+    if(state.section==="global")initGlobalMap();
+    else initSectionMap();
+  });
   render();
 })();
