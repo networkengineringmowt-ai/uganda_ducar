@@ -7,7 +7,7 @@
   const MAX_CHART_CATEGORIES = 12;
   const PAGE_SIZE = 500;
   const PATHS = {
-    links: "./data/ducar_link_register.json?v=20260828-road-names-2",
+    links: "./data/ducar_link_register.json.gz?v=20260901-fast-load-1",
     relations: "./data/ducar_link_admin_relations.json",
     global: "./data/global_country_matrix.json",
     governance: "./data/global_local_road_governance.json",
@@ -300,7 +300,7 @@
       if (!response.ok) throw new Error("Unable to load " + PATHS[key]);
       if(PATHS[key].includes(".gz")){
         if(typeof DecompressionStream==="undefined"){
-          const fallback=await fetch(PATHS[key].replace(".geojson.gz",".geojson"));
+          const fallback=await fetch(PATHS[key].replace(/\.gz(?=\?|$)/,""));
           if(!fallback.ok)throw new Error("Unable to load uncompressed fallback for "+PATHS[key]);
           cache[key]=await fallback.json();
         }else{
