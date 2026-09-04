@@ -37,8 +37,10 @@
   /* ================= Skeleton ================= */
   function initSkeleton() {
     if (document.getElementById("se-skeleton-overlay")) return;
-    // Don't stack a second loading overlay on top of a page's own loader.
-    if (document.getElementById("loading") || document.querySelector('[class*="loading-overlay"],[class*="loading-screen"]')) return;
+    // Don't stack a second loading overlay on top of a page's own loader
+    // (exhaustive.js shows its own "studio-loading" state while its gzipped
+    // datasets stream in, which can take several seconds).
+    if (document.getElementById("loading") || document.querySelector('[class*="loading"]')) return;
     var overlay = document.createElement("div");
     overlay.id = "se-skeleton-overlay";
     overlay.innerHTML =
@@ -308,6 +310,115 @@
     render();
   }
 
+  /* ================= Searchable select combobox ================= */
+  // Converts any native <select> (however it was rendered — hand-written
+  // template or a pre-built React bundle) into a type-to-filter combobox,
+  // while leaving the underlying <select>'s value/change-event contract
+  // untouched so existing wiring (onChange handlers, read of .value) keeps
+  // working with zero changes elsewhere.
+  function enhanceSelect(select) {
+    if (select.hasAttribute("data-se-select")) return;
+    if (select.multiple) return;
+    select.setAttribute("data-se-select", "1");
+
+    var wrap = document.createElement("span");
+    wrap.className = "se-select-wrap";
+    select.parentNode.insertBefore(wrap, select);
+    wrap.appendChild(select);
+    select.classList.add("se-select-native");
+
+    var input = document.createElement("input");
+    input.type = "text";
+    input.className = "se-select-input";
+    input.setAttribute("autocomplete", "off");
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-expanded", "false");
+    input.placeholder = "Type to search…";
+    wrap.appendChild(input);
+
+    var list = document.createElement("div");
+    list.className = "se-select-list";
+    list.hidden = true;
+    wrap.appendChild(list);
+
+    function optionsList() {
+      return Array.prototype.slice.call(select.options);
+    }
+    function syncInputFromSelect() {
+      var opt = select.options[select.selectedIndex];
+      input.value = opt ? opt.textContent : "";
+    }
+    function chooseOption(opt) {
+      select.value = opt.value;
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      syncInputFromSelect();
+      closeList();
+    }
+    function buildList(filterText) {
+      var q = normalize(filterText || "");
+      list.innerHTML = "";
+      var any = false;
+      optionsList().forEach(function (opt) {
+        if (q && normalize(opt.textContent).indexOf(q) === -1) return;
+        any = true;
+        var item = document.createElement("div");
+        item.className = "se-select-option" + (opt.selected ? " se-selected" : "");
+        item.textContent = opt.textContent;
+        item.addEventListener("mousedown", function (e) {
+          e.preventDefault();
+          chooseOption(opt);
+        });
+        list.appendChild(item);
+      });
+      if (!any) {
+        var empty = document.createElement("div");
+        empty.className = "se-select-empty";
+        empty.textContent = "No matches";
+        list.appendChild(empty);
+      }
+    }
+    function openList() {
+      buildList("");
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+    }
+    function closeList() {
+      list.hidden = true;
+      input.setAttribute("aria-expanded", "false");
+    }
+    input.addEventListener("focus", function () {
+      input.select();
+      openList();
+    });
+    input.addEventListener("input", function () {
+      buildList(input.value);
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+    });
+    input.addEventListener("blur", function () {
+      setTimeout(function () {
+        syncInputFromSelect();
+        closeList();
+      }, 120);
+    });
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        syncInputFromSelect();
+        closeList();
+      } else if (e.key === "Enter") {
+        var first = list.querySelector(".se-select-option");
+        if (!list.hidden && first) {
+          e.preventDefault();
+          first.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+        }
+      } else if (e.key === "ArrowDown" && list.hidden) {
+        openList();
+      }
+    });
+    select.addEventListener("change", syncInputFromSelect);
+    syncInputFromSelect();
+  }
+
   /* ================= KPI cards ================= */
   var KPI_SELECTOR = ".metric-card, .stat-box, [class*='kpi-card'], [class*='stat-card'], [class*='stat-item']";
   function enhanceKpiCard(card) {
@@ -359,7 +470,11 @@
   }
 
   /* ================= Collapsible cards ================= */
-  var COLLAPSIBLE_SELECTOR = ".chart-card, .dynamic-chart-card, .schema-card, .metric-grid";
+  // .metric-grid deliberately excluded: it's a bare row of headline KPI
+  // tiles with no heading, so a generic "Collapse" control would just
+  // dangle among the stat tiles and let a viewer hide top-line numbers —
+  // the opposite of "always show the length affected for every statistic".
+  var COLLAPSIBLE_SELECTOR = ".chart-card, .dynamic-chart-card, .schema-card";
   function enhanceCollapsible(card) {
     if (card.hasAttribute("data-se-collapse")) return;
     if (card.children.length < 1) return;
@@ -470,10 +585,15 @@
 
   /* ================= Driver ================= */
   function runPass() {
-    document.querySelectorAll("table:not([data-se-table])").forEach(function (t) {
+    // .data-table (and anything already using our own toolbar) is exhaustive.js's
+    // own territory — it already has its own sort/search/CSV/virtualized-load
+    // handling there, so we leave those alone and only pick up tables nothing
+    // else has touched (chiefly the pre-built dashboard bundle's own tables).
+    document.querySelectorAll("table:not([data-se-table]):not(.data-table)").forEach(function (t) {
       // skip trivial 0/1-row tables and tables already inside our own toolbar/pagination
       if (t.querySelector("tbody tr")) enhanceTable(t);
     });
+    document.querySelectorAll("select:not([data-se-select])").forEach(enhanceSelect);
     document.querySelectorAll(KPI_SELECTOR + ":not([data-se-kpi])").forEach(enhanceKpiCard);
     document.querySelectorAll(COLLAPSIBLE_SELECTOR + ":not([data-se-collapse])").forEach(enhanceCollapsible);
     document.querySelectorAll(".dynamic-legend:not([data-se-legend])").forEach(enhanceLegend);
