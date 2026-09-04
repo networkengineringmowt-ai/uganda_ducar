@@ -73,6 +73,7 @@ td.se-heat-low{background:rgba(59,130,246,.14)!important;color:#8fc4ff}
 td.se-heat-med{background:rgba(34,197,94,.14)!important;color:#8fe3ac}
 td.se-heat-high{background:rgba(245,158,11,.16)!important;color:#ffcf82}
 td.se-heat-vhigh{background:rgba(239,68,68,.18)!important;color:#ffa3a3;font-weight:700}
+
 /* ---------- Searchable select combobox ---------- */
 .se-select-wrap{position:relative;display:inline-block;width:100%}
 select.se-select-native{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none}
