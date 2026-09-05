@@ -78,17 +78,17 @@
   transform: translateX(2px);
 }
 .nav-rail-item.active{
-  background: linear-gradient(135deg, rgba(10,132,255,.22), rgba(10,132,255,.08)) !important;
-  box-shadow: inset 3px 0 0 0 #0a84ff, 0 4px 18px -6px rgba(10,132,255,.55) !important;
-  color: #fff !important;
+
+
+
 }
 .nav-rail-item.active .nav-rail-icon-wrap{
-  background: #0a84ff !important;
-  color: #fff !important;
-  box-shadow: 0 0 0 1px rgba(255,255,255,.15), 0 4px 10px -2px rgba(10,132,255,.7);
+
+
+
 }
 .nav-rail-item.active .nav-rail-label{
-  color: #fff !important;
+
   font-weight: 650 !important;
 }
 .nav-rail-item:focus-visible,
