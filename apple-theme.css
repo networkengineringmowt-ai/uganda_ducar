@@ -1,0 +1,221 @@
+/* ============================================================
+   DUCAR Priority Studio — Apple-style visual refresh
+   Loads AFTER exhaustive.css and site-enhance.css. Overrides only
+   (no structural/layout properties touched) so it works safely on
+   top of both the preserved #root bundle and the exhaustive.js
+   #exhaustive-root app without needing their source.
+   ============================================================ */
+
+:root{
+  /* Elevation surfaces (glass) built from the existing --bg-* tokens */
+  --apl-glass-1: rgba(255,255,255,0.055);
+  --apl-glass-1-hover: rgba(255,255,255,0.085);
+  --apl-glass-2: rgba(20,20,23,0.62);
+  --apl-glass-border: rgba(255,255,255,0.10);
+  --apl-glass-border-hover: rgba(255,255,255,0.20);
+  --apl-blur: blur(22px) saturate(150%);
+  --apl-blur-soft: blur(14px) saturate(130%);
+  --apl-radius-lg: 18px;
+  --apl-radius-md: 13px;
+  --apl-radius-sm: 9px;
+  --apl-shadow-1: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px -8px rgba(0,0,0,.55);
+  --apl-shadow-2: 0 2px 6px rgba(0,0,0,.4), 0 20px 44px -12px rgba(0,0,0,.65);
+  --apl-ease: cubic-bezier(.22,1,.36,1);
+}
+
+@media (prefers-reduced-motion: no-preference){
+  .chart-card, .stat-box, .metric-card, .workspace-panel > *{
+    animation: apl-rise .55s var(--apl-ease) both;
+  }
+  @keyframes apl-rise{
+    from{ opacity:0; transform: translateY(10px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+}
+
+/* ---------- Frosted-glass card treatment ---------- */
+.chart-card,
+.metric-card,
+.stat-box,
+.dynamic-chart-card,
+.clustered-column-card,
+.chart-routing-card,
+.ducar-export-panel,
+.se-select-list{
+  background: linear-gradient(180deg, var(--apl-glass-1), rgba(255,255,255,0.02)) , var(--apl-glass-2) !important;
+  -webkit-backdrop-filter: var(--apl-blur);
+  backdrop-filter: var(--apl-blur);
+  border: 1px solid var(--apl-glass-border) !important;
+  border-radius: var(--apl-radius-lg) !important;
+  box-shadow: var(--apl-shadow-1) !important;
+  transition: transform .35s var(--apl-ease), box-shadow .35s var(--apl-ease), border-color .35s var(--apl-ease);
+}
+.chart-card:hover,
+.metric-card:hover,
+.stat-box:hover,
+.dynamic-chart-card:hover,
+.clustered-column-card:hover{
+  transform: translateY(-3px);
+  border-color: var(--apl-glass-border-hover) !important;
+  box-shadow: var(--apl-shadow-2) !important;
+}
+
+/* ---------- Nav rail (sidebar) ---------- */
+.nav-rail{
+  background: linear-gradient(180deg, rgba(30,30,34,.72), rgba(14,14,18,.72)) !important;
+  -webkit-backdrop-filter: var(--apl-blur);
+  backdrop-filter: var(--apl-blur);
+  border: 1px solid var(--apl-glass-border) !important;
+}
+.nav-rail-item{
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: var(--apl-radius-md) !important;
+  transition: background .25s var(--apl-ease), transform .25s var(--apl-ease), color .25s var(--apl-ease);
+}
+.nav-rail-item:hover:not(.active){
+  background: var(--apl-glass-1) !important;
+  transform: translateX(2px);
+}
+.nav-rail-item.active{
+  background: linear-gradient(135deg, rgba(10,132,255,.22), rgba(10,132,255,.08)) !important;
+  box-shadow: inset 3px 0 0 0 #0a84ff, 0 4px 18px -6px rgba(10,132,255,.55) !important;
+  color: #fff !important;
+}
+.nav-rail-item.active .nav-rail-icon-wrap{
+  background: #0a84ff !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.15), 0 4px 10px -2px rgba(10,132,255,.7);
+}
+.nav-rail-item.active .nav-rail-label{
+  color: #fff !important;
+  font-weight: 650 !important;
+}
+.nav-rail-item:focus-visible,
+.section-tab:focus-visible,
+button:focus-visible,
+a:focus-visible{
+  outline: 2px solid #0a84ff !important;
+  outline-offset: 2px !important;
+}
+
+/* ---------- Top nav / section tabs ---------- */
+.top-nav{
+  background: rgba(8,8,10,.72) !important;
+  -webkit-backdrop-filter: var(--apl-blur-soft);
+  backdrop-filter: var(--apl-blur-soft);
+  border-bottom: 1px solid var(--apl-glass-border);
+}
+.section-tabs{
+  background: var(--apl-glass-1) !important;
+  -webkit-backdrop-filter: var(--apl-blur-soft);
+  backdrop-filter: var(--apl-blur-soft);
+  border-radius: var(--apl-radius-md) !important;
+  border: 1px solid var(--apl-glass-border) !important;
+  padding: 4px !important;
+}
+.section-tab{
+  border-radius: var(--apl-radius-sm) !important;
+  transition: background .25s var(--apl-ease), color .25s var(--apl-ease), transform .15s var(--apl-ease);
+}
+.section-tab:hover:not(.active){
+  background: var(--apl-glass-1) !important;
+  transform: translateY(-1px);
+}
+.section-tab.active{
+  background: #0a84ff !important;
+  box-shadow: 0 6px 18px -4px rgba(10,132,255,.55) !important;
+}
+
+/* ---------- Typography polish ---------- */
+.chart-title, .viz-heading, .section-subtitle{
+  letter-spacing: -0.01em;
+}
+.chart-subtitle, .subtitle, .method-note{
+  color: var(--text-muted, #86868b) !important;
+  font-weight: 400 !important;
+}
+.stat-box .val, .metric-card .val{
+  font-weight: 750 !important;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+[class*="eyebrow"], .panel-header > small, .panel-header span:first-child{
+  letter-spacing: .08em !important;
+}
+
+/* ---------- Buttons / pills ---------- */
+.chart-download, .pdf-download, .ducar-export-trigger{
+  border-radius: 999px !important;
+  border: 1px solid var(--apl-glass-border) !important;
+  background: var(--apl-glass-1) !important;
+  transition: background .25s var(--apl-ease), transform .15s var(--apl-ease), border-color .25s var(--apl-ease);
+}
+.chart-download:hover, .pdf-download:hover, .ducar-export-trigger:hover{
+  background: var(--apl-glass-1-hover) !important;
+  border-color: var(--apl-glass-border-hover) !important;
+  transform: translateY(-1px);
+}
+.se-collapse-toggle{
+  border-radius: 999px !important;
+  transition: background .2s var(--apl-ease);
+}
+
+/* ---------- Searchable selects (site-enhance) ---------- */
+.se-select-wrap .se-select-input{
+  border-radius: var(--apl-radius-sm) !important;
+  background: var(--apl-glass-1) !important;
+  border: 1px solid var(--apl-glass-border) !important;
+  transition: border-color .2s var(--apl-ease), box-shadow .2s var(--apl-ease);
+}
+.se-select-wrap .se-select-input:focus{
+  border-color: #0a84ff !important;
+  box-shadow: 0 0 0 3px rgba(10,132,255,.25) !important;
+}
+.se-select-list{
+  -webkit-backdrop-filter: var(--apl-blur);
+  backdrop-filter: var(--apl-blur);
+}
+
+/* ---------- Tables ---------- */
+table.data-table, .exhaustive-shell table{
+  border-collapse: separate !important;
+  border-spacing: 0;
+}
+table.data-table thead th, .exhaustive-shell table thead th{
+  background: rgba(20,20,23,.9) !important;
+  -webkit-backdrop-filter: var(--apl-blur-soft);
+  backdrop-filter: var(--apl-blur-soft);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+table.data-table tbody tr, .exhaustive-shell table tbody tr{
+  transition: background .15s var(--apl-ease);
+}
+table.data-table tbody tr:hover, .exhaustive-shell table tbody tr:hover{
+  background: var(--apl-glass-1) !important;
+}
+
+/* ---------- Scrollbars ---------- */
+*{
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.22) transparent;
+}
+*::-webkit-scrollbar{ width: 9px; height: 9px; }
+*::-webkit-scrollbar-track{ background: transparent; }
+*::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.18);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,.32); background-clip: padding-box; }
+
+/* ---------- Misc refinements ---------- */
+.workspace-panel{
+  scroll-behavior: smooth;
+}
+.donut, .radial-chart{
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,.35));
+}
