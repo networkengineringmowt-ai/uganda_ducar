@@ -44,23 +44,23 @@
     var scope = root || document;
     var shapes = scope.querySelectorAll ? scope.querySelectorAll("rect, path, circle, polygon, line") : [];
     for (var i = 0; i < shapes.length; i++) {
-      remapAttr(shapes[i], "fill");
-      remapAttr(shapes[i], "stroke");
+
+
     }
-    // The preserved bundle sets the active nav icon color inline (black-on-yellow);
-    // force it to white so it reads correctly on the new blue-glass selected state.
-    var activeIcons = scope.querySelectorAll
-      ? scope.querySelectorAll(".nav-rail-item.active .nav-rail-icon-wrap, .nav-rail-item.active svg, .nav-rail-item.active path")
-      : [];
-    for (var j = 0; j < activeIcons.length; j++) {
-      var el = activeIcons[j];
-      if (el.style && el.style.color && el.style.color !== "rgb(255, 255, 255)") {
-        el.style.color = "#ffffff";
-      }
-      if (el.tagName === "path" && el.getAttribute("fill") === "#000000") {
-        el.setAttribute("fill", "#ffffff");
-      }
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 
   function schedule() {
