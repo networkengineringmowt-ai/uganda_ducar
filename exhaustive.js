@@ -1304,6 +1304,7 @@
   }
   function saveCanvas(canvas, filename) { canvas.toBlob(blob=>{if(blob)downloadBlob(blob,filename);},"image/png"); }
   async function downloadElementPng(element, filename) {
+    if(window.SiteEnhance&&window.SiteEnhance.settleCounters)window.SiteEnhance.settleCounters();
     if(!window.html2canvas)return;
     const canvas=await window.html2canvas(element,{backgroundColor:"#111115",scale:2,useCORS:true,logging:false,ignoreElements:item=>item.hasAttribute?.("data-download-png")});saveCanvas(canvas,filename);
   }
@@ -1312,6 +1313,7 @@
     downloadBlob(new Blob([csv],{type:"text/csv;charset=utf-8"}),filename);
   }
   async function sectionPdf(event) {
+    if(window.SiteEnhance&&window.SiteEnhance.settleCounters)window.SiteEnhance.settleCounters();
     const JsPDF=window.jspdf?.jsPDF;if(!JsPDF)return;const pdf=new JsPDF({unit:"mm",format:"a4"}),margin=14,width=182;let y=16;
     const trigger=event?.currentTarget;if(trigger){trigger.disabled=true;trigger.textContent="Building complete PDF…";}
     const line=(text,size=9)=>{pdf.setFontSize(size);const lines=pdf.splitTextToSize(String(text),width);if(y+lines.length*5>282){pdf.addPage();y=16;}pdf.text(lines,margin,y);y+=lines.length*5+2;};
