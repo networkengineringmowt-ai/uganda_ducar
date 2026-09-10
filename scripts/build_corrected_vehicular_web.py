@@ -6,11 +6,14 @@ import csv
 import gzip
 import json
 import math
+import re
+from collections import Counter
 from collections import defaultdict
 from pathlib import Path
 
 import geopandas as gpd
 import pandas as pd
+import pyogrio
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,6 +36,11 @@ DETAIL_MANIFEST = DATA / "hotosm_detail_tiles_manifest.json"
 SOURCE_LABEL = "MoWT corrected full vehicular network alignment, August 2026"
 DISPLAY_TOTAL_KM = 248_616.14
 EXPECTED_ROWS = 404_047
+EMPTY_VALUES = {
+    "", "nan", "none", "null", "not supplied", "not reported",
+    "not applicable", "unclassified", "unknown",
+}
+OFFICIAL_MOWT_LINK_ID = re.compile(r"^[A-Z]{4}\d{3}$")
 MOWT_ROAD_CLASSES = {
     "National Roads", "District Roads", "KCCA", "City Roads",
     "Community Access Roads", "Town Council Roads", "Municipal Roads",
@@ -82,6 +90,10 @@ def text(value: object, fallback: str = "Not Applicable") -> str:
         return fallback
     cleaned = str(value).strip()
     return cleaned if cleaned else fallback
+
+
+def is_supplied(value: object) -> bool:
+    return text(value, "").strip().casefold() not in EMPTY_VALUES
 
 
 def json_value(value: object) -> object:
@@ -182,7 +194,15 @@ def add_summary(summary: dict[str, float | int], row: object) -> None:
     summary["paved_km" if row.PAVED_CLS == "Paved" else "unpaved_km"] += length
     condition_field = {"Good": "good_condition_km", "Fair": "fair_condition_km", "Poor": "poor_condition_km"}[row.COND]
     summary[condition_field] += length
-    summary["named_feature_count"] += int(bool(text(row.ROAD_NAME, "")))
+    summary["named_feature_count"] += int(is_supplied(row.ROAD_NAME))
+
+
+def pavement_surface_conflict(row: object) -> bool:
+    surface = text(row.SURFACE, "").strip().casefold()
+    pavement = text(row.PAVED_CLS, "").strip().casefold()
+    paved_surface = surface in {"bituminous", "concrete", "asphalt", "paved"}
+    unpaved_surface = surface in {"gravel", "earth", "unpaved", "dirt", "ground"}
+    return (paved_surface and pavement != "paved") or (unpaved_surface and pavement != "unpaved")
 
 
 def rounded(values: dict[str, object]) -> dict[str, object]:
@@ -344,6 +364,20 @@ def main() -> None:
     paths = sorted(SOURCE_DIR.glob(SOURCE_PATTERN))
     if len(paths) != 30:
         raise RuntimeError(f"Expected 30 corrected source parts, found {len(paths)}")
+    # Fail before opening or truncating any published output.  The source folder
+    # has previously contained a partial 402,835-feature snapshot while the live
+    # archive contains 404,047 features; checking after streaming would destroy
+    # the only complete copy before the mismatch was discovered.
+    source_part_counts = {path.name: int(pyogrio.read_info(path)["features"]) for path in paths}
+    source_row_count = sum(source_part_counts.values())
+    if source_row_count != EXPECTED_ROWS:
+        raise RuntimeError(
+            "Refusing to overwrite the published full-network assets: "
+            f"the 30 source parts contain {source_row_count:,} features, "
+            f"but the protected archival population contains {EXPECTED_ROWS:,}. "
+            "Restore the missing source features or deliberately establish a new "
+            "authoritative population before rebuilding."
+        )
     DATA.mkdir(exist_ok=True)
     DETAIL_DIR.mkdir(exist_ok=True)
     old = json.loads(ANALYSIS.read_text(encoding="utf-8")) if ANALYSIS.exists() else {}
@@ -371,6 +405,12 @@ def main() -> None:
     json_stream.write("[")
     row_count = 0
     link_ids: set[str] = set()
+    link_id_counts: Counter[str] = Counter()
+    road_name_counts: Counter[str] = Counter()
+    missing_or_placeholder_counts: Counter[str] = Counter()
+    missing_or_placeholder_length_km: Counter[str] = Counter()
+    invalid_official_link_id_rows = 0
+    pavement_surface_contradictions = 0
     for part_index, path in enumerate(paths, start=1):
         frame = gpd.read_file(path, engine="pyogrio")
         missing = [field for field in FIELDS if field not in frame.columns]
@@ -387,16 +427,27 @@ def main() -> None:
             if row_count > 1:
                 json_stream.write(",")
             json_stream.write(json.dumps({WEB_FIELD_NAMES.get(field, field.lower()): json_value(value) for field, value in record.items()}, ensure_ascii=False, separators=(",", ":"), default=str))
-            link_ids.add(text(row.LINK_ID, ""))
+            link_id = text(row.LINK_ID, "")
+            road_name_key = text(row.ROAD_NAME, "").casefold()
+            link_ids.add(link_id)
+            link_id_counts[link_id] += 1
+            road_name_counts[road_name_key] += 1
+            if not OFFICIAL_MOWT_LINK_ID.fullmatch(link_id):
+                invalid_official_link_id_rows += 1
+            if pavement_surface_conflict(row):
+                pavement_surface_contradictions += 1
             add_summary(total, row)
             for dimension, field_name in SUMMARY_DIMENSIONS.items():
                 category = canonical_surface(row) if dimension == "surface" else text(getattr(row, field_name))
                 add_summary(summaries[dimension][category], row)
             length = float(row.LEN_KM)
             for field_name in FIELDS:
-                if text(getattr(row, field_name), ""):
+                if is_supplied(getattr(row, field_name)):
                     completeness[field_name]["supplied_features"] += 1
                     completeness[field_name]["supplied_length_km"] += length
+                else:
+                    missing_or_placeholder_counts[field_name] += 1
+                    missing_or_placeholder_length_km[field_name] += length
             shared = (
                 text(row.REGION), text(row.DISTRICT), text(row.FUNC_CLASS), text(row.GOV_NAME),
                 text(row.PAVED_CLS), text(row.COND), text(row.HIGHWAY), canonical_surface(row),
@@ -434,6 +485,18 @@ def main() -> None:
             raise RuntimeError(f"{dimension} expected {expected} categories, found {actual}")
     if round(float(total["length_km"]), 2) != DISPLAY_TOTAL_KM:
         raise RuntimeError(f"Corrected network rounds to {float(total['length_km']):,.2f} km")
+    duplicate_link_id_rows = sum(count for count in link_id_counts.values() if count > 1)
+    duplicate_road_name_rows = sum(count for name, count in road_name_counts.items() if name and count > 1)
+    critical_quality_issues = {
+        "missing_or_placeholder_road_names": int(missing_or_placeholder_counts["ROAD_NAME"]),
+        "missing_or_placeholder_surface": int(missing_or_placeholder_counts["SURFACE"]),
+        "missing_or_placeholder_government_authority": int(missing_or_placeholder_counts["GOV_NAME"]),
+        "duplicate_link_id_rows": int(duplicate_link_id_rows),
+        "duplicate_road_name_rows": int(duplicate_road_name_rows),
+        "non_official_mowt_link_id_rows": int(invalid_official_link_id_rows),
+        "pavement_surface_contradictions": int(pavement_surface_contradictions),
+    }
+    quality_status = "PASS" if not any(critical_quality_issues.values()) else "REVIEW"
 
     overview_features = [feature(key, group, False) for key, group in sorted(overview_groups.items())]
     map_payload = {
@@ -511,13 +574,17 @@ def main() -> None:
             "method": "National Roads are preserved directly from corrected FUNC_CLASS within the full vehicular network.",
         },
         "attribute_completion": {
-            "status": "complete",
+            "status": "complete" if quality_status == "PASS" else "review",
             "model_year": 2026,
-            "functional_class_complete_features": row_count,
-            "pavement_complete_features": row_count,
-            "condition_complete_features": row_count,
-            "district_complete_features": row_count,
-            "region_complete_features": row_count,
+            "functional_class_complete_features": completeness["FUNC_CLASS"]["supplied_features"],
+            "pavement_complete_features": completeness["PAVED_CLS"]["supplied_features"],
+            "condition_complete_features": completeness["COND"]["supplied_features"],
+            "surface_complete_features": completeness["SURFACE"]["supplied_features"],
+            "road_name_complete_features": completeness["ROAD_NAME"]["supplied_features"],
+            "government_authority_complete_features": completeness["GOV_NAME"]["supplied_features"],
+            "district_complete_features": completeness["DISTRICT"]["supplied_features"],
+            "region_complete_features": completeness["REGION"]["supplied_features"],
+            "quality_issues": critical_quality_issues,
         },
         "grouped_clustered_2026": {
             "source": SOURCE_LABEL,
@@ -530,10 +597,16 @@ def main() -> None:
     }
     ANALYSIS.write_text(json.dumps(analysis, indent=2), encoding="utf-8")
     audit = {
-        "status": "PASS",
+        "status": quality_status,
         "source_parts": len(paths),
         "ways": row_count,
         "source_link_id_unique_values": len(link_ids),
+        "attribute_quality_issues": critical_quality_issues,
+        "missing_or_placeholder_features": dict(sorted(missing_or_placeholder_counts.items())),
+        "missing_or_placeholder_length_km": {
+            key: round(float(value), 6)
+            for key, value in sorted(missing_or_placeholder_length_km.items())
+        },
         "length_km_raw": round(float(total["length_km"]), 6),
         "length_km_published": DISPLAY_TOTAL_KM,
         "functional_classes": {key: rounded(value) for key, value in summaries["functional_class"].items()},

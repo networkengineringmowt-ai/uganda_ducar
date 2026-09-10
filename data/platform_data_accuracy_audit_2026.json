@@ -1,7 +1,7 @@
 {
   "audit_year": 2026,
-  "scope": "Corrected 404,047-way full vehicular network and governed DUCAR link register",
-  "status": "PASS",
+  "scope": "Published 404,047-way full vehicular network, current 30-part GIS source snapshot and governed DUCAR link register",
+  "status": "REVIEW",
   "authoritative_population": {
     "ways": 404047,
     "length_km_raw": 248616.137116,
@@ -9,19 +9,113 @@
     "districts": 135,
     "regions": 6
   },
+  "current_source_snapshot": {
+    "parts": 30,
+    "ways": 402835,
+    "difference_from_published_ways": -1212,
+    "part_feature_counts": {
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part01of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part02of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part03of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part04of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part05of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part06of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part07of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part08of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part09of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part10of30.shp": 12257,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part11of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part12of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part13of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part14of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part15of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part16of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part17of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part18of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part19of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part20of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part21of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part22of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part23of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part24of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part25of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part26of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part27of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part28of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part29of30.shp": 13469,
+      "DUCAR_Full_Vehicular_Network_HOTOSM_part30of30.shp": 13446
+    }
+  },
+  "arcgis_complete_geometry_snapshot": {
+    "ways": 404047,
+    "unique_osm_feature_ids": 404047,
+    "geometry_length_km": 248616.148981,
+    "functional_classes": [
+      "Community Access Road",
+      "District Road",
+      "National Road",
+      "Other Vehicular Road",
+      "Trunk/Primary Road",
+      "Urban/Local Road"
+    ]
+  },
+  "source_lineage": {
+    "source_part_count_variance": 0,
+    "source_feature_count_variance_from_published": 1212,
+    "source_feature_count_variance_from_expected": 1212,
+    "published_feature_count_variance_from_expected": 0
+  },
+  "arcgis_complete_geometry_recovery": {
+    "missing_required_layers": [],
+    "feature_count_variance_from_expected": 0,
+    "duplicate_osm_feature_ids": 0,
+    "missing_display_road_names": 0,
+    "missing_surface": 0,
+    "missing_pavement_class": 0,
+    "missing_condition": 0,
+    "missing_endpoint_coordinates": {
+      "start_x_coordinate_dd": 0,
+      "start_y_coordinate_dd": 0,
+      "end_x_coordinate_dd": 0,
+      "end_y_coordinate_dd": 0
+    },
+    "geometry_length_within_two_hundredths_km": true,
+    "functional_classes_requiring_seven_class_reconciliation": [
+      "Community Access Road",
+      "District Road",
+      "National Road",
+      "Other Vehicular Road",
+      "Trunk/Primary Road",
+      "Urban/Local Road"
+    ],
+    "traffic_component_sum_mismatches": 0,
+    "adt_excluding_motorcycles_mismatches": 0,
+    "heavy_vehicle_adt_exceeds_non_motorcycle_adt": 0,
+    "aadt_outside_stated_confidence_bounds": 255541,
+    "crash_severity_sum_mismatches": 0,
+    "non_2026_traffic_projection_rows": 0
+  },
   "corrected_source": {
     "record_count_variance": 0,
     "published_length_variance_km": 0.0,
     "district_count_variance": 0,
     "region_count_variance": 0,
     "missing_required_attributes": {
+      "LINK_ID": 0,
+      "ROAD_NAME": 396787,
+      "SURFACE": 315247,
       "FUNC_CLASS": 0,
       "PAVED_CLS": 0,
       "COND": 0,
       "DISTRICT": 0,
       "REGION": 0,
-      "GOV_NAME": 0
+      "GOV_NAME": 343219
     },
+    "duplicate_full_network_link_ids": 8667,
+    "invalid_official_full_network_link_ids": 404047,
+    "duplicate_full_network_road_names": 401528,
+    "pavement_surface_contradictions": 0,
+    "national_roads_without_named_authority": 7219,
     "functional_class": {
       "category_set_match": true,
       "record_count_variance": 0,
@@ -51,7 +145,7 @@
       "condition": 0,
       "district": 0,
       "region": 0,
-      "government_authority": 0
+      "government_authority": 2865
     },
     "manifest_tile_count_variance": 0,
     "missing_detail_tile_files": 0

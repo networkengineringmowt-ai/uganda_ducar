@@ -9,13 +9,20 @@ import sqlite3
 from pathlib import Path
 
 import pandas as pd
+import pyogrio
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 GIS = ROOT.parent / "DUCAR_Final_Deliverables_2026" / "04_GIS_Shapefiles"
+SOURCE_PARTS = GIS / "DUCAR_Full_Vehicular_Network_HOTOSM_parts"
+SOURCE_PATTERN = "DUCAR_Full_Vehicular_Network_HOTOSM_part??of30.shp"
+ARCGIS_GDB = ROOT.parent / "DUCAR_Final_Deliverables_2026" / "07_ArcGIS_Pro_Package" / "DUCAR_ArcGIS_Pro_2026.gdb"
 OUTPUT = DATA / "platform_data_accuracy_audit_2026.json"
-EMPTY = {"", "nan", "none", "null", "not supplied", "unclassified", "unknown"}
+EMPTY = {
+    "", "nan", "none", "null", "not supplied", "not reported",
+    "not applicable", "unclassified", "unknown",
+}
 EXPECTED_ROWS = 404_047
 EXPECTED_LENGTH = 248_616.14
 EXPECTED_FUNCTIONAL_CLASSES = {
@@ -45,6 +52,18 @@ def category_checks(actual: dict[str, tuple[int, float]], expected: dict[str, tu
     }
 
 
+def normalized(series: pd.Series) -> pd.Series:
+    return series.fillna("").astype(str).str.strip().str.casefold()
+
+
+def pavement_surface_conflicts(frame: pd.DataFrame) -> int:
+    surface = normalized(frame["SURFACE"])
+    pavement = normalized(frame["PAVED_CLS"])
+    paved_surface = surface.isin({"bituminous", "concrete", "asphalt", "paved"})
+    unpaved_surface = surface.isin({"gravel", "earth", "unpaved", "dirt", "ground"})
+    return int(((paved_surface & pavement.ne("paved")) | (unpaved_surface & pavement.ne("unpaved"))).sum())
+
+
 def main() -> None:
     source = pd.read_csv(DATA / "hotosm_vehicular_link_attributes.csv.gz", low_memory=False)
     ducar = pd.read_csv(DATA / "ducar_link_register.csv", low_memory=False)
@@ -59,12 +78,105 @@ def main() -> None:
     functional = grouped(source, "FUNC_CLASS")
     pavement = grouped(source, "PAVED_CLS")
     condition = grouped(source, "COND")
+    full_link_ids = source["LINK_ID"].fillna("").astype(str).str.strip()
+    full_road_names = source["ROAD_NAME"].fillna("").astype(str).str.strip()
+    source_paths = sorted(SOURCE_PARTS.glob(SOURCE_PATTERN))
+    source_part_counts = {path.name: int(pyogrio.read_info(path)["features"]) for path in source_paths}
+    source_snapshot_rows = sum(source_part_counts.values())
+    source_lineage_checks = {
+        "source_part_count_variance": abs(len(source_paths) - 30),
+        "source_feature_count_variance_from_published": abs(source_snapshot_rows - len(source)),
+        "source_feature_count_variance_from_expected": abs(source_snapshot_rows - EXPECTED_ROWS),
+        "published_feature_count_variance_from_expected": abs(len(source) - EXPECTED_ROWS),
+    }
+    gdb_layers = {str(name) for name, _ in pyogrio.list_layers(ARCGIS_GDB)} if ARCGIS_GDB.exists() else set()
+    required_gdb_layers = {"Road_Segment_Master", "Road_Network", "Road_Traffic", "Road_Condition"}
+    if required_gdb_layers.issubset(gdb_layers):
+        gdb_network = pyogrio.read_dataframe(
+            ARCGIS_GDB,
+            layer="Road_Network",
+            columns=[
+                "osm_feature_id", "road_name_display", "functional_class", "surface",
+                "pavement_class", "condition", "length_km", "start_x_coordinate_dd",
+                "start_y_coordinate_dd", "end_x_coordinate_dd", "end_y_coordinate_dd",
+            ],
+            read_geometry=False,
+        )
+        gdb_length = float(pd.to_numeric(gdb_network["length_km"], errors="coerce").sum())
+        gdb_classes = set(gdb_network["functional_class"].dropna().astype(str))
+        traffic_components = [
+            "adt_motorcycles", "adt_passenger_cars", "adt_taxis", "adt_minibuses",
+            "adt_large_buses", "adt_light_goods", "adt_medium_goods", "adt_heavy_goods",
+            "adt_articulated_trucks", "adt_tractors", "adt_special_vehicles", "adt_other_motorised",
+        ]
+        gdb_traffic = pyogrio.read_dataframe(
+            ARCGIS_GDB,
+            layer="Road_Traffic",
+            columns=[
+                "adt_total", "adt_excluding_motorcycles", "heavy_vehicle_adt",
+                "traffic_aadt_lower", "traffic_aadt_upper", "traffic_projection_year",
+                "annual_crashes_estimate", "annual_fatal_crashes_estimate",
+                "annual_serious_crashes_estimate", "annual_minor_crashes_estimate",
+                *traffic_components,
+            ],
+            read_geometry=False,
+        )
+        component_sum = gdb_traffic[traffic_components].sum(axis=1)
+        crash_sum = gdb_traffic[
+            ["annual_fatal_crashes_estimate", "annual_serious_crashes_estimate", "annual_minor_crashes_estimate"]
+        ].sum(axis=1)
+        gdb_recovery_checks = {
+            "missing_required_layers": sorted(required_gdb_layers - gdb_layers),
+            "feature_count_variance_from_expected": abs(len(gdb_network) - EXPECTED_ROWS),
+            "duplicate_osm_feature_ids": int(gdb_network["osm_feature_id"].duplicated(keep=False).sum()),
+            "missing_display_road_names": missing(gdb_network["road_name_display"]),
+            "missing_surface": missing(gdb_network["surface"]),
+            "missing_pavement_class": missing(gdb_network["pavement_class"]),
+            "missing_condition": missing(gdb_network["condition"]),
+            "missing_endpoint_coordinates": {
+                field: missing(gdb_network[field])
+                for field in ["start_x_coordinate_dd", "start_y_coordinate_dd", "end_x_coordinate_dd", "end_y_coordinate_dd"]
+            },
+            "geometry_length_within_two_hundredths_km": abs(gdb_length - EXPECTED_LENGTH) <= 0.02,
+            "functional_classes_requiring_seven_class_reconciliation": sorted(gdb_classes - EXPECTED_FUNCTIONAL_CLASSES),
+            "traffic_component_sum_mismatches": int((component_sum != gdb_traffic["adt_total"]).sum()),
+            "adt_excluding_motorcycles_mismatches": int(
+                ((gdb_traffic["adt_total"] - gdb_traffic["adt_motorcycles"]) != gdb_traffic["adt_excluding_motorcycles"]).sum()
+            ),
+            "heavy_vehicle_adt_exceeds_non_motorcycle_adt": int(
+                (gdb_traffic["heavy_vehicle_adt"] > gdb_traffic["adt_excluding_motorcycles"]).sum()
+            ),
+            "aadt_outside_stated_confidence_bounds": int(
+                (
+                    (gdb_traffic["traffic_aadt_lower"] > gdb_traffic["adt_total"])
+                    | (gdb_traffic["traffic_aadt_upper"] < gdb_traffic["adt_total"])
+                ).sum()
+            ),
+            "crash_severity_sum_mismatches": int((crash_sum != gdb_traffic["annual_crashes_estimate"]).sum()),
+            "non_2026_traffic_projection_rows": int((gdb_traffic["traffic_projection_year"] != 2026).sum()),
+        }
+        gdb_recovery_statistics = {
+            "ways": len(gdb_network),
+            "unique_osm_feature_ids": int(gdb_network["osm_feature_id"].nunique(dropna=True)),
+            "geometry_length_km": round(gdb_length, 6),
+            "functional_classes": sorted(gdb_classes),
+        }
+    else:
+        gdb_recovery_checks = {"missing_required_layers": sorted(required_gdb_layers - gdb_layers)}
+        gdb_recovery_statistics = {"ways": 0, "unique_osm_feature_ids": 0, "geometry_length_km": 0.0, "functional_classes": []}
     corrected_checks = {
         "record_count_variance": abs(len(source) - EXPECTED_ROWS),
         "published_length_variance_km": round(abs(round(source_length, 2) - EXPECTED_LENGTH), 6),
         "district_count_variance": abs(source["DISTRICT"].nunique() - 135),
         "region_count_variance": abs(source["REGION"].nunique() - 6),
-        "missing_required_attributes": {field: missing(source[field]) for field in ["FUNC_CLASS", "PAVED_CLS", "COND", "DISTRICT", "REGION", "GOV_NAME"]},
+        "missing_required_attributes": {field: missing(source[field]) for field in ["LINK_ID", "ROAD_NAME", "SURFACE", "FUNC_CLASS", "PAVED_CLS", "COND", "DISTRICT", "REGION", "GOV_NAME"]},
+        "duplicate_full_network_link_ids": int(full_link_ids.duplicated(keep=False).sum()),
+        "invalid_official_full_network_link_ids": int((~full_link_ids.str.fullmatch(ROAD_ID)).sum()),
+        "duplicate_full_network_road_names": int(full_road_names.str.casefold().duplicated(keep=False).sum()),
+        "pavement_surface_contradictions": pavement_surface_conflicts(source),
+        "national_roads_without_named_authority": int(
+            ((source["FUNC_CLASS"] == "National Roads") & normalized(source["GOV_NAME"]).isin(EMPTY)).sum()
+        ),
         "functional_class": {
             "category_set_match": set(functional) == EXPECTED_FUNCTIONAL_CLASSES,
             "record_count_variance": abs(sum(value[0] for value in functional.values()) - EXPECTED_ROWS),
@@ -139,12 +251,27 @@ def main() -> None:
             return all(valid(item) for item in value.values())
         return value == "ok"
 
-    sections = {"corrected_source": corrected_checks, "web_map": web_checks, "analysis": analysis_checks, "road_names": name_checks, "delivery": delivery_checks}
+    sections = {
+        "source_lineage": source_lineage_checks,
+        "arcgis_complete_geometry_recovery": gdb_recovery_checks,
+        "corrected_source": corrected_checks,
+        "web_map": web_checks,
+        "analysis": analysis_checks,
+        "road_names": name_checks,
+        "delivery": delivery_checks,
+    }
     report = {
         "audit_year": 2026,
-        "scope": "Corrected 404,047-way full vehicular network and governed DUCAR link register",
+        "scope": "Published 404,047-way full vehicular network, current 30-part GIS source snapshot and governed DUCAR link register",
         "status": "PASS" if all(valid(section) for section in sections.values()) else "REVIEW",
         "authoritative_population": {"ways": len(source), "length_km_raw": round(source_length, 6), "length_km_published": EXPECTED_LENGTH, "districts": source["DISTRICT"].nunique(), "regions": source["REGION"].nunique()},
+        "current_source_snapshot": {
+            "parts": len(source_paths),
+            "ways": source_snapshot_rows,
+            "difference_from_published_ways": source_snapshot_rows - len(source),
+            "part_feature_counts": source_part_counts,
+        },
+        "arcgis_complete_geometry_snapshot": gdb_recovery_statistics,
         **sections,
     }
     OUTPUT.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

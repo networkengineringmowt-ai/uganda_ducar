@@ -22,6 +22,7 @@
     hotosmMap: "./data/hotosm_vehicular_map.geojson.gz?v=20260831-mowt-seven-classes-1",
     hotosmDetailManifest: "./data/hotosm_detail_tiles_manifest.json?v=20260831-mowt-seven-classes-1",
     hotosmAnalysis: "./data/hotosm_vehicular_analysis.json?v=20260831-mowt-seven-classes-1",
+    arcgisReady: "./data/arcgis_ready_complete_network_reconciliation_2026.json?v=20260910-arcgis-ready-1",
     fullNetworkRecords: "./data/hotosm_vehicular_link_attributes.json.gz?v=20260831-mowt-seven-classes-1",
     nationalMap: "./data/uganda_national_roads_2026.geojson.gz?v=20260824-national-register-exact-4"
   };
@@ -297,9 +298,8 @@
   async function data(key) {
     if (!cache[key]) {
       const response = await fetch(PATHS[key]);
-      if (!response.ok) throw new Error("Unable to load " + PATHS[key]);
       if(PATHS[key].includes(".gz")){
-        if(typeof DecompressionStream==="undefined"){
+        if(!response.ok||typeof DecompressionStream==="undefined"){
           const fallback=await fetch(PATHS[key].replace(/\.gz(?=\?|$)/,""));
           if(!fallback.ok)throw new Error("Unable to load uncompressed fallback for "+PATHS[key]);
           cache[key]=await fallback.json();
@@ -307,7 +307,10 @@
           const decoded=response.body.pipeThrough(new DecompressionStream("gzip"));
           cache[key]=await new Response(decoded).json();
         }
-      }else cache[key] = await response.json();
+      }else {
+        if (!response.ok) throw new Error("Unable to load " + PATHS[key]);
+        cache[key] = await response.json();
+      }
     }
     return cache[key];
   }
@@ -321,6 +324,7 @@
       return data("mapRoads");
     }
     await data("hotosmAnalysis");
+    await data("arcgisReady").catch(() => null);
     if (["sql", "schema"].includes(state.tab)) return data("database");
     if (state.section === "global") return Promise.all([data("global"), data("governance")]);
     if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap"), data("links"), data("database"), data("structures")]);
@@ -332,6 +336,7 @@
   function number(value, digits = 0) { const numeric=Number(value||0),authoritative=Math.abs(numeric-Number(confirmedNetwork().length_km||0))<.01,precision=authoritative?2:digits;return numeric.toLocaleString(undefined,{maximumFractionDigits:precision,minimumFractionDigits:authoritative?2:0}); }
   function hasNumeric(value) { return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)); }
   function confirmedNetwork() { return cache.inventory?.confirmed_all_road_inventory || CONFIRMED_NETWORK_FALLBACK; }
+  function nationalRoadKm() { return Number(cache.arcgisReady?.national_road_length_km || 21370.392215); }
   function chartNumber(value, unit) {
     if (unit === "UGX") return "UGX " + new Intl.NumberFormat(undefined, { notation: "compact", maximumFractionDigits: 1 }).format(value);
     return number(value, unit.includes("km") ? 1 : 0)+(unit.includes("km")?" km":"");
@@ -488,12 +493,11 @@
     return `<article class="dynamic-chart-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><header><h4>${esc(series.name)}</h4><span>${esc(measureSummary(series.unit))}</span></header><div class="universal-chart-frame">${renderer}</div><div class="universal-axis-strip"><span>Vertical Axis: ${esc(properText(series.unit))}</span><span>Scale Ticks: 0 · 25% · 50% · 75% · 100%</span><span>Horizontal Axis: Complete Categories</span></div></article>`;
   }
   function interactiveGallery(title, series) {
-    const types=[["donut","Donuts"],["pie","Pies"],["funnel","Funnels"],["clustered","Clustered columns"],["stacked","Stacked columns"],["sparkline","Sparklines"],["gauge","Gauges"],["radar","Radar profiles"],["treemap","Treemaps"],["scatter","Scatter and frequency bubbles"],["composed","Composed length and cumulative share"],["ranked","Complete ranked matrices"]];
+    const types=["donut","pie","funnel","clustered","stacked","sparkline","gauge","radar","treemap","scatter","composed","ranked"];
     const routed=series.filter(group=>!chartable(group.values));
     const eligible=series.filter(group=>chartable(group.values));
-    if(routed.length) title+=` - ${routed.length} high-cardinality dimension${routed.length===1?"":"s"} retained intact in tables`;
     series=eligible;
-    return `<section class="viz-studio complete-chart-atlas"><div class="viz-heading"><div><small>ALL CHART FORMS · COMPLETE POPULATION · NO HIDDEN PANELS</small><h3>${esc(title)}</h3><p>Every chart form is visible in one continuous page. Each category reports cumulative affected length and complete record frequency together.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></div><div class="complete-chart-stack">${types.map(([id,text])=>`<section class="chart-type-section"><header><h4>${esc(text)}</h4><span>${number(series.length)} complete-population views</span></header><div class="dynamic-chart-grid">${series.map(item=>vizCard(item,id)).join("")}</div></section>`).join("")}</div></section>`;
+    return `<section class="viz-studio complete-chart-atlas"><div class="viz-heading"><div><small>COMPLETE DASHBOARD</small><h3>${esc(title)}</h3><p>Every visible metric reports cumulative affected length and complete record frequency together.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></div><div class="complete-chart-stack"><div class="dynamic-chart-grid">${types.flatMap(id=>series.map(item=>vizCard(item,id))).join("")}</div></div></section>`;
   }
   function roadInteractiveSeries(rows, section) {
     const missingKm=field=>rows.filter(row=>typeof row[field]!=="number").reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
@@ -580,7 +584,6 @@
     if(state.section==="summaries"){const rows=cache.links||[];series=[...series,{name:"Surface type health",values:aggregate(rows,"surface"),unit:"covered km"},{name:"Condition-risk bands",values:bands(rows,"condition_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"},{name:"Surface-risk bands",values:bands(rows,"surface_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"},{name:"Link-length bands",values:bands(rows,"geometry_length_km",[["Below 1 km",0,1],["1 to 2.9 km",1,3],["3 to 4.9 km",3,5],["5 to 9.9 km",5,10],["10+ km",10,Infinity]]),unit:"covered km"},{name:"Planning-score bands",values:bands(rows,"planning_priority_score",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"}];}
     const routed=series.filter(group=>!chartable(group.values));
     const eligible=series.filter(group=>chartable(group.values)), cards=[];
-    if(routed.length) title+=` - ${routed.length} high-cardinality dimension${routed.length===1?"":"s"} retained intact in tables`;
     series=eligible;
     eligible.forEach((group,groupIndex)=>{
       const values=(group.values||[]).map(item=>({name:shown(item.name),value:Number(item.value||0),count:item.count})).filter(item=>item.value>0||Number(item.count||0)>0);
@@ -591,7 +594,7 @@
         cards.push(`<article class="insight-card" data-insight-card data-download-chart data-series="${esc(group.name)}" data-insight-search="${esc((group.name+" "+item.name).toLowerCase())}" style="--delay:${(cards.length%16)*22}ms"><button class="chart-download compact" type="button" data-download-png>PNG</button><header><span>${esc(group.name)}</span></header><h4>${esc(item.name)}</h4><strong>${esc(chartNumber(item.value,group.unit))}</strong><small class="insight-frequency">${item.count!==undefined?number(item.count)+" records":"Complete derived metric"}</small>${insightMicro(type,share,meanShare,color)}<footer><span>${number(share,2)}% of dimension</span><span class="${delta>=0?"positive":"negative"}">${delta>=0?"+":""}${esc(chartNumber(delta,group.unit))} vs mean</span></footer></article>`);
       });
     });
-    return `<section class="insight-wall" data-insight-wall data-total="${cards.length}"><div class="insight-heading"><div><small>SECTION-SPECIFIC · COMPLETE POPULATION</small><h3>${esc(title)}</h3><p>Each infographic is a distinct category insight. Values use the full section population; nothing is limited to a Top-N list.</p></div><strong><span data-insight-count>${cards.length}</span> infographics</strong></div><div class="insight-controls"><label>Dimension<select data-insight-series><option value="all">All dimensions</option>${series.map(group=>`<option value="${esc(group.name)}">${esc(group.name)}</option>`).join("")}</select></label><label>Find an insight<input type="search" data-insight-search placeholder="Search district, condition, surface…"></label><button type="button" data-insight-motion>Pause motion</button></div><div class="insight-grid">${cards.join("")}</div><div class="insight-empty" hidden>No infographic matches this filter.</div></section>`;
+    return `<section class="insight-wall" data-insight-wall data-total="${cards.length}"><div class="insight-heading"><div><small>COMPLETE DASHBOARD</small><h3>${esc(title)}</h3><p>Every visible insight uses the full section population and reports affected length with record frequency.</p></div><strong><span data-insight-count>${cards.length}</span> insights</strong></div><div class="insight-controls"><label>Dimension<select data-insight-series><option value="all">All dimensions</option>${series.map(group=>`<option value="${esc(group.name)}">${esc(group.name)}</option>`).join("")}</select></label><label>Find an insight<input type="search" data-insight-search placeholder="Search district, condition, surface…"></label><button type="button" data-insight-motion>Pause motion</button></div><div class="insight-grid">${cards.join("")}</div><div class="insight-empty" hidden>No insight matches this filter.</div></section>`;
   }
   function matrix(rows) {
     const conditions = ["Good", "Fair", "Poor", "Unclassified", "Not supplied"];
@@ -720,6 +723,14 @@
     ])}<div class="chart-grid">${barChart("Published category references","The four MoWT-published components total 159,795 km, 172 km above the separately published 159,623 km headline; source values are retained without silent adjustment.",[{name:"National roads",value:official.national},{name:"Urban roads",value:official.urban},{name:"District roads",value:official.district},{name:"Community access roads",value:official.community}],"km",COLORS[0])}${barChart("DUCAR reconciliation coverage","Verified, candidate-expansion and unresolved lengths reconcile exactly to 138,503 km.",[{name:"Verified link register",value:verified,count:fullRows.length},{name:"Additional candidate geometry",value:additional},{name:"Unresolved benchmark gap",value:unresolved}],"km",COLORS[4])}</div>${controls}<div class="table-export-wrap"><button type="button" class="csv-download" data-table-csv>CSV</button><div class="table-wrap benchmark-table"><table class="data-table"><thead><tr><th>Reconciliation class</th><th>Length km</th><th>Benchmark share</th><th>Interpretation</th></tr></thead><tbody>${rowsHtml.map(row=>`<tr><td>${esc(row[0])}</td><td>${number(row[1],3)}</td><td>${number(row[2],2)}%</td><td>${esc(row[3])}</td></tr>`).join("")}</tbody></table></div></div><div class="benchmark-audit"><strong>Published-source arithmetic disclosure</strong><span>MoWT-published national roads ${number(official.national)} km + DUCAR ${number(official.ducar)} km = ${number(componentTotal)} km, which is ${number(componentTotal-official.total)} km above the separately published ${number(official.total)} km headline.</span><span>The supplied July 2026 paved/unpaved split ${number(official.pavedNational)} + ${number(official.unpavedNational)} = ${number(pavedTotal)} km, which is ${number(pavedTotal-official.national)} km above MoWT’s ${number(official.national)} km national-road reference.</span><span>Source: <a href="https://works.go.ug/" target="_blank" rel="noreferrer">MoWT homepage</a> and <a href="https://works.go.ug/wp-content/uploads/2026/05/MoWT-Strategic-Plan-2026_30-Draft-v6.pdf" target="_blank" rel="noreferrer">Strategic Plan 2025/26–2029/30 draft</a>.</span></div></section>`;
   }
   function hotosmValues(dimension) {
+    if(dimension==="functional_class"&&cache.arcgisReady?.class_summary){
+      return Object.entries(cache.arcgisReady.class_summary).map(([name,item])=>({
+        name:properText(name),
+        value:Number(item.length_km||0),
+        length:Number(item.length_km||0),
+        count:Number(item.records||0)
+      }));
+    }
     return (cache.hotosmAnalysis?.summaries?.[dimension]||[]).map(row=>({name:properText(row.category),value:Number(row.length_km||0),length:Number(row.length_km||0),count:Number(row.feature_count||0)}));
   }
   function hotosmLength(dimension,category) {
@@ -1355,7 +1366,8 @@
 
   function mapHtml() {
     if(state.section==="global")return globalMapHtml();
-    const functionalMap=["ducar","overview"].includes(state.section),common=functionalMap?[["section","Complete network · functional classification",true],["districts","District labels",false],["nationalAligned","National Roads within full network · 22,205.38 km",false],["national","MoWT national-road reference alignments",false]]:[["hotosm","Complete vehicular network · 248,616.14 km",false],["section","Complete section thematic roads",true],["nationalAligned","National Roads within full network · 22,205.38 km",false],["national","MoWT national-road reference alignments",false],["paved","Paved roads · solid + thicker",false],["unpaved","Unpaved roads · dotted + thinner",false],["districts","District labels",false]],themes={
+    const nationalLabel=`National Roads within full network · ${number(nationalRoadKm(),3)} km`;
+    const functionalMap=["ducar","overview"].includes(state.section),common=functionalMap?[["section","Complete network · functional classification",true],["districts","District labels",false],["nationalAligned",nationalLabel,false],["national","MoWT national-road reference alignments",false]]:[["hotosm","Complete vehicular network · 248,616.14 km",false],["section","Complete section thematic roads",true],["nationalAligned",nationalLabel,false],["national","MoWT national-road reference alignments",false],["paved","Paved roads · solid + thicker",false],["unpaved","Unpaved roads · dotted + thinner",false],["districts","District labels",false]],themes={
       traffic:[["traffic","All modelled and observed AADT",false],["hightraffic","AADT 1,000+",false]],
       condition:[["good","Good condition",false],["fair","Fair condition",false],["poor","Poor condition",false]],
       structures:[],pims:[["critical","Critical + High priority",false],["maintenance","Maintenance interventions",false]],
@@ -1616,6 +1628,20 @@
   function enhanceStaticTableSorting(){
     root.querySelectorAll("table.data-table").forEach(table=>{const body=table.tBodies[0];if(!body)return;[...table.tHead?.rows?.[0]?.cells||[]].forEach((cell,index)=>{const original=cell.textContent.trim(),field=original.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");[...body.rows].forEach(row=>{const target=row.cells[index];if(!target)return;let raw=target.innerText.trim();if(/^(region|district|admin_district|county|subcounty|parish|surface|pavement_class|condition|current_condition|priority_band|risk_band|exposure_band|functional_class|road_management_class|recommended_intervention|traffic_value_status|linkage_quality|structure_class|structure_type|relation_basis|assignment_basis|status|category)$/.test(field)&&!/^https?:/i.test(raw)){target.textContent=properText(raw);raw=target.innerText.trim();}const numeric=Number(raw.replace(/[,\s]/g,"").replace(/km$|%$/i,"")),semantic=cellClass(field,Number.isFinite(numeric)&&/^-?[\d,.\s]+(?:km|%)?$/i.test(raw)?numeric:raw);if(semantic)target.classList.add(...semantic.split(" "));});if(cell.querySelector("[data-column-sort]"))return;const text=properText(original),button=document.createElement("button"),arrow=document.createElement("i"),caption=document.createElement("span");button.type="button";button.className="column-sort";button.title=`Sort by ${text}`;button.dataset.localColumnSort=String(index);caption.textContent=text;arrow.textContent="↕";arrow.setAttribute("aria-hidden","true");button.append(caption,arrow);cell.textContent="";cell.appendChild(button);cell.setAttribute("aria-sort","none");button.addEventListener("click",()=>{const direction=button.dataset.direction==="asc"?"desc":"asc";table.querySelectorAll("[data-local-column-sort]").forEach(other=>{other.dataset.direction="";other.querySelector("i").textContent="↕";other.closest("th")?.setAttribute("aria-sort","none");});button.dataset.direction=direction;arrow.textContent=direction==="asc"?"↑":"↓";cell.setAttribute("aria-sort",direction==="asc"?"ascending":"descending");const value=row=>row.cells[index]?.innerText.trim()||"",numeric=value=>{const match=value.replaceAll(",","").match(/-?\d+(?:\.\d+)?/);return match?Number(match[0]):NaN;};[...body.rows].sort((a,b)=>{const av=value(a),bv=value(b),an=numeric(av),bn=numeric(bv),comparison=Number.isFinite(an)&&Number.isFinite(bn)?an-bn:av.localeCompare(bv,undefined,{numeric:true});return direction==="asc"?comparison:-comparison;}).forEach(row=>body.appendChild(row));});});});
   }
+  function isCollapseControl(element){
+    if(!element)return false;
+    if(element.matches?.('[data-collapse],[data-card-collapse],.card-collapse,.chart-collapse,.collapse-toggle,.map-details-toggle,[data-action="collapse"],[data-action="expand"]'))return true;
+    if(!element.matches?.("button,[role=button]"))return false;
+    const description=[element.textContent,element.getAttribute("title"),element.getAttribute("aria-label")].filter(Boolean).join(" ").trim();
+    return /\b(?:collapse|expand)\b/i.test(description);
+  }
+  function removeCollapseControls(scope=document){
+    const controls=[...scope.querySelectorAll?.('[data-collapse],[data-card-collapse],.card-collapse,.chart-collapse,.collapse-toggle,.map-details-toggle,[data-action="collapse"],[data-action="expand"],button,[role=button]')||[]];
+    controls.filter(isCollapseControl).forEach(control=>control.remove());
+    scope.querySelectorAll?.('.chart-card.collapsed,.insight-card.collapsed,.dashboard-card.collapsed,.metric-card.collapsed,.map-details.collapsed,.map-catalogue.collapsed').forEach(panel=>{
+      panel.classList.remove("collapsed");panel.removeAttribute("data-collapsed");panel.removeAttribute("aria-hidden");panel.hidden=false;
+    });
+  }
   async function render() {
     recordMountToken++;
     vizTimers.forEach(timer=>clearInterval(timer)); vizTimers.clear();
@@ -1624,7 +1650,7 @@
     shell(`<div class="studio-loading">Loading this section’s complete reporting population…</div>`);
     try { await ensureData(); state.loading=false; } catch (error) { state.loading=false; shell(`<div class="studio-loading">${esc(error.message)}</div>`); return; }
     let body = state.tab === "dashboard" ? dashboardHtml() : state.tab === "map" ? (state.section==="summaries"?adminMindMapHtml():mapHtml()) : state.tab === "records" ? recordsHtml() : state.tab === "analytics" ? analyticsHtml() : state.tab === "sql" ? sqlHtml() : schemaHtml();
-    shell(body); bind();enhanceStaticTableSorting();enhanceTableScrolling();if(state.tab==="records")mountRemainingRecords();
+    shell(body); removeCollapseControls(root);bind();enhanceStaticTableSorting();enhanceTableScrolling();if(state.tab==="records")mountRemainingRecords();
     if (state.tab === "map") state.section==="summaries"?initAdminMindMap():state.section==="global"?initGlobalMap():initSectionMap();
     syncHeaderFilterPanel();
     ensureHeaderExportMenu();ensureHeaderNavigationControls();
@@ -1633,6 +1659,7 @@
   function shell(body) {
     document.body.classList.remove("network-map-mode");
     root.innerHTML = `<section class="exhaustive-shell"><div class="section-studio"><nav class="section-tabs" aria-label="Section reporting views">${SECTION_TABS.map(([id,text])=>`<button type="button" class="section-tab ${state.tab===id?"active":""}" data-section-tab="${id}" aria-current="${state.tab===id?"page":"false"}">${esc(text)}</button>`).join("")}</nav>${body}</div></section>`;
+    removeCollapseControls(root);
     if(state.tab==="dashboard")root.querySelectorAll("table").forEach(table=>{const owner=table.closest(".consistency-controls,.table-export-wrap,.global-governance,.admin-block")||table.closest(".table-wrap");owner?.remove();});
   }
   function bind() {
@@ -1663,6 +1690,11 @@
     if (!section || section===state.section) return;
     state.section=section;state.tab="dashboard";state.page=1;state.search="";state.filterField="";state.filterValue="";state.sortField="";history.replaceState(null,"",`#${section}:dashboard`);render();setTimeout(syncInjectedNav,0);
   }
+  document.addEventListener("click",event=>{
+    const control=event.target.closest?.('button,[role=button],[data-collapse],[data-card-collapse],.card-collapse,.chart-collapse,.collapse-toggle,.map-details-toggle');
+    if(!isCollapseControl(control))return;
+    event.preventDefault();event.stopImmediatePropagation();control.remove();removeCollapseControls(document);
+  },true);
   document.addEventListener("click",event=>{
     const button=event.target.closest?.("[data-section-tab]");if(!button)return;
     const tab=button.dataset.sectionTab;if(!SECTION_TABS.some(([id])=>id===tab)||tab===state.tab)return;
@@ -1784,6 +1816,9 @@
   const headerHealthy=()=>!!document.querySelector("#root .top-nav .ducar-header-navigation")&&!!document.querySelector("#root .top-nav .ducar-export-menu");
   const navObserver=new MutationObserver(()=>{if((navHealthy()&&headerHealthy())||navRepairTimer)return;navRepairTimer=setTimeout(()=>{navRepairTimer=null;ensureSocioeconomicNav();ensureStructuresNav();syncPrimaryNav();ensureHeaderExportMenu();ensureHeaderNavigationControls();},60);});
   const observedRoot=document.getElementById("root");if(observedRoot)navObserver.observe(observedRoot,{childList:true,subtree:true});
+  let collapseRepairQueued=false;
+  const collapseObserver=new MutationObserver(()=>{if(collapseRepairQueued)return;collapseRepairQueued=true;queueMicrotask(()=>{collapseRepairQueued=false;removeCollapseControls(document);});});
+  if(observedRoot){removeCollapseControls(observedRoot);collapseObserver.observe(observedRoot,{childList:true,subtree:true});}
   window.addEventListener("hashchange",()=>{
     state.section=sectionFromHash();state.tab=tabFromHash();state.page=1;state.search="";state.filterField="";state.filterValue="";state.sortField="";render();setTimeout(syncPrimaryNav,0);
   });
