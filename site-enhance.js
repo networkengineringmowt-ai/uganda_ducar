@@ -34,6 +34,15 @@
   }
   window.seToast = seToast;
 
+  /* ================= Settle counters (called by exhaustive.js before any PDF/PNG export reads the DOM) ================= */
+  function settleCounters() {
+    document.querySelectorAll(".se-counting").forEach(function (el) {
+      if (el.dataset.seRaw != null) el.textContent = el.dataset.seRaw;
+    });
+  }
+  window.SiteEnhance = window.SiteEnhance || {};
+  window.SiteEnhance.settleCounters = settleCounters;
+
   /* ================= Skeleton ================= */
   function initSkeleton() {
     if (document.getElementById("se-skeleton-overlay")) return;
@@ -440,6 +449,7 @@
     }
 
     valueEl.classList.add("se-counting");
+    valueEl.dataset.seRaw = raw;
     var duration = 1200, startTime = null;
     function fmt(n) {
       var v = decimals ? n.toFixed(decimals) : Math.round(n).toString();
