@@ -176,7 +176,7 @@
   const SECTION_TABS = [["dashboard", "Dashboard"], ["map", "Map"], ["records", "Full Exhaustive Table"], ["analytics", "Deep Analytics"], ["sql", "SQL Tables"], ["schema", "SQL Schema"]];
   const SECTION_META = {
     overview: ["National DUCAR Overview", "Whole-register coverage, condition, pavement, traffic and planning status."],
-    ducar: ["DUCAR Executive Dashboard", "Mapped DUCAR link governance, inventory completeness and planning readiness."],
+    ducar: ["National DUCAR Overview", "Mapped DUCAR link governance, inventory completeness and planning readiness."],
     network: ["Network & Pavement Structure", "Link geometry, administrative hierarchy, pavement class and length quality."],
     traffic: ["Traffic Intelligence", "Exact-match AADT, PCU and speed reporting for every mapped DUCAR link."],
     condition: ["Road Condition", "Condition, surface risk and intervention requirements for every mapped link."],
@@ -223,6 +223,7 @@
   const cache = {};
   const vizTimers = new Set();
   let recordMountToken = 0;
+  let renderToken = 0;
   const state = { section: sectionFromHash(), tab: tabFromHash(), page: 1, search: "", filterField: "", filterValue: "", sortField: "", sortDirection: "asc", loading: false, headerFilters:{region:"All",district:"All",surface:"All",pavement:"All",condition:"All",search:""} };
   const root = document.getElementById("exhaustive-root");
   if (!root) return;
@@ -1368,7 +1369,7 @@
 
   function mapHtml() {
     if(state.section==="global")return globalMapHtml();
-    const nationalLabel=`National Roads within full network · ${number(nationalRoadKm(),3)} km`;
+    const nationalLabel="National Roads within full network";
     const functionalMap=["ducar","overview"].includes(state.section),common=functionalMap?[["section","Complete network · functional classification",true],["districts","District labels",false],["nationalAligned",nationalLabel,false],["national","MoWT national-road reference alignments",false]]:[["hotosm","Complete vehicular network · 248,616.14 km",false],["section","Complete section thematic roads",true],["nationalAligned",nationalLabel,false],["national","MoWT national-road reference alignments",false],["paved","Paved roads · solid + thicker",false],["unpaved","Unpaved roads · dotted + thinner",false],["districts","District labels",false]],themes={
       traffic:[["traffic","All modelled and observed AADT",false],["hightraffic","AADT 1,000+",false]],
       condition:[["good","Good condition",false],["fair","Fair condition",false],["poor","Poor condition",false]],
@@ -1431,7 +1432,7 @@
     const detailLayer=payload=>L.geoJSON(payload,{filter:feature=>headerMatches(feature.properties),renderer:L.canvas({padding:.75}),style:feature=>{const p=feature.properties;return {color:detailColor(p),weight:roadWeight(p),dashArray:roadDash(p),lineCap:"round",lineJoin:"round",opacity:roadOpacity()};},onEachFeature:(feature,layer)=>{const p=feature.properties;layer.bindTooltip(selectionTip(p),{sticky:true,direction:"top",opacity:.96});layer.on("click",()=>selectFeature("Source-aligned road",{...p,name:p.source_group_id},feature,layer));}});
     const hideDetail=()=>{detailLayers.forEach(layer=>layer.remove());const overview=activeLayers.get("section");overview?.setStyle?.({opacity:roadOpacity()});const status=document.getElementById("map-detail-status");if(status)status.textContent="National overview geometry";};
     const updateDetailTiles=async()=>{const token=++detailUpdateToken,enabled=document.querySelector('[data-map-layer="section"]')?.checked!==false;if(!enabled||map.getZoom()<11){hideDetail();return;}const status=document.getElementById("map-detail-status");if(status)status.textContent="Loading source-faithful road alignments…";try{detailManifest=detailManifest||await data("hotosmDetailManifest");}catch(error){if(status)status.textContent="Detailed alignment manifest unavailable";return;}if(token!==detailUpdateToken)return;const bounds=map.getBounds(),needed=detailManifest.tiles.filter(tile=>bounds.getEast()>=tile.bbox[0]&&bounds.getWest()<=tile.bbox[2]&&bounds.getNorth()>=tile.bbox[1]&&bounds.getSouth()<=tile.bbox[3]),neededIds=new Set(needed.map(tile=>tile.id));detailLayers.forEach((layer,id)=>{if(!neededIds.has(id))layer.remove();});await Promise.all(needed.map(async tile=>{if(detailLayers.has(tile.id)){detailLayers.get(tile.id).addTo(map);return;}if(detailLoading.has(tile.id))return;detailLoading.add(tile.id);try{const payload=await fetchCompressedJson(tile.url);if(token!==detailUpdateToken)return;const layer=detailLayer(payload);detailLayers.set(tile.id,layer);layer.addTo(map);}catch(error){if(status)status.textContent="A detailed alignment tile could not load";}finally{detailLoading.delete(tile.id);}}));if(token!==detailUpdateToken)return;const overview=activeLayers.get("section");overview?.setStyle?.({opacity:.14});if(status)status.textContent=`Source-faithful 2 m alignments · ${number(needed.length)} visible tile${needed.length===1?"":"s"}`;};
-    const setLayerStat=(id,stat)=>{if(!stat)return;if(id==="nationalAligned")return void(stat.textContent=number(cache.hotosmMap?.metadata?.national_road_length_km||22205.3794,2)+" km");if(id==="national")return void(stat.textContent=number(cache.nationalMap?.metadata?.registry_length_km||21136.748162,2)+" km");if(id==="hotosm")return void(stat.textContent=number(cache.hotosmMap?.metadata?.published_length_km||248616.14,2)+" km");if(!configs[id])return;const source=useComplete(id)&&cache.hotosmMap?cache.hotosmMap.features.map(feature=>feature.properties):cache.mapRoads.features.map(merged),values=source.filter(p=>headerMatches(p)&&configs[id].filter(p)),km=values.reduce((sum,p)=>sum+Number(p.geometry_length_km||0),0);stat.textContent=number(km,1)+" km";};
+    const setLayerStat=(id,stat)=>{if(!stat)return;if(id==="nationalAligned")return void(stat.textContent=number(nationalRoadKm(),3)+" km");if(id==="national")return void(stat.textContent="Alignment reference");if(id==="hotosm")return void(stat.textContent=number(cache.hotosmMap?.metadata?.published_length_km||248616.14,2)+" km");if(!configs[id])return;const source=useComplete(id)&&cache.hotosmMap?cache.hotosmMap.features.map(feature=>feature.properties):cache.mapRoads.features.map(merged),values=source.filter(p=>headerMatches(p)&&configs[id].filter(p)),km=values.reduce((sum,p)=>sum+Number(p.geometry_length_km||0),0);stat.textContent=number(km,1)+" km";};
     const refreshLayerStats=()=>document.querySelectorAll("[data-map-layer]").forEach(layerInput=>setLayerStat(layerInput.dataset.mapLayer,document.querySelector(`[data-layer-stat="${layerInput.dataset.mapLayer}"]`)));
     document.querySelectorAll("[data-map-layer]").forEach(input=>{const id=input.dataset.mapLayer,stat=document.querySelector(`[data-layer-stat="${id}"]`);setLayerStat(id,stat);const toggle=async()=>{if(!input.checked){activeLayers.get(id)?.remove();if(id==="section")hideDetail();return;}const completeNeeded=id==="hotosm"||useComplete(id);if(completeNeeded&&!cache.hotosmMap){if(stat)stat.textContent="Loading complete network…";const previewId=configs[id]?id:"section",preview=roadLayer(previewId);activeLayers.set(id,preview);preview.addTo(map);try{await new Promise(resolve=>window.requestIdleCallback?window.requestIdleCallback(resolve,{timeout:220}):setTimeout(resolve,80));await data("hotosmMap");refreshLayerStats();}catch(error){if(stat)stat.textContent="Load failed";details.innerHTML=`<div class="map-empty-state"><b>!</b><strong>Complete Network Layer Could Not Load</strong><span>${esc(error.message)}</span></div>`;return;}preview.remove();activeLayers.delete(id);setLayerStat(id,stat);if(!input.checked)return;}if(id==="national"&&!cache.nationalMap){if(stat)stat.textContent="Loading…";try{await data("nationalMap");}catch(error){input.checked=false;if(stat)stat.textContent="Load failed";details.innerHTML=`<div class="map-empty-state"><b>!</b><strong>National Layer Could Not Load</strong><span>${esc(error.message)}</span></div>`;return;}setLayerStat(id,stat);if(!input.checked)return;}const layer=activeLayers.get(id)||createLayer(id);activeLayers.set(id,layer);layer.addTo(map);if(id==="section"){const bounds=layer.getBounds?.();if(bounds?.isValid?.())map.fitBounds(bounds,{padding:[12,12]});setTimeout(updateDetailTiles,0);}};input.addEventListener("change",toggle);if(input.checked)toggle();});
     document.querySelectorAll('input[name="basemap"]').forEach(input=>input.addEventListener("change",()=>{Object.values(bases).forEach(layer=>layer.remove());const selected=bases[input.value];selected.addTo(map);if(selected.eachLayer)selected.eachLayer(layer=>layer.bringToBack?.());else selected.bringToBack?.();}));
@@ -1645,12 +1646,20 @@
     });
   }
   async function render() {
+    const token=++renderToken;
     recordMountToken++;
     vizTimers.forEach(timer=>clearInterval(timer)); vizTimers.clear();
     const activeField = document.activeElement?.classList?.contains("records-search") ? ".records-search" : document.activeElement?.classList?.contains("records-filter-value") ? ".records-filter-value" : "";
     state.loading = true;
     shell(`<div class="studio-loading">Loading this section’s complete reporting population…</div>`);
-    try { await ensureData(); state.loading=false; } catch (error) { state.loading=false; shell(`<div class="studio-loading">${esc(error.message)}</div>`); return; }
+    try {
+      await ensureData();
+      if(token!==renderToken)return;
+      state.loading=false;
+    } catch (error) {
+      if(token!==renderToken)return;
+      state.loading=false;shell(`<div class="studio-loading">${esc(error.message)}</div>`);return;
+    }
     let body = state.tab === "dashboard" ? dashboardHtml() : state.tab === "map" ? (state.section==="summaries"?adminMindMapHtml():mapHtml()) : state.tab === "records" ? recordsHtml() : state.tab === "analytics" ? analyticsHtml() : state.tab === "sql" ? sqlHtml() : schemaHtml();
     shell(body); removeCollapseControls(root);bind();enhanceStaticTableSorting();enhanceTableScrolling();if(state.tab==="records")mountRemainingRecords();
     if (state.tab === "map") state.section==="summaries"?initAdminMindMap():state.section==="global"?initGlobalMap():initSectionMap();

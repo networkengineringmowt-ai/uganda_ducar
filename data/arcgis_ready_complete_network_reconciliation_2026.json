@@ -1,0 +1,58 @@
+{
+  "status": "REVIEW",
+  "source": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\DUCAR_Final_Deliverables_2026\\07_ArcGIS_Pro_Package\\DUCAR_ArcGIS_Pro_2026.gdb",
+  "output_folder": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\DUCAR_Final_Deliverables_2026\\04_GIS_Shapefiles\\DUCAR_ArcGIS_Ready_Reconciled_2026",
+  "geopackage": "D:\\OneDrive\\Uganda National Road Network Repository\\DUCAR\\DUCAR_Final_Deliverables_2026\\04_GIS_Shapefiles\\DUCAR_ArcGIS_Ready_Reconciled_2026\\DUCAR_Complete_Reconciled_2026.gpkg",
+  "segment_rows": 404047,
+  "segment_length_km": 248616.148981,
+  "expected_rows_variance": 0,
+  "expected_length_variance_km": -0.001019,
+  "national_road_length_km": 21370.392215,
+  "official_route_rows": 29853,
+  "official_route_id_valid_rows": 28210,
+  "official_route_id_overflow_rows": 1643,
+  "route_prefix_counts_over_999": {
+    "KAMP": 1911,
+    "WAKI": 1730
+  },
+  "traffic_aadt_bounds_corrected_rows": 255541,
+  "traffic_aadt_bounds_mismatches_after_export": 0,
+  "class_summary": {
+    "City Roads": {
+      "records": 17653,
+      "length_km": 5555.046071
+    },
+    "Community Access Roads": {
+      "records": 204872,
+      "length_km": 152750.529594
+    },
+    "District Roads": {
+      "records": 6872,
+      "length_km": 30550.640194
+    },
+    "KCCA": {
+      "records": 14091,
+      "length_km": 1644.262398
+    },
+    "Municipal Roads": {
+      "records": 28216,
+      "length_km": 8237.454031
+    },
+    "National Roads": {
+      "records": 42460,
+      "length_km": 21370.392215
+    },
+    "Town Council Roads": {
+      "records": 89883,
+      "length_km": 28507.824478
+    }
+  },
+  "required_attribute_missing": {
+    "road_name": 0,
+    "surface": 0,
+    "pavement": 0,
+    "condition": 0,
+    "start_coordinates": 0,
+    "end_coordinates": 0
+  }
+}

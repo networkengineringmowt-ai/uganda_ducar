@@ -438,81 +438,14 @@
     var raw = valueEl.textContent.trim();
     var num = parseNumber(raw);
     if (isNaN(num)) return;
-    var prefix = raw.slice(0, raw.search(/-?[\d,.]/));
-    var suffixMatch = raw.match(/[\d,.]+(.*)$/);
-    var suffix = suffixMatch ? suffixMatch[1] : "";
-    var decimals = (raw.split(".")[1] || "").replace(/[^\d]/g, "").length;
-    var hasCommas = /,/.test(raw);
-
     if (/%$/.test(raw.trim())) {
       card.classList.add(num > 80 ? "se-kpi-good" : num >= 50 ? "se-kpi-warn" : "se-kpi-bad");
     }
 
-    valueEl.classList.add("se-counting");
+    // Authoritative totals must be correct from the first painted frame.
+    // Motion belongs to chart marks and transitions, never to official values.
     valueEl.dataset.seRaw = raw;
-    var duration = 1200, startTime = null;
-    function fmt(n) {
-      var v = decimals ? n.toFixed(decimals) : Math.round(n).toString();
-      if (hasCommas) {
-        var parts = v.split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        v = parts.join(".");
-      }
-      return prefix + v + suffix;
-    }
-    function step(ts) {
-      if (!startTime) startTime = ts;
-      var progress = Math.min(1, (ts - startTime) / duration);
-      var eased = 1 - Math.pow(1 - progress, 3);
-      valueEl.textContent = fmt(num * eased);
-      if (progress < 1) requestAnimationFrame(step);
-      else valueEl.textContent = raw;
-    }
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          requestAnimationFrame(step);
-          observer.disconnect();
-        }
-      });
-    });
-    observer.observe(card);
-  }
-
-  /* ================= Collapsible cards ================= */
-  // .metric-grid deliberately excluded: it's a bare row of headline KPI
-  // tiles with no heading, so a generic "Collapse" control would just
-  // dangle among the stat tiles and let a viewer hide top-line numbers —
-  // the opposite of "always show the length affected for every statistic".
-  var COLLAPSIBLE_SELECTOR = ".chart-card, .dynamic-chart-card, .schema-card";
-  function enhanceCollapsible(card) {
-    if (card.hasAttribute("data-se-collapse")) return;
-    if (card.children.length < 1) return;
-    card.setAttribute("data-se-collapse", "1");
-    var heading = card.querySelector("h3, h4") || (card.classList.contains("metric-grid") ? null : null);
-    var toggle = document.createElement("button");
-    toggle.type = "button";
-    toggle.className = "se-collapse-toggle";
-    toggle.textContent = "Collapse";
-    var body = document.createElement("div");
-    body.className = "se-collapsible-body";
-    while (card.firstChild) { body.appendChild(card.firstChild); }
-    if (heading && body.contains(heading)) {
-      card.appendChild(heading);
-      var head = document.createElement("div");
-      head.className = "se-collapse-head";
-      head.appendChild(toggle);
-      card.insertBefore(head, card.firstChild);
-      head.insertBefore(heading, toggle);
-    } else {
-      card.appendChild(toggle);
-    }
-    card.appendChild(body);
-    toggle.addEventListener("click", function () {
-      var collapsed = body.classList.toggle("se-collapsed-body");
-      toggle.classList.toggle("se-collapsed", collapsed);
-      toggle.textContent = collapsed ? "Expand" : "Collapse";
-    });
+    valueEl.textContent = raw;
   }
 
   /* ================= Chart tooltip ================= */
@@ -605,7 +538,6 @@
     });
     document.querySelectorAll("select:not([data-se-select])").forEach(enhanceSelect);
     document.querySelectorAll(KPI_SELECTOR + ":not([data-se-kpi])").forEach(enhanceKpiCard);
-    document.querySelectorAll(COLLAPSIBLE_SELECTOR + ":not([data-se-collapse])").forEach(enhanceCollapsible);
     document.querySelectorAll(".dynamic-legend:not([data-se-legend])").forEach(enhanceLegend);
     if (window.__seDismissSkeleton) window.__seDismissSkeleton();
   }

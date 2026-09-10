@@ -232,7 +232,8 @@ body:not(.network-map-mode) .section-tabs{position:fixed;top:64px;left:225px;rig
 .chart-card,.dynamic-chart-card,.metric-card,.insight-card{min-width:0;contain:paint}.chart-card h3,.dynamic-chart-card h4,.metric-card small,.metric-card em{overflow-wrap:anywhere}.chart-svg text,.advanced-viz svg text{pointer-events:none}.chart-value{font-size:9px!important}.chart-card svg{max-width:100%}.data-table th,.data-table td{vertical-align:top}.data-table td{line-height:1.35}
 
 /* Exhaustive tables and mobile controls */
-[data-collapse],[data-card-collapse],.card-collapse,.chart-collapse,.collapse-toggle,.map-details-toggle,[data-action="collapse"],[data-action="expand"]{display:none!important}
+[data-collapse],[data-card-collapse],.card-collapse,.chart-collapse,.collapse-toggle,.se-collapse-toggle,.map-details-toggle,[data-action="collapse"],[data-action="expand"]{display:none!important}
+.se-collapsible-body,.se-collapsible-body.se-collapsed-body{display:block!important;height:auto!important;max-height:none!important;overflow:visible!important}
 .chart-card.collapsed,.insight-card.collapsed,.dashboard-card.collapsed,.metric-card.collapsed,.map-details.collapsed,.map-catalogue.collapsed{height:auto!important;max-height:none!important;overflow:visible!important}
 @media(max-width:800px){
   body:not(.network-map-mode) #exhaustive-root{padding-top:58px}.exhaustive-shell{padding:5px 4px 24px}.section-studio{min-width:0}.section-tab{padding:9px 11px;font-size:10px}
