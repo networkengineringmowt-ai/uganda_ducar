@@ -1,447 +1,355 @@
 {
-  "total_links": 31106,
-  "total_length_km": 401112.27,
-  "districts_count": 110,
+  "total_links": 19069,
+  "total_length_km": 54001.741,
+  "districts_count": 58,
   "by_district": [
     {
-      "name": "UNASSIGNED",
-      "length_km": 128572.79
-    },
-    {
-      "name": "APAC",
-      "length_km": 35221.43
-    },
-    {
-      "name": "LUWERO",
-      "length_km": 28673.59
-    },
-    {
-      "name": "WAKISO",
-      "length_km": 18702.03
-    },
-    {
-      "name": "KATAKWI",
-      "length_km": 14176.05
-    },
-    {
-      "name": "MUKONO",
-      "length_km": 12066.03
-    },
-    {
-      "name": "KABALE",
-      "length_km": 9670.49
-    },
-    {
-      "name": "TORORO",
-      "length_km": 8285.13
-    },
-    {
-      "name": "MPIGI",
-      "length_km": 7219.34
-    },
-    {
-      "name": "KAMPALA",
-      "length_km": 5738.64
-    },
-    {
-      "name": "KASESE",
-      "length_km": 5323.51
-    },
-    {
-      "name": "KAMULI",
-      "length_km": 5111.68
-    },
-    {
-      "name": "HOIMA",
-      "length_km": 4906.46
-    },
-    {
-      "name": "MASAKA",
-      "length_km": 4892.4
-    },
-    {
-      "name": "MUBENDE",
-      "length_km": 4878.39
-    },
-    {
-      "name": "LIRA",
-      "length_km": 4690.52
-    },
-    {
-      "name": "SOROTI",
-      "length_km": 4680.0
-    },
-    {
-      "name": "JINJA",
-      "length_km": 4598.23
-    },
-    {
-      "name": "BUSHENYI",
-      "length_km": 4496.52
-    },
-    {
-      "name": "KABAROLE",
-      "length_km": 4085.6
-    },
-    {
-      "name": "ARUA",
-      "length_km": 3948.91
-    },
-    {
-      "name": "RAKAI",
-      "length_km": 3607.49
-    },
-    {
-      "name": "MBALE",
-      "length_km": 3468.2
-    },
-    {
-      "name": "KIBOGA",
-      "length_km": 2416.66
-    },
-    {
-      "name": "KANUNGU",
-      "length_km": 2179.78
-    },
-    {
-      "name": "BUSIA",
-      "length_km": 2132.58
-    },
-    {
-      "name": "MASINDI",
-      "length_km": 2012.54
-    },
-    {
-      "name": "KIBAALE",
-      "length_km": 1865.65
-    },
-    {
-      "name": "SEMBABULE",
-      "length_km": 1804.72
-    },
-    {
-      "name": "OYAM",
-      "length_km": 1682.6
-    },
-    {
-      "name": "NAKASONGOLA",
-      "length_km": 1476.21
-    },
-    {
-      "name": "MAYUGE",
-      "length_km": 1426.97
-    },
-    {
-      "name": "LWENGO",
-      "length_km": 1378.81
-    },
-    {
-      "name": "KIRUHURA",
-      "length_km": 1316.01
-    },
-    {
-      "name": "DOKOLO",
-      "length_km": 1252.57
-    },
-    {
-      "name": "NTUNGAMO",
-      "length_km": 1246.48
-    },
-    {
-      "name": "KALUNGU",
-      "length_km": 1234.92
-    },
-    {
-      "name": "ADJUMANI",
-      "length_km": 1230.54
-    },
-    {
-      "name": "KABONG",
-      "length_km": 1223.2
-    },
-    {
-      "name": "ISINGIRO",
-      "length_km": 1180.49
-    },
-    {
-      "name": "NAKASEKE",
-      "length_km": 1153.3
-    },
-    {
-      "name": "KUMI",
-      "length_km": 1143.88
-    },
-    {
-      "name": "BUYENDE",
-      "length_km": 1123.89
-    },
-    {
-      "name": "KAMWENGE",
-      "length_km": 1102.24
-    },
-    {
-      "name": "OTUKE",
-      "length_km": 1094.44
-    },
-    {
-      "name": "KIRYANDONGO",
-      "length_km": 1087.1
-    },
-    {
-      "name": "KYENJOJO",
-      "length_km": 1069.98
-    },
-    {
-      "name": "KABERAMAIDO",
-      "length_km": 1059.93
-    },
-    {
-      "name": "KALIRO",
-      "length_km": 1038.72
-    },
-    {
-      "name": "GOMBA",
-      "length_km": 1020.22
-    },
-    {
-      "name": "ALEBTONG",
-      "length_km": 992.96
-    },
-    {
-      "name": "BUKEDEA",
-      "length_km": 967.45
-    },
-    {
-      "name": "KAYUNGA",
-      "length_km": 954.24
-    },
-    {
-      "name": "RUKUNGIRI",
-      "length_km": 944.72
-    },
-    {
-      "name": "MITYANA",
-      "length_km": 927.01
-    },
-    {
-      "name": "MBARARA",
-      "length_km": 919.04
+      "name": "Central_Region",
+      "length_km": 3167.476,
+      "records": 981,
+      "average_condition_score": 41.69
     },
     {
       "name": "KYANKWANZI",
-      "length_km": 896.81
+      "length_km": 2692.65,
+      "records": 915,
+      "average_condition_score": 42.18
     },
     {
-      "name": "SHEEMA",
-      "length_km": 887.75
-    },
-    {
-      "name": "KISORO",
-      "length_km": 879.36
-    },
-    {
-      "name": "BUIKWE",
-      "length_km": 868.12
-    },
-    {
-      "name": "AMOLATAR",
-      "length_km": 855.07
-    },
-    {
-      "name": "BUKOMANSIMBI",
-      "length_km": 834.57
-    },
-    {
-      "name": "LYANTONDE",
-      "length_km": 819.96
-    },
-    {
-      "name": "BUDAKA",
-      "length_km": 799.37
-    },
-    {
-      "name": "KOLE",
-      "length_km": 797.42
-    },
-    {
-      "name": "NAMUTUMBA",
-      "length_km": 791.88
-    },
-    {
-      "name": "KYEGEGWA",
-      "length_km": 777.67
-    },
-    {
-      "name": "NAKAPIRIPIRIT",
-      "length_km": 775.04
-    },
-    {
-      "name": "NEBBI",
-      "length_km": 752.84
-    },
-    {
-      "name": "BUHWEJU",
-      "length_km": 744.95
-    },
-    {
-      "name": "BUTAMBALA",
-      "length_km": 719.09
-    },
-    {
-      "name": "BUGIRI",
-      "length_km": 714.36
-    },
-    {
-      "name": "ZOMBO",
-      "length_km": 707.84
-    },
-    {
-      "name": "MOYO",
-      "length_km": 705.19
-    },
-    {
-      "name": "PALLISA",
-      "length_km": 703.82
-    },
-    {
-      "name": "RUBIRIZI",
-      "length_km": 701.96
-    },
-    {
-      "name": "IBANDA",
-      "length_km": 690.04
-    },
-    {
-      "name": "AMUDAT",
-      "length_km": 682.09
-    },
-    {
-      "name": "MANAFWA",
-      "length_km": 675.62
-    },
-    {
-      "name": "BULIISA",
-      "length_km": 668.01
-    },
-    {
-      "name": "IGANGA",
-      "length_km": 648.38
-    },
-    {
-      "name": "BUTALEJA",
-      "length_km": 644.26
-    },
-    {
-      "name": "KOBOKO",
-      "length_km": 626.28
-    },
-    {
-      "name": "SIRONKO",
-      "length_km": 612.56
-    },
-    {
-      "name": "MITOOMA",
-      "length_km": 601.75
-    },
-    {
-      "name": "MARACHA",
-      "length_km": 580.82
-    },
-    {
-      "name": "ABIM",
-      "length_km": 561.97
-    },
-    {
-      "name": "YUMBE",
-      "length_km": 559.34
-    },
-    {
-      "name": "MOROTO",
-      "length_km": 509.69
-    },
-    {
-      "name": "LUUKA",
-      "length_km": 499.52
-    },
-    {
-      "name": "NGORA",
-      "length_km": 490.73
-    },
-    {
-      "name": "AMURIA",
-      "length_km": 478.4
-    },
-    {
-      "name": "KWEEN",
-      "length_km": 476.56
-    },
-    {
-      "name": "BULAMBULI",
-      "length_km": 442.4
-    },
-    {
-      "name": "NAMAYINGO",
-      "length_km": 442.28
-    },
-    {
-      "name": "BUKWO",
-      "length_km": 416.29
-    },
-    {
-      "name": "KAPCHORWA",
-      "length_km": 402.02
-    },
-    {
-      "name": "NAPAK",
-      "length_km": 383.56
-    },
-    {
-      "name": "BUND1BUGYO",
-      "length_km": 383.35
-    },
-    {
-      "name": "BUDUDA",
-      "length_km": 363.12
-    },
-    {
-      "name": "KIBUKU",
-      "length_km": 356.44
-    },
-    {
-      "name": "BUVUMA",
-      "length_km": 337.13
-    },
-    {
-      "name": "SERERE",
-      "length_km": 293.19
-    },
-    {
-      "name": "NTOROKO",
-      "length_km": 219.81
-    },
-    {
-      "name": "KOTIDO",
-      "length_km": 208.05
+      "name": "Pader Kitgum Oyam Agago",
+      "length_km": 2375.241,
+      "records": 611,
+      "average_condition_score": 43.51
     },
     {
       "name": "LUWEERO",
-      "length_km": 179.9
+      "length_km": 2318.343,
+      "records": 694,
+      "average_condition_score": 42.4
     },
     {
-      "name": "AGAGO",
-      "length_km": 162.73
+      "name": "Tororo_District",
+      "length_km": 2271.15,
+      "records": 896,
+      "average_condition_score": 51.2
     },
     {
-      "name": "KALANGALA",
-      "length_km": 96.62
+      "name": "AMURU",
+      "length_km": 2075.515,
+      "records": 334,
+      "average_condition_score": 45.51
     },
     {
-      "name": "414",
-      "length_km": 7.07
+      "name": "BUYENDE_DISTRICT",
+      "length_km": 2041.57,
+      "records": 367,
+      "average_condition_score": 42.72
     },
     {
-      "name": "TEXT",
-      "length_km": 5.99
+      "name": "Kassanda District",
+      "length_km": 1969.776,
+      "records": 1029,
+      "average_condition_score": 41.01
+    },
+    {
+      "name": "PADER",
+      "length_km": 1714.574,
+      "records": 451,
+      "average_condition_score": 44.36
+    },
+    {
+      "name": "Kikuube district",
+      "length_km": 1665.84,
+      "records": 273,
+      "average_condition_score": 45.96
+    },
+    {
+      "name": "Pallisa",
+      "length_km": 1624.69,
+      "records": 557,
+      "average_condition_score": 46.88
+    },
+    {
+      "name": "Yumbe district",
+      "length_km": 1610.35,
+      "records": 390,
+      "average_condition_score": 40.94
+    },
+    {
+      "name": "BUSIA_DISTRICT",
+      "length_km": 1309.095,
+      "records": 483,
+      "average_condition_score": 59.85
+    },
+    {
+      "name": "MPIGI",
+      "length_km": 1276.67,
+      "records": 638,
+      "average_condition_score": 54.17
+    },
+    {
+      "name": "GOMBA",
+      "length_km": 1272.315,
+      "records": 347,
+      "average_condition_score": 56.81
+    },
+    {
+      "name": "MARACHA",
+      "length_km": 1265.91,
+      "records": 387,
+      "average_condition_score": 47.9
+    },
+    {
+      "name": "Kabaroole District",
+      "length_km": 1225.316,
+      "records": 590,
+      "average_condition_score": 46.41
+    },
+    {
+      "name": "Bukomansimbi_District",
+      "length_km": 1197.7,
+      "records": 218,
+      "average_condition_score": 42.8
+    },
+    {
+      "name": "BUDAKA",
+      "length_km": 1187.03,
+      "records": 510,
+      "average_condition_score": 63.09
+    },
+    {
+      "name": "MASAKA_CITY",
+      "length_km": 1111.216,
+      "records": 264,
+      "average_condition_score": 56.19
+    },
+    {
+      "name": "Sironko_District",
+      "length_km": 1063.08,
+      "records": 529,
+      "average_condition_score": 42.81
+    },
+    {
+      "name": "Bududa_District",
+      "length_km": 1055.92,
+      "records": 509,
+      "average_condition_score": 39.53
+    },
+    {
+      "name": "Bukedea_District",
+      "length_km": 1040.536,
+      "records": 388,
+      "average_condition_score": 45.36
+    },
+    {
+      "name": "KAPELEBYONG",
+      "length_km": 989.055,
+      "records": 195,
+      "average_condition_score": 36.62
+    },
+    {
+      "name": "Bundibugyo District road Inventory 08 2026",
+      "length_km": 975.0,
+      "records": 401,
+      "average_condition_score": 50.45
+    },
+    {
+      "name": "LAMWO_ROADS_DATA_2026",
+      "length_km": 888.8,
+      "records": 205,
+      "average_condition_score": 54.81
+    },
+    {
+      "name": "Kibaale District",
+      "length_km": 845.9,
+      "records": 163,
+      "average_condition_score": 43.63
+    },
+    {
+      "name": "KIBUKU",
+      "length_km": 798.9,
+      "records": 210,
+      "average_condition_score": 57.41
+    },
+    {
+      "name": "Kaberamaido_District",
+      "length_km": 783.86,
+      "records": 193,
+      "average_condition_score": 54.41
+    },
+    {
+      "name": "Koboko District",
+      "length_km": 746.5,
+      "records": 188,
+      "average_condition_score": 54.57
+    },
+    {
+      "name": "Jinja_City",
+      "length_km": 719.85,
+      "records": 358,
+      "average_condition_score": 45.17
+    },
+    {
+      "name": "PAKWACH",
+      "length_km": 683.35,
+      "records": 153,
+      "average_condition_score": 62.02
+    },
+    {
+      "name": "MOYO_DISTRICT",
+      "length_km": 667.976,
+      "records": 404,
+      "average_condition_score": 45.14
+    },
+    {
+      "name": "KITAGWENDA",
+      "length_km": 667.4,
+      "records": 187,
+      "average_condition_score": 50.62
+    },
+    {
+      "name": "KITGUM",
+      "length_km": 660.667,
+      "records": 160,
+      "average_condition_score": 41.29
+    },
+    {
+      "name": "Soroti district",
+      "length_km": 660.298,
+      "records": 882,
+      "average_condition_score": 37.74
+    },
+    {
+      "name": "TEREGO",
+      "length_km": 608.85,
+      "records": 160,
+      "average_condition_score": 43.16
+    },
+    {
+      "name": "Mukono_Municipal_Council",
+      "length_km": 550.756,
+      "records": 718,
+      "average_condition_score": 82.0
+    },
+    {
+      "name": "Ntoroko District",
+      "length_km": 522.2,
+      "records": 218,
+      "average_condition_score": 47.18
+    },
+    {
+      "name": "Kalaki_District",
+      "length_km": 519.121,
+      "records": 121,
+      "average_condition_score": 48.68
+    },
+    {
+      "name": "MASINDI_DISTRICT",
+      "length_km": 469.13,
+      "records": 53,
+      "average_condition_score": 58.32
+    },
+    {
+      "name": "Rubirizi District",
+      "length_km": 451.77,
+      "records": 276,
+      "average_condition_score": 54.71
+    },
+    {
+      "name": "Mityana District",
+      "length_km": 373.8,
+      "records": 37,
+      "average_condition_score": 54.96
+    },
+    {
+      "name": "KATAKWI",
+      "length_km": 363.61,
+      "records": 118,
+      "average_condition_score": 61.93
+    },
+    {
+      "name": "Arua District",
+      "length_km": 341.29,
+      "records": 99,
+      "average_condition_score": 54.61
+    },
+    {
+      "name": "Sheema Municipal",
+      "length_km": 327.81,
+      "records": 96,
+      "average_condition_score": 54.63
+    },
+    {
+      "name": "MAYUGE",
+      "length_km": 242.4,
+      "records": 276,
+      "average_condition_score": 38.03
+    },
+    {
+      "name": "MANAFWA",
+      "length_km": 235.6,
+      "records": 43,
+      "average_condition_score": 54.75
+    },
+    {
+      "name": "BUGONGI DISTRICT",
+      "length_km": 176.02,
+      "records": 88,
+      "average_condition_score": 57.34
+    },
+    {
+      "name": "LWENGO",
+      "length_km": 97.513,
+      "records": 97,
+      "average_condition_score": 54.97
+    },
+    {
+      "name": "kisoro district",
+      "length_km": 34.55,
+      "records": 47,
+      "average_condition_score": 72.37
+    },
+    {
+      "name": "NEBBI",
+      "length_km": 33.9,
+      "records": 43,
+      "average_condition_score": 49.09
+    },
+    {
+      "name": "Nebbi_District",
+      "length_km": 33.9,
+      "records": 43,
+      "average_condition_score": 49.09
+    },
+    {
+      "name": "ARUA_CITY",
+      "length_km": 0,
+      "records": 25,
+      "average_condition_score": 52.83
+    },
+    {
+      "name": "KYENJOJO",
+      "length_km": 0,
+      "records": 551,
+      "average_condition_score": 60.0
+    },
+    {
+      "name": "Lyantonde district",
+      "length_km": 0,
+      "records": 191,
+      "average_condition_score": null
+    },
+    {
+      "name": "Lira District",
+      "length_km": 0,
+      "records": 263,
+      "average_condition_score": null
+    },
+    {
+      "name": "Obongi District",
+      "length_km": 0,
+      "records": 132,
+      "average_condition_score": null
     }
   ],
   "by_surface": [
@@ -460,20 +368,39 @@
   ],
   "by_condition": [
     {
-      "name": "Unclassified",
-      "length_km": 135202.52
-    },
-    {
-      "name": "Fair",
-      "length_km": 131747.04
-    },
-    {
-      "name": "Poor",
-      "length_km": 122092.64
+      "name": "Very Good",
+      "count": 50,
+      "length_km": 136.679
     },
     {
       "name": "Good",
-      "length_km": 12070.07
+      "count": 2137,
+      "length_km": 5841.646
+    },
+    {
+      "name": "Fair",
+      "count": 4750,
+      "length_km": 12984.473
+    },
+    {
+      "name": "Poor",
+      "count": 9367,
+      "length_km": 25605.381
+    },
+    {
+      "name": "Very Poor",
+      "count": 102,
+      "length_km": 278.824
+    },
+    {
+      "name": "Bad",
+      "count": 1450,
+      "length_km": 3963.681
+    },
+    {
+      "name": "Unclassified",
+      "count": 1899,
+      "length_km": 5191.056
     }
   ],
   "by_class": [
@@ -672,6 +599,550 @@
     {
       "name": "24",
       "length_km": 1.87
+    }
+  ],
+  "source": "FY2026/27 RI_DATA synced local workbook ingest",
+  "generated_at": "2026-09-14T09:14:53.150068Z",
+  "structures_count": 686,
+  "verified_ducar_links": 19069,
+  "verified_ducar_length_km": 54001.741,
+  "average_condition_score": 47.2,
+  "average_drainage_score": 44.89,
+  "poor_condition_count": 10920,
+  "priority_watchlist": [
+    {
+      "id": "0f0ea86ede699cc7",
+      "assetName": "Elabu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.619,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0121,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 177
+    },
+    {
+      "id": "9e9861189ee181b8",
+      "assetName": "Etobu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.638,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.012,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 154
+    },
+    {
+      "id": "2cd6304e5c1ac71e",
+      "assetName": "Ebitu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.262,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0149,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 170
+    },
+    {
+      "id": "ff15121cb99e5fbc",
+      "assetName": "Egunyu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.465,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0133,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 186
+    },
+    {
+      "id": "bf8be6cb41d6307f",
+      "assetName": "Ewerchu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.69,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0116,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 188
+    },
+    {
+      "id": "7389b7906aae9ce1",
+      "assetName": "Eligu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.511,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0129,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 196
+    },
+    {
+      "id": "9f89a960a36304a1",
+      "assetName": "Eriau Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.752,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0111,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 184
+    },
+    {
+      "id": "b763097131a840e5",
+      "assetName": "Ekinu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.739,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0112,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 191
+    },
+    {
+      "id": "8e13e9447faffc4c",
+      "assetName": "Odongo",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.247,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.015,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 194
+    },
+    {
+      "id": "e81beb3cad2c97f2",
+      "assetName": "Ekinu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.581,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0124,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 192
+    },
+    {
+      "id": "045a6de4dbfc19a8",
+      "assetName": "Odongo",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.682,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0116,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 193
+    },
+    {
+      "id": "cdc1e9049da99866",
+      "assetName": "Elau Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.412,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0137,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 157
+    },
+    {
+      "id": "b13b05f6118f4885",
+      "assetName": "Esemu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.102,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0161,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 190
+    },
+    {
+      "id": "d44e7a8161202362",
+      "assetName": "Elau Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.395,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0138,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 156
+    },
+    {
+      "id": "4bb196bcba00f1cd",
+      "assetName": "Ajikdak Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.435,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0135,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 198
+    },
+    {
+      "id": "818b38f3b9856898",
+      "assetName": "Ipagi Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.421,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0136,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 151
+    },
+    {
+      "id": "6b1f388bf771d9f2",
+      "assetName": "Omuge Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.478,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0132,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 148
+    },
+    {
+      "id": "883516a0b53db3cb",
+      "assetName": "Okello Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.202,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0153,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 149
+    },
+    {
+      "id": "22aad90850a4f254",
+      "assetName": "Dr. Zainab Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.315,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0144,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 150
+    },
+    {
+      "id": "10bd45ffaac42e74",
+      "assetName": "Ogero Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.319,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0144,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 136
+    },
+    {
+      "id": "10847111b91c975a",
+      "assetName": "Olila Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.145,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0157,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 139
+    },
+    {
+      "id": "02cf2c4d8ac28913",
+      "assetName": "Apio Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.268,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0148,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 146
+    },
+    {
+      "id": "a4e8170cab5d6cc7",
+      "assetName": "Obuku Market Lane",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.092,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0162,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 147
+    },
+    {
+      "id": "df73af24c79fac7f",
+      "assetName": "Esemu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.571,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0125,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 189
+    },
+    {
+      "id": "d5ac8fbbba492b22",
+      "assetName": "Ekebu Rd",
+      "district": "Soroti district",
+      "region": "EASTERN",
+      "assetFamily": "District roads",
+      "lengthKm": 0.619,
+      "surfaceType": "Unpaved",
+      "currentCondition": "Bad",
+      "currentDrainage": "Bad",
+      "trafficAadtBand": "<20",
+      "priorityScore": 74.0,
+      "latentPressure": 2.0121,
+      "reason": "poor condition, drainage risk, no recent periodic works recorded",
+      "sourcePath": "EASTERN/Soroti district/SOROTI CITY _Roads updated final 2026(1).xlsx",
+      "sheet": "CITY Roads",
+      "rowNumber": 176
+    }
+  ],
+  "headline_findings": [
+    {
+      "title": "Condition evidence coverage",
+      "detail": "17,862 of 19,755 parsed RI records include a scorable current condition.",
+      "priority": 90.4
+    },
+    {
+      "title": "Lead RI intervention candidate",
+      "detail": "Elabu Rd in Soroti district scores 74.0/100 for poor condition, drainage risk, no recent periodic works recorded.",
+      "priority": 74.0
+    },
+    {
+      "title": "Weakest regional condition",
+      "detail": "NORTHERN has the lowest scored RI condition average at 45.35 across 2024 records.",
+      "priority": 54.6
+    },
+    {
+      "title": "Largest inventoried RI road class",
+      "detail": "Community access roads carries 23,211.433 km in the parsed FY2026/27 RI workbook set.",
+      "priority": 43.0
+    }
+  ],
+  "by_region": [
+    {
+      "region": "NORTHERN",
+      "recordCount": 2024,
+      "roadRecordCount": 1839,
+      "structureRecordCount": 185,
+      "totalLengthKm": 7714.798,
+      "averageConditionScore": 45.35,
+      "averageDrainageScore": 41.77,
+      "poorConditionCount": 1224,
+      "poorConditionSharePct": 70.43,
+      "unknownConditionCount": 286
+    },
+    {
+      "region": "CENTRAL",
+      "recordCount": 5214,
+      "roadRecordCount": 5198,
+      "structureRecordCount": 16,
+      "totalLengthKm": 13335.566,
+      "averageConditionScore": 46.28,
+      "averageDrainageScore": 46.25,
+      "poorConditionCount": 2621,
+      "poorConditionSharePct": 65.0,
+      "unknownConditionCount": 1182
+    },
+    {
+      "region": "WESTERN",
+      "recordCount": 3858,
+      "roadRecordCount": 3782,
+      "structureRecordCount": 76,
+      "totalLengthKm": 10053.586,
+      "averageConditionScore": 47.13,
+      "averageDrainageScore": 45.12,
+      "poorConditionCount": 2007,
+      "poorConditionSharePct": 53.75,
+      "unknownConditionCount": 124
+    },
+    {
+      "region": "WEST_NILE",
+      "recordCount": 2024,
+      "roadRecordCount": 1820,
+      "structureRecordCount": 204,
+      "totalLengthKm": 5992.026,
+      "averageConditionScore": 48.08,
+      "averageDrainageScore": 45.75,
+      "poorConditionCount": 1062,
+      "poorConditionSharePct": 56.49,
+      "unknownConditionCount": 144
+    },
+    {
+      "region": "EASTERN",
+      "recordCount": 6635,
+      "roadRecordCount": 6430,
+      "structureRecordCount": 205,
+      "totalLengthKm": 16905.765,
+      "averageConditionScore": 48.46,
+      "averageDrainageScore": 44.87,
+      "poorConditionCount": 4006,
+      "poorConditionSharePct": 61.84,
+      "unknownConditionCount": 157
     }
   ]
 }
