@@ -1,0 +1,19 @@
+{
+  "generated_at_utc": "2026-08-13T09:07:06.859876+00:00",
+  "compute_device": "cpu",
+  "gpu_name": "CPU fallback",
+  "records_validated": 7733,
+  "finite_coordinate_records": 7733,
+  "coordinate_extent_wgs84": {
+    "min_x": 29.5976122,
+    "max_x": 35.0135241,
+    "min_y": -1.4404476,
+    "max_y": 3.781372
+  },
+  "network_length_km": 22323.109,
+  "paved_length_km": 3992.939,
+  "unpaved_length_km": 18330.17,
+  "traffic_covered_length_km": 7833.979,
+  "length_partition_control_km": 22323.109,
+  "all_coordinates_in_uganda_screening_extent": true
+}

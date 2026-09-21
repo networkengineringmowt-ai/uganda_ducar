@@ -1,0 +1,677 @@
+{
+  "total_links": 31106,
+  "total_length_km": 401112.27,
+  "districts_count": 110,
+  "by_district": [
+    {
+      "name": "UNASSIGNED",
+      "length_km": 128572.79
+    },
+    {
+      "name": "APAC",
+      "length_km": 35221.43
+    },
+    {
+      "name": "LUWERO",
+      "length_km": 28673.59
+    },
+    {
+      "name": "WAKISO",
+      "length_km": 18702.03
+    },
+    {
+      "name": "KATAKWI",
+      "length_km": 14176.05
+    },
+    {
+      "name": "MUKONO",
+      "length_km": 12066.03
+    },
+    {
+      "name": "KABALE",
+      "length_km": 9670.49
+    },
+    {
+      "name": "TORORO",
+      "length_km": 8285.13
+    },
+    {
+      "name": "MPIGI",
+      "length_km": 7219.34
+    },
+    {
+      "name": "KAMPALA",
+      "length_km": 5738.64
+    },
+    {
+      "name": "KASESE",
+      "length_km": 5323.51
+    },
+    {
+      "name": "KAMULI",
+      "length_km": 5111.68
+    },
+    {
+      "name": "HOIMA",
+      "length_km": 4906.46
+    },
+    {
+      "name": "MASAKA",
+      "length_km": 4892.4
+    },
+    {
+      "name": "MUBENDE",
+      "length_km": 4878.39
+    },
+    {
+      "name": "LIRA",
+      "length_km": 4690.52
+    },
+    {
+      "name": "SOROTI",
+      "length_km": 4680.0
+    },
+    {
+      "name": "JINJA",
+      "length_km": 4598.23
+    },
+    {
+      "name": "BUSHENYI",
+      "length_km": 4496.52
+    },
+    {
+      "name": "KABAROLE",
+      "length_km": 4085.6
+    },
+    {
+      "name": "ARUA",
+      "length_km": 3948.91
+    },
+    {
+      "name": "RAKAI",
+      "length_km": 3607.49
+    },
+    {
+      "name": "MBALE",
+      "length_km": 3468.2
+    },
+    {
+      "name": "KIBOGA",
+      "length_km": 2416.66
+    },
+    {
+      "name": "KANUNGU",
+      "length_km": 2179.78
+    },
+    {
+      "name": "BUSIA",
+      "length_km": 2132.58
+    },
+    {
+      "name": "MASINDI",
+      "length_km": 2012.54
+    },
+    {
+      "name": "KIBAALE",
+      "length_km": 1865.65
+    },
+    {
+      "name": "SEMBABULE",
+      "length_km": 1804.72
+    },
+    {
+      "name": "OYAM",
+      "length_km": 1682.6
+    },
+    {
+      "name": "NAKASONGOLA",
+      "length_km": 1476.21
+    },
+    {
+      "name": "MAYUGE",
+      "length_km": 1426.97
+    },
+    {
+      "name": "LWENGO",
+      "length_km": 1378.81
+    },
+    {
+      "name": "KIRUHURA",
+      "length_km": 1316.01
+    },
+    {
+      "name": "DOKOLO",
+      "length_km": 1252.57
+    },
+    {
+      "name": "NTUNGAMO",
+      "length_km": 1246.48
+    },
+    {
+      "name": "KALUNGU",
+      "length_km": 1234.92
+    },
+    {
+      "name": "ADJUMANI",
+      "length_km": 1230.54
+    },
+    {
+      "name": "KABONG",
+      "length_km": 1223.2
+    },
+    {
+      "name": "ISINGIRO",
+      "length_km": 1180.49
+    },
+    {
+      "name": "NAKASEKE",
+      "length_km": 1153.3
+    },
+    {
+      "name": "KUMI",
+      "length_km": 1143.88
+    },
+    {
+      "name": "BUYENDE",
+      "length_km": 1123.89
+    },
+    {
+      "name": "KAMWENGE",
+      "length_km": 1102.24
+    },
+    {
+      "name": "OTUKE",
+      "length_km": 1094.44
+    },
+    {
+      "name": "KIRYANDONGO",
+      "length_km": 1087.1
+    },
+    {
+      "name": "KYENJOJO",
+      "length_km": 1069.98
+    },
+    {
+      "name": "KABERAMAIDO",
+      "length_km": 1059.93
+    },
+    {
+      "name": "KALIRO",
+      "length_km": 1038.72
+    },
+    {
+      "name": "GOMBA",
+      "length_km": 1020.22
+    },
+    {
+      "name": "ALEBTONG",
+      "length_km": 992.96
+    },
+    {
+      "name": "BUKEDEA",
+      "length_km": 967.45
+    },
+    {
+      "name": "KAYUNGA",
+      "length_km": 954.24
+    },
+    {
+      "name": "RUKUNGIRI",
+      "length_km": 944.72
+    },
+    {
+      "name": "MITYANA",
+      "length_km": 927.01
+    },
+    {
+      "name": "MBARARA",
+      "length_km": 919.04
+    },
+    {
+      "name": "KYANKWANZI",
+      "length_km": 896.81
+    },
+    {
+      "name": "SHEEMA",
+      "length_km": 887.75
+    },
+    {
+      "name": "KISORO",
+      "length_km": 879.36
+    },
+    {
+      "name": "BUIKWE",
+      "length_km": 868.12
+    },
+    {
+      "name": "AMOLATAR",
+      "length_km": 855.07
+    },
+    {
+      "name": "BUKOMANSIMBI",
+      "length_km": 834.57
+    },
+    {
+      "name": "LYANTONDE",
+      "length_km": 819.96
+    },
+    {
+      "name": "BUDAKA",
+      "length_km": 799.37
+    },
+    {
+      "name": "KOLE",
+      "length_km": 797.42
+    },
+    {
+      "name": "NAMUTUMBA",
+      "length_km": 791.88
+    },
+    {
+      "name": "KYEGEGWA",
+      "length_km": 777.67
+    },
+    {
+      "name": "NAKAPIRIPIRIT",
+      "length_km": 775.04
+    },
+    {
+      "name": "NEBBI",
+      "length_km": 752.84
+    },
+    {
+      "name": "BUHWEJU",
+      "length_km": 744.95
+    },
+    {
+      "name": "BUTAMBALA",
+      "length_km": 719.09
+    },
+    {
+      "name": "BUGIRI",
+      "length_km": 714.36
+    },
+    {
+      "name": "ZOMBO",
+      "length_km": 707.84
+    },
+    {
+      "name": "MOYO",
+      "length_km": 705.19
+    },
+    {
+      "name": "PALLISA",
+      "length_km": 703.82
+    },
+    {
+      "name": "RUBIRIZI",
+      "length_km": 701.96
+    },
+    {
+      "name": "IBANDA",
+      "length_km": 690.04
+    },
+    {
+      "name": "AMUDAT",
+      "length_km": 682.09
+    },
+    {
+      "name": "MANAFWA",
+      "length_km": 675.62
+    },
+    {
+      "name": "BULIISA",
+      "length_km": 668.01
+    },
+    {
+      "name": "IGANGA",
+      "length_km": 648.38
+    },
+    {
+      "name": "BUTALEJA",
+      "length_km": 644.26
+    },
+    {
+      "name": "KOBOKO",
+      "length_km": 626.28
+    },
+    {
+      "name": "SIRONKO",
+      "length_km": 612.56
+    },
+    {
+      "name": "MITOOMA",
+      "length_km": 601.75
+    },
+    {
+      "name": "MARACHA",
+      "length_km": 580.82
+    },
+    {
+      "name": "ABIM",
+      "length_km": 561.97
+    },
+    {
+      "name": "YUMBE",
+      "length_km": 559.34
+    },
+    {
+      "name": "MOROTO",
+      "length_km": 509.69
+    },
+    {
+      "name": "LUUKA",
+      "length_km": 499.52
+    },
+    {
+      "name": "NGORA",
+      "length_km": 490.73
+    },
+    {
+      "name": "AMURIA",
+      "length_km": 478.4
+    },
+    {
+      "name": "KWEEN",
+      "length_km": 476.56
+    },
+    {
+      "name": "BULAMBULI",
+      "length_km": 442.4
+    },
+    {
+      "name": "NAMAYINGO",
+      "length_km": 442.28
+    },
+    {
+      "name": "BUKWO",
+      "length_km": 416.29
+    },
+    {
+      "name": "KAPCHORWA",
+      "length_km": 402.02
+    },
+    {
+      "name": "NAPAK",
+      "length_km": 383.56
+    },
+    {
+      "name": "BUND1BUGYO",
+      "length_km": 383.35
+    },
+    {
+      "name": "BUDUDA",
+      "length_km": 363.12
+    },
+    {
+      "name": "KIBUKU",
+      "length_km": 356.44
+    },
+    {
+      "name": "BUVUMA",
+      "length_km": 337.13
+    },
+    {
+      "name": "SERERE",
+      "length_km": 293.19
+    },
+    {
+      "name": "NTOROKO",
+      "length_km": 219.81
+    },
+    {
+      "name": "KOTIDO",
+      "length_km": 208.05
+    },
+    {
+      "name": "LUWEERO",
+      "length_km": 179.9
+    },
+    {
+      "name": "AGAGO",
+      "length_km": 162.73
+    },
+    {
+      "name": "KALANGALA",
+      "length_km": 96.62
+    },
+    {
+      "name": "414",
+      "length_km": 7.07
+    },
+    {
+      "name": "TEXT",
+      "length_km": 5.99
+    }
+  ],
+  "by_surface": [
+    {
+      "name": "Earth",
+      "length_km": 253019.35
+    },
+    {
+      "name": "Gravel",
+      "length_km": 98815.89
+    },
+    {
+      "name": "Bituminous",
+      "length_km": 49277.04
+    }
+  ],
+  "by_condition": [
+    {
+      "name": "Unclassified",
+      "length_km": 135202.52
+    },
+    {
+      "name": "Fair",
+      "length_km": 131747.04
+    },
+    {
+      "name": "Poor",
+      "length_km": 122092.64
+    },
+    {
+      "name": "Good",
+      "length_km": 12070.07
+    }
+  ],
+  "by_class": [
+    {
+      "name": "Class C",
+      "length_km": 128549.6
+    },
+    {
+      "name": "2",
+      "length_km": 119022.23
+    },
+    {
+      "name": "1",
+      "length_km": 54556.6
+    },
+    {
+      "name": "3",
+      "length_km": 50482.27
+    },
+    {
+      "name": "0",
+      "length_km": 34438.07
+    },
+    {
+      "name": "I",
+      "length_km": 10161.07
+    },
+    {
+      "name": "II",
+      "length_km": 2935.4
+    },
+    {
+      "name": "III",
+      "length_km": 367.16
+    },
+    {
+      "name": "4",
+      "length_km": 50.48
+    },
+    {
+      "name": "5",
+      "length_km": 30.48
+    },
+    {
+      "name": "9",
+      "length_km": 30.06
+    },
+    {
+      "name": "8",
+      "length_km": 30.03
+    },
+    {
+      "name": "16",
+      "length_km": 30.0
+    },
+    {
+      "name": "6",
+      "length_km": 25.26
+    },
+    {
+      "name": "7",
+      "length_km": 17.89
+    },
+    {
+      "name": "17",
+      "length_km": 16.98
+    },
+    {
+      "name": "10",
+      "length_km": 16.91
+    },
+    {
+      "name": "36",
+      "length_km": 15.79
+    },
+    {
+      "name": "12",
+      "length_km": 15.0
+    },
+    {
+      "name": "13",
+      "length_km": 15.0
+    },
+    {
+      "name": "14",
+      "length_km": 15.0
+    },
+    {
+      "name": "29",
+      "length_km": 15.0
+    },
+    {
+      "name": "11",
+      "length_km": 15.0
+    },
+    {
+      "name": "37",
+      "length_km": 15.0
+    },
+    {
+      "name": "41",
+      "length_km": 15.0
+    },
+    {
+      "name": "33",
+      "length_km": 15.0
+    },
+    {
+      "name": "19",
+      "length_km": 15.0
+    },
+    {
+      "name": "32",
+      "length_km": 15.0
+    },
+    {
+      "name": "31",
+      "length_km": 14.95
+    },
+    {
+      "name": "35",
+      "length_km": 14.32
+    },
+    {
+      "name": "38",
+      "length_km": 13.68
+    },
+    {
+      "name": "39",
+      "length_km": 13.19
+    },
+    {
+      "name": "18",
+      "length_km": 12.11
+    },
+    {
+      "name": "28",
+      "length_km": 11.88
+    },
+    {
+      "name": "27",
+      "length_km": 11.88
+    },
+    {
+      "name": "21",
+      "length_km": 11.34
+    },
+    {
+      "name": "30",
+      "length_km": 10.47
+    },
+    {
+      "name": "15",
+      "length_km": 10.33
+    },
+    {
+      "name": "67",
+      "length_km": 9.63
+    },
+    {
+      "name": "34",
+      "length_km": 9.31
+    },
+    {
+      "name": "20",
+      "length_km": 7.77
+    },
+    {
+      "name": "22",
+      "length_km": 7.53
+    },
+    {
+      "name": "40",
+      "length_km": 6.73
+    },
+    {
+      "name": "999.00",
+      "length_km": 5.99
+    },
+    {
+      "name": "26",
+      "length_km": 5.13
+    },
+    {
+      "name": "25",
+      "length_km": 3.36
+    },
+    {
+      "name": "42",
+      "length_km": 2.53
+    },
+    {
+      "name": "23",
+      "length_km": 1.98
+    },
+    {
+      "name": "24",
+      "length_km": 1.87
+    }
+  ]
+}

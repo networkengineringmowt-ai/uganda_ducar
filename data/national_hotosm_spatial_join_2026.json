@@ -1,0 +1,11 @@
+{
+  "official_reference_km": 21302.0,
+  "authoritative_source_feature_count": 1014,
+  "authoritative_exploded_part_count": 1069,
+  "authoritative_geometry_km": 21091.23854,
+  "authoritative_length_field_km": 21136.748162,
+  "matched_hotosm_feature_count": 42460,
+  "matched_hotosm_length_km": 21370.392215,
+  "reference_coverage_pct": 100.321,
+  "method": "Nearest authoritative alignment midpoint within 500 m and local bearing difference no greater than 44 degrees in EPSG:32636."
+}

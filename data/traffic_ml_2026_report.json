@@ -1,0 +1,61 @@
+{
+  "model_id": "DUCAR-Traffic-ET-v2.0-2026-08-21",
+  "trained_at_utc": "2026-08-21T08:15:07.859755+00:00",
+  "accelerator": "CPU - all logical cores",
+  "targets": {
+    "registry_aadt": {
+      "observed_records": 1877,
+      "training_records": 1464,
+      "validation_records": 413,
+      "validation_mae": 66.954,
+      "validation_r2": 0.9623
+    },
+    "registry_pcu": {
+      "observed_records": 1877,
+      "training_records": 1464,
+      "validation_records": 413,
+      "validation_mae": 30.271,
+      "validation_r2": 0.9836
+    },
+    "registry_speed_kmh": {
+      "observed_records": 1877,
+      "training_records": 1464,
+      "validation_records": 413,
+      "validation_mae": 3.202,
+      "validation_r2": 0.6944
+    }
+  },
+  "governed_ducar": {
+    "records": 7733,
+    "all_ids_valid": true,
+    "unique_ids": 7733
+  },
+  "complete_hotosm_network": {
+    "records": 404047,
+    "endpoint_coordinates": 404047,
+    "projected_crashes_2026": 27016,
+    "projected_fatal": 4774,
+    "projected_serious": 14069,
+    "projected_minor": 8173
+  },
+  "national_id_register": {
+    "records": 1015,
+    "road_numbers": 650,
+    "length_km": 21168.978,
+    "source_duplicate_ids": 4,
+    "corrected_duplicate_ids": 0,
+    "standard": "Road_No_LinkNN"
+  },
+  "projection": {
+    "year": 2026,
+    "projected_crashes": 27016,
+    "basis": "2025 UPF total projected by 2024-2025 growth",
+    "sources": [
+      "https://upf.go.ug/wp-content/uploads/2026/04/ACR-2025-Official-Report-Web-Version.pdf",
+      "https://www.works.go.ug/policies-regulations/traffic-and-road-safety-laws-regulations/455-the-traffic-and-road-safety-prescription-of-speed-limits-regulations-2025/download",
+      "https://works.go.ug/wp-content/uploads/2026/05/MoWT-Strategic-Plan-2026_30-Draft-v6.pdf"
+    ]
+  },
+  "public_coordinate_policy": "Road tables expose start and end WGS84 decimal-degree coordinates; midpoint coordinates remain backend-only.",
+  "full_network_calibration": "Extra Trees prediction calibrated by HOTOSM motorway, trunk, primary, secondary, tertiary, residential, service, track and unclassified functional class."
+}

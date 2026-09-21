@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"name":"Kampala Urban sample","functional_class":"Urban Road","surface_type":"Paved","length_km":5.2},"geometry":{"type":"LineString","coordinates":[[32.577,0.317],[32.59,0.325],[32.605,0.335]]}}]}

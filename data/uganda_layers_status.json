@@ -1,0 +1,94 @@
+{
+  "updated_at_utc": "2026-06-02T13:27:45.140435+00:00",
+  "layers": [
+    {
+      "id": "unified-roads",
+      "label": "Unified road intelligence layer",
+      "file": "uganda_unified_roads_web_2026-06-02.geojson",
+      "generated_at_utc": "2026-06-02T13:27:22.643289+00:00",
+      "record_count": 16319,
+      "total_length_km": 93391.21,
+      "ducar_analysis_record_count": 13500,
+      "ducar_analysis_length_km": 67551.55,
+      "reference_exempt_record_count": 2819,
+      "by_ducar_analysis_scope": {
+        "Included": 345,
+        "Included pending urban mandate confirmation": 139,
+        "Included pending validation": 13016,
+        "Reference only - excluded": 2819
+      },
+      "by_source": {
+        "DUCAR district roads": 345,
+        "KCCA roads": 80,
+        "National road network FY25/26": 1014,
+        "OpenStreetMap / Geofabrik": 14821,
+        "Selected Roads in CBD": 59
+      },
+      "by_quality_flag": {
+        "CBD source - verify surface and class": 59,
+        "District join missing": 146,
+        "Name missing in OSM": 7420,
+        "OK": 8694
+      },
+      "detail": "Browser road layer joining DUCAR, national, KCCA/CBD and OSM-derived roads."
+    },
+    {
+      "id": "cartographic-routes",
+      "label": "Fast cartographic route layer",
+      "file": "uganda_clean_road_routes_web.geojson",
+      "generated_at_utc": "2026-06-02T13:27:44.773934+00:00",
+      "record_count": 5626,
+      "total_length_km": 92856.94,
+      "edge_count": 37488,
+      "node_count": 44972,
+      "source_record_count": 16319,
+      "by_network_category": {
+        "City Roads": 2258,
+        "Community Access Roads": 594,
+        "District Roads": 1754,
+        "KCCA": 7,
+        "National Roads": 1013
+      },
+      "detail": "Simplified route-level layer used by the interactive GIS map for faster browser rendering."
+    },
+    {
+      "id": "national-roads",
+      "label": "National road reference layer",
+      "file": "uganda_national_roads_fy25_26_2026-06-02.geojson",
+      "generated_at_utc": "2026-06-02T13:27:15.926552+00:00",
+      "record_count": 1014,
+      "total_length_km": 21227.44,
+      "ducar_analysis_record_count": null,
+      "ducar_analysis_length_km": null,
+      "reference_exempt_record_count": null,
+      "by_ducar_analysis_scope": {},
+      "by_source": {},
+      "by_quality_flag": {},
+      "detail": "FY25/26 national road network shown for coordination and DUCAR double-counting checks."
+    },
+    {
+      "id": "road-master",
+      "label": "Editable all-road master",
+      "file": "uganda_roads_master.gpkg",
+      "generated_at_utc": "2026-06-02T13:20:20.657598+00:00",
+      "record_count": 708651,
+      "total_length_km": 410243.69,
+      "by_source": {
+        "Existing DUCAR district roads shapefile": 31106,
+        "OpenStreetMap via Geofabrik Uganda free shapefile extract": 677545
+      },
+      "by_quality_flag": {
+        "District join missing": 6267,
+        "Name missing": 9467,
+        "Name missing in OSM": 663694,
+        "OK": 29223
+      },
+      "detail": "Local GeoPackage master retained outside GitHub Pages because it is too large for browser delivery."
+    }
+  ],
+  "assumptions": [
+    "National roads remain visible in the unified map for reference, connectivity, and double-counting checks, but all DUCAR analysis focuses on non-national roads unless a formal delegation exists.",
+    "OSM classifications are planning-screen assignments only. They must be validated against statutory road ownership, gazetted road lists, field survey, and the Uganda road asset management manuals before final budgeting or legal reporting.",
+    "The national road network is shown as a coordination and exclusion/reference layer. DUCAR allocation should avoid double-counting roads under national responsibility unless an explicit agency agreement exists."
+  ]
+}

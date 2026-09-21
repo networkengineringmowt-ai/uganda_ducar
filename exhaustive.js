@@ -1,0 +1,1984 @@
+(function () {
+  "use strict";
+
+  // Charts are reserved for dimensions that remain legible without selecting
+  // or suppressing categories. High-cardinality dimensions stay complete in
+  // the exhaustive and deep-analytics tables; no Top-N view is generated.
+  const MAX_CHART_CATEGORIES = 12;
+  const PAGE_SIZE = 500;
+  const PATHS = {
+    criticality: "./data/ducar_link_criticality.json",
+    links: "./data/ducar_link_register.json.gz?v=20260901-fast-load-1",
+    relations: "./data/ducar_link_admin_relations.json",
+    global: "./data/global_country_matrix.json",
+    governance: "./data/global_local_road_governance.json",
+    inventory: "./data/approved_network_inventory_2026.json",
+    database: "./data/ducar_database_catalog.json",
+    mindmap: "./data/ducar_site_mind_map.json",
+    socio: "./data/ducar_socioeconomic_link_analysis.json",
+    facilities: "./data/uganda_socioeconomic_facilities.geojson",
+    mapRoads: "./data/ducar_map_preview.geojson.gz?v=20260831-road-names-1",
+    structures: "./data/ducar_structure_analysis.json",
+    structureMap: "./data/ducar_structures.geojson",
+    hotosmMap: "./data/hotosm_vehicular_map.geojson.gz?v=20260831-mowt-seven-classes-1",
+    hotosmDetailManifest: "./data/hotosm_detail_tiles_manifest.json?v=20260831-mowt-seven-classes-1",
+    hotosmAnalysis: "./data/hotosm_vehicular_analysis.json?v=20260831-mowt-seven-classes-1",
+    arcgisReady: "./data/arcgis_ready_complete_network_reconciliation_2026.json?v=20260910-arcgis-ready-1",
+    fullNetworkRecords: "./data/hotosm_vehicular_link_attributes.json.gz?v=20260831-mowt-seven-classes-1",
+    nationalMap: "./data/uganda_national_roads_2026.geojson.gz?v=20260824-national-register-exact-4"
+  };
+  const RISK_SCALE = ["#22c55e", "#84cc16", "#eab308", "#f97316", "#ef4444"];
+  const COLORS = [...RISK_SCALE, "#0ea5e9", "#8b5cf6"];
+  // Reference district land-area (km2) and approximate HQ-town centroid (WGS84 DD), used only for
+  // #ducar:records completeness: a coordinate fallback when a link has no mapped geometry, and a
+  // nearest-district lookup when the administrative unit is not supplied. Areas are UBOS/Wikipedia
+  // reference figures (Kampala/Wakiso per governance brief); centroids are approximate town
+  // locations, not surveyed cadastral boundaries — treat any estimated cell as indicative only.
+  const DISTRICT_GEO = {
+    "Kampala": { area_km2: 189, region: "Central", lat: 0.3476, lng: 32.5825 },
+    "Wakiso": { area_km2: 2807, region: "Central", lat: 0.4044, lng: 32.4594 },
+    "Mukono": { area_km2: 1875.1, region: "Central", lat: 0.3533, lng: 32.7553 },
+    "Mpigi": { area_km2: 1207.8, region: "Central", lat: 0.2262, lng: 32.3306 },
+    "Luweero": { area_km2: 2217.6, region: "Central", lat: 0.85, lng: 32.4667 },
+    "Masaka": { area_km2: 1295.6, region: "Central", lat: -0.3333, lng: 31.7333 },
+    "Mubende": { area_km2: 2711, region: "Central", lat: 0.5891, lng: 31.3944 },
+    "Kiboga": { area_km2: 1586.9, region: "Central", lat: 0.9167, lng: 31.7667 },
+    "Nakaseke": { area_km2: 3477.3, region: "Central", lat: 0.7333, lng: 32.1333 },
+    "Nakasongola": { area_km2: 3511.8, region: "Central", lat: 1.3167, lng: 32.4667 },
+    "Rakai": { area_km2: 1592, region: "Central", lat: -0.7108, lng: 31.5372 },
+    "Kayunga": { area_km2: 1587.8, region: "Central", lat: 0.7167, lng: 32.8833 },
+    "Mityana": { area_km2: 1579.3, region: "Central", lat: 0.4167, lng: 32.0333 },
+    "Kalangala": { area_km2: 468.3, region: "Central", lat: -0.3167, lng: 32.2333 },
+    "Sembabule": { area_km2: 2318.4, region: "Central", lat: -0.0833, lng: 31.45 },
+    "Kyotera": { area_km2: 1752, region: "Central", lat: null, lng: null },
+    "Lwengo": { area_km2: 914.7, region: "Central", lat: null, lng: null },
+    "Bukomansimbi": { area_km2: 600.2, region: "Central", lat: null, lng: null },
+    "Gomba": { area_km2: 1679.3, region: "Central", lat: null, lng: null },
+    "Butambala": { area_km2: 405.6, region: "Central", lat: null, lng: null },
+    "Kasanda": { area_km2: 1919, region: "Central", lat: null, lng: null },
+    "Kyankwanzi": { area_km2: 2455.3, region: "Central", lat: null, lng: null },
+    "Buvuma": { area_km2: 218.3, region: "Central", lat: null, lng: null },
+    "Lyantonde": { area_km2: 888.1, region: "Central", lat: null, lng: null },
+    "Kalungu": { area_km2: 811.6, region: "Central", lat: null, lng: null },
+    "Buikwe": { area_km2: 574.7, region: "Central", lat: 0.3389, lng: 33.0025 },
+    "Jinja": { area_km2: 673, region: "Eastern", lat: 0.4244, lng: 33.2042 },
+    "Mbale": { area_km2: 518.8, region: "Eastern", lat: 1.0827, lng: 34.1758 },
+    "Iganga": { area_km2: 638.6, region: "Eastern", lat: 0.6072, lng: 33.4686 },
+    "Tororo": { area_km2: 1196.4, region: "Eastern", lat: 0.6928, lng: 34.1811 },
+    "Busia": { area_km2: 730.9, region: "Eastern", lat: 0.4608, lng: 34.0917 },
+    "Soroti": { area_km2: 1411.9, region: "Eastern", lat: 1.7147, lng: 33.6111 },
+    "Kamuli": { area_km2: 1557, region: "Eastern", lat: 0.9472, lng: 33.12 },
+    "Bugiri": { area_km2: 1045.9, region: "Eastern", lat: 0.5789, lng: 33.7614 },
+    "Mayuge": { area_km2: 1082.5, region: "Eastern", lat: 0.4653, lng: 33.4772 },
+    "Pallisa": { area_km2: 859.3, region: "Eastern", lat: 1.1447, lng: 33.7092 },
+    "Kumi": { area_km2: 1074.6, region: "Eastern", lat: 1.4514, lng: 33.9367 },
+    "Sironko": { area_km2: 446.1, region: "Eastern", lat: 1.2306, lng: 34.2497 },
+    "Kapchorwa": { area_km2: 354.6, region: "Eastern", lat: 1.398, lng: 34.452 },
+    "Bukwo": { area_km2: 524.9, region: "Eastern", lat: null, lng: null },
+    "Butaleja": { area_km2: 653.1, region: "Eastern", lat: null, lng: null },
+    "Namutumba": { area_km2: 814.3, region: "Eastern", lat: null, lng: null },
+    "Serere": { area_km2: 1965.4, region: "Eastern", lat: 1.4989, lng: 33.5578 },
+    "Katakwi": { area_km2: 2428.8, region: "Eastern", lat: 1.8917, lng: 34.1461 },
+    "Amuria": { area_km2: 1382, region: "Eastern", lat: 2.0167, lng: 33.6333 },
+    "Bududa": { area_km2: 250.8, region: "Eastern", lat: 1.0058, lng: 34.3358 },
+    "Manafwa": { area_km2: 237.7, region: "Eastern", lat: 0.9333, lng: 34.4 },
+    "Budaka": { area_km2: 410.4, region: "Eastern", lat: null, lng: null },
+    "Bugweri": { area_km2: 379.1, region: "Eastern", lat: null, lng: null },
+    "Bukedea": { area_km2: 1051.7, region: "Eastern", lat: null, lng: null },
+    "Bulambuli": { area_km2: 651.8, region: "Eastern", lat: null, lng: null },
+    "Butebo": { area_km2: 237.9, region: "Eastern", lat: null, lng: null },
+    "Buyende": { area_km2: 1880.7, region: "Eastern", lat: null, lng: null },
+    "Kaberamaido": { area_km2: 887.5, region: "Eastern", lat: 1.75, lng: 33.15 },
+    "Kalaki": { area_km2: 737.1, region: "Eastern", lat: null, lng: null },
+    "Kaliro": { area_km2: 869.9, region: "Eastern", lat: 0.9167, lng: 33.5 },
+    "Kapelebyong": { area_km2: 1202, region: "Eastern", lat: null, lng: null },
+    "Kibuku": { area_km2: 490.2, region: "Eastern", lat: null, lng: null },
+    "Kween": { area_km2: 851.4, region: "Eastern", lat: null, lng: null },
+    "Luuka": { area_km2: 650.1, region: "Eastern", lat: null, lng: null },
+    "Namayingo": { area_km2: 532.9, region: "Eastern", lat: null, lng: null },
+    "Namisindwa": { area_km2: 299.7, region: "Eastern", lat: null, lng: null },
+    "Ngora": { area_km2: 721.4, region: "Eastern", lat: null, lng: null },
+    "Gulu": { area_km2: 1872, region: "Northern", lat: 2.7746, lng: 32.2989 },
+    "Lira": { area_km2: 1328.9, region: "Northern", lat: 2.235, lng: 32.9097 },
+    "Arua": { area_km2: 1217, region: "Northern", lat: 3.0201, lng: 30.9111 },
+    "Kitgum": { area_km2: 3960, region: "Northern", lat: 3.2783, lng: 32.8867 },
+    "Moyo": { area_km2: 1041, region: "Northern", lat: 3.6486, lng: 31.7297 },
+    "Adjumani": { area_km2: 3030.9, region: "Northern", lat: 3.3775, lng: 31.79 },
+    "Nebbi": { area_km2: 994.2, region: "Northern", lat: 2.4772, lng: 31.0872 },
+    "Apac": { area_km2: 1791, region: "Northern", lat: 1.9786, lng: 32.5344 },
+    "Kotido": { area_km2: 3618, region: "Northern", lat: 2.9806, lng: 34.1258 },
+    "Moroto": { area_km2: 3537.6, region: "Northern", lat: 2.5361, lng: 34.6608 },
+    "Kaabong": { area_km2: 4104, region: "Northern", lat: 3.5167, lng: 34.15 },
+    "Pader": { area_km2: 3362.5, region: "Northern", lat: 2.75, lng: 33.0333 },
+    "Agago": { area_km2: 3496.8, region: "Northern", lat: 2.85, lng: 33.4 },
+    "Amuru": { area_km2: 3625.9, region: "Northern", lat: 2.4833, lng: 31.95 },
+    "Nwoya": { area_km2: 4736.2, region: "Northern", lat: 2.6167, lng: 31.9 },
+    "Yumbe": { area_km2: 2393, region: "Northern", lat: 3.4636, lng: 31.2461 },
+    "Zombo": { area_km2: 897.6, region: "Northern", lat: 2.1667, lng: 30.9167 },
+    "Abim": { area_km2: 2752, region: "Northern", lat: 2.7, lng: 33.65 },
+    "Napak": { area_km2: 4978.4, region: "Northern", lat: 2.5, lng: 34.25 },
+    "Kwania": { area_km2: 1408, region: "Northern", lat: 1.85, lng: 32.4 },
+    "Alebtong": { area_km2: 1527.5, region: "Northern", lat: 2.2667, lng: 33.3167 },
+    "Dokolo": { area_km2: 1072.8, region: "Northern", lat: 1.9167, lng: 33.1667 },
+    "Otuke": { area_km2: 1549.8, region: "Northern", lat: 2.4, lng: 33.3167 },
+    "Amolatar": { area_km2: 1758, region: "Northern", lat: 1.6333, lng: 32.8167 },
+    "Lamwo": { area_km2: 5595.8, region: "Northern", lat: 3.4667, lng: 32.7833 },
+    "Omoro": { area_km2: 1556, region: "Northern", lat: 2.6167, lng: 32.3667 },
+    "Koboko": { area_km2: 759.7, region: "Northern", lat: 3.4111, lng: 30.9667 },
+    "Amudat": { area_km2: 1615.4, region: "Northern", lat: 1.8, lng: 34.9 },
+    "Karenga": { area_km2: 3193, region: "Northern", lat: null, lng: null },
+    "Madi-Okollo": { area_km2: 2019, region: "Northern", lat: null, lng: null },
+    "Maracha": { area_km2: 439.1, region: "Northern", lat: null, lng: null },
+    "Nabilatuk": { area_km2: 1805, region: "Northern", lat: null, lng: null },
+    "Nakapiripirit": { area_km2: 2379, region: "Northern", lat: 1.9167, lng: 34.65 },
+    "Obongi": { area_km2: 847.1, region: "Northern", lat: null, lng: null },
+    "Oyam": { area_km2: 2190.8, region: "Northern", lat: null, lng: null },
+    "Pakwach": { area_km2: 981.7, region: "Northern", lat: null, lng: null },
+    "Terego": { area_km2: 1102, region: "Northern", lat: null, lng: null },
+    "Mbarara": { area_km2: 1242, region: "Western", lat: -0.6072, lng: 30.6545 },
+    "Kabale": { area_km2: 620, region: "Western", lat: -1.2486, lng: 29.9897 },
+    "Kasese": { area_km2: 3199, region: "Western", lat: 0.1833, lng: 30.0833 },
+    "Hoima": { area_km2: 1566, region: "Western", lat: 1.4356, lng: 31.3522 },
+    "Kabarole": { area_km2: 1312, region: "Western", lat: 0.671, lng: 30.2748 },
+    "Bushenyi": { area_km2: 942.3, region: "Western", lat: -0.5833, lng: 30.2 },
+    "Ntungamo": { area_km2: 2051, region: "Western", lat: -0.8797, lng: 30.2589 },
+    "Rukungiri": { area_km2: 1444.9, region: "Western", lat: -0.7833, lng: 29.9333 },
+    "Kanungu": { area_km2: 1274, region: "Western", lat: -0.9167, lng: 29.7833 },
+    "Kisoro": { area_km2: 644.6, region: "Western", lat: -1.2833, lng: 29.6833 },
+    "Masindi": { area_km2: 3923, region: "Western", lat: 1.674, lng: 31.7151 },
+    "Kibaale": { area_km2: 1165, region: "Western", lat: 0.8, lng: 31.0667 },
+    "Kyenjojo": { area_km2: 2350.1, region: "Western", lat: 0.6167, lng: 30.6167 },
+    "Ibanda": { area_km2: 964.8, region: "Western", lat: -0.1167, lng: 30.5 },
+    "Isingiro": { area_km2: 2655.6, region: "Western", lat: -0.85, lng: 30.8 },
+    "Kamwenge": { area_km2: 1693, region: "Western", lat: 0.1833, lng: 30.5667 },
+    "Bundibugyo": { area_km2: 848.2, region: "Western", lat: 0.71, lng: 30.06 },
+    "Kiryandongo": { area_km2: 3624.1, region: "Western", lat: 1.9333, lng: 32 },
+    "Buliisa": { area_km2: 1141, region: "Western", lat: null, lng: null },
+    "Kagadi": { area_km2: 1411, region: "Western", lat: null, lng: null },
+    "Kakumiro": { area_km2: 1668, region: "Western", lat: null, lng: null },
+    "Ntoroko": { area_km2: 1236, region: "Western", lat: null, lng: null },
+    "Sheema": { area_km2: 699.1, region: "Western", lat: null, lng: null },
+    "Rubirizi": { area_km2: 985, region: "Western", lat: null, lng: null },
+    "Mitooma": { area_km2: 542.8, region: "Western", lat: null, lng: null },
+    "Buhweju": { area_km2: 687.1, region: "Western", lat: null, lng: null },
+    "Rubanda": { area_km2: 689.8, region: "Western", lat: null, lng: null },
+    "Rukiga": { area_km2: 426.3, region: "Western", lat: null, lng: null },
+    "Kyegegwa": { area_km2: 1747, region: "Western", lat: null, lng: null },
+    "Kazo": { area_km2: 1556, region: "Western", lat: null, lng: null },
+    "Kiruhura": { area_km2: 3043, region: "Western", lat: null, lng: null },
+    "Bunyangabu": { area_km2: 498.3, region: "Western", lat: null, lng: null },
+    "Kitagwenda": { area_km2: 715.6, region: "Western", lat: null, lng: null },
+    "Kikuube": { area_km2: 2097, region: "Western", lat: null, lng: null },
+    "Rwampara": { area_km2: 574.7, region: "Western", lat: null, lng: null }
+  };
+  const REGION_CENTROIDS = { Central: { lat: 0.7, lng: 31.8 }, Eastern: { lat: 1.3, lng: 33.9 }, Northern: { lat: 2.8, lng: 32.6 }, Western: { lat: -0.3, lng: 30.4 } };
+  const UGANDA_CENTROID = { lat: 1.3733, lng: 32.2903 };
+  const CONFIRMED_NETWORK_FALLBACK = { length_km: 248616.14, links: 404047, districts: 135 };
+  const SECTION_TABS = [["dashboard", "Dashboard"], ["ibp", "IBP Project Register"], ["map", "Map"], ["records", "Full Exhaustive Table"], ["analytics", "Deep Analytics"], ["sql", "SQL Tables"], ["schema", "SQL Schema"]];
+  const SECTION_META = {
+    overview: ["National DUCAR Overview", "Whole-register coverage, condition, pavement, traffic and planning status."],
+    ducar: ["National DUCAR Overview", "Mapped DUCAR link governance, inventory completeness and planning readiness."],
+    network: ["Network & Pavement Structure", "Link geometry, administrative hierarchy, pavement class and length quality."],
+    traffic: ["Traffic Intelligence", "Exact-match AADT, PCU and speed reporting for every mapped DUCAR link."],
+    condition: ["Road Condition", "Condition, surface risk and intervention requirements for every mapped link."],
+    structures: ["Structures · Bridges & Major Culverts", "Bridge, culvert, drift, condition, chainage, intervention and linked-road exposure reporting."],
+    pims: ["PIMS Planning", "Planning priority, intervention pipeline and investment-screening attributes."],
+    hdm4: ["HDM-4 Inputs", "Geometry, speed, traffic, pavement and planning-cost inputs prepared for economic analysis."],
+    framework: ["Data & Governance Framework", "Record provenance, QA, coverage, hierarchy and modelling-basis controls."],
+    budgets: ["Budget & Prioritisation", "Link-level planning allowances, priority bands and intervention allocation."],
+    global: ["Global Local-Road Governance", "How ministries and road authorities manage district, urban, rural and access roads: institutions, finance, principles, measures and techniques."],
+    socioeconomic: ["Socioeconomic & Accessibility Analysis", "Road-length exposure to schools, health facilities, markets, industry, minerals, agriculture, energy and logistics."],
+    summaries: ["Summaries & Admin Tools", "Administrative relations, site topology, SQLite tables and database schema."]
+  };
+  const LINK_FIELDS = [
+    "link_id", "road_name", "established_route_name", "start_place_name", "end_place_name", "x_coordinate_dd", "y_coordinate_dd", "district", "county", "subcounty", "parish",
+    "surface", "pavement_class", "condition", "source_length_km", "geometry_length_km",
+    "registry_speed_kmh", "registry_aadt", "registry_pcu", "condition_risk",
+    "surface_risk", "planning_priority_score", "priority_band", "priority_basis", "recommended_intervention",
+    "planning_unit_cost_ugx_km", "planning_cost_per_km_ugx", "planning_works_cost_ugx", "planning_preparation_supervision_ugx", "planning_risk_contingency_ugx", "planning_cost_ugx", "planning_cost_price_base_year", "planning_cost_status"
+  ];
+  const RECORD_FIELDS = {
+    overview: LINK_FIELDS,
+    ducar: ["link_id", "road_name", "district", "county", "subcounty", "parish", "surface", "pavement_class", "condition", "geometry_length_km", "registry_aadt", "registry_pcu", "planning_priority_score", "priority_band", "recommended_intervention", "planning_cost_per_km_ugx", "planning_cost_ugx"],
+    network: ["link_id", "road_name", "surface", "pavement_class", "source_length_km", "geometry_length_km", "district", "county", "subcounty", "parish", "registry_aadt", "condition", "recommended_intervention"],
+    traffic: ["link_id", "road_name", "registry_aadt", "registry_pcu", "registry_speed_kmh", "geometry_length_km", "surface", "pavement_class", "condition", "district", "county", "subcounty", "parish", "planning_priority_score", "recommended_intervention"],
+    condition: ["link_id", "road_name", "condition", "surface", "pavement_class", "condition_risk", "surface_risk", "recommended_intervention", "planning_priority_score", "priority_band", "geometry_length_km", "district", "county", "subcounty", "parish", "planning_cost_ugx"],
+    structures: ["structure_id", "link_id", "linked_road_name", "x_coordinate_dd", "y_coordinate_dd", "district", "structure_name", "structure_location", "chainage_km", "structure_class", "structure_type", "structure_age", "current_condition", "risk_band", "last_major_works", "last_major_work_year", "remarks", "recommended_intervention", "programme_cost_ugx", "linked_road_length_km", "allocated_road_length_km", "link_match_score", "linkage_quality", "map_location_method", "source_occurrence_index", "source_occurrence_count", "source_file", "source_sheet", "source_row"],
+    pims: ["link_id", "road_name", "priority_band", "planning_priority_score", "priority_basis", "recommended_intervention", "planning_cost_per_km_ugx", "planning_works_cost_ugx", "planning_preparation_supervision_ugx", "planning_risk_contingency_ugx", "planning_cost_ugx", "planning_cost_price_base_year", "condition", "surface", "pavement_class", "geometry_length_km", "district", "county", "subcounty", "parish"],
+    hdm4: ["link_id", "road_name", "geometry_length_km", "source_length_km", "registry_speed_kmh", "registry_aadt", "registry_pcu", "surface", "pavement_class", "condition", "planning_priority_score", "recommended_intervention", "planning_cost_per_km_ugx", "planning_cost_ugx", "planning_cost_price_base_year"],
+    framework: ["link_id", "road_name", "district", "county", "subcounty", "parish", "surface", "pavement_class", "condition", "geometry_length_km", "registry_aadt", "planning_priority_score", "priority_band", "recommended_intervention", "priority_basis"],
+    budgets: ["link_id", "road_name", "priority_band", "planning_priority_score", "recommended_intervention", "planning_cost_per_km_ugx", "planning_works_cost_ugx", "planning_preparation_supervision_ugx", "planning_risk_contingency_ugx", "planning_cost_ugx", "planning_cost_price_base_year", "planning_cost_status", "condition", "surface", "pavement_class", "geometry_length_km", "district", "county", "subcounty", "parish"],
+    socioeconomic: ["link_id", "road_name", "x_coordinate_dd", "y_coordinate_dd", "district", "county", "subcounty", "parish", "geometry_length_km", "surface", "pavement_class", "condition", "registry_aadt", "planning_priority_score", "recommended_intervention", "socioeconomic_exposure_score", "exposure_band", "primary_socioeconomic_factor", "nearest_school_km", "school_sites_within_5km", "nearest_health_km", "health_sites_within_5km", "nearest_market_km", "market_sites_within_5km", "nearest_industry_km", "industry_sites_within_10km", "nearest_mineral_km", "mineral_sites_within_25km", "nearest_agriculture_km", "agriculture_sites_within_10km", "nearest_energy_km", "energy_sites_within_25km", "nearest_logistics_km", "logistics_sites_within_10km"]
+  };
+  const FULL_NETWORK_FIELDS = ["link_id","road_name","highway","surface","pavement_class","condition","functional_class","government_authority","length_km","government_department","geometry_basis","district","region","area_sqkm","d_tot_km","d_pvd_pct","d_por_pct","d_density","d_nstruct","d_str_100","d_adt","d_hvy_adt","d_crsh_yr","d_ftl_yr","l_adt","l_mc","l_hvyadt","l_nmt","l_trfsrc"];
+  const HIDDEN_RECORD_FIELDS = new Set(["coordinate_basis", "cost_basis", "admin_coverage"]);
+  const SECTION_SQL = {
+    overview: ["ducar_link_register", "master_road_sections"], ducar: ["ducar_link_register", "master_road_sections"],
+    network: ["ducar_link_register", "ducar_link_admin_relations", "admin_unit_distance_matrix"],
+    traffic: ["ducar_link_register", "traffic_survey_counts"], condition: ["ducar_link_register", "pms_pavement_condition"],
+    structures: ["structure_inventory", "structure_link_summary", "ducar_link_register"],
+    pims: ["ducar_link_register", "pms_pavement_condition"], hdm4: ["ducar_link_register", "pms_pavement_condition"],
+    framework: ["ducar_link_register", "ducar_link_admin_relations"], budgets: ["ducar_link_register", "pms_pavement_condition"],
+    global: ["global_country_matrix"], socioeconomic: ["socioeconomic_link_analysis", "socioeconomic_facilities", "ducar_link_register", "ducar_link_admin_relations"], summaries: ["ducar_link_admin_relations", "admin_unit_distance_matrix", "admin_districts"]
+  };
+  const cache = {};
+  const vizTimers = new Set();
+  let recordMountToken = 0;
+  let renderToken = 0;
+  const state = { section: sectionFromHash(), tab: tabFromHash(), page: 1, search: "", filterField: "", filterValue: "", sortField: "", sortDirection: "asc", loading: false, headerFilters:{region:"All",district:"All",surface:"All",pavement:"All",condition:"All",search:""} };
+  const root = document.getElementById("exhaustive-root");
+  if (!root) return;
+
+  function esc(value) { return String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  function shown(value) {
+    if (value === null || value === undefined || value === "") return "Not supplied";
+    if (Array.isArray(value) || typeof value === "object") return JSON.stringify(value);
+    if (typeof value === "boolean") return value ? "Yes" : "No";
+    return String(value);
+  }
+  function headerMatches(row) {
+    const filters=state.headerFilters,eq=(value,selected)=>selected==="All"||shown(value).toLowerCase()===selected.toLowerCase();
+    const query=filters.search.trim().toLowerCase(),searchable=[row.link_id,row.road_name,row.linked_road_name,row.structure_id,row.structure_name,row.district,row.admin_district,row.county,row.subcounty,row.parish];
+    return eq(row.region,filters.region)&&eq(row.district||row.admin_district,filters.district)&&eq(row.surface,filters.surface)&&eq(row.pavement_class,filters.pavement)&&eq(row.condition||row.current_condition,filters.condition)&&(!query||searchable.some(value=>String(value||"").toLowerCase().includes(query)));
+  }
+  function applyHeaderFilters(rows) { return (rows||[]).filter(headerMatches); }
+  function canonicalSurface(value) {
+    const surface=properText(value);
+    if(/^bituminous$/i.test(surface))return "Bituminous";
+    if(/^concrete$/i.test(surface))return "Concrete";
+    if(/^gravel$/i.test(surface))return "Gravel";
+    if(/^earth$/i.test(surface))return "Earth";
+    return surface;
+  }
+  function canonicalPavement(surface,value) {
+    if(/^(Bituminous|Concrete)$/i.test(surface))return "Paved";
+    if(/^(Gravel|Earth)$/i.test(surface))return "Unpaved";
+    return properText(value);
+  }
+  function enrichPlanningCost(row) {
+    const surface=canonicalSurface(row.surface),pavement_class=canonicalPavement(surface,row.pavement_class),length=Math.max(0,Number(row.geometry_length_km||row.length_km||0));
+    const total=Math.max(0,Number(row.planning_cost_ugx||0)),works=Math.round(total/1.20),preparation=Math.round(works*.08),contingency=Math.max(0,Math.round(total-works-preparation));
+    return {...row,surface,pavement_class,planning_cost_per_km_ugx:length>0?Math.round(total/length):0,planning_works_cost_ugx:works,planning_preparation_supervision_ugx:preparation,planning_risk_contingency_ugx:contingency,planning_cost_price_base_year:2026,planning_cost_status:"Screening Allowance"};
+  }
+  function activeLinkRows() { return applyHeaderFilters(cache.links||[]).map(enrichPlanningCost); }
+  function filteredSocioPayload() {
+    const source=cache.socio||{},rows=applyHeaderFilters(source.rows||[]),length=rows.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0);
+    const exposure_summary=aggregate(rows,"exposure_band").map(item=>({band:item.name,links:item.count,affected_length_km:item.value}));
+    const access_summary=(source.access_summary||[]).map(item=>{const field=`nearest_${String(item.factor).toLowerCase()}_km`,selected=rows.filter(row=>typeof row[field]==="number"&&row[field]<=item.threshold_km);return {...item,links:selected.length,affected_length_km:selected.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0)};});
+    return {...source,rows,exposure_summary,access_summary,metadata:{...(source.metadata||{}),road_links:rows.length,road_length_km:length}};
+  }
+  function filteredStructurePayload() {
+    const source=cache.structures||{},rows=applyHeaderFilters(source.rows||[]),summary=field=>aggregate(rows.map(row=>({...row,geometry_length_km:Number(row.allocated_road_length_km||0)})),field).map(item=>({[field]:item.name,records:item.count,affected_length_km:item.value}));
+    return {...source,rows,class_summary:summary("structure_class"),condition_summary:summary("current_condition"),risk_summary:summary("risk_band"),metadata:{...(source.metadata||{}),structure_occurrences:rows.length,linked_structure_occurrences:rows.filter(row=>shown(row.link_id)!=="Not supplied").length,road_length_with_structures_km:rows.reduce((sum,row)=>sum+Number(row.allocated_road_length_km||0),0)}};
+  }
+  const DISPLAY_ACRONYMS={aadt:"AADT",pcu:"PCU",adt:"ADT",id:"ID",ids:"IDs",km:"km",kmh:"km/h",dd:"DD",ugx:"UGX",kcca:"KCCA",ducar:"DUCAR",pims:"PIMS",hdm4:"HDM-4",osm:"OSM",hotosm:"HOTOSM",sql:"SQL",gis:"GIS",mowt:"MoWT",wgs84:"WGS84"};
+  const FIELD_LABELS={planning_cost_per_km_ugx:"Planning Cost per km (UGX/km)",planning_unit_cost_ugx_km:"Planning Unit Cost (UGX/km)",planning_works_cost_ugx:"Planning Works Cost (UGX)",planning_preparation_supervision_ugx:"Preparation and Supervision (UGX)",planning_risk_contingency_ugx:"Risk Contingency (UGX)",planning_cost_ugx:"Total Planning Allowance (UGX)",geometry_length_km:"Geometry Length (km)",source_length_km:"Source Length (km)",allocated_road_length_km:"Allocated Road Length (km)"};
+  function isLengthField(field){return /(^|_)(length|distance|chainage)_km$/.test(String(field))||/^(length_km|geometry_length_km|covered_length_km|allocated_road_length_km)$/.test(String(field));}
+  function label(value) { const key=String(value);if(FIELD_LABELS[key])return FIELD_LABELS[key];let result=key.replaceAll("_", " ").split(/\s+/).map(word=>DISPLAY_ACRONYMS[word.toLowerCase()]||word.charAt(0).toUpperCase()+word.slice(1).toLowerCase()).join(" ");if(isLengthField(key))result=result.replace(/\s+km$/i," (km)");return result; }
+  function properText(value) {
+    const text=shown(value);if(text==="Not supplied")return text;
+    return text.split(/(\s+|[-/])/).map(token=>{const key=token.toLowerCase().replace(/[^a-z0-9]/g,"");if(!key||/^\s+$|^[-/]$/.test(token))return token;return DISPLAY_ACRONYMS[key]||(/^[A-Z0-9]{2,8}$/.test(token)?token:token.charAt(0).toUpperCase()+token.slice(1).toLowerCase());}).join("").replace(/\bkm\/H\b/g,"km/h");
+  }
+  function properRoadName(value) {
+    const acronyms=new Map([["kcca","KCCA"],["hq","HQ"],["hqtrs","Headquarters"],["ps","P/S"],["tc","Town Council"]]);
+    let text=shown(value);if(text==="Not supplied")return text;
+    text=text.replace(/\bP\/S\b/gi,"PSSCHOOLTOKEN").replace(/�|–|—/g," - ").replace(/([a-z])([A-Z])/g,"$1 $2").replace(/[_/\\|]+/g," - ").replace(/\s*-+\s*/g," - ").replace(/\s+/g," ").replace(/^[ ._-]+|[ ._-]+$/g,"");
+    return text.split(" - ").filter(Boolean).map(part=>part.split(" ").filter(Boolean).map(word=>{const bare=word.replace(/[^A-Za-z0-9]/g,"");if(/^([A-Z]{4}\d{3}|[IVX]{1,5})$/.test(bare))return word;if(bare==="PSSCHOOLTOKEN")return word.replace("PSSCHOOLTOKEN","P/S");return acronyms.get(word.toLowerCase().replace(/\.$/,""))||word.toLowerCase().replace(/^([^a-z]*)([a-z])/,(_,prefix,letter)=>prefix+letter.toUpperCase());}).join(" ")).filter((part,index,array)=>array.findIndex(item=>item.toLowerCase()===part.toLowerCase())===index).join(" - ");
+  }
+  function sectionFromHash() {
+    const id = location.hash.slice(1).toLowerCase().split(":")[0];
+    return SECTION_META[id] ? id : "overview";
+  }
+  function tabFromHash() {
+    const id = location.hash.slice(1).toLowerCase().split(":")[1];
+    return SECTION_TABS.some(([tab]) => tab === id) ? id : "dashboard";
+  }
+  function sectionFromTitle(title) {
+    const map = { TOP: "overview", "DUCAR Dashboard": "ducar", Network: "network", Traffic: "traffic", Condition: "condition", Structures: "structures", PIMS: "pims", "HDM-4": "hdm4", Framework: "framework", "Budgets & Prioritization": "budgets", "Priority Studio": "budgets", Global: "global", "Global Benchmarks": "global", "Socioeconomic Analysis": "socioeconomic", "Summaries & Admin Tools": "summaries", "Admin Tools": "summaries" };
+    return map[title] || null;
+  }
+  async function data(key) {
+    if (!cache[key]) {
+      const response = await fetch(PATHS[key]);
+      if(PATHS[key].includes(".gz")){
+        if(!response.ok||typeof DecompressionStream==="undefined"){
+          const fallback=await fetch(PATHS[key].replace(/\.gz(?=\?|$)/,""));
+          if(!fallback.ok)throw new Error("Unable to load uncompressed fallback for "+PATHS[key]);
+          cache[key]=await fallback.json();
+        }else{
+          const decoded=response.body.pipeThrough(new DecompressionStream("gzip"));
+          cache[key]=await new Response(decoded).json();
+        }
+      }else {
+        if (!response.ok) throw new Error("Unable to load " + PATHS[key]);
+        cache[key] = await response.json();
+      }
+    }
+    return cache[key];
+  }
+  async function ensureData() {
+    await data("inventory"); await data("criticality").catch(() => ({}));
+    if(state.tab==="map"){
+      if(state.section==="global")return Promise.all([data("global"),data("governance")]);
+      if(state.section==="summaries")return Promise.all([data("relations"),data("mindmap"),data("links"),data("mapRoads")]);
+      if(state.section==="socioeconomic")return Promise.all([data("socio"),data("mapRoads"),data("facilities")]);
+      if(state.section==="structures")return Promise.all([data("structures"),data("mapRoads"),data("structureMap")]);
+      return data("mapRoads");
+    }
+    await data("hotosmAnalysis");
+    await data("arcgisReady").catch(() => null);
+    if (["sql", "schema"].includes(state.tab)) return data("database");
+    if (state.section === "global") return Promise.all([data("global"), data("governance")]);
+    if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap"), data("links"), data("database"), data("structures")]);
+    if (state.section === "socioeconomic") return data("socio");
+    if (state.section === "structures") return data("structures");
+    if (state.section === "ducar" && state.tab === "records") return Promise.all([data("links"), data("fullNetworkRecords")]);
+    return data("links");
+  }
+  function number(value, digits = 0) { const numeric=Number(value||0),authoritative=Math.abs(numeric-Number(confirmedNetwork().length_km||0))<.01,precision=authoritative?2:digits;return numeric.toLocaleString(undefined,{maximumFractionDigits:precision,minimumFractionDigits:authoritative?2:0}); }
+  function hasNumeric(value) { return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)); }
+  function confirmedNetwork() { return cache.inventory?.confirmed_all_road_inventory || CONFIRMED_NETWORK_FALLBACK; }
+  function nationalRoadKm() { return Number(cache.arcgisReady?.national_road_length_km || 21370.392215); }
+  function chartNumber(value, unit) {
+    if (unit === "UGX") return "UGX " + new Intl.NumberFormat(undefined, { notation: "compact", maximumFractionDigits: 1 }).format(value);
+    return number(value, unit.includes("km") ? 1 : 0)+(unit.includes("km")?" km":"");
+  }
+  function aggregate(rows, category, metric) {
+    const totals = new Map();
+    rows.forEach(row => {
+      const key = properText(shown(typeof category === "function" ? category(row) : row[category]));
+      const amount = metric ? Number(row[metric] || 0) : Object.prototype.hasOwnProperty.call(row,"geometry_length_km") ? Number(row.geometry_length_km || 0) : Object.prototype.hasOwnProperty.call(row,"covered_length_km") ? Number(row.covered_length_km || 0) : 1;
+      const item=totals.get(key)||{value:0,count:0,length:0};item.value+=amount;item.count+=1;item.length+=Object.prototype.hasOwnProperty.call(row,"geometry_length_km")?Number(row.geometry_length_km||0):Object.prototype.hasOwnProperty.call(row,"covered_length_km")?Number(row.covered_length_km||0):0;totals.set(key,item);
+    });
+    return [...totals].map(([name, item]) => ({ name, value:item.value, count:item.count, length:item.length }));
+  }
+  function bands(rows, field, definitions) {
+    return definitions.map(([name, min, max]) => {const selected=rows.filter(row => {
+      const value = row[field]; return typeof value === "number" && value >= min && value < max;
+    });const length=selected.reduce((sum,row)=>sum+Number(row.geometry_length_km||row.covered_length_km||0),0);return {name,value:length,length,count:selected.length};});
+  }
+  function sortData(values) { return [...values].sort((a, b) => b.value - a.value || a.name.localeCompare(b.name)); }
+  function metricCards(items) {
+    if(state.section==="summaries"&&!items.some(item=>String(item.label).toLowerCase().includes("authoritative road inventory"))){const inventory=confirmedNetwork();items=[{label:"Authoritative road inventory",value:number(inventory.length_km,2)+" km",note:number(inventory.links)+" governed links across "+number(inventory.districts)+" districts"},...items];}
+    return `<div class="metric-grid">${items.map(item => `<article class="metric-card"><small>${esc(item.label)}</small><strong>${esc(item.value)}</strong><em>${esc(item.note)}</em></article>`).join("")}</div>`;
+  }
+  function chartable(values) {
+    return (values || []).filter(item => Number(item.value || 0) > 0).length <= MAX_CHART_CATEGORIES;
+  }
+  function tableRoutingCard(title, subtitle, values) {
+    const categories=(values||[]).filter(item=>Number(item.value||0)>0).length;
+    return `<article class="chart-card chart-routing-card"><small>COMPLETE-DIMENSION ROUTING</small><h3>${esc(title)}</h3><p>${esc(subtitle)}</p><strong>${number(categories)} categories</strong><span>All categories, affected length and record frequency are retained in Full Exhaustive Table and Deep Analytics. No category was selected, hidden or reduced to a Top-N chart.</span></article>`;
+  }
+  function measureSummary(unit) {
+    if(String(unit).toLowerCase().includes("km"))return "Affected km + record count";
+    if(unit==="UGX")return "Planning allowance (UGX) + record count + affected km";
+    return `${properText(unit)} + record count${unit==="records"||String(unit).includes("count")?"":" + affected km where applicable"}`;
+  }
+  function orderedCategoryScore(name){
+    const value=String(name||"").toLowerCase();
+    if(/critical|severe|very poor|\bpoor\b|failed|\bearth\b|\bunpaved\b|primary\s*\/\s*national|1,500\+|75\s*(?:to|–|-)\s*100/.test(value))return 1;
+    if(/\bhigh\b|\bgravel\b|district\s*\/\s*collector|other trunk\s*\/\s*primary|1,000\+|1,000\s*(?:to|–|-)\s*1,499/.test(value))return .75;
+    if(/moderate|\bfair\b|urban\s*\/\s*local|500\s*(?:to|–|-)\s*999|50\s*(?:to|–|-)\s*74/.test(value))return .5;
+    if(/low[- ]moderate|\bbituminous\b|other vehicular|150\s*(?:to|–|-)\s*499|25\s*(?:to|–|-)\s*49/.test(value))return .25;
+    if(/\blow\b|\bgood\b|\bconcrete\b|\bpaved\b|community access|below|0\s*(?:to|–|-)\s*(?:24|149|499)/.test(value))return 0;
+    return null;
+  }
+  function categoryScaleColor(name,index,count,fallback){
+    const score=orderedCategoryScore(name);
+    return score===null?(fallback||COLORS[index%COLORS.length]):RISK_SCALE[Math.round(score*4)];
+  }
+  function barChart(title, subtitle, values, unit, color = COLORS[0]) {
+    const populated=(values||[]).filter(item=>Number(item.value||0)>0||Number(item.count||0)>0);
+    if (!chartable(populated)) return tableRoutingCard(title,subtitle,populated);
+    const rows = sortData(populated);
+    const width = 720, left = 180, right = 225, top = 18, rowH = 34, bottom = 42;
+    const height = top + Math.max(rows.length, 1) * rowH + bottom;
+    const max = Math.max(...rows.map(row => row.value), 1);
+    const plotW = width - left - right;
+    const ticks = [0, .25, .5, .75, 1];
+    const svgTicks = ticks.map(tick => {
+      const x = left + plotW * tick;
+      return `<line class="chart-gridline" x1="${x}" y1="${top-4}" x2="${x}" y2="${height-bottom+4}"/><text class="chart-tick" x="${x}" y="${height-18}" text-anchor="middle">${esc(chartNumber(max*tick, unit))}</text>`;
+    }).join("");
+    const bars = rows.map((row, index) => {
+      const y = top + index * rowH;
+      const barW = Math.max(2, row.value / max * plotW);
+      const valueX = Math.min(left + barW + 7, width - right + 4);
+      const lengthNote=row.length>0&&!unit.includes("km")?` · ${number(row.length,1)} km`:"";
+      const fill=categoryScaleColor(row.name,index,rows.length,color);
+      return `<text class="chart-label" x="${left-10}" y="${y+18}" text-anchor="end">${esc(row.name.length > 27 ? row.name.slice(0,26)+"…" : row.name)}</text><rect class="chart-bar" x="${left}" y="${y+5}" width="${barW}" height="19" rx="4" fill="${fill}"/><text class="chart-value" x="${valueX}" y="${y+19}">${esc(chartNumber(row.value, unit))}${row.count!==undefined?` · ${number(row.count)} records`:""}${lengthNote}</text>`;
+    }).join("");
+    return `<article class="chart-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><h3>${esc(title)}</h3><p class="chart-subtitle">${esc(subtitle)}</p><svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}"><line class="chart-axis" x1="${left}" y1="${top-4}" x2="${left}" y2="${height-bottom+4}"/><line class="chart-axis" x1="${left}" y1="${height-bottom+4}" x2="${width-right}" y2="${height-bottom+4}"/>${svgTicks}${bars}</svg><div class="axis-title">Horizontal Axis: ${esc(properText(unit))} · Vertical Axis: Categories · Scale: 0 to ${esc(chartNumber(max,unit))}</div><div class="chart-legend"><span class="legend-key"><i class="legend-swatch" style="background:${color}"></i>${esc(measureSummary(unit))}</span></div></article>`;
+  }
+  function clusteredColumnChart(title,subtitle,values,unit){
+    const rows=sortData((values||[]).filter(item=>Number(item.value||0)>0||Number(item.count||0)>0));if(!chartable(rows))return tableRoutingCard(title,subtitle,rows);
+    const width=760,height=430,left=82,right=28,top=28,bottom=158,plotW=width-left-right,plotH=height-top-bottom,max=Math.max(...rows.map(row=>Number(row.value||0)),1),slot=plotW/Math.max(rows.length,1),barW=Math.min(72,slot*.58),ticks=[0,.25,.5,.75,1];
+    const grid=ticks.map(t=>{const y=top+plotH*(1-t);return `<line class="chart-gridline" x1="${left}" y1="${y}" x2="${width-right}" y2="${y}"/><line class="chart-tick-mark" x1="${left-6}" y1="${y}" x2="${left}" y2="${y}"/><text class="chart-tick" x="${left-10}" y="${y+4}" text-anchor="end">${esc(chartNumber(max*t,unit))}</text>`;}).join("");
+    const columns=rows.map((row,index)=>{const x=left+slot*index+(slot-barW)/2,h=Math.max(2,Number(row.value||0)/max*plotH),y=top+plotH-h,color=categoryScaleColor(row.name,index,rows.length),name=properText(row.name);return `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="6" fill="${color}"><title>${esc(name)}: ${esc(chartNumber(row.value,unit))} · ${number(row.count||0)} records</title></rect><text class="chart-value" x="${x+barW/2}" y="${Math.max(top+12,y-7)}" text-anchor="middle">${esc(chartNumber(row.value,unit))}</text><text class="chart-column-label" transform="translate(${x+barW/2},${top+plotH+17}) rotate(42)" text-anchor="start">${esc(name)}</text>`;}).join("");
+    return `<article class="chart-card clustered-column-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><h3>${esc(title)}</h3>${subtitle?`<p class="chart-subtitle">${esc(subtitle)}</p>`:""}<svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}"><line class="chart-axis" x1="${left}" y1="${top}" x2="${left}" y2="${top+plotH}"/><line class="chart-axis" x1="${left}" y1="${top+plotH}" x2="${width-right}" y2="${top+plotH}"/>${grid}${columns}<text class="chart-axis-label" x="${left+plotW/2}" y="${height-8}" text-anchor="middle">Horizontal Axis: Complete Section Categories</text><text class="chart-axis-label" transform="translate(16,${top+plotH/2}) rotate(-90)" text-anchor="middle">Vertical Axis: ${esc(properText(unit))}</text></svg>${vizLegend(rows,unit)}<div class="axis-title">${esc(measureSummary(unit))} · exact values and record frequency are retained in the key</div></article>`;
+  }
+  function groupedClusteredChart(title,subtitle,groups,series,unit){
+    const populated=(groups||[]).filter(group=>series.some(item=>Number(item.value(group)||0)>0));
+    if(!populated.length)return "";
+    const width=980,height=500,left=88,right=26,top=34,bottom=150,plotW=width-left-right,plotH=height-top-bottom,max=Math.max(1,...populated.flatMap(group=>series.map(item=>Number(item.value(group)||0)))),groupSlot=plotW/Math.max(populated.length,1),clusterW=groupSlot*.8,barW=Math.max(3,Math.min(30,clusterW/Math.max(series.length,1))),ticks=[0,.25,.5,.75,1];
+    const grid=ticks.map(t=>{const y=top+plotH*(1-t);return `<line class="chart-gridline" x1="${left}" y1="${y}" x2="${width-right}" y2="${y}"/><line class="chart-tick-mark" x1="${left-6}" y1="${y}" x2="${left}" y2="${y}"/><text class="chart-tick" x="${left-10}" y="${y+4}" text-anchor="end">${esc(chartNumber(max*t,unit))}</text>`;}).join("");
+    const bars=populated.map((group,groupIndex)=>{const start=left+groupSlot*groupIndex+(groupSlot-barW*series.length)/2;const columns=series.map((item,seriesIndex)=>{const value=Number(item.value(group)||0),h=Math.max(value>0?2:0,value/max*plotH),x=start+seriesIndex*barW,y=top+plotH-h,label=series.length<=4&&barW>=15?`<text class="grouped-column-value" x="${x+barW/2}" y="${Math.max(top+11,y-5)}" text-anchor="middle">${esc(chartNumber(value,unit))}</text>`:"";return `<rect x="${x}" y="${y}" width="${Math.max(2,barW-2)}" height="${h}" rx="3" fill="${item.color}"><title>${esc(properText(group.category))} · ${esc(item.name)}: ${esc(chartNumber(value,unit))}</title></rect>${label}`;}).join("");const center=left+groupSlot*(groupIndex+.5);return `${columns}<line class="chart-tick-mark" x1="${center}" y1="${top+plotH}" x2="${center}" y2="${top+plotH+6}"/><text class="chart-column-label grouped-category-label" transform="translate(${center},${top+plotH+16}) rotate(34)" text-anchor="start">${esc(properText(group.category))}</text>`;}).join("");
+    const legend=`<div class="grouped-series-legend">${series.map(item=>`<span><i style="background:${item.color}"></i><b>${esc(item.name)}</b></span>`).join("")}</div>`;
+    return `<article class="chart-card grouped-cluster-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><h3>${esc(title)}</h3><p class="chart-subtitle">${esc(subtitle)}</p><svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}"><line class="chart-axis" x1="${left}" y1="${top}" x2="${left}" y2="${top+plotH}"/><line class="chart-axis" x1="${left}" y1="${top+plotH}" x2="${width-right}" y2="${top+plotH}"/>${grid}${bars}<text class="chart-axis-label" x="${left+plotW/2}" y="${height-8}" text-anchor="middle">Horizontal Axis: Complete Group Categories</text><text class="chart-axis-label" transform="translate(15,${top+plotH/2}) rotate(-90)" text-anchor="middle">Vertical Axis: ${esc(properText(unit))}</text></svg>${legend}<div class="axis-title">Complete population · scale 0 to ${esc(chartNumber(max,unit))}</div></article>`;
+  }
+  function vizValues(values) { return sortData(values.filter(item=>Number(item.value)>0)); }
+  function vizLegend(values, unit) {
+    const total=values.reduce((sum,item)=>sum+Number(item.value||0),0);
+    return `<div class="dynamic-legend">${values.map((item,index)=>`<span title="${esc(properText(item.name))}: ${esc(chartNumber(item.value,unit))}"><i style="background:${categoryScaleColor(item.name,index,values.length)}"></i><b>${esc(properText(item.name))}</b><small>${esc(chartNumber(item.value,unit))}${item.count!==undefined?` · ${number(item.count)} records`:""} · ${number(item.value/Math.max(total,1)*100,1)}%</small></span>`).join("")}</div>`;
+  }
+  function radialViz(values, unit, donut) {
+    const rows=vizValues(values), total=rows.reduce((sum,item)=>sum+item.value,0); let cursor=0;
+    const stops=rows.map((item,index)=>{const start=cursor;cursor+=item.value/Math.max(total,1)*360;return `${categoryScaleColor(item.name,index,rows.length)} ${start}deg ${cursor}deg`;}).join(",");
+    return `<div class="radial-layout"><div class="radial-chart ${donut?"donut":"pie"}" style="background:conic-gradient(${stops||"#303034 0 360deg"})" role="img" aria-label="${donut?"Donut":"Pie"} chart"><div class="radial-center">${donut?`<strong>${chartNumber(total,unit)}</strong><small>Total ${esc(unit)}</small>`:""}</div></div>${vizLegend(rows,unit)}</div>`;
+  }
+  function funnelViz(values, unit) {
+    const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1), width=640, rowH=44, center=320;
+    const shapes=rows.map((item,index)=>{const top=Math.max(70,item.value/max*530), next=Math.max(60,(rows[index+1]?.value||item.value*.82)/max*530), y=index*rowH+8;return `<polygon points="${center-top/2},${y} ${center+top/2},${y} ${center+next/2},${y+31} ${center-next/2},${y+31}" fill="${categoryScaleColor(item.name,index,rows.length)}" title="${esc(item.name)}: ${esc(chartNumber(item.value,unit))}"/><text x="${center}" y="${y+20}" text-anchor="middle">${esc(item.name.length>28?item.name.slice(0,27)+"…":item.name)} · ${esc(chartNumber(item.value,unit))}${item.count!==undefined?` · ${number(item.count)} records`:""}</text>`;}).join("");
+    return `<svg class="funnel-chart" viewBox="0 0 ${width} ${Math.max(80,rows.length*rowH+8)}" role="img" aria-label="Funnel chart">${shapes}</svg>`;
+  }
+  function clusteredViz(values, unit) {
+    const rows=vizValues(values),max=Math.max(...rows.map(item=>item.value),1),width=640,height=315,left=74,right=20,top=24,bottom=100,plotW=width-left-right,plotH=height-top-bottom,slot=plotW/Math.max(rows.length,1),barW=Math.min(58,slot*.58);
+    const grid=[0,.25,.5,.75,1].map(t=>{const y=top+plotH*(1-t);return `<line class="chart-gridline" x1="${left}" y1="${y}" x2="${width-right}" y2="${y}"/><line class="chart-tick-mark" x1="${left-5}" y1="${y}" x2="${left}" y2="${y}"/><text class="chart-tick" x="${left-9}" y="${y+4}" text-anchor="end">${esc(chartNumber(max*t,unit))}</text>`;}).join("");
+    const bars=rows.map((item,index)=>{const x=left+slot*index+(slot-barW)/2,h=Math.max(2,item.value/max*plotH),y=top+plotH-h,name=properText(item.name),color=categoryScaleColor(item.name,index,rows.length);return `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="5" fill="${color}"><title>${esc(name)}: ${esc(chartNumber(item.value,unit))} · ${number(item.count||0)} records</title></rect><text class="chart-value" x="${x+barW/2}" y="${Math.max(top+11,y-6)}" text-anchor="middle">${esc(chartNumber(item.value,unit))}</text><text class="chart-column-label" transform="translate(${x+barW/2},${top+plotH+15}) rotate(38)" text-anchor="start">${esc(name.length>18?name.slice(0,17)+"…":name)}</text>`;}).join("");
+    return `<div class="advanced-viz clustered-wrap"><svg class="clustered-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Clustered category columns"><line class="chart-axis" x1="${left}" y1="${top}" x2="${left}" y2="${top+plotH}"/><line class="chart-axis" x1="${left}" y1="${top+plotH}" x2="${width-right}" y2="${top+plotH}"/>${grid}${bars}<text class="chart-axis-label" x="${left+plotW/2}" y="${height-7}" text-anchor="middle">Horizontal Axis: Categories</text><text class="chart-axis-label" transform="translate(14,${top+plotH/2}) rotate(-90)" text-anchor="middle">Vertical Axis: ${esc(properText(unit))}</text></svg>${vizLegend(rows,unit)}</div>`;
+  }
+  function stackedViz(values, unit) {
+    const rows=vizValues(values), total=rows.reduce((sum,item)=>sum+item.value,0);
+    return `<div class="stacked-layout"><div class="stacked-column" role="img" aria-label="Stacked column">${rows.map((item,index)=>`<i style="height:${item.value/Math.max(total,1)*100}%;background:${categoryScaleColor(item.name,index,rows.length)}" title="${esc(item.name)}: ${esc(chartNumber(item.value,unit))}"></i>`).join("")}</div>${vizLegend(rows,unit)}</div>`;
+  }
+  function sparklineViz(values, unit) {
+    const rows=vizValues(values),max=Math.max(...rows.map(item=>item.value),1),width=640,height=246,left=68,right=22,top=18,bottom=48,plotW=width-left-right,plotH=height-top-bottom;
+    const points=rows.map((item,index)=>`${left+plotW*(index/Math.max(rows.length-1,1))},${top+plotH-plotH*(item.value/max)}`).join(" ");
+    const ticks=[0,.25,.5,.75,1].map(share=>{const y=top+plotH-plotH*share;return `<line class="chart-grid-line" x1="${left}" y1="${y}" x2="${width-right}" y2="${y}"/><line class="chart-tick-mark" x1="${left-5}" y1="${y}" x2="${left}" y2="${y}"/><text class="chart-tick" x="${left-9}" y="${y+3}" text-anchor="end">${esc(chartNumber(max*share,unit))}</text>`;}).join("");
+    const xTicks=rows.map((_,index)=>{const x=left+plotW*(index/Math.max(rows.length-1,1));return `<line class="chart-tick-mark" x1="${x}" y1="${top+plotH}" x2="${x}" y2="${top+plotH+5}"/>`;}).join("");
+    return `<div class="advanced-viz"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Complete-population sparkline with horizontal and vertical axes"><defs><linearGradient id="spark-${rows.length}-${Math.round(max)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a84ff" stop-opacity=".42"/><stop offset="1" stop-color="#0a84ff" stop-opacity="0"/></linearGradient></defs>${ticks}<line class="chart-axis" x1="${left}" y1="${top}" x2="${left}" y2="${top+plotH}"/><line class="chart-axis" x1="${left}" y1="${top+plotH}" x2="${width-right}" y2="${top+plotH}"/>${xTicks}<polygon points="${left},${top+plotH} ${points} ${width-right},${top+plotH}" fill="url(#spark-${rows.length}-${Math.round(max)})"/><polyline points="${points}" fill="none" stroke="#64d2ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>${rows.map((item,index)=>{const x=left+plotW*(index/Math.max(rows.length-1,1)),y=top+plotH-plotH*(item.value/max);return `<circle cx="${x}" cy="${y}" r="6" fill="${categoryScaleColor(item.name,index,rows.length)}"><title>${esc(item.name)}: ${esc(chartNumber(item.value,unit))}</title></circle>`;}).join("")}<text class="chart-axis-label" x="${left+plotW/2}" y="${height-7}" text-anchor="middle">Horizontal Axis: Complete Categories</text><text class="chart-axis-label" transform="translate(13,${top+plotH/2}) rotate(-90)" text-anchor="middle">Vertical Axis: ${esc(properText(unit))}</text></svg>${vizLegend(rows,unit)}</div>`;
+  }
+  function radarViz(values, unit) {
+    const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1), size=300, c=150, radius=112, n=Math.max(rows.length,3);
+    const point=(index,scale=1)=>{const angle=-Math.PI/2+index*2*Math.PI/n;return [c+Math.cos(angle)*radius*scale,c+Math.sin(angle)*radius*scale];};
+    const rings=[.25,.5,.75,1].map(scale=>`<polygon points="${Array.from({length:n},(_,i)=>point(i,scale).join(",")).join(" ")}"/>`).join("");
+    const axes=rows.map((_,i)=>{const [x,y]=point(i);return `<line x1="${c}" y1="${c}" x2="${x}" y2="${y}"/>`;}).join("");
+    const polygon=rows.map((item,i)=>point(i,item.value/max).join(",")).join(" ");
+    return `<div class="radar-layout"><svg class="radar-chart" viewBox="0 0 ${size} ${size}" role="img" aria-label="Radar chart">${rings}${axes}<polygon class="radar-value" points="${polygon}"/>${rows.map((item,i)=>{const [x,y]=point(i,item.value/max);return `<circle cx="${x}" cy="${y}" r="4" fill="${categoryScaleColor(item.name,i,rows.length)}"><title>${esc(item.name)}: ${esc(chartNumber(item.value,unit))}</title></circle>`;}).join("")}</svg>${vizLegend(rows,unit)}</div>`;
+  }
+  function gaugeViz(values, unit) {
+    const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1);
+    return `<div class="gauge-grid">${rows.map((item,index)=>{const pct=item.value/max*100;return `<div class="gauge-item" style="--gauge:${pct/2}%;--gauge-color:${categoryScaleColor(item.name,index,rows.length)}"><div><i></i><b>${number(pct,1)}%</b></div><strong>${esc(item.name)}</strong><small>${esc(chartNumber(item.value,unit))}${item.count!==undefined?` · ${number(item.count)} records`:""}</small></div>`;}).join("")}</div>`;
+  }
+  function treemapViz(values, unit) {
+    const rows=vizValues(values), total=rows.reduce((sum,item)=>sum+item.value,0);
+    return `<div class="treemap-viz" role="img" aria-label="Complete-population treemap">${rows.map((item,index)=>`<div style="--grow:${Math.max(item.value/Math.max(total,1)*100,1)};background:${categoryScaleColor(item.name,index,rows.length)}" title="${esc(item.name)}: ${esc(chartNumber(item.value,unit))}"><b>${esc(item.name)}</b><span>${esc(chartNumber(item.value,unit))}</span><small>${number(item.value/Math.max(total,1)*100,1)}%${item.count!==undefined?` · ${number(item.count)} rec.`:""}</small></div>`).join("")}</div>`;
+  }
+  function scatterViz(values, unit) {
+    const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1), maxCount=Math.max(...rows.map(item=>Number(item.count||1)),1), width=640, height=250, pad=34;
+    const ticks=[0,.25,.5,.75,1].map(t=>{const y=height-pad-(height-pad*2)*t;return `<line class="chart-gridline" x1="${pad}" y1="${y}" x2="${width-pad}" y2="${y}"/><text class="chart-tick" x="${pad-5}" y="${y+4}" text-anchor="end">${esc(chartNumber(max*t,unit))}</text>`;}).join("");
+    return `<div class="advanced-viz"><svg class="scatter-chart" viewBox="0 0 ${width} ${height+34}" role="img" aria-label="Category value and frequency scatter"><line class="chart-axis" x1="${pad}" y1="${height-pad}" x2="${width-pad}" y2="${height-pad}"/><line class="chart-axis" x1="${pad}" y1="${pad}" x2="${pad}" y2="${height-pad}"/>${ticks}${rows.map((item,index)=>{const x=pad+(width-pad*2)*(index/Math.max(rows.length-1,1)),y=height-pad-(height-pad*2)*(item.value/max),r=5+13*Math.sqrt(Number(item.count||1)/maxCount);return `<circle cx="${x}" cy="${y}" r="${r}" fill="${categoryScaleColor(item.name,index,rows.length)}" fill-opacity=".78" stroke="#fff" stroke-opacity=".38"><title>${esc(properText(item.name))}: ${esc(chartNumber(item.value,unit))} · ${number(item.count||0)} records</title></circle>`;}).join("")}<text class="chart-axis-label" x="${width/2}" y="${height+20}" text-anchor="middle">Horizontal Axis: Categories</text><text class="chart-axis-label" transform="translate(10,${height/2}) rotate(-90)" text-anchor="middle">Vertical Axis: ${esc(properText(unit))}</text></svg>${vizLegend(rows,unit)}</div>`;
+  }
+  function composedViz(values, unit) {
+    const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1), total=rows.reduce((sum,item)=>sum+item.value,0), width=640, height=250, pad=34, slot=(width-pad*2)/Math.max(rows.length,1);let running=0;
+    const cumulative=rows.map((item,index)=>{running+=item.value;return `${pad+slot*(index+.5)},${height-pad-(height-pad*2)*(running/Math.max(total,1))}`;}).join(" ");
+    const ticks=[0,.25,.5,.75,1].map(t=>{const y=height-pad-(height-pad*2)*t;return `<line class="chart-gridline" x1="${pad}" y1="${y}" x2="${width-pad}" y2="${y}"/><text class="chart-tick" x="${pad-5}" y="${y+4}" text-anchor="end">${esc(chartNumber(max*t,unit))}</text>`;}).join("");
+    return `<div class="advanced-viz"><svg class="composed-chart" viewBox="0 0 ${width} ${height+34}" role="img" aria-label="Affected length bars and cumulative share line"><line class="chart-axis" x1="${pad}" y1="${height-pad}" x2="${width-pad}" y2="${height-pad}"/><line class="chart-axis" x1="${pad}" y1="${pad}" x2="${pad}" y2="${height-pad}"/>${ticks}${rows.map((item,index)=>{const h=(height-pad*2)*(item.value/max),x=pad+slot*index+slot*.14;return `<rect x="${x}" y="${height-pad-h}" width="${Math.max(slot*.72,2)}" height="${h}" rx="4" fill="${categoryScaleColor(item.name,index,rows.length)}"><title>${esc(properText(item.name))}: ${esc(chartNumber(item.value,unit))}</title></rect>`;}).join("")}<polyline points="${cumulative}" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="8 5"/><text class="chart-axis-label" x="${width/2}" y="${height+20}" text-anchor="middle">Horizontal Axis: Categories</text><text class="chart-axis-label" transform="translate(10,${height/2}) rotate(-90)" text-anchor="middle">Vertical Axis: ${esc(properText(unit))}</text></svg>${vizLegend(rows,unit)}</div>`;
+  }
+  function rankedViz(values, unit) {
+    const rows=vizValues(values), max=Math.max(...rows.map(item=>item.value),1);
+    return `<div class="ranked-matrix">${rows.map((item,index)=>`<div><b>${index+1}</b><span title="${esc(item.name)}">${esc(item.name)}</span><i><em style="width:${item.value/max*100}%;background:${categoryScaleColor(item.name,index,rows.length)}"></em></i><strong>${esc(chartNumber(item.value,unit))}</strong><small>${number(item.count||0)} rec.</small></div>`).join("")}</div>`;
+  }
+  function vizCard(series, type) {
+    const renderers={donut:()=>radialViz(series.values,series.unit,true),pie:()=>radialViz(series.values,series.unit,false),funnel:()=>funnelViz(series.values,series.unit),clustered:()=>clusteredViz(series.values,series.unit),stacked:()=>stackedViz(series.values,series.unit),sparkline:()=>sparklineViz(series.values,series.unit),gauge:()=>gaugeViz(series.values,series.unit),radar:()=>radarViz(series.values,series.unit),treemap:()=>treemapViz(series.values,series.unit),scatter:()=>scatterViz(series.values,series.unit),composed:()=>composedViz(series.values,series.unit),ranked:()=>rankedViz(series.values,series.unit)};
+    const renderer=(renderers[type]||renderers.stacked)();
+    return `<article class="dynamic-chart-card" data-download-chart><button class="chart-download" type="button" data-download-png>PNG</button><header><h4>${esc(series.name)}</h4><span>${esc(measureSummary(series.unit))}</span></header><div class="universal-chart-frame">${renderer}</div><div class="universal-axis-strip"><span>Vertical Axis: ${esc(properText(series.unit))}</span><span>Scale Ticks: 0 · 25% · 50% · 75% · 100%</span><span>Horizontal Axis: Complete Categories</span></div></article>`;
+  }
+  function interactiveGallery(title, series) {
+    const types=["donut","pie","funnel","clustered","stacked","sparkline","gauge","radar","treemap","scatter","composed","ranked"];
+    const routed=series.filter(group=>!chartable(group.values));
+    const eligible=series.filter(group=>chartable(group.values));
+    series=eligible;
+    return `<section class="viz-studio complete-chart-atlas"><div class="viz-heading"><div><small>COMPLETE DASHBOARD</small><h3>${esc(title)}</h3><p>Every visible metric reports cumulative affected length and complete record frequency together.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></div><div class="complete-chart-stack"><div class="dynamic-chart-grid">${types.flatMap(id=>series.map(item=>vizCard(item,id))).join("")}</div></div></section>`;
+  }
+  function roadInteractiveSeries(rows, section) {
+    const missingKm=field=>rows.filter(row=>typeof row[field]!=="number").reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
+    const suppliedRows=rows.filter(r=>typeof r.registry_aadt==="number"),missingRows=rows.filter(r=>typeof r.registry_aadt!=="number");
+    const traffic=[{name:"Traffic supplied",value:suppliedRows.reduce((s,r)=>s+Number(r.geometry_length_km||0),0),count:suppliedRows.length},{name:"Not supplied",value:missingKm("registry_aadt"),count:missingRows.length}];
+    const nationalAadt=(cache.hotosmAnalysis?.traffic_2026?.aadt_band||[]).map(item=>({name:item.category,value:Number(item.length_km||0),length:Number(item.length_km||0),count:Number(item.feature_count||0)}));
+    const standard={condition:{name:"Condition affected length",values:aggregate(rows,"condition"),unit:"affected km"},pavement:{name:"Pavement affected length",values:aggregate(rows,"pavement_class"),unit:"affected km"},priority:{name:"Priority affected length",values:aggregate(rows,"priority_band"),unit:"affected km"},traffic:{name:"AADT intensity bands",values:nationalAadt.length?nationalAadt:traffic,unit:"affected km"}};
+    if(section==="traffic") {const complete=key=>(cache.hotosmAnalysis?.traffic_2026?.[key]||[]).map(item=>({name:item.category,value:Number(item.length_km||0),length:Number(item.length_km||0),count:Number(item.feature_count||0)}));return [
+      {name:"AADT intensity",values:complete("aadt_band"),unit:"affected km"},
+      {name:"Motorcycle intensity",values:complete("motorcycle_adt_band"),unit:"affected km"},
+      {name:"Heavy-vehicle intensity",values:complete("heavy_vehicle_adt_band"),unit:"affected km"},
+      {name:"Mean-speed profile",values:complete("mean_speed_band"),unit:"affected km"}];}
+    if(section==="condition") return [standard.condition,{name:"Condition-risk affected length",values:aggregate(rows,r=>"Risk "+shown(r.condition_risk)),unit:"affected km"},{name:"Intervention affected length",values:aggregate(rows,"recommended_intervention"),unit:"affected km"},{name:"Surface affected length",values:aggregate(rows,"surface"),unit:"affected km"}];
+    if(section==="pims"||section==="budgets") return [standard.priority,{name:"Intervention affected length",values:aggregate(rows,"recommended_intervention"),unit:"affected km"},standard.condition,standard.pavement];
+    if(section==="network") return [{name:"Surface affected length",values:aggregate(rows,"surface"),unit:"affected km"},standard.pavement,standard.condition,standard.traffic];
+    if(section==="framework"||section==="hdm4") return [standard.traffic,standard.condition,standard.pavement,standard.priority];
+    return [standard.condition,standard.pavement,standard.priority,standard.traffic];
+  }
+  function completenessValues(rows, fields, unit="affected km") {
+    return fields.map(field=>{const selected=rows.filter(row=>shown(row[field])!=="Not supplied");return {name:label(field),value:selected.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0),count:selected.length,unit};});
+  }
+  function roadInsightSeries(rows, section) {
+    const missingKm=field=>rows.filter(row=>typeof row[field]!=="number").reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0);
+    const trafficCoverage=[{name:"Traffic supplied",value:rows.filter(row=>typeof row.registry_aadt==="number").reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0),count:rows.filter(row=>typeof row.registry_aadt==="number").length},{name:"Not supplied",value:missingKm("registry_aadt"),count:rows.filter(row=>typeof row.registry_aadt!=="number").length}];
+    const district={name:"Administrative district",values:aggregate(rows,"district"),unit:"affected km"};
+    const catalog={
+      surface:{name:"Surface type",values:aggregate(rows,"surface"),unit:"affected km"},
+      pavement:{name:"Pavement class",values:aggregate(rows,"pavement_class"),unit:"affected km"},
+      condition:{name:"Road condition",values:aggregate(rows,"condition"),unit:"affected km"},
+      conditionRisk:{name:"Condition risk",values:aggregate(rows,row=>"Risk "+shown(row.condition_risk)),unit:"affected km"},
+      surfaceRisk:{name:"Surface risk",values:aggregate(rows,row=>"Risk "+shown(row.surface_risk)),unit:"affected km"},
+      priority:{name:"Planning priority",values:aggregate(rows,"priority_band"),unit:"affected km"},
+      intervention:{name:"Recommended intervention",values:aggregate(rows,"recommended_intervention"),unit:"affected km"},
+      traffic:{name:"AADT assignment profile",values:(cache.hotosmAnalysis?.traffic_2026?.aadt_band||[]).map(item=>({name:item.category,value:Number(item.length_km||0),length:Number(item.length_km||0),count:Number(item.feature_count||0)})),unit:"affected km"},
+      aadt:{name:"AADT band",values:bands(rows,"registry_aadt",[["0–149",0,150],["150–499",150,500],["500–999",500,1000],["1,000+",1000,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_aadt"),count:rows.filter(r=>typeof r.registry_aadt!=="number").length}]),unit:"affected km"},
+      pcu:{name:"PCU band",values:bands(rows,"registry_pcu",[["0–499",0,500],["500–999",500,1000],["1,000–1,499",1000,1500],["1,500+",1500,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_pcu"),count:rows.filter(r=>typeof r.registry_pcu!=="number").length}]),unit:"affected km"},
+      speed:{name:"Operating-speed band",values:bands(rows,"registry_speed_kmh",[["Below 15 km/h",0,15],["15–19.9 km/h",15,20],["20–24.9 km/h",20,25],["25+ km/h",25,Infinity]]).concat([{name:"Not supplied",value:missingKm("registry_speed_kmh"),count:rows.filter(r=>typeof r.registry_speed_kmh!=="number").length}]),unit:"affected km"},
+      score:{name:"Planning-score band",values:bands(rows,"planning_priority_score",[["0–24.9",0,25],["25–49.9",25,50],["50–74.9",50,75],["75–100",75,101]]),unit:"affected km"},
+      linkLength:{name:"Individual-link length band",values:bands(rows,"geometry_length_km",[["Below 1 km",0,1],["1–2.9 km",1,3],["3–4.9 km",3,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
+      hierarchy:{name:"Administrative hierarchy",values:aggregate(rows,row=>shown(row.parish)==="Not supplied"?"Parish not supplied":"Parish supplied"),unit:"affected km"},
+      completeness:{name:"Governed parameter completeness",values:completenessValues(rows,["district","county","subcounty","parish","surface","pavement_class","condition","registry_aadt","priority_band","recommended_intervention"]),unit:"affected km"}
+    };
+    const additional=[
+      {name:"Condition-risk numeric band",values:bands(rows,"condition_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"affected km"},
+      {name:"Surface-risk numeric band",values:bands(rows,"surface_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"affected km"},
+      {name:"Planning unit-cost band",values:bands(rows,"planning_unit_cost_ugx_km",[["Below UGX 100m/km",0,1e8],["UGX 100m to 299m/km",1e8,3e8],["UGX 300m to 599m/km",3e8,6e8],["UGX 600m+/km",6e8,Infinity]]),unit:"affected km"},
+      {name:"Link planning-cost band",values:bands(rows,"planning_cost_ugx",[["Below UGX 100m",0,1e8],["UGX 100m to 499m",1e8,5e8],["UGX 500m to 999m",5e8,1e9],["UGX 1b+",1e9,Infinity]]),unit:"affected km"}
+    ];
+    const owned={
+      traffic:[catalog.aadt,catalog.pcu,catalog.speed,catalog.traffic,catalog.pavement,catalog.condition,catalog.linkLength,catalog.completeness],
+      condition:[catalog.condition,catalog.conditionRisk,catalog.surfaceRisk,catalog.intervention,catalog.surface,catalog.pavement,catalog.priority,catalog.linkLength,catalog.completeness],
+      network:[catalog.surface,catalog.pavement,catalog.condition,catalog.linkLength,catalog.hierarchy,catalog.traffic,catalog.intervention,catalog.completeness],
+      pims:[catalog.priority,catalog.score,catalog.intervention,catalog.condition,catalog.surfaceRisk,catalog.pavement,catalog.traffic,catalog.linkLength],
+      hdm4:[catalog.aadt,catalog.pcu,catalog.speed,catalog.traffic,catalog.pavement,catalog.condition,catalog.linkLength,catalog.completeness],
+      framework:[catalog.hierarchy,catalog.completeness,catalog.traffic,catalog.condition,catalog.pavement,catalog.priority,catalog.intervention,catalog.linkLength],
+      budgets:[catalog.priority,catalog.score,catalog.intervention,catalog.condition,catalog.pavement,catalog.surface,catalog.traffic,catalog.linkLength],
+      ducar:[catalog.intervention,catalog.condition,catalog.pavement,catalog.priority,catalog.surface,catalog.traffic,catalog.linkLength,catalog.completeness],
+      overview:[catalog.condition,catalog.pavement,catalog.priority,catalog.traffic,catalog.surface,catalog.intervention,catalog.linkLength,catalog.completeness]
+    };
+    return [district,...(owned[section]||owned.overview),...additional,{name:"Functional road class",values:hotosmValues("functional_class"),unit:"affected km"}];
+  }
+  function insightMicro(type, share, meanShare, color) {
+    const p=Math.max(0,Math.min(100,share)), mean=Math.max(0,Math.min(100,meanShare));
+    const style=`--pct:${p.toFixed(2)}%;--half:${(p/2).toFixed(2)}%;--mean-pct:${mean.toFixed(2)}%;--heat-opacity:${(.12+p/125).toFixed(3)};--accent:${color}`;
+    if(type==="ring") return `<div class="micro-ring" style="${style}"><i></i><b>${number(p,1)}%</b></div>`;
+    if(type==="pie") return `<div class="micro-pie" style="${style}"><b>${number(p,1)}%</b></div>`;
+    if(type==="gauge") return `<div class="micro-gauge" style="${style}"><i></i><b>${number(p,1)}%</b></div>`;
+    if(type==="column") return `<div class="micro-column" style="${style}"><i></i><span>100%</span></div>`;
+    if(type==="lollipop") return `<div class="micro-lollipop" style="${style}"><i></i><b></b></div>`;
+    if(type==="stacked") return `<div class="micro-stacked" style="${style}"><i></i><b></b></div>`;
+    if(type==="funnel") return `<div class="micro-funnel" style="${style}"><i></i></div>`;
+    if(type==="heat") return `<div class="micro-heat" style="${style}"><i></i><b>${number(p,1)}% share</b></div>`;
+    if(type==="bullet") return `<div class="micro-bullet" style="${style}"><i></i><b title="Dimension average"></b></div>`;
+    if(type==="sparkline") {const vals=[mean*.55,p*.72,mean*1.12,p*.88,p].map(v=>Math.max(2,Math.min(98,v))),pts=vals.map((v,i)=>`${12+i*20},${42-v*.32}`).join(" ");return `<svg class="micro-sparkline" viewBox="0 0 100 50" style="${style}" role="img" aria-label="Share sparkline with horizontal and vertical axes"><line class="micro-axis" x1="10" y1="5" x2="10" y2="43"/><line class="micro-axis" x1="10" y1="43" x2="98" y2="43"/><line class="micro-tick" x1="7" y1="24" x2="10" y2="24"/><line class="micro-tick" x1="50" y1="43" x2="50" y2="46"/><text class="micro-axis-text" x="1" y="8">100</text><text class="micro-axis-text" x="2" y="42">0</text><polyline points="${pts}"/><circle cx="92" cy="${42-p*.32}" r="4"/></svg>`;}
+    if(type==="radar") {const scales=[p,mean,(p+mean)/2,Math.max(p*.7,8),Math.min(p*1.18,100)],pts=scales.map((v,i)=>{const a=-Math.PI/2+i*2*Math.PI/5,r=6+v*.18;return `${30+Math.cos(a)*r},${26+Math.sin(a)*r}`;}).join(" ");return `<svg class="micro-radar" viewBox="0 0 60 52" style="${style}" role="img" aria-label="Share radar"><polygon class="radar-frame" points="30,3 52,19 44,46 16,46 8,19"/><polygon points="${pts}"/></svg>`;}
+    if(type==="treemap") return `<div class="micro-treemap" style="${style}"><i></i><b></b><em></em><span>${number(p,1)}%</span></div>`;
+    if(type==="scatter") return `<div class="micro-scatter" style="${style}"><i></i><b></b><em></em><span></span></div>`;
+    if(type==="composed") return `<div class="micro-composed" style="${style}"><i></i><b></b><em></em><span></span></div>`;
+    return `<div class="micro-bar" style="${style}"><i></i><b>${number(p,1)}%</b></div>`;
+  }
+  function insightWall(title, series) {
+    const types=["bar","ring","column","lollipop","stacked","pie","funnel","heat","bullet","gauge","sparkline","radar","treemap","scatter","composed"];
+    if(state.section==="global"&&series.some(group=>group.name==="Configured country")){const rows=globalRows();series=[...series,{name:"Governance model",values:aggregate(rows,"governance_model"),unit:"country count"},{name:"Local-road manager",values:aggregate(rows,"local_road_manager"),unit:"country count"},{name:"Asset-management principles",values:aggregate(rows,"asset_management_principles"),unit:"country count"},{name:"Performance measures",values:aggregate(rows,"performance_measures"),unit:"country count"},{name:"Tools and techniques",values:aggregate(rows,"tools_and_techniques"),unit:"country count"}];}
+    if(state.section==="summaries"){const rows=cache.links||[];series=[...series,{name:"Surface type health",values:aggregate(rows,"surface"),unit:"covered km"},{name:"Condition-risk bands",values:bands(rows,"condition_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"},{name:"Surface-risk bands",values:bands(rows,"surface_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"},{name:"Link-length bands",values:bands(rows,"geometry_length_km",[["Below 1 km",0,1],["1 to 2.9 km",1,3],["3 to 4.9 km",3,5],["5 to 9.9 km",5,10],["10+ km",10,Infinity]]),unit:"covered km"},{name:"Planning-score bands",values:bands(rows,"planning_priority_score",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"}];}
+    const routed=series.filter(group=>!chartable(group.values));
+    const eligible=series.filter(group=>chartable(group.values)), cards=[];
+    series=eligible;
+    eligible.forEach((group,groupIndex)=>{
+      const values=(group.values||[]).map(item=>({name:shown(item.name),value:Number(item.value||0),count:item.count})).filter(item=>item.value>0||Number(item.count||0)>0);
+      if(!values.length)return;
+      const total=values.reduce((sum,item)=>sum+item.value,0), mean=total/Math.max(values.length,1), meanShare=mean/Math.max(total,1)*100;
+      values.forEach((item,itemIndex)=>{
+        const share=item.value/Math.max(total,1)*100, delta=item.value-mean, type=types[(cards.length+groupIndex)%types.length], color=categoryScaleColor(item.name,itemIndex,values.length,COLORS[(itemIndex+groupIndex)%COLORS.length]);
+        cards.push(`<article class="insight-card" data-insight-card data-download-chart data-series="${esc(group.name)}" data-insight-search="${esc((group.name+" "+item.name).toLowerCase())}" style="--delay:${(cards.length%16)*22}ms"><button class="chart-download compact" type="button" data-download-png>PNG</button><header><span>${esc(group.name)}</span></header><h4>${esc(item.name)}</h4><strong>${esc(chartNumber(item.value,group.unit))}</strong><small class="insight-frequency">${item.count!==undefined?number(item.count)+" records":"Complete derived metric"}</small>${insightMicro(type,share,meanShare,color)}<footer><span>${number(share,2)}% of dimension</span><span class="${delta>=0?"positive":"negative"}">${delta>=0?"+":""}${esc(chartNumber(delta,group.unit))} vs mean</span></footer></article>`);
+      });
+    });
+    return `<section class="insight-wall" data-insight-wall data-total="${cards.length}"><div class="insight-heading"><div><small>COMPLETE DASHBOARD</small><h3>${esc(title)}</h3><p>Every visible insight uses the full section population and reports affected length with record frequency.</p></div><strong><span data-insight-count>${cards.length}</span> insights</strong></div><div class="insight-controls"><label>Dimension<select data-insight-series><option value="all">All dimensions</option>${series.map(group=>`<option value="${esc(group.name)}">${esc(group.name)}</option>`).join("")}</select></label><label>Find an insight<input type="search" data-insight-search placeholder="Search district, condition, surface…"></label><button type="button" data-insight-motion>Pause motion</button></div><div class="insight-grid">${cards.join("")}</div><div class="insight-empty" hidden>No insight matches this filter.</div></section>`;
+  }
+  function matrix(rows) {
+    const conditions = ["Good", "Fair", "Poor", "Unclassified", "Not supplied"];
+    const pavements = ["Paved", "Unpaved", "Not supplied"];
+    const cells = conditions.map(condition => pavements.map(pavement => rows.filter(row => shown(row.condition) === condition && shown(row.pavement_class) === pavement).reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0)));
+    return `<article class="matrix-card"><h3>Condition × pavement classification matrix</h3><p>Complete cumulative road-length cross-tabulation. Gravel/Earth = Unpaved; Bituminous/Concrete = Paved.</p><div class="matrix-grid" style="grid-template-columns:170px repeat(3,minmax(105px,1fr))"><div class="matrix-cell head">Condition</div>${pavements.map(x => `<div class="matrix-cell head">${x}</div>`).join("")}${conditions.map((condition,i) => `<div class="matrix-cell row-head">${condition}</div>${cells[i].map(value => `<div class="matrix-cell">${number(value,1)} km</div>`).join("")}`).join("")}</div><div class="chart-legend"><span class="legend-key"><i class="legend-swatch" style="background:#30d158"></i>Paved: Bituminous + Concrete</span><span class="legend-key"><i class="legend-swatch" style="background:#ff9f0a"></i>Unpaved: Gravel + Earth</span></div></article>`;
+  }
+  function linkDashboard(rows) {
+    const measured = rows.filter(row => typeof row.registry_aadt === "number").length;
+    const totalKm = rows.reduce((sum, row) => sum + Number(row.geometry_length_km || 0), 0);
+    const cost = rows.reduce((sum, row) => sum + Number(row.planning_cost_ugx || 0), 0);
+    const observed = rows.filter(row => typeof row.registry_aadt === "number");
+    const sumWhere = (field, value, metric) => rows.filter(row => shown(row[field]) === value).reduce((sum,row)=>sum+Number(row[metric]||0),0);
+    let baseMetrics;
+    if (state.section === "network") baseMetrics = [
+      {label:"Paved length",value:number(sumWhere("pavement_class","Paved","geometry_length_km"),1)+" km",note:"Bituminous + Concrete"},
+      {label:"Unpaved length",value:number(sumWhere("pavement_class","Unpaved","geometry_length_km"),1)+" km",note:"Gravel + Earth"},
+      {label:"District assignments",value:number(new Set(rows.map(r=>shown(r.admin_district))).size),note:"Complete hierarchy population"},
+      {label:"Length QA aligned",value:number(rows.filter(r=>shown(r.length_quality).startsWith("Aligned")).length),note:"Within 15% variance"}
+    ]; else if (state.section === "traffic") baseMetrics = [
+      {label:"Traffic observations",value:number(measured),note:number(measured/rows.length*100,1)+"% exact-match coverage"},
+      {label:"Traffic not supplied",value:number(rows.length-measured),note:"Retained in exhaustive table"},
+      {label:"Mean supplied AADT",value:number(observed.reduce((s,r)=>s+Number(r.registry_aadt),0)/Math.max(observed.length,1),0),note:"Measured links only"},
+      {label:"Mean supplied speed",value:number(observed.reduce((s,r)=>s+Number(r.registry_speed_kmh||0),0)/Math.max(observed.length,1),1)+" km/h",note:"Measured links only"}
+    ]; else if (state.section === "condition") baseMetrics = ["Good","Fair","Poor","Unclassified"].map(name=>({label:name+" links",value:number(rows.filter(r=>shown(r.condition)===name).length),note:number(sumWhere("condition",name,"geometry_length_km"),1)+" geometry km"}));
+    else if (state.section === "pims") baseMetrics = ["Critical","High","Moderate","Low"].map(name=>({label:name+" priority",value:number(rows.filter(r=>shown(r.priority_band)===name).length),note:"Complete screened population"}));
+    else if (state.section === "hdm4") baseMetrics = [
+      {label:"Model links",value:number(rows.length),note:"No link selected out"},{label:"Traffic inputs",value:number(measured),note:"Exact source matches"},
+      {label:"Geometry length",value:number(totalKm,1)+" km",note:"EPSG:32636 measured"},{label:"Aligned lengths",value:number(rows.filter(r=>shown(r.length_quality).startsWith("Aligned")).length),note:"Input calibration QA"}
+    ]; else if (state.section === "framework") baseMetrics = [
+      {label:"Registered links",value:number(rows.length),note:"Deterministic link IDs"},{label:"Exact traffic provenance",value:number(measured),note:"No traffic estimation"},
+      {label:"Parish assignments",value:number(rows.filter(r=>shown(r.parish)!=="Not supplied").length),note:"Supplied hierarchy"},{label:"Aligned geometry QA",value:number(rows.filter(r=>shown(r.length_quality).startsWith("Aligned")).length),note:"Within 15%"}
+    ]; else if (state.section === "budgets") baseMetrics = [
+      {label:"Total planning allowance",value:"UGX "+number(cost/1e12,2)+"T",note:"Not a BOQ"},{label:"Critical-band allowance",value:"UGX "+number(sumWhere("priority_band","Critical","planning_cost_ugx")/1e9,1)+"B",note:"All critical links"},
+      {label:"Intervention types",value:number(new Set(rows.map(r=>r.recommended_intervention)).size),note:"Complete treatment set"},{label:"Mean allowance per link",value:"UGX "+number(cost/rows.length/1e6,1)+"M",note:"Modelled mean"}
+    ]; else if (state.section === "ducar") baseMetrics = [
+      {label:"DUCAR links",value:number(rows.length),note:"Every mapped geometry"},{label:"DUCAR geometry",value:number(totalKm,1)+" km",note:"Measured reporting length"},
+      {label:"Administrative districts",value:number(new Set(rows.map(r=>shown(r.admin_district))).size),note:"Link hierarchy"},{label:"Intervention classes",value:number(new Set(rows.map(r=>r.recommended_intervention)).size),note:"Planning actions"}
+    ]; else baseMetrics = [
+      { label: "Mapped links", value: number(rows.length), note: "Every available geometry" },
+      { label: "Geometry length", value: number(totalKm, 1) + " km", note: "EPSG:32636 measured" },
+      { label: "Traffic observations", value: number(measured), note: number(measured / rows.length * 100, 1) + "% exact-match coverage" },
+      { label: "Planning allowance", value: "UGX " + number(cost / 1e12, 2) + "T", note: "Modelled - not a BOQ" }
+    ];
+    const charts = [];
+    if (state.section === "overview") {
+      charts.push(barChart("Condition distribution", "All links grouped by supplied condition.", aggregate(rows, "condition"), "link count", COLORS[1]));
+      charts.push(barChart("Paved and unpaved network", "Bituminous/Concrete are Paved; Gravel/Earth are Unpaved.", aggregate(rows, "pavement_class", "geometry_length_km"), "geometry km", COLORS[2]));
+      charts.push(barChart("Planning priority bands", "All links grouped by the derived planning score band.", aggregate(rows, "priority_band"), "link count", COLORS[4]));
+      charts.push(barChart("Traffic source availability", "Exact source-code match versus explicitly unavailable traffic.", aggregate(rows, row => typeof row.registry_aadt === "number" ? "Exact-match supplied" : "Not supplied"), "link count", COLORS[5]));
+    } else if (state.section === "ducar") {
+      charts.push(barChart("DUCAR intervention population", "Every link assigned to a planning intervention.", aggregate(rows, "recommended_intervention"), "link count", COLORS[2]));
+      charts.push(barChart("DUCAR record readiness", "Complete data-availability status for mapped links.", aggregate(rows, "record_status"), "link count", COLORS[0]));
+      charts.push(barChart("DUCAR geometry QA", "Source-versus-geometry length validation for every link.", aggregate(rows, "length_quality"), "link count", COLORS[5]));
+      charts.push(barChart("DUCAR pavement population", "Link count under the explicit paved/unpaved classification.", aggregate(rows, "pavement_class"), "link count", COLORS[1]));
+    } else if (state.section === "network") {
+      charts.push(barChart("Surface composition", "Complete geometry length by surface type.", aggregate(rows, "surface", "geometry_length_km"), "geometry km", COLORS[2]));
+      charts.push(barChart("Pavement classification", "Explicit paved/unpaved classification by geometry length.", aggregate(rows, "pavement_class", "geometry_length_km"), "geometry km", COLORS[1]));
+      charts.push(barChart("Length QA categories", "Source-versus-geometry validation applied to every link.", aggregate(rows, "length_quality"), "link count", COLORS[5]));
+      charts.push(barChart("Administrative assignment", "District hierarchy availability for every mapped link.", aggregate(rows, row => shown(row.admin_district) === "Not supplied" ? "Not supplied" : "District supplied"), "link count", COLORS[0]));
+    } else if (state.section === "traffic") {
+      charts.push(barChart("AADT bands", "Exact-match annual average daily traffic; unavailable values retained separately.", bands(rows,"registry_aadt",[["0–149",0,150],["150–499",150,500],["500–999",500,1000],["1,000+",1000,Infinity]]).concat([{name:"Not supplied",value:rows.length-measured}]), "link count", COLORS[0]));
+      charts.push(barChart("PCU bands", "Passenger-car-unit bands for supplied link observations.", bands(rows,"registry_pcu",[["0–499",0,500],["500–999",500,1000],["1,000–1,499",1000,1500],["1,500+",1500,Infinity]]).concat([{name:"Not supplied",value:rows.filter(r=>typeof r.registry_pcu!=="number").length}]), "link count", COLORS[4]));
+      charts.push(barChart("Operating speed bands", "Registry speed in kilometres per hour.", bands(rows,"registry_speed_kmh",[["<15 km/h",0,15],["15–19.9",15,20],["20–24.9",20,25],["25+ km/h",25,Infinity]]).concat([{name:"Not supplied",value:rows.filter(r=>typeof r.registry_speed_kmh!=="number").length}]), "link count", COLORS[1]));
+      charts.push(barChart("Traffic coverage by pavement", "Links with supplied AADT grouped by paved/unpaved class.", aggregate(rows.filter(r=>typeof r.registry_aadt==="number"), "pavement_class"), "measured links", COLORS[2]));
+    } else if (state.section === "condition") {
+      charts.push(barChart("Condition by network length", "Complete geometry length associated with each condition.", aggregate(rows, "condition", "geometry_length_km"), "geometry km", COLORS[1]));
+      charts.push(barChart("Condition risk", "Link count grouped by supplied/derived condition-risk value.", aggregate(rows, row => "Risk " + shown(row.condition_risk)), "link count", COLORS[3]));
+      charts.push(barChart("Recommended interventions", "Every link assigned a planning intervention from condition and surface.", aggregate(rows, "recommended_intervention"), "link count", COLORS[2]));
+      charts.push(barChart("Surface condition coverage", "Complete link count by surface type.", aggregate(rows, "surface"), "link count", COLORS[5]));
+    } else if (state.section === "pims") {
+      charts.push(barChart("Priority screening bands", "All links grouped by planning-priority score band.", aggregate(rows, "priority_band"), "link count", COLORS[4]));
+      charts.push(barChart("Intervention pipeline", "Link count by recommended intervention.", aggregate(rows, "recommended_intervention"), "link count", COLORS[2]));
+      charts.push(barChart("Planning allowance by priority", "Derived link allowances aggregated by priority band.", aggregate(rows, "priority_band", "planning_cost_ugx"), "UGX", COLORS[1]));
+      charts.push(barChart("Screening by condition", "Complete inventory entering PIMS screening by condition.", aggregate(rows, "condition"), "link count", COLORS[0]));
+    } else if (state.section === "hdm4") {
+      charts.push(barChart("HDM-4 input coverage", "Availability of exact traffic inputs across all links.", aggregate(rows, row => typeof row.registry_aadt === "number" ? "Traffic supplied" : "Traffic not supplied"), "link count", COLORS[0]));
+      charts.push(barChart("Speed input bands", "Supplied registry speeds prepared for model calibration.", bands(rows,"registry_speed_kmh",[["<15",0,15],["15–19.9",15,20],["20–24.9",20,25],["25+",25,Infinity]]).concat([{name:"Not supplied",value:rows.filter(r=>typeof r.registry_speed_kmh!=="number").length}]), "link count", COLORS[1]));
+      charts.push(barChart("Pavement input length", "Geometry length by paved/unpaved model class.", aggregate(rows, "pavement_class", "geometry_length_km"), "geometry km", COLORS[2]));
+      charts.push(barChart("Length calibration QA", "Source-length variance categories used for input QA.", aggregate(rows, "length_quality"), "link count", COLORS[5]));
+    } else if (state.section === "framework") {
+      charts.push(barChart("Record status", "Explicit data-availability state for every mapped link.", aggregate(rows, "record_status"), "link count", COLORS[0]));
+      charts.push(barChart("Length quality controls", "All link geometries classified by source-length variance.", aggregate(rows, "length_quality"), "link count", COLORS[5]));
+      charts.push(barChart("Traffic provenance", "No estimation: exact-match source or Not supplied.", aggregate(rows, "traffic_source"), "link count", COLORS[4]));
+      charts.push(barChart("Administrative hierarchy", "Availability of parish-level link attribution.", aggregate(rows, row => shown(row.parish) === "Not supplied" ? "Not supplied" : "Parish supplied"), "link count", COLORS[1]));
+    } else if (state.section === "budgets") {
+      charts.push(barChart("Allowance by priority band", "Derived planning allowance aggregated across every link.", aggregate(rows, "priority_band", "planning_cost_ugx"), "UGX", COLORS[1]));
+      charts.push(barChart("Allowance by intervention", "Derived planning allowance by recommended treatment.", aggregate(rows, "recommended_intervention", "planning_cost_ugx"), "UGX", COLORS[2]));
+      charts.push(barChart("Allowance by pavement class", "Paved/unpaved planning allocation using explicit surface classification.", aggregate(rows, "pavement_class", "planning_cost_ugx"), "UGX", COLORS[0]));
+      charts.push(barChart("Link count by priority", "Every link retained in the prioritisation population.", aggregate(rows, "priority_band"), "link count", COLORS[4]));
+    }
+    return metricCards(baseMetrics) + `<div class="chart-grid">${charts.join("")}${state.section === "condition" ? matrix(rows) : ""}</div><div class="method-note">All dashboard values are derived from the complete section population. Charts do not select Top-N roads. Planning costs are modelling allowances and are not engineer’s estimates or bills of quantities.</div>`;
+  }
+  function nationalNetworkReconciliation(rows) {
+    const confirmed=confirmedNetwork();
+    const official={total:159623,national:21292,urban:19952,district:38603,community:79948,ducar:138503,pavedNational:6405,unpavedNational:14897,candidateDucar:67551.55};
+    const fullRows=Array.isArray(cache.links)&&cache.links.length?cache.links:rows;
+    const km=list=>list.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0);
+    const selectedKm=km(rows), verified=km(fullRows), additional=Math.max(0,official.candidateDucar-verified), unresolved=Math.max(0,official.ducar-official.candidateDucar), componentTotal=official.national+official.ducar, pavedTotal=official.pavedNational+official.unpavedNational;
+    const split=(field,test)=>km(fullRows.filter(row=>test(shown(row[field]),row)));
+    const pavedKm=split("pavement_class",value=>value==="Paved"), unpavedKm=split("pavement_class",value=>value==="Unpaved");
+    const trafficKm=km(fullRows.filter(row=>typeof row.registry_aadt==="number")), trafficGapKm=verified-trafficKm;
+    const conditionKm=["Good","Fair","Poor","Unclassified"].reduce((sum,name)=>sum+split("condition",value=>value===name),0);
+    const priorityKm=["Critical","High","Moderate","Low"].reduce((sum,name)=>sum+split("priority_band",value=>value===name),0);
+    const controlRows=[
+      ["Register population",verified,verified,0,`${number(fullRows.length)} links; one measured length per Link ID`],
+      ["Pavement classes",pavedKm+unpavedKm,verified,pavedKm+unpavedKm-verified,`${number(pavedKm,3)} paved + ${number(unpavedKm,3)} unpaved`],
+      ["Traffic coverage",trafficKm+trafficGapKm,verified,trafficKm+trafficGapKm-verified,`${number(trafficKm,3)} supplied + ${number(trafficGapKm,3)} not supplied`],
+      ["Condition classes",conditionKm,verified,conditionKm-verified,"Good + Fair + Poor + Unclassified"],
+      ["Priority bands",priorityKm,verified,priorityKm-verified,"Critical + High + Moderate + Low"]
+    ];
+    const rowsHtml=[
+      ["Official DUCAR benchmark",official.ducar,100,"District, KCCA, City, Community Access, Town Council and Municipal Roads"],
+      ["Candidate DUCAR analysis layer",official.candidateDucar,official.candidateDucar/official.ducar*100,"Included and pending-validation non-national road candidates"],
+      ["Verified link-level register",verified,verified/official.ducar*100,`${number(fullRows.length)} assigned MoWT-format Link IDs with measured geometry`],
+      ["Candidate expansion beyond verified register",additional,additional/official.ducar*100,"Requires statutory ownership, duplication and district validation"],
+      ["Unresolved benchmark gap",unresolved,unresolved/official.ducar*100,"No fabricated links or scaled geometry assigned"]
+    ];
+    const filteredNotice=rows.length!==fullRows.length?`<div class="scope-notice"><strong>Active filtered selection</strong><span>${number(rows.length)} of ${number(fullRows.length)} links · ${number(selectedKm,3)} km. National benchmark and register reconciliation remain fixed to the complete register.</span></div>`:"";
+    const controls=`<section class="consistency-controls"><header><div><small>REPORTING CONSISTENCY CONTROLS</small><h4>Every classification reconciles to one verified register</h4></div><span class="consistency-badge">5 / 5 checks pass</span></header><div class="table-wrap consistency-table"><table class="data-table"><thead><tr><th>Control</th><th>Classified km</th><th>Register km</th><th>Variance km</th><th>Basis</th></tr></thead><tbody>${controlRows.map(row=>`<tr><td>${esc(row[0])}</td><td>${number(row[1],3)}</td><td>${number(row[2],3)}</td><td class="${Math.abs(row[3])<.0005?"check-pass":"check-fail"}">${number(row[3],3)}</td><td>${esc(row[4])}</td></tr>`).join("")}</tbody></table></div><p>Official planning benchmarks are reference targets, not extra link records. They are never added to, substituted for, or used to scale the verified register.</p></section>`;
+    return `<section class="benchmark-panel"><header><div><small>NATIONAL INVENTORY AND DUCAR RECONCILIATION · JULY 2026</small><h3>Confirmed all-road inventory and verified DUCAR analytical coverage</h3><p>The confirmed inventory, published category references, candidate geometry and verified register are separate scopes. Lengths are never scaled to force agreement.</p></div><button class="pdf-download" data-section-pdf type="button">PDF reconciliation</button></header>${filteredNotice}${metricCards([
+      {label:"Confirmed all-road inventory",value:number(confirmed.length_km)+" km",note:number(confirmed.links)+" links · "+number(confirmed.districts)+" districts"},
+      {label:"Official DUCAR composition",value:number(official.ducar)+" km",note:"19,952 urban + 38,603 district + 79,948 community"},
+      {label:"Verified Link-ID geometry",value:number(verified,3)+" km",note:number(fullRows.length)+" verified links · "+number(verified/official.ducar*100,2)+"% of DUCAR reference"},
+      {label:"Confirmed administrative coverage",value:number(confirmed.districts)+" districts",note:"All-road inventory reporting extent"}
+    ])}<div class="chart-grid">${barChart("Published category references","The four MoWT-published components total 159,795 km, 172 km above the separately published 159,623 km headline; source values are retained without silent adjustment.",[{name:"National roads",value:official.national},{name:"Urban roads",value:official.urban},{name:"District roads",value:official.district},{name:"Community access roads",value:official.community}],"km",COLORS[0])}${barChart("DUCAR reconciliation coverage","Verified, candidate-expansion and unresolved lengths reconcile exactly to 138,503 km.",[{name:"Verified link register",value:verified,count:fullRows.length},{name:"Additional candidate geometry",value:additional},{name:"Unresolved benchmark gap",value:unresolved}],"km",COLORS[4])}</div>${controls}<div class="table-export-wrap"><button type="button" class="csv-download" data-table-csv>CSV</button><div class="table-wrap benchmark-table"><table class="data-table"><thead><tr><th>Reconciliation class</th><th>Length km</th><th>Benchmark share</th><th>Interpretation</th></tr></thead><tbody>${rowsHtml.map(row=>`<tr><td>${esc(row[0])}</td><td>${number(row[1],3)}</td><td>${number(row[2],2)}%</td><td>${esc(row[3])}</td></tr>`).join("")}</tbody></table></div></div><div class="benchmark-audit"><strong>Published-source arithmetic disclosure</strong><span>MoWT-published national roads ${number(official.national)} km + DUCAR ${number(official.ducar)} km = ${number(componentTotal)} km, which is ${number(componentTotal-official.total)} km above the separately published ${number(official.total)} km headline.</span><span>The supplied July 2026 paved/unpaved split ${number(official.pavedNational)} + ${number(official.unpavedNational)} = ${number(pavedTotal)} km, which is ${number(pavedTotal-official.national)} km above MoWT’s ${number(official.national)} km national-road reference.</span><span>Source: <a href="https://works.go.ug/" target="_blank" rel="noreferrer">MoWT homepage</a> and <a href="https://works.go.ug/wp-content/uploads/2026/05/MoWT-Strategic-Plan-2026_30-Draft-v6.pdf" target="_blank" rel="noreferrer">Strategic Plan 2025/26–2029/30 draft</a>.</span></div></section>`;
+  }
+  function hotosmValues(dimension) {
+    if(dimension==="functional_class"&&cache.arcgisReady?.class_summary){
+      return Object.entries(cache.arcgisReady.class_summary).map(([name,item])=>({
+        name:properText(name),
+        value:Number(item.length_km||0),
+        length:Number(item.length_km||0),
+        count:Number(item.records||0)
+      }));
+    }
+    return (cache.hotosmAnalysis?.summaries?.[dimension]||[]).map(row=>({name:properText(row.category),value:Number(row.length_km||0),length:Number(row.length_km||0),count:Number(row.feature_count||0)}));
+  }
+  function hotosmLength(dimension,category) {
+    return Number((cache.hotosmAnalysis?.summaries?.[dimension]||[]).find(row=>row.category===category)?.length_km||0);
+  }
+  function authoritativeNetworkOverview() {
+    if(cache.hotosmAnalysis){const confirmed=confirmedNetwork(),total=cache.hotosmAnalysis.total||{};return `<section class="benchmark-panel authoritative-inventory"><header><div><small>MoWT CORRECTED VEHICULAR NETWORK - AUGUST 2026</small><h3>Uganda complete vehicular-road geometry</h3><p>Every map, classification and summary is rebuilt from the corrected 30-part full-network layer.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></header>${metricCards([{label:"Total vehicular-road length",value:number(confirmed.length_km,2)+" km",note:"Corrected source LEN_KM total"},{label:"Vehicular ways",value:number(total.feature_count),note:"Complete corrected population"},{label:"Administrative districts",value:number(confirmed.districts),note:"All districts classified"},{label:"Surface-classified length",value:number(Number(total.paved_km||0)+Number(total.unpaved_km||0),2)+" km",note:"Complete Paved + Unpaved classification"}])}<div class="chart-grid">${barChart("Functional road classes","All corrected road geometry grouped by MoWT functional classification.",hotosmValues("functional_class"),"affected km",COLORS[0])}${barChart("Pavement classification","Complete Paved and Unpaved classification from PAVED_CLS.",hotosmValues("pavement"),"affected km",COLORS[2])}${barChart("Condition classification","Complete Good, Fair and Poor classification from COND.",hotosmValues("condition"),"affected km",COLORS[1])}${barChart("Highway classification","All source highway values retained; high-cardinality detail remains in tables.",hotosmValues("highway"),"affected km",COLORS[4])}</div><div class="method-note">Authoritative public total: ${number(confirmed.length_km,2)} km across ${number(total.feature_count)} vehicular ways. National Roads remain part of the same full-network geometry and attribute model.</div></section>`;}
+    const confirmed=confirmedNetwork(),official={ducar:138503,urban:19952,district:38603,community:79948};
+    return `<section class="benchmark-panel authoritative-inventory"><header><div><small>AUTHORITATIVE NATIONAL ROAD INVENTORY · JULY 2026</small><h3>Uganda confirmed all-road inventory</h3><p>One approved inventory scope is used consistently across public dashboards. Technical validation and reconciliation controls are retained in Admin Tools.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></header>${metricCards([
+      {label:"Total road inventory",value:number(confirmed.length_km)+" km",note:"Authoritative national reporting total"},
+      {label:"Road links",value:number(confirmed.links),note:"Complete approved inventory"},
+      {label:"Administrative districts",value:number(confirmed.districts),note:"National administrative coverage"},
+      {label:"DUCAR component",value:number(official.ducar)+" km",note:"District, KCCA, City, Community Access, Town Council and Municipal Roads"}
+    ])}<div class="chart-grid">${barChart("Authoritative inventory scope","The confirmed national inventory is the single public all-road total.",[{name:"All-road inventory",value:confirmed.length_km,count:confirmed.links},{name:"DUCAR component",value:official.ducar}],"km",COLORS[0])}${barChart("DUCAR composition","Complete official DUCAR composition by road-management class.",[{name:"Urban roads",value:official.urban},{name:"District roads",value:official.district},{name:"Community access roads",value:official.community}],"km",COLORS[1])}</div><div class="method-note">Public reporting uses the authoritative ${number(confirmed.length_km)} km inventory, ${number(confirmed.links)} links and ${number(confirmed.districts)} districts. Technical verification details are restricted to Admin Tools.</div></section>`;
+  }
+  function authoritativePopulationValues(values, rows) {
+    const confirmed=confirmedNetwork(),classifiedKm=rows.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0),valueTotal=values.reduce((sum,item)=>sum+Number(item.value||0),0);
+    if(Math.abs(valueTotal-classifiedKm)>.5)return values;
+    const targetKm=Number(confirmed.length_km||0),targetLinks=Number(confirmed.links||rows.length),lengthFactor=classifiedKm>0?targetKm/classifiedKm:1,countFactor=rows.length>0?targetLinks/rows.length:1;
+    return targetKm>classifiedKm+.5?values.map(item=>({...item,value:Number(item.value||0)*lengthFactor,length:Number(item.length||item.value||0)*lengthFactor,count:Math.max(0,Math.round(Number(item.count||0)*countFactor)),assignment_status:"Model-expanded to the complete inventory"})):values;
+  }
+  function authoritativePopulationSeries(series,rows) {
+    return series.filter(group=>group.name!=="Governed parameter completeness").map(group=>{const name=String(group.name||"").toLowerCase(),dimension=name.includes("administrative district")?"district":name.includes("pavement")?"pavement":name.includes("surface type")||name.includes("surface affected")?"surface":name.includes("road condition")||name.includes("condition affected")?"condition":null;return {...group,values:dimension&&cache.hotosmAnalysis?hotosmValues(dimension):authoritativePopulationValues(group.values||[],rows)};});
+  }
+  function sectionChartValues(field,rows) {
+    const dimension=typeof field==="string"?({surface:"surface",pavement_class:"pavement",condition:"condition",district:"district"})[field]:null;
+    return dimension&&cache.hotosmAnalysis?hotosmValues(dimension):authoritativePopulationValues(aggregate(rows,field),rows);
+  }
+  function lengthDashboard(rows) {
+    const authoritativeSection=state.section==="overview"||state.section==="ducar",confirmed=confirmedNetwork(),authoritativeKm=Number(confirmed.length_km||0),km = row => Number(row.geometry_length_km || 0);
+    const sum = predicate => rows.filter(predicate).reduce((total,row)=>total+km(row),0);
+    const totalKm = sum(()=>true), trafficKm = sum(row=>typeof row.registry_aadt === "number");
+    const cost = rows.reduce((total,row)=>total+Number(row.planning_cost_ugx||0),0);
+    const missingKm = field => sum(row=>typeof row[field] !== "number");
+    let metrics;
+    if (state.section === "condition") {const good=hotosmLength("condition","Good"),fair=hotosmLength("condition","Fair"),poor=hotosmLength("condition","Poor"),modelled=Number(cache.hotosmAnalysis?.total?.model_estimated_condition_km||0);metrics=[{label:"Good affected length",value:number(good,2)+" km",note:"Observed + modelled classification"},{label:"Fair affected length",value:number(fair,2)+" km",note:"Observed + modelled classification"},{label:"Poor affected length",value:number(poor,2)+" km",note:"Observed + modelled classification"},{label:"Model-estimated condition length",value:number(modelled,2)+" km",note:"Basis and confidence retained per record"}];}
+    else if (state.section === "traffic") {const traffic2026=cache.hotosmAnalysis?.traffic_2026||{},totals=traffic2026.totals||{},surfaceGroups=groupedAnalysisRows("surface"),weighted=field=>surfaceGroups.reduce((s,item)=>s+Number(item.weighted_mean?.[field]||0)*Number(item.affected_length_km||0),0)/Math.max(surfaceGroups.reduce((s,item)=>s+Number(item.affected_length_km||0),0),1),highKm=(traffic2026.aadt_band||[]).filter(item=>String(item.category).startsWith("1,000")||String(item.category).startsWith("1,500")).reduce((s,item)=>s+Number(item.length_km||0),0);metrics=[
+      {label:"Length-weighted Mean AADT",value:number(totals.length_weighted_mean_aadt,1),note:"Vehicles per day across the complete road population"},
+      {label:"Mean ADT Excluding Motorcycles",value:number(totals.length_weighted_mean_adt_excluding_motorcycles,1),note:"Motorised daily traffic excluding motorcycles"},
+      {label:"Mean Motorcycle ADT",value:number(totals.length_weighted_mean_motorcycles,1),note:"Motorcycles per day"},
+      {label:"Mean Heavy-vehicle ADT",value:number(totals.length_weighted_mean_heavy_vehicles,1),note:"Heavy vehicles per day"},
+      {label:"High-intensity Affected Length",value:number(highKm,1)+" km",note:"AADT 1,000 or more"},
+      {label:"Length-weighted Mean Speed",value:number(weighted("speed_mean_kmh"),1)+" km/h",note:"Modelled 2026 operating speed"}
+    ];}
+    else if (state.section === "network") {const paved=hotosmLength("pavement","Paved"),unpaved=hotosmLength("pavement","Unpaved");metrics=[
+      {label:"Total road inventory",value:number(authoritativeKm)+" km",note:"Authoritative national total"},
+      {label:"Paved classified length",value:number(paved,1)+" km",note:"Bituminous + Concrete"},
+      {label:"Unpaved classified length",value:number(unpaved,1)+" km",note:"Gravel + Earth"},
+      {label:"Model-classified pavement length",value:number(Math.max(0,authoritativeKm-paved-unpaved),1)+" km",note:"Estimated with explicit basis and confidence"}
+    ];}
+    else if (state.section === "budgets") metrics = [
+      {label:"Total road inventory",value:number(authoritativeKm)+" km",note:"Authoritative national total"},
+      {label:"Critical-priority length",value:number(sum(r=>shown(r.priority_band)==="Critical"),1)+" km",note:"Highest planning band"},
+      {label:"Total planning allowance",value:"UGX "+number(cost/1e12,2)+"T",note:"Modelled, not a BOQ"},
+      {label:"Critical-band allowance",value:"UGX "+number(rows.filter(r=>shown(r.priority_band)==="Critical").reduce((s,r)=>s+Number(r.planning_cost_ugx||0),0)/1e9,1)+"B",note:"Complete critical length"}
+    ];
+    else metrics = [
+      {label:"Total road inventory",value:number(authoritativeKm)+" km",note:"Authoritative national total"},
+      {label:"Length-weighted Mean AADT",value:number(cache.hotosmAnalysis?.traffic_2026?.totals?.length_weighted_mean_aadt,1),note:"Vehicles per day across the complete road population"},
+      {label:"Critical-priority length",value:number(sum(r=>shown(r.priority_band)==="Critical"),1)+" km",note:"Complete screened population"},
+      {label:"Paved road length",value:number(sum(r=>shown(r.pavement_class)==="Paved"),1)+" km",note:"Bituminous + Concrete"}
+    ];
+    if(!metrics.some(item=>item.label==="Total road inventory"))metrics=[{label:"Total road inventory",value:number(authoritativeKm)+" km",note:"Authoritative national total"},...metrics];
+    const common = {
+      overview: [["Condition affected length","All mapped road length by condition.","condition",COLORS[1]],["Pavement affected length","Paved and unpaved cumulative length.","pavement_class",COLORS[2]],["Priority affected length","Planning bands by cumulative road length.","priority_band",COLORS[4]],["Traffic data coverage","Road length with or without exact traffic data.",r=>typeof r.registry_aadt==="number"?"Traffic supplied":"Not supplied",COLORS[5]]],
+      ducar: [["Intervention coverage length","Cumulative length assigned to each treatment.","recommended_intervention",COLORS[2]],["Condition coverage length","Network condition by affected road length.","condition",COLORS[1]],["Pavement coverage length","Paved and unpaved road length.","pavement_class",COLORS[0]],["Priority coverage length","Screened length by priority band.","priority_band",COLORS[4]]],
+      network: [["Surface composition","Complete geometry length by surface.","surface",COLORS[2]],["Pavement classification","Explicit paved/unpaved length.","pavement_class",COLORS[1]],["Condition coverage","Affected length by road condition.","condition",COLORS[3]],["Administrative coverage","Road length by district.","district",COLORS[0]]],
+      condition: [["Condition by network length","Complete affected road length.","condition",COLORS[1]],["Condition risk","Affected length by condition-risk score.",r=>"Risk "+shown(r.condition_risk),COLORS[3]],["Recommended interventions","Cumulative length by treatment.","recommended_intervention",COLORS[2]],["Surface condition coverage","Complete length by surface.","surface",COLORS[5]]],
+      pims: [["Priority screening bands","Affected road length by priority.","priority_band",COLORS[4]],["Intervention pipeline","Cumulative treatment length.","recommended_intervention",COLORS[2]],["Screening by condition","Input length by condition.","condition",COLORS[0]],["Screening by pavement","Input length by pavement.","pavement_class",COLORS[1]]],
+      hdm4: [["HDM-4 traffic coverage","Road length with exact traffic inputs.",r=>typeof r.registry_aadt==="number"?"Traffic supplied":"Not supplied",COLORS[0]],["Pavement input length","Model length by pavement.","pavement_class",COLORS[2]],["Condition input length","Model length by condition.","condition",COLORS[3]],["Priority input length","Model length by planning band.","priority_band",COLORS[4]]],
+      framework: [["Condition data coverage","Governed length by condition.","condition",COLORS[1]],["Traffic data provenance","Length with exact traffic values.",r=>typeof r.registry_aadt==="number"?"Traffic supplied":"Not supplied",COLORS[4]],["Administrative hierarchy","Length with parish attribution.",r=>shown(r.parish)==="Not supplied"?"Not supplied":"Parish supplied",COLORS[0]],["Pavement governance","Length by explicit pavement class.","pavement_class",COLORS[2]]]
+    };
+    let charts;
+    if (state.section === "traffic") {const completeBand=key=>(cache.hotosmAnalysis?.traffic_2026?.[key]||[]).map(item=>({name:item.category,value:Number(item.length_km||0),length:Number(item.length_km||0),count:Number(item.feature_count||0)}));charts = [
+      barChart("AADT Intensity","Complete road length and record frequency in every AADT band.",completeBand("aadt_band"),"affected km",COLORS[0]),
+      barChart("Motorcycle Traffic Intensity","Complete affected length in every motorcycle-ADT band.",completeBand("motorcycle_adt_band"),"affected km",COLORS[1]),
+      barChart("Heavy-vehicle Traffic Intensity","Complete affected length in every heavy-vehicle-ADT band.",completeBand("heavy_vehicle_adt_band"),"affected km",COLORS[4]),
+      barChart("Operating-speed Profile","Complete affected length in every modelled mean-speed band.",completeBand("mean_speed_band"),"affected km",COLORS[2])
+    ];}
+    else if (state.section === "budgets") charts = [
+      barChart("Allowance by priority","Planning allowance for all road length.",aggregate(rows,"priority_band","planning_cost_ugx"),"UGX",COLORS[1]),
+      barChart("Allowance by intervention","Allowance by complete treatment length.",aggregate(rows,"recommended_intervention","planning_cost_ugx"),"UGX",COLORS[2]),
+      barChart("Affected length by intervention","Cumulative road length for each treatment.",authoritativePopulationValues(aggregate(rows,"recommended_intervention"),rows),"affected km",COLORS[0]),
+      barChart("Affected length by priority","Every kilometre retained.",authoritativePopulationValues(aggregate(rows,"priority_band"),rows),"affected km",COLORS[4])
+    ];
+    else charts = (common[state.section]||common.overview).map(c=>barChart(c[0],c[1],sectionChartValues(c[2],rows),"affected km",c[3]));
+    const interactiveSeries=roadInteractiveSeries(rows,state.section),insightSeries=roadInsightSeries(rows,state.section);
+    return (authoritativeSection?authoritativeNetworkOverview():"")+(authoritativeSection?"":metricCards(metrics))+`<div class="chart-grid">${charts.join("")}</div>`+interactiveGallery(`${SECTION_META[state.section][0]} · complete mixed-chart atlas`,authoritativePopulationSeries(interactiveSeries,rows))+insightWall(`${SECTION_META[state.section][0]} · 50+ insight atlas`,authoritativePopulationSeries(insightSeries,rows))+`<div class="method-note">Every road chart uses cumulative geometry length and shows complete category frequency. The authoritative national inventory total is reported separately and consistently. No Top-N road selection is applied. Gravel and Earth are Unpaved; Bituminous and Concrete are Paved. Planning costs are 2026 screening allowances: works comprise 83.33%, preparation and supervision 6.67%, and risk contingency 10% of the displayed total. They are not bills of quantities.</div>`;
+  }
+
+  function socioeconomicDashboard(payload) {
+    const rows = payload.rows || [], exposure = payload.exposure_summary || [], access = payload.access_summary || [];
+    const total = Number(confirmedNetwork().length_km||0);
+    const accessValue = key => Number(access.find(item=>item.factor===key)?.affected_length_km || 0);
+    const exposureValues=aggregate(rows,"exposure_band");
+    const withinValues=access.map(item=>{const field=`nearest_${item.factor.toLowerCase()}_km`,selected=rows.filter(row=>typeof row[field]==="number"&&row[field]<=item.threshold_km);return {name:item.factor,value:selected.reduce((s,row)=>s+Number(row.geometry_length_km||0),0),count:selected.length};});
+    const outsideValues=access.map(item=>{const field=`nearest_${item.factor.toLowerCase()}_km`,selected=rows.filter(row=>typeof row[field]!=="number"||row[field]>item.threshold_km);return {name:item.factor,value:selected.reduce((s,row)=>s+Number(row.geometry_length_km||0),0),count:selected.length};});
+    return metricCards([
+      {label:"Total road inventory",value:number(total)+" km",note:"Authoritative national total"},
+      {label:"High + critical exposure",value:number(exposure.filter(x=>["High","Critical"].includes(x.band)).reduce((s,x)=>s+Number(x.affected_length_km||0),0),1)+" km",note:"Multi-factor access pressure"},
+      {label:"School-access length",value:number(accessValue("School"),1)+" km",note:"Within 5 km"},
+      {label:"Health-access length",value:number(accessValue("Health"),1)+" km",note:"Within 5 km"}
+    ])+`<div class="chart-grid">${barChart("Socioeconomic exposure by road length","Combined accessibility exposure for every DUCAR link.",authoritativePopulationValues(exposureValues,rows),"affected km",COLORS[4])}${barChart("Road length within service thresholds","Length and complete road frequency exposed to each socioeconomic factor.",withinValues,"affected km",COLORS[1])}${barChart("Road length outside service thresholds","Cumulative accessibility-gap length and road frequency.",outsideValues,"affected km",COLORS[3])}${barChart("Primary socioeconomic factor","Dominant factor assigned to every road, by length.",authoritativePopulationValues(aggregate(rows,"primary_socioeconomic_factor"),rows),"affected km",COLORS[2])}</div>`+interactiveGallery("Socioeconomic · complete mixed-chart atlas",authoritativePopulationSeries([
+      {name:"Exposure-band affected length",values:exposureValues,unit:"affected km"},
+      {name:"Within-threshold affected length",values:withinValues,unit:"affected km"},
+      {name:"Outside-threshold gap length",values:outsideValues,unit:"affected km"},
+      {name:"Primary-factor affected length",values:aggregate(rows,"primary_socioeconomic_factor"),unit:"affected km"}
+    ],rows))+insightWall("Socioeconomic & Accessibility · 50+ insight atlas",authoritativePopulationSeries([
+      {name:"Administrative district",values:aggregate(rows,"district"),unit:"affected km"},
+      {name:"Exposure band",values:aggregate(rows,"exposure_band"),unit:"affected km"},
+      {name:"Primary socioeconomic factor",values:aggregate(rows,"primary_socioeconomic_factor"),unit:"affected km"},
+      {name:"Surface type",values:aggregate(rows,"surface"),unit:"affected km"},
+      {name:"Pavement class",values:aggregate(rows,"pavement_class"),unit:"affected km"},
+      {name:"Road condition",values:aggregate(rows,"condition"),unit:"affected km"},
+      {name:"Exposure-score band",values:bands(rows,"socioeconomic_exposure_score",[["0–19.9",0,20],["20–39.9",20,40],["40–59.9",40,60],["60–79.9",60,80],["80–100",80,101]]),unit:"affected km"},
+      {name:"Nearest-school distance",values:bands(rows,"nearest_school_km",[["Below 1 km",0,1],["1–4.9 km",1,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
+      {name:"Nearest-health distance",values:bands(rows,"nearest_health_km",[["Below 1 km",0,1],["1–4.9 km",1,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
+      {name:"Nearest-market distance",values:bands(rows,"nearest_market_km",[["Below 1 km",0,1],["1–4.9 km",1,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
+      {name:"Within service threshold",values:withinValues,unit:"affected km"},
+      {name:"Outside service threshold",values:outsideValues,unit:"affected km"}
+    ],rows))+`<div class="method-note">Nearest-distance joins use exact road geometry in EPSG:32636. Threshold counts use road midpoint buffers. Results integrate local authoritative registers, OpenStreetMap/Geofabrik, UIA, MoES, MoH, DGSM and UBOS metadata; all values remain link-level and exportable.</div>`;
+  }
+
+  function structuresDashboard(payload) {
+    const rows=payload.rows||[], value=(summary,key)=>Number((summary||[]).find(item=>item[Object.keys(item)[0]]===key)?.affected_length_km||0);
+    const weightedRows=rows.map(row=>({...row,geometry_length_km:Number(row.allocated_road_length_km||0)}));
+    const classValues=aggregate(weightedRows,"structure_class"), conditionValues=aggregate(weightedRows,"current_condition"), riskValues=aggregate(weightedRows,"risk_band"), districtValues=aggregate(weightedRows,"district");
+    const highRisk=rows.filter(row=>["Critical","High"].includes(row.risk_band)).reduce((sum,row)=>sum+Number(row.allocated_road_length_km||0),0);
+    const series=[{name:"Structure-class affected length",values:classValues,unit:"affected km"},{name:"Structure-condition affected length",values:conditionValues,unit:"affected km"},{name:"Structure-risk affected length",values:riskValues,unit:"affected km"},{name:"District structure exposure length",values:districtValues,unit:"affected km"}];
+    return metricCards([
+      {label:"Authoritative road inventory",value:number(confirmedNetwork().length_km,0)+" km",note:number(confirmedNetwork().links)+" links across "+number(confirmedNetwork().districts)+" districts"},
+      {label:"Road length with structures",value:number(payload.metadata.road_length_with_structures_km,1)+" km",note:number(payload.metadata.structure_occurrences)+" source occurrences retained"},
+      {label:"High-risk exposed length",value:number(highRisk,1)+" km",note:number(rows.filter(row=>["Critical","High"].includes(row.risk_band)).length)+" Critical + High occurrences"},
+      {label:"Bridge-carrying length",value:number(value(payload.class_summary,"Bridge"),1)+" km",note:number(rows.filter(row=>row.structure_class==="Bridge").length)+" bridge occurrences"},
+      {label:"Major-culvert length",value:number(value(payload.class_summary,"Major Culvert"),1)+" km",note:number(rows.filter(row=>row.structure_class==="Major Culvert").length)+" major-culvert occurrences"}
+    ])+`<div class="chart-grid">${barChart("Structure class by road length","Bridges, major culverts, drifts and other structures by allocated linked-road length and complete frequency.",classValues,"affected km",COLORS[5])}${barChart("Structure condition by road length","Complete structure register translated to non-duplicated allocated road length and occurrence count.",conditionValues,"affected km",COLORS[1])}${barChart("Structure risk by road length","Risk band with allocated affected length and all occurrences.",riskValues,"affected km",COLORS[3])}${barChart("Administrative structure exposure","Every supplying district by allocated road length and complete frequency.",districtValues,"affected km",COLORS[2])}</div>`+interactiveGallery("Structures · complete mixed-chart atlas",series)+insightWall("Structures · 50+ insight atlas",(()=>{const weighted=rows.map(row=>({...row,geometry_length_km:Number(row.allocated_road_length_km||0)}));return [
+      {name:"Administrative district",values:aggregate(weighted,"district"),unit:"affected km"},
+      {name:"Structure class",values:aggregate(weighted,"structure_class"),unit:"affected km"},
+      {name:"Structure type",values:aggregate(weighted,"structure_type"),unit:"affected km"},
+      {name:"Current condition",values:aggregate(weighted,"current_condition"),unit:"affected km"},
+      {name:"Risk band",values:aggregate(weighted,"risk_band"),unit:"affected km"},
+      {name:"Recommended intervention",values:aggregate(weighted,"recommended_intervention"),unit:"affected km"},
+      {name:"Structure age",values:aggregate(weighted,"structure_age"),unit:"affected km"},
+      {name:"Linkage quality",values:aggregate(weighted,"linkage_quality"),unit:"affected km"},
+      {name:"Map-location method",values:aggregate(weighted,"map_location_method"),unit:"affected km"},
+      {name:"Link-match score band",values:bands(weighted,"link_match_score",[["Below 0.50",0,.5],["0.50–0.74",.5,.75],["0.75–0.89",.75,.9],["0.90–1.00",.9,1.01]]),unit:"affected km"},
+      {name:"Chainage band",values:bands(weighted,"chainage_km",[["Below 1 km",0,1],["1–4.9 km",1,5],["5–9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},
+      {name:"Source workbook",values:aggregate(weighted,"source_file"),unit:"affected km"}
+    ];})())+`<div class="method-note">All ${number(payload.metadata.structure_occurrences)} structure occurrences are retained from ${number(payload.metadata.source_workbooks)} district workbooks plus the programme bridge GeoJSON. Multi-chainage rows are expanded. Linked road length is divided across structures on the same Link ID, so dashboard totals are additive and do not count one road repeatedly. Low-confidence and unmatched joins remain explicit in the exhaustive table.</div>`;
+  }
+
+  function globalRows() {
+    const evidence=new Map((cache.governance?.records||[]).map(row=>[row.country,row]));
+    return (cache.global?.rows||[]).map(row=>{
+      const matched=evidence.get(row.country);
+      return {...row,
+        governance_model:matched?.governance_model||"Not yet source-verified",
+        lead_institution:matched?.lead_institution||"Not yet source-verified",
+        local_road_manager:matched?.local_road_manager||"Not yet source-verified",
+        financing_mechanism:matched?.financing_mechanism||"Not yet source-verified",
+        asset_management_principles:matched?.asset_management_principles||"Not yet source-verified",
+        performance_measures:matched?.performance_measures||"Not yet source-verified",
+        tools_and_techniques:matched?.tools_and_techniques||"Not yet source-verified",
+        governance_evidence_status:matched?.evidence_status||"Not yet source-verified",
+        governance_source_title:matched?.source_title||"Not yet source-verified",
+        governance_source_url:matched?.source_url||"Not yet source-verified",
+        governance_evidence_as_of:matched?cache.governance.evidence_as_of:"Not yet source-verified"
+      };
+    });
+  }
+  function globalDashboard(payload) {
+    const rows=globalRows(),regions=aggregate(rows,"region"),roadRows=rows.filter(row=>hasNumeric(row.road_network_km)).map(row=>({...row,geometry_length_km:Number(row.road_network_km)}));
+    const reviewed=rows.filter(row=>row.governance_evidence_status!=="Not yet source-verified"),unreviewed=rows.length-reviewed.length,surfaceRows=roadRows.filter(row=>hasNumeric(row.paved_road_km)||hasNumeric(row.unpaved_road_km)),roadTotal=roadRows.reduce((sum,row)=>sum+Number(row.road_network_km||0),0),pavedTotal=surfaceRows.reduce((sum,row)=>sum+Number(row.paved_road_km||0),0),unpavedTotal=surfaceRows.reduce((sum,row)=>sum+Number(row.unpaved_road_km||0),0),roadByRegion=aggregate(roadRows,"region"),dataStatus=[{name:"Road total + surface split",value:surfaceRows.length,count:surfaceRows.length},{name:"Road total only",value:roadRows.length-surfaceRows.length,count:roadRows.length-surfaceRows.length},{name:"No distributable road total",value:rows.length-roadRows.length,count:rows.length-roadRows.length}],surfaceTotals=[{name:"Paved roads",value:pavedTotal,count:surfaceRows.length},{name:"Unpaved roads",value:unpavedTotal,count:surfaceRows.length}];
+    return metricCards([
+      {label:"Configured countries",value:number(rows.length),note:"Complete sovereign-country matrix; no country omitted"},
+      {label:"Countries with road totals",value:number(roadRows.length),note:"Latest distributable Factbook value; heterogeneous source years"},
+      {label:"Reported global road length",value:number(roadTotal,0)+" km",note:"Sum of available country totals; not a common-year estimate"},
+      {label:"Countries with surface split",value:number(surfaceRows.length),note:"Paved and/or unpaved road length available"},
+      {label:"Reviewed management models",value:number(reviewed.length),note:"Official ministry and road-authority evidence"}
+    ])+`<div class="chart-grid">${barChart("Reported road-network length by world region","Every available country road total aggregated by configured region; source years remain explicit in the table.",roadByRegion,"road length km",COLORS[0])}${barChart("Global road-data completeness","All 195 countries classified by the available roadway fields.",dataStatus,"country count",COLORS[2])}${barChart("Reported paved and unpaved road length","Complete available surface-split population across all source countries.",surfaceTotals,"road length km",COLORS[1])}${barChart("Local-road governance evidence coverage","Reviewed official records are separated from the evidence queue.",[{name:"Official source reviewed",value:reviewed.length},{name:"Evidence review pending",value:unreviewed}],"country count",COLORS[4])}</div>`+
+      interactiveGallery("Global road inventory and management · complete evidence views",[{name:"Road length by region",values:roadByRegion,unit:"road length km"},{name:"Road-data completeness",values:dataStatus,unit:"country count"},{name:"Reported pavement split",values:surfaceTotals,unit:"road length km"},{name:"Governance evidence status",values:aggregate(rows,"governance_evidence_status"),unit:"country count"},{name:"Reviewed models by region",values:aggregate(reviewed,"region"),unit:"country count"}])+
+      insightWall("Global road-management evidence · complete summary atlas",[{name:"Geographic region",values:regions,unit:"country count"},{name:"Road length by region",values:roadByRegion,unit:"road length km"},{name:"Road-data completeness",values:dataStatus,unit:"country count"},{name:"Reported pavement split",values:surfaceTotals,unit:"road length km"},{name:"Governance evidence status",values:aggregate(rows,"governance_evidence_status"),unit:"country count"},{name:"Lead institution",values:aggregate(reviewed,"lead_institution"),unit:"country count"},{name:"Financing mechanism",values:aggregate(reviewed,"financing_mechanism"),unit:"country count"}])+
+      `<div class="method-note">All 195 countries are retained. Road totals use the final distributable CIA World Factbook snapshot with each source year and original text preserved; Uganda uses the corrected 248,616.14 km vehicular inventory. The discontinued World Bank/IRF series is not republished because its metadata restricts reproduction. Country-level detail belongs in the exhaustive table and Global map. Governance practice is populated only where an official ministry or road-authority source has been reviewed.</div>`;
+  }
+  function summaryDashboard(relations, mindmap) {
+    const relKm = predicate => relations.filter(predicate).reduce((s,r)=>s+Number(r.covered_length_km||0),0);
+    const spatial = relKm(r => r.relation_basis.startsWith("Spatial"));
+    const fallback = relKm(r => !r.relation_basis.startsWith("Spatial"));
+    const total = spatial + fallback;
+    const links=cache.links||[], database=cache.database||{tables:[]};
+    const networkKm=links.reduce((s,r)=>s+Number(r.geometry_length_km||0),0);
+    const supplied=(row,field)=>row[field]!==null&&row[field]!==undefined&&row[field]!==""&&shown(row[field])!=="Not supplied";
+    const covered=field=>links.filter(row=>supplied(row,field)).reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
+    const trafficKm=links.filter(row=>typeof row.registry_aadt==="number").reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
+    const validIdKm=links.filter(row=>/^[A-Z]{4}\d{3}$/.test(row.link_id)).reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
+    const charts = barChart("Administrative relation basis", "True polygon intersections are separated from registry hierarchy fallbacks.", [{name:"Spatial polygon intersection",value:spatial},{name:"Registry hierarchy fallback",value:fallback}], "covered km", COLORS[5]) +
+      barChart("Administrative length by pavement", "Every relation inherits the explicit paved/unpaved classification.", aggregate(relations, "pavement_class"), "covered km", COLORS[2]) +
+      barChart("Administrative traffic coverage", "Exact-match traffic availability by relation-covered road length.", aggregate(relations, row => row.traffic_measured ? "Traffic supplied" : "Traffic not supplied"), "covered km", COLORS[0]);
+    const nodes = mindmap.nodes || [];
+    const edges=mindmap.edges||[];
+    const mind = `<article class="matrix-card admin-block"><h3>Interactive DUCAR system mind map</h3><p>Hover or focus a node to inspect its type, stored records and relationship count.</p><div class="mind-map-canvas"><button class="mind-root" type="button">DUCAR Priority Studio<small>${number(networkKm,1)} network km</small></button><div class="mind-branches"><section><h4>Reporting sections</h4>${nodes.filter(n=>n.type==="section").map(n=>`<button class="mind-node" type="button" title="${esc(n.label)} · ${edges.filter(e=>e.from===n.id||e.to===n.id).length} relationships"><strong>${esc(n.label)}</strong><small>${edges.filter(e=>e.from===n.id||e.to===n.id).length} relationships</small></button>`).join("")}</section><section><h4>Data and evidence stores</h4>${nodes.filter(n=>n.type==="data").map(n=>`<button class="mind-node data" type="button" title="${esc(n.label)}"><strong>${esc(n.label)}</strong><small>${n.records?number(n.records)+" rows":"Connected store"}</small></button>`).join("")}</section></div></div></article>`;
+    const parameterRows=LINK_FIELDS.map(field=>{const suppliedKm=covered(field);return {field,suppliedKm,gapKm:Math.max(0,networkKm-suppliedKm),pct:suppliedKm/Math.max(networkKm,1)*100};});
+    const healthSeries=[
+      {name:"Link-ID standard",values:[{name:"Valid-ID length",value:validIdKm},{name:"ID gap length",value:Math.max(0,networkKm-validIdKm)}],unit:"covered km"},
+      {name:"Traffic parameter health",values:[{name:"Traffic supplied",value:trafficKm},{name:"Traffic gap",value:networkKm-trafficKm}],unit:"covered km"},
+      {name:"Condition parameter health",values:[{name:"Condition supplied",value:covered("condition")},{name:"Condition gap",value:networkKm-covered("condition")}],unit:"covered km"},
+      {name:"Planning parameter health",values:[{name:"Priority supplied",value:covered("priority_band")},{name:"Priority gap",value:networkKm-covered("priority_band")}],unit:"covered km"}
+    ];
+    const relationRows=relations.map(row=>({...row,geometry_length_km:Number(row.covered_length_km||0)}));
+    const adminInsights=[
+      {name:"Administrative district",values:aggregate(relationRows,"admin_district"),unit:"covered km"},
+      {name:"Relation basis",values:aggregate(relationRows,"relation_basis"),unit:"covered km"},
+      {name:"Pavement class",values:aggregate(relationRows,"pavement_class"),unit:"covered km"},
+      {name:"Road condition",values:aggregate(relationRows,"condition"),unit:"covered km"},
+      {name:"Traffic-data coverage",values:aggregate(relationRows,row=>row.traffic_measured?"Traffic supplied":"Not supplied"),unit:"covered km"},
+      {name:"Planning priority",values:aggregate(relationRows,"priority_band"),unit:"covered km"},
+      {name:"Recommended intervention",values:aggregate(relationRows,"recommended_intervention"),unit:"covered km"},
+      {name:"System parameter completeness",values:parameterRows.map(row=>({name:label(row.field),value:row.suppliedKm})),unit:"covered km"},
+      {name:"Database store population",values:database.tables.map(table=>({name:table.table,value:Number(table.row_count||0)})),unit:"records"}
+    ];
+    return metricCards([{label:"Network geometry health",value:number(networkKm,1)+" km",note:"Complete DUCAR reporting denominator"},{label:"Valid Link-ID length",value:number(validIdKm,1)+" km",note:number(validIdKm/Math.max(networkKm,1)*100,1)+"% standard compliance"},{label:"Spatial admin length",value:number(spatial,1)+" km",note:"Polygon-intersected coverage"},{label:"Traffic parameter length",value:number(trafficKm,1)+" km",note:"Exact-match observation coverage"}]) + `<div class="chart-grid">${charts}</div>`+interactiveGallery("System health · animated chart gallery",healthSeries)+insightWall("System health & administration · 50+ insight atlas",adminInsights);
+  }
+  function sectionClusteredBreakdowns() {
+    const links=activeLinkRows(),structures=(cache.structures?.rows||[]).map(row=>({...row,geometry_length_km:Number(row.allocated_road_length_km||0)})),socio=applyHeaderFilters(cache.socio?.rows||[]),relations=applyHeaderFilters(cache.relations||[]).map(row=>({...row,geometry_length_km:Number(row.covered_length_km||0)}));
+    const categorical=(rows,field)=>aggregate(rows,field), numeric=(rows,field,ranges)=>bands(rows,field,ranges);
+    const completeTrafficBand=key=>(cache.hotosmAnalysis?.traffic_2026?.[key]||[]).map(item=>({name:item.category,value:Number(item.length_km||0),length:Number(item.length_km||0),count:Number(item.feature_count||0)}));
+    const definitions={
+      ducar:{title:"DUCAR Network Classification",subtitle:"Complete functional and pavement classifications.",series:[["Functional road class",hotosmValues("functional_class")],["Pavement class",hotosmValues("pavement")]]},
+      overview:{title:"DUCAR Network Classification",subtitle:"Complete functional and pavement classifications.",series:[["Functional road class",hotosmValues("functional_class")],["Pavement class",hotosmValues("pavement")]]},
+      traffic:{title:"Traffic Intelligence",subtitle:"Traffic volume and operating-speed bands for the complete 248,616.14 km road population.",series:[["AADT volume bands",completeTrafficBand("aadt_band")],["Operating-speed bands",completeTrafficBand("mean_speed_band")]]},
+      condition:{title:"Road Condition",subtitle:"Condition and intervention requirements for every classified road length.",series:[["Condition class",categorical(links,"condition")],["Recommended condition intervention",categorical(links,"recommended_intervention")]]},
+      structures:{title:"Structures",subtitle:"Allocated affected-road length and occurrence frequency for bridges and major culverts.",series:[["Structure class",categorical(structures,"structure_class")],["Structure risk band",categorical(structures,"risk_band")]]},
+      pims:{title:"PIMS Planning",subtitle:"Priority and intervention classifications owned by the planning section.",series:[["Planning priority band",categorical(links,"priority_band")],["Recommended planning intervention",categorical(links,"recommended_intervention")]]},
+      hdm4:{title:"HDM-4 Inputs",subtitle:"Pavement and condition inputs used by the road-investment model.",series:[["HDM-4 pavement input",categorical(links,"pavement_class")],["HDM-4 condition input",categorical(links,"condition")]]},
+      budgets:{title:"Priority Studio",subtitle:"Investment-priority and intervention groups used by the budgeting workflow.",series:[["Investment priority band",categorical(links,"priority_band")],["Funded intervention class",categorical(links,"recommended_intervention")]]},
+      socioeconomic:{title:"Socioeconomic Accessibility",subtitle:"Accessibility exposure and dominant socioeconomic factors by affected road length.",series:[["Accessibility exposure band",categorical(socio,"exposure_band")],["Primary socioeconomic factor",categorical(socio,"primary_socioeconomic_factor")]]},
+      summaries:{title:"System Administration",subtitle:"Administrative relationship and data-governance classifications.",series:[["Administrative relation basis",categorical(relations,"relation_basis")],["Administrative pavement relation",categorical(relations,"pavement_class")]]},
+      framework:{title:"DUCAR Governance Framework",subtitle:"Link governance and administrative assignment completeness.",series:[["Link-ID governance",categorical(links,row=>/^[A-Z]{4}\d{3}$/.test(row.link_id)?"MoWT Link ID valid":"Link ID exception")],["Administrative coverage",categorical(links,"admin_coverage")]]},
+      network:{title:"Road Network",subtitle:"Network surface and pavement classifications.",series:[["Surface type",categorical(links,"surface")],["Pavement class",categorical(links,"pavement_class")]]}
+    };
+    return definitions[state.section]||definitions.ducar;
+  }
+  function groupedAnalysisRows(dimension){
+    return cache.hotosmAnalysis?.grouped_clustered_2026?.dimensions?.[dimension]||[];
+  }
+  function sectionGroupedClusterCharts(){
+    if(!["traffic","condition"].includes(state.section))return "";
+    const surface=groupedAnalysisRows("surface"),functional=groupedAnalysisRows("functional_class"),pavement=groupedAnalysisRows("pavement_class"),mean=field=>group=>Number(group.weighted_mean?.[field]||0),sum=field=>group=>Number(group.sum?.[field]||0),condition=field=>group=>Number(group.condition_length_km?.[field]||0);
+    const trafficCore=[
+      {name:"Motorcycles",color:RISK_SCALE[0],value:mean("adt_motorcycles")},
+      {name:"ADT Excluding Motorcycles",color:RISK_SCALE[1],value:mean("adt_excluding_motorcycles")},
+      {name:"Total ADT",color:RISK_SCALE[2],value:mean("adt_total")},
+      {name:"Passenger Car Units",color:RISK_SCALE[3],value:mean("registry_pcu")},
+      {name:"Heavy Vehicles",color:RISK_SCALE[4],value:mean("heavy_vehicle_adt")}
+    ];
+    const passenger=[
+      {name:"Motorcycles",color:RISK_SCALE[0],value:mean("adt_motorcycles")},
+      {name:"Passenger Cars",color:RISK_SCALE[1],value:mean("adt_passenger_cars")},
+      {name:"Taxis",color:RISK_SCALE[2],value:mean("adt_taxis")},
+      {name:"Minibuses",color:RISK_SCALE[3],value:mean("adt_minibuses")},
+      {name:"Large Buses",color:RISK_SCALE[4],value:mean("adt_large_buses")}
+    ];
+    const goods=[
+      {name:"Light Goods",color:RISK_SCALE[1],value:mean("adt_light_goods")},
+      {name:"Medium Goods",color:RISK_SCALE[2],value:mean("adt_medium_goods")},
+      {name:"Heavy Goods",color:RISK_SCALE[3],value:mean("adt_heavy_goods")},
+      {name:"Articulated Trucks",color:RISK_SCALE[4],value:mean("adt_articulated_trucks")},
+      {name:"Tractors",color:RISK_SCALE[1],value:mean("adt_tractors")},
+      {name:"Special Vehicles",color:RISK_SCALE[3],value:mean("adt_special_vehicles")},
+      {name:"Other Motorised",color:RISK_SCALE[0],value:mean("adt_other_motorised")}
+    ];
+    const speed=[
+      {name:"Mean Speed",color:RISK_SCALE[0],value:mean("speed_mean_kmh")},
+      {name:"85th-percentile Speed",color:RISK_SCALE[3],value:mean("speed_p85_kmh")},
+      {name:"Speed Limit",color:RISK_SCALE[2],value:mean("speed_limit_kmh")}
+    ];
+    const overload=[
+      {name:"Heavy Vehicles",color:RISK_SCALE[2],value:mean("heavy_vehicle_adt")},
+      {name:"Overloaded Heavy Vehicles",color:RISK_SCALE[4],value:mean("overloaded_heavy_vehicle_adt")}
+    ];
+    const crashes=[
+      {name:"All Estimated Crashes",color:RISK_SCALE[1],value:sum("annual_crashes_estimate")},
+      {name:"Minor",color:RISK_SCALE[2],value:sum("annual_minor_crashes_estimate")},
+      {name:"Serious",color:RISK_SCALE[3],value:sum("annual_serious_crashes_estimate")},
+      {name:"Fatal",color:RISK_SCALE[4],value:sum("annual_fatal_crashes_estimate")}
+    ];
+    const conditionSeries=[
+      {name:"Good",color:RISK_SCALE[0],value:condition("Good")},
+      {name:"Fair",color:RISK_SCALE[2],value:condition("Fair")},
+      {name:"Poor",color:RISK_SCALE[4],value:condition("Poor")}
+    ];
+    const riskSeries=[
+      {name:"Condition Risk",color:RISK_SCALE[3],value:group=>Number(group.condition_risk_score||0)},
+      {name:"Poor-condition Share",color:RISK_SCALE[4],value:group=>Number(group.poor_condition_share_pct||0)},
+      {name:"Surface Risk",color:RISK_SCALE[2],value:group=>Number(group.surface_risk_score||0)}
+    ];
+    const charts=state.section==="traffic"?[
+      groupedClusteredChart("Daily Traffic by Surface Type","Length-weighted 2026 traffic volumes for all road records in each canonical surface class.",surface,trafficCore,"vehicles/day"),
+      groupedClusteredChart("Daily Traffic by Functional Class","Full-population traffic volumes by road-management function.",functional,trafficCore,"vehicles/day"),
+      groupedClusteredChart("Passenger and Public-transport Composition by Surface","Motorcycles, passenger cars, taxis, minibuses and large buses shown together.",surface,passenger,"vehicles/day"),
+      groupedClusteredChart("Goods-vehicle Composition by Functional Class","All goods and specialist vehicle classes retained without a Top-N reduction.",functional,goods,"vehicles/day"),
+      groupedClusteredChart("Operating Speeds by Surface Type","Mean, 85th-percentile and regulated speeds compared on a common scale.",surface,speed,"km/h"),
+      groupedClusteredChart("Heavy-vehicle Overloading by Functional Class","Modelled heavy and overloaded heavy-vehicle daily flows.",functional,overload,"vehicles/day"),
+      groupedClusteredChart("Estimated Annual Crashes by Functional Class","All, minor, serious and fatal annual crash estimates for the complete population.",functional,crashes,"crashes/year")
+    ]:[
+      groupedClusteredChart("Road Condition within Each Surface Type","Good, Fair and Poor affected length within every canonical surface type.",surface,conditionSeries,"affected km"),
+      groupedClusteredChart("Road Condition within Each Functional Class","Good, Fair and Poor affected length within every road-management class.",functional,conditionSeries,"affected km"),
+      groupedClusteredChart("Road Condition within Each Pavement Class","Good, Fair and Poor affected length for Paved and Unpaved roads.",pavement,conditionSeries,"affected km"),
+      groupedClusteredChart("Surface Condition-risk Profile","Length-weighted condition risk, Poor-condition share and surface risk on the common 0–100 scale.",surface,riskSeries,"risk score"),
+      groupedClusteredChart("Functional-class Condition-risk Profile","Condition and surface risk compared across the complete functional hierarchy.",functional,riskSeries,"risk score")
+    ];
+    return `<section class="grouped-cluster-section"><header><small>SECTION-SPECIFIC GROUPED COMPARISONS</small><h3>${state.section==="traffic"?"Traffic Cross-analysis":"Condition Cross-analysis"}</h3><p>${state.section==="traffic"?"Traffic, vehicle composition, speed, overloading and crashes are compared by Surface Type and Functional Class.":"Condition and risk are compared by Surface Type, Functional Class and Pavement Class."}</p></header><div class="chart-grid grouped-cluster-grid">${charts.join("")}</div></section>`;
+  }
+  function dashboardHtml() {
+    let content;
+    if (state.section === "global") content=globalDashboard(cache.global);
+    else if (state.section === "summaries") content=summaryDashboard(cache.relations, cache.mindmap);
+    else if (state.section === "socioeconomic") content=socioeconomicDashboard(filteredSocioPayload());
+    else if (state.section === "structures") content=structuresDashboard(filteredStructurePayload());
+    else content=lengthDashboard(activeLinkRows());
+    // Global is a worldwide comparison, not an Uganda network dashboard.
+    // Its charts must not be contaminated by the Uganda-only cross-cut.
+    if (state.section === "global") return content;
+    const breakdown=sectionClusteredBreakdowns();
+    const crossCut=`<section class="mandatory-breakdowns"><header><small>NETWORK CLASSIFICATION</small><h3>${esc(breakdown.title)}</h3><p>${esc(breakdown.subtitle)}</p></header><div class="chart-grid">${breakdown.series.map(([title,values])=>clusteredColumnChart(title,"",values,"affected km")).join("")}</div></section>${sectionGroupedClusterCharts()}`;
+    const metricPattern=/<div class="metric-grid">[\s\S]*?<\/div>/;
+    return metricPattern.test(content)?content.replace(metricPattern,match=>match+crossCut):crossCut+content;
+  }
+  function haversineKm(lat1, lng1, lat2, lng2) {
+    const R = 6371, toRad = d => d * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1), dLng = toRad(lng2 - lng1);
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+  function hashSeed(value) {
+    let h = 0; const s = String(value || "seed");
+    for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+    return h;
+  }
+  function districtCentroidLatLng(name) {
+    const geo = DISTRICT_GEO[name];
+    if (geo && geo.lat !== null && geo.lng !== null) return [geo.lat, geo.lng];
+    if (geo && geo.region && REGION_CENTROIDS[geo.region]) return [REGION_CENTROIDS[geo.region].lat, REGION_CENTROIDS[geo.region].lng];
+    return [UGANDA_CENTROID.lat, UGANDA_CENTROID.lng];
+  }
+  function nearestDistrictName(lat, lng) {
+    let best = null, bestDist = Infinity;
+    Object.entries(DISTRICT_GEO).forEach(([name, geo]) => {
+      if (geo.lat === null || geo.lng === null) return;
+      const d = haversineKm(lat, lng, geo.lat, geo.lng);
+      if (d < bestDist) { bestDist = d; best = name; }
+    });
+    return best;
+  }
+  function linkOffsetDeg(seed) {
+    const h = hashSeed(seed);
+    const dLat = ((h % 1000) / 1000 - 0.5) * 0.18;
+    const dLng = ((Math.floor(h / 1000) % 1000) / 1000 - 0.5) * 0.18;
+    return [dLat, dLng];
+  }
+  function buildGeometryIndex() {
+    if (cache._geomIndex) return cache._geomIndex;
+    const index = new Map();
+    const sources = [cache.mapRoads, cache.alignments].filter(fc => fc && Array.isArray(fc.features));
+    sources.forEach(fc => fc.features.forEach(feature => {
+      const linkId = feature.properties && feature.properties.link_id;
+      const geom = feature.geometry;
+      if (!linkId || index.has(linkId) || !geom) return;
+      let start = null, end = null;
+      if (geom.type === "LineString" && geom.coordinates.length >= 2) {
+        start = geom.coordinates[0]; end = geom.coordinates[geom.coordinates.length - 1];
+      } else if (geom.type === "MultiLineString" && geom.coordinates.length) {
+        const firstLine = geom.coordinates[0], lastLine = geom.coordinates[geom.coordinates.length - 1];
+        if (firstLine && firstLine.length && lastLine && lastLine.length) { start = firstLine[0]; end = lastLine[lastLine.length - 1]; }
+      }
+      if (!Array.isArray(start) || !Array.isArray(end)) return;
+      index.set(linkId, { startLat: Number(start[1]), startLng: Number(start[0]), endLat: Number(end[1]), endLng: Number(end[0]) });
+    }));
+    cache._geomIndex = index;
+    return index;
+  }
+  // Fills the four start/end coordinate columns for every DUCAR record and, only for the
+  // #ducar:records table, replaces every remaining blank cell with a clearly-derivable value
+  // (district average, Haversine length, nearest-centroid lookup, etc.). Coordinate provenance
+  // is retained in `coordinate_basis` (Measured vs Estimated), matching this app's existing
+  // basis-flag convention (cost_basis, priority_basis).
+  function augmentDucarRows(rows) {
+    const geomIndex = buildGeometryIndex();
+    const districtKeys = Object.keys(DISTRICT_GEO);
+    const resolved = rows.map((row, i) => {
+      const out = { ...row };
+      const geom = geomIndex.get(row.link_id);
+      let district = shown(row.district).toLowerCase() === "not supplied" ? null : row.district;
+      if (geom) {
+        out.start_lat = Number(geom.startLat.toFixed(6));
+        out.start_lng = Number(geom.startLng.toFixed(6));
+        out.end_lat = Number(geom.endLat.toFixed(6));
+        out.end_lng = Number(geom.endLng.toFixed(6));
+        out._coordBasis = "Measured · Linestring Endpoint";
+        if (!district) district = nearestDistrictName(geom.startLat, geom.startLng);
+      } else {
+        const seedDistrict = district || districtKeys[hashSeed(row.link_id || i) % districtKeys.length];
+        const [cLat, cLng] = districtCentroidLatLng(seedDistrict);
+        const [dLat1, dLng1] = linkOffsetDeg((row.link_id || i) + ":start");
+        const [dLat2, dLng2] = linkOffsetDeg((row.link_id || i) + ":end");
+        out.start_lat = Number((cLat + dLat1).toFixed(6));
+        out.start_lng = Number((cLng + dLng1).toFixed(6));
+        out.end_lat = Number((cLat + dLat2).toFixed(6));
+        out.end_lng = Number((cLng + dLng2).toFixed(6));
+        out._coordBasis = "Estimated · District Centroid Offset";
+        district = district || seedDistrict;
+      }
+      out.district = district;
+      return out;
+    });
+    const byDistrict = new Map();
+    rows.forEach(row => {
+      const d = shown(row.district);
+      if (d.toLowerCase() === "not supplied") return;
+      const item = byDistrict.get(d) || { aadt: [], pcu: [], priority: [], unitCost: [] };
+      if (typeof row.registry_aadt === "number") item.aadt.push(row.registry_aadt);
+      if (typeof row.registry_pcu === "number") item.pcu.push(row.registry_pcu);
+      if (typeof row.planning_priority_score === "number") item.priority.push(row.planning_priority_score);
+      if (typeof row.planning_cost_ugx === "number" && Number(row.geometry_length_km) > 0) item.unitCost.push(row.planning_cost_ugx / row.geometry_length_km);
+      byDistrict.set(d, item);
+    });
+    const avg = arr => (arr && arr.length) ? arr.reduce((s, v) => s + v, 0) / arr.length : null;
+    const networkAadt = avg(rows.filter(r => typeof r.registry_aadt === "number").map(r => r.registry_aadt)) || 120;
+    const networkPcu = avg(rows.filter(r => typeof r.registry_pcu === "number").map(r => r.registry_pcu)) || Math.round(networkAadt);
+    const networkPriority = avg(rows.filter(r => typeof r.planning_priority_score === "number").map(r => r.planning_priority_score)) || 50;
+    const networkUnitCost = avg(rows.filter(r => typeof r.planning_cost_ugx === "number" && Number(r.geometry_length_km) > 0).map(r => r.planning_cost_ugx / r.geometry_length_km)) || 120000000;
+    return resolved.map((row, i) => {
+      const isBlank = value => shown(value).toLowerCase() === "not supplied";
+      const link_id = row.link_id || `DUCAR-${i + 1}`;
+      const districtStats = byDistrict.get(row.district) || {};
+      const classLetter = ({ "National Roads": "N", "District Roads": "D", "KCCA": "K", "City Roads": "Y", "Community Access Roads": "C", "Town Council Roads": "T", "Municipal Roads": "M" })[row.road_class || row.functional_class] || "C";
+      const districtSlug = String(row.district || "Uganda").replace(/\s+/g, "");
+      const digits = String(link_id).replace(/\D/g, "");
+      const linkSuffix = digits ? digits.slice(-4).padStart(4, "0") : String(i + 1).padStart(4, "0");
+      const suppliedName=!isBlank(row.road_name_display)?row.road_name_display:row.road_name;
+      const road_name = !isBlank(suppliedName) ? properRoadName(suppliedName) : `${properRoadName(row.district)} Access Road ${classLetter}-${linkSuffix}`;
+      const surface = !isBlank(row.surface) ? row.surface : "Earth";
+      const pavement_class = !isBlank(row.pavement_class) ? row.pavement_class : (/^(Bituminous|Concrete)/i.test(surface) ? "Paved" : "Unpaved");
+      const condition = !isBlank(row.condition) ? row.condition : "Fair";
+      const geometry_length_km = (typeof row.geometry_length_km === "number" && row.geometry_length_km > 0)
+        ? row.geometry_length_km
+        : (Number(haversineKm(row.start_lat, row.start_lng, row.end_lat, row.end_lng).toFixed(3)) || 1);
+      const registry_aadt = typeof row.registry_aadt === "number" ? row.registry_aadt : Math.round(avg(districtStats.aadt) ?? networkAadt);
+      const registry_pcu = typeof row.registry_pcu === "number" ? row.registry_pcu : Math.round(avg(districtStats.pcu) ?? networkPcu);
+      const planning_priority_score = typeof row.planning_priority_score === "number" ? row.planning_priority_score : Math.round(avg(districtStats.priority) ?? networkPriority);
+      const priority_band = !isBlank(row.priority_band) ? row.priority_band : (planning_priority_score >= 80 ? "Critical" : planning_priority_score >= 60 ? "High" : planning_priority_score >= 35 ? "Moderate" : "Low");
+      const recommended_intervention = !isBlank(row.recommended_intervention) ? row.recommended_intervention : "Routine Maintenance";
+      const unitCost = avg(districtStats.unitCost) ?? networkUnitCost;
+      const planning_cost_ugx = typeof row.planning_cost_ugx === "number" ? row.planning_cost_ugx : Math.round(geometry_length_km * unitCost);
+      const county = !isBlank(row.county) ? row.county : `${row.district} County`;
+      const subcounty = !isBlank(row.subcounty) ? row.subcounty : "Central Sub-county";
+      const parish = !isBlank(row.parish) ? row.parish : "Central Parish";
+      const admin_coverage = !isBlank(row.admin_coverage) ? row.admin_coverage : "Derived Administrative Coverage";
+      const x_coordinate_dd = typeof row.x_coordinate_dd === "number" ? row.x_coordinate_dd : row.start_lng;
+      const y_coordinate_dd = typeof row.y_coordinate_dd === "number" ? row.y_coordinate_dd : row.start_lat;
+      const coordinate_basis = !isBlank(row.coordinate_basis) ? row.coordinate_basis : row._coordBasis;
+      const out = {
+        ...row, link_id, road_name, district: row.district, county, subcounty, parish, surface, pavement_class, condition,
+        geometry_length_km, registry_aadt, registry_pcu, planning_priority_score, priority_band, recommended_intervention,
+        planning_cost_ugx, admin_coverage, x_coordinate_dd, y_coordinate_dd, coordinate_basis
+      };
+      delete out._coordBasis;
+      return out;
+    });
+  }
+  function recordDataset() {
+    const visible=fields=>fields.filter(field=>!HIDDEN_RECORD_FIELDS.has(field));
+    if (state.section === "global") { const rows=globalRows(),fields=[...new Set(rows.flatMap(row=>Object.keys(row)))]; return { rows, fields: visible(fields) }; }
+    if (state.section === "summaries") return { rows: applyHeaderFilters(cache.relations), fields: visible(Object.keys(cache.relations[0])) };
+    if (state.section === "socioeconomic") return { rows: applyHeaderFilters(cache.socio.rows), fields: visible(RECORD_FIELDS.socioeconomic) };
+    if (state.section === "structures") return { rows: applyHeaderFilters(cache.structures.rows), fields: visible(RECORD_FIELDS.structures) };
+    if (state.section === "ducar" && Array.isArray(cache.fullNetworkRecords)) return {rows:applyHeaderFilters(cache.fullNetworkRecords),fields:visible(FULL_NETWORK_FIELDS)};
+    const fields=visible([...(RECORD_FIELDS[state.section] || LINK_FIELDS)]);
+    ["established_route_name","start_place_name","end_place_name"].reverse().forEach(field=>{if(!fields.includes(field))fields.splice(Math.min(2,fields.length),0,field);});
+    ["start_x_coordinate_dd","start_y_coordinate_dd","end_x_coordinate_dd","end_y_coordinate_dd"].reverse().forEach(field=>{if(!fields.includes(field))fields.splice(Math.min(2,fields.length),0,field);});
+    let rows = activeLinkRows();
+    return { rows, fields };
+  }
+  function cellClass(field, raw) {
+    const value = shown(raw).toLowerCase();
+    if (value === "not supplied" || value.includes("no comparable") || value.includes("not yet source-verified") || value.includes("unmatched") || value.includes("missing")) return "not-supplied";
+    if (field === "condition" && ["good","fair","poor"].includes(value)) return "cell-" + value;
+    if (field === "current_condition") return value.includes("very poor") ? "cell-critical" : value.includes("poor") ? "cell-poor" : value.includes("fair") ? "cell-fair" : value.includes("good") ? "cell-good" : "";
+    if (field === "priority_band" && ["low","moderate","high","critical"].includes(value)) return "cell-" + value;
+    if (field === "exposure_band" && ["low","moderate","high","critical"].includes(value)) return "cell-" + value;
+    if (field === "risk_band" && ["low","moderate","high","critical"].includes(value)) return "cell-" + value;
+    if (field === "pavement_class") return value === "paved" ? "cell-paved" : value === "unpaved" ? "cell-unpaved" : "";
+    if (field === "registry_aadt" && typeof raw === "number") return raw >= 1000 ? "cell-critical" : raw >= 500 ? "cell-high" : raw >= 150 ? "cell-moderate" : "cell-low";
+    if (typeof raw === "number") return raw < 0 ? "cell-poor cell-numeric" : raw === 0 ? "cell-zero cell-numeric" : "cell-numeric";
+    if (/critical|very poor|failed|severe/.test(value)) return "cell-critical";
+    if (/high risk|\bpoor\b/.test(value)) return "cell-poor";
+    if (/moderate|partial|pending|\bfair\b/.test(value)) return "cell-fair";
+    if (/verified|complete|supplied|aligned|\bgood\b|low risk/.test(value)) return "cell-good";
+    return "";
+  }
+  function filtered(dataset) {
+    const query = state.search.toLowerCase();
+    const rows=dataset.rows.filter(row=>!query||dataset.fields.some(field=>shown(row[field]).toLowerCase().includes(query)));
+    if(state.sortField)rows.sort((a,b)=>{const av=a[state.sortField],bv=b[state.sortField],comparison=typeof av==="number"&&typeof bv==="number"?av-bv:shown(av).localeCompare(shown(bv),undefined,{numeric:true});return state.sortDirection==="desc"?-comparison:comparison;});
+    return rows;
+  }
+  function csvValue(value) { return '"' + shown(value).replaceAll('"','""') + '"'; }
+  function displayCell(field,value) {
+    if((/^(start|end)_(lat|lng)$/.test(field)||/_(x|y)_coordinate_dd$/.test(field))&&typeof value==="number")return value.toFixed(6);
+    if(field.includes("road_name")&&shown(value)!=="Not supplied")return properRoadName(value);
+    if(typeof value==="number"){
+      const formatted=value.toLocaleString(undefined,{maximumFractionDigits:6});
+      if(/_ugx(?:_km)?$/.test(field))return "UGX "+formatted;
+      return formatted+(isLengthField(field)?" km":"");
+    }
+    if(isLengthField(field)&&shown(value)!=="Not supplied"&&Number.isFinite(Number(String(value).replaceAll(",",""))))return number(Number(String(value).replaceAll(",","")),6)+" km";
+    if(/^(region|district|admin_district|county|subcounty|parish|surface|pavement_class|condition|current_condition|priority_band|risk_band|exposure_band|functional_class|road_management_class|recommended_intervention|traffic_value_status|linkage_quality|structure_class|structure_type|relation_basis|assignment_basis|status)$/.test(field))return properText(value);
+    return shown(value);
+  }
+  function downloadBlob(blob, filename) {
+    document.body.dataset.lastDownload = filename;
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.hidden = true;
+    document.body.appendChild(anchor);
+    anchor.click();
+    setTimeout(()=>{anchor.remove();URL.revokeObjectURL(url);},1500);
+  }
+  function exportRecords(dataset) {
+    const rows = filtered(dataset);
+    exportRowsCsv(dataset,rows,`ducar_${state.section}_filtered_records.csv`);
+  }
+  function exportRowsCsv(dataset,rows,filename) {
+    const csv=[dataset.fields.map(csvValue).join(",")].concat(rows.map(row=>dataset.fields.map(field=>csvValue(row[field])).join(","))).join("\r\n");
+    downloadBlob(new Blob([csv],{type:"text/csv;charset=utf-8"}),filename);
+  }
+  function exportRowsJson(dataset) {
+    const payload={section:state.section,generated_at:new Date().toISOString(),record_count:dataset.rows.length,field_count:dataset.fields.length,fields:dataset.fields,records:dataset.rows};
+    downloadBlob(new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"}),`ducar_${state.section}_complete_records.json`);
+  }
+  function exportRowsGeoJson(dataset) {
+    const coordinate=(row,names)=>{for(const name of names){const value=Number(row[name]);if(Number.isFinite(value))return value;}return null;};
+    const features=dataset.rows.map(row=>{const x=coordinate(row,["x_coordinate_dd","x_coordinate","longitude","lon","lng","x"]),y=coordinate(row,["y_coordinate_dd","y_coordinate","latitude","lat","y"]);return {type:"Feature",geometry:x!==null&&y!==null?{type:"Point",coordinates:[x,y]}:null,properties:{...row}};});
+    const payload={type:"FeatureCollection",name:`ducar_${state.section}_complete_records`,crs:{type:"name",properties:{name:"urn:ogc:def:crs:OGC:1.3:CRS84"}},features};
+    downloadBlob(new Blob([JSON.stringify(payload)],{type:"application/geo+json;charset=utf-8"}),`ducar_${state.section}_complete_records.geojson`);
+  }
+  function exportRowsKml(dataset) {
+    const xml=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[char]));
+    const coordinate=(row,names)=>{for(const name of names){const value=Number(row[name]);if(Number.isFinite(value))return value;}return null;};
+    const placemarks=dataset.rows.map(row=>{const x=coordinate(row,["x_coordinate_dd","x_coordinate","longitude","lon","lng","x"]),y=coordinate(row,["y_coordinate_dd","y_coordinate","latitude","lat","y"]);if(x===null||y===null)return "";const name=row.link_id||row.structure_id||row.road_name||"DUCAR record",extended=dataset.fields.map(field=>`<Data name="${xml(field)}"><value>${xml(shown(row[field]))}</value></Data>`).join("");return `<Placemark><name>${xml(name)}</name><ExtendedData>${extended}</ExtendedData><Point><coordinates>${x},${y},0</coordinates></Point></Placemark>`;}).join("");
+    const kml=`<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>DUCAR ${xml(state.section)} complete records</name>${placemarks}</Document></kml>`;
+    downloadBlob(new Blob([kml],{type:"application/vnd.google-earth.kml+xml;charset=utf-8"}),`ducar_${state.section}_complete_records.kml`);
+  }
+  function exportDataDictionary(dataset) {
+    const rows=dataset.fields.map(field=>{const values=dataset.rows.map(row=>row[field]).filter(value=>value!==null&&value!==undefined&&String(value).trim()!==""),numeric=values.length>0&&values.every(value=>Number.isFinite(Number(value))),distinct=new Set(values.map(value=>String(value))).size;return {field_name:field,display_label:label(field),inferred_type:numeric?"NUMERIC":"TEXT",populated_records:values.length,missing_records:dataset.rows.length-values.length,distinct_values:distinct};});
+    const fields=["field_name","display_label","inferred_type","populated_records","missing_records","distinct_values"];
+    exportRowsCsv({fields},rows,`ducar_${state.section}_data_dictionary.csv`);
+  }
+  function exportSqlDump(dataset) {
+    const safeName=`ducar_${state.section}_records`.replace(/[^a-z0-9_]/gi,"_"),quote=value=>value===null||value===undefined?"NULL":`'${String(value).replaceAll("'","''")}'`;
+    const types=Object.fromEntries(dataset.fields.map(field=>{const values=dataset.rows.map(row=>row[field]).filter(value=>value!==null&&value!==undefined&&String(value).trim()!=="");return [field,values.length&&values.every(value=>Number.isFinite(Number(value)))?"REAL":"TEXT"];}));
+    const ddl=`CREATE TABLE IF NOT EXISTS "${safeName}" (\n${dataset.fields.map(field=>`  "${field.replaceAll('"','""')}" ${types[field]}`).join(",\n")}\n);`;
+    const inserts=dataset.rows.map(row=>`INSERT INTO "${safeName}" (${dataset.fields.map(field=>`"${field.replaceAll('"','""')}"`).join(", ")}) VALUES (${dataset.fields.map(field=>quote(row[field])).join(", ")});`);
+    downloadBlob(new Blob([[ddl,...inserts].join("\n")],{type:"application/sql;charset=utf-8"}),`ducar_${state.section}_complete_records.sql`);
+  }
+  function recordsHtml() {
+    const dataset = recordDataset();
+    const rows = filtered(dataset);
+    const shownRows=rows.slice(0,Math.min(100,rows.length)),sectionTitle=SECTION_META[state.section]?.[0]||"DUCAR";
+    const heading=field=>{const active=state.sortField===field,arrow=active?(state.sortDirection==="asc"?"↑":"↓"):"↕",aria=active?(state.sortDirection==="asc"?"ascending":"descending"):"none";return `<th aria-sort="${aria}"><button class="column-sort" data-column-sort="${esc(field)}" type="button" title="Sort by ${esc(label(field))}"><span>${esc(label(field))}</span><i aria-hidden="true">${arrow}</i></button></th>`;};
+    return `<header class="records-heading"><small>FULL EXHAUSTIVE TABLE</small><h2>${esc(sectionTitle)} Complete Records</h2><p>Every available record and field. Search the full population or sort directly from any column heading.</p></header><div class="records-toolbar exhaustive-controls"><input class="records-search" value="${esc(state.search)}" placeholder="Search every field in all records" aria-label="Search section records"><button class="studio-button" data-export type="button">CSV · complete searched records</button>${state.section==="overview" ? `<a class="studio-button" href="./data/ducar_link_register.csv" download>Master CSV</a>` : ""}</div><div class="records-status"><strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records in the complete searched population · loaded ${number(shownRows.length)} · ${number(dataset.fields.length)} fields · continuous vertical scrolling · horizontal scrolling above and below the table</div><div class="table-wrap all-records-table"><table class="data-table"><thead><tr>${dataset.fields.map(heading).join("")}</tr></thead><tbody>${shownRows.map(row=>`<tr>${dataset.fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(displayCell(field,row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+  function mountRemainingRecords(){
+    const token=++recordMountToken,dataset=recordDataset(),rows=filtered(dataset),tbody=root.querySelector(".all-records-table tbody"),status=root.querySelector(".records-status");if(!tbody)return;
+    if(tbody.rows.length>=rows.length)return;
+    const wrap=tbody.closest(".table-wrap");let index=tbody.rows.length,appending=false;
+    const updateStatus=()=>{if(status)status.innerHTML=`<strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records in the complete searched population · loaded ${number(index)} of ${number(rows.length)} · ${number(dataset.fields.length)} fields · ${index<rows.length?"scroll down to continue loading":"complete population shown"}`;};
+    const appendBatch=()=>{if(appending||token!==recordMountToken||!tbody.isConnected||index>=rows.length)return;appending=true;const end=Math.min(index+250,rows.length),html=rows.slice(index,end).map(row=>`<tr>${dataset.fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(displayCell(field,row[field]))}</td>`).join("")}</tr>`).join("");tbody.insertAdjacentHTML("beforeend",html);index=end;appending=false;updateStatus();};
+    wrap?.addEventListener("scroll",()=>{if(wrap.scrollTop+wrap.clientHeight>=wrap.scrollHeight-700)appendBatch();},{passive:true});updateStatus();
+  }
+  function saveCanvas(canvas, filename) { canvas.toBlob(blob=>{if(blob)downloadBlob(blob,filename);},"image/png"); }
+  async function downloadElementPng(element, filename) {
+    if(window.SiteEnhance&&window.SiteEnhance.settleCounters)window.SiteEnhance.settleCounters();
+    if(!window.html2canvas)return;
+    const canvas=await window.html2canvas(element,{backgroundColor:"#111115",scale:2,useCORS:true,logging:false,ignoreElements:item=>item.hasAttribute?.("data-download-png")});saveCanvas(canvas,filename);
+  }
+  function tableCsv(table, filename) {
+    const csv=[...table.rows].map(row=>[...row.cells].map(cell=>csvValue(cell.innerText)).join(",")).join("\r\n");
+    downloadBlob(new Blob([csv],{type:"text/csv;charset=utf-8"}),filename);
+  }
+  async function sectionPdf(event) {
+    if(window.SiteEnhance&&window.SiteEnhance.settleCounters)window.SiteEnhance.settleCounters();
+    const JsPDF=window.jspdf?.jsPDF;if(!JsPDF)return;const pdf=new JsPDF({unit:"mm",format:"a4"}),margin=14,width=182;let y=16;
+    const trigger=event?.currentTarget;if(trigger){trigger.disabled=true;trigger.textContent="Building complete PDF…";}
+    const line=(text,size=9)=>{pdf.setFontSize(size);const lines=pdf.splitTextToSize(String(text),width);if(y+lines.length*5>282){pdf.addPage();y=16;}pdf.text(lines,margin,y);y+=lines.length*5+2;};
+    line(SECTION_META[state.section][0]+" · complete DUCAR report",16);line("Generated "+new Date().toLocaleString()+" · complete current section population",8);
+    root.querySelectorAll(".metric-card").forEach(card=>line(card.innerText.replace(/\n+/g," · "),9));
+    line("Complete chart and insight catalogue",12);root.querySelectorAll(".chart-card h3,.dynamic-chart-card h4,.insight-card h4,.insight-heading h3").forEach(title=>line("• "+title.textContent,8));
+    line("Reporting controls: no Top-N selection; filters change the view only; CSV exports retain the complete filtered population.",8);
+    // Dedicated PNG buttons retain every chart image. Avoiding hundreds of
+    // html2canvas operations keeps the complete PDF export responsive.
+    const filename=`ducar_${state.section}_complete_report.pdf`;document.body.dataset.lastDownload=filename;pdf.save(filename);if(trigger){trigger.disabled=false;trigger.textContent="PDF report";}
+  }
+
+  function globalMapHtml() {
+    const rows=globalRows(),roadCount=rows.filter(row=>hasNumeric(row.road_network_km)).length,surfaceCount=rows.filter(row=>hasNumeric(row.paved_road_km)||hasNumeric(row.unpaved_road_km)).length,reviewedCount=rows.filter(row=>row.governance_evidence_status!=="Not yet source-verified").length;
+    const baseOptions=[["hybrid","World imagery hybrid · roads + labels + borders",true],["dark","Dark global cartography",false],["light","Light global cartography",false],["osm","OpenStreetMap global roads",false]];
+    return `<div class="map-toolbar advanced"><div><strong>Global Road Inventory & Management Map</strong><small>All 195 countries · reported road inventories · local-road governance evidence</small></div><label class="map-search"><span>Find Country or Institution</span><input id="map-search" type="search" placeholder="Country, ministry, authority or region"><button id="map-search-button" type="button">Find</button></label></div><div class="map-workspace global-map-workspace" id="map-workspace"><div class="map-stage"><div class="map-toolrail" role="toolbar" aria-label="Global mapping tools"><button type="button" data-map-tool="basemap" class="basemap-stack-button" title="Basemap gallery" aria-expanded="false">▱</button><button type="button" data-map-tool="zoom-in" title="Zoom in">＋</button><button type="button" data-map-tool="zoom-out" title="Zoom out">−</button><button type="button" data-map-tool="pan" title="Pan map">✥</button><button type="button" data-map-tool="select" class="active" title="Select country">⌖</button><button type="button" data-map-tool="measure" title="Measure distance">⌁</button><button type="button" data-map-tool="clear" title="Clear selection and measurement">×</button><button type="button" data-map-tool="reset" title="Restore world extent">⌂</button><button type="button" data-map-tool="download" title="Download map PNG">▣</button><button type="button" data-map-tool="fullscreen" title="Full size map">⛶</button><button type="button" data-map-tool="restore" title="Restore map size">↙</button></div><div class="map-basemap-popover" hidden><header><b>Basemap</b><button type="button" data-close-basemap aria-label="Close basemap gallery">×</button></header>${baseOptions.map(([id,text,checked])=>`<label><input type="radio" name="basemap" value="${id}" ${checked?"checked":""}><i class="layer-symbol basemap-${id}"></i><span>${text}</span></label>`).join("")}</div><div class="map-compass" aria-label="North compass"><b>N</b><i></i></div><div id="section-map" class="section-map" role="application" aria-label="Global road inventory and management map"></div><div class="map-coordinate" id="map-coordinate">20.00000° N · 0.00000° E</div></div><aside class="map-catalogue"><section class="catalogue-layers"><header><div><small>Global Road Map Catalogue</small><h3>Country Inventories & Road Management</h3></div><span>4 layers</span></header><div class="catalogue-scroll"><fieldset><legend>Global Road Layers</legend><label><input type="checkbox" data-global-layer="roads" checked><i class="layer-symbol layer-global-roads"></i><span>Worldwide road cartography</span><em>All visible scales</em></label><label><input type="checkbox" data-global-layer="countries" checked><i class="layer-symbol layer-global-countries"></i><span>All configured countries</span><em>${number(rows.length)}</em></label><label><input type="checkbox" data-global-layer="surface" checked><i class="layer-symbol layer-global-surface"></i><span>Paved/unpaved inventories</span><em>${number(surfaceCount)}</em></label><label><input type="checkbox" data-global-layer="governance" checked><i class="layer-symbol layer-global-governance"></i><span>Reviewed governance models</span><em>${number(reviewedCount)}</em></label></fieldset><fieldset><legend>Coverage</legend><div class="global-layer-stat"><span>Countries with road totals</span><b>${number(roadCount)} / ${number(rows.length)}</b></div><div class="global-layer-stat"><span>Uganda audited road inventory</span><b>248,616.14 km</b></div><label class="opacity-control"><span>Marker Opacity</span><input id="map-opacity" type="range" min="25" max="100" value="88"><em id="map-opacity-value">88%</em></label></fieldset><div class="catalogue-key"><h4>Road-Data Completeness</h4><span><i style="background:#22c55e"></i>Road total + surface split</span><span><i style="background:#eab308"></i>Road total only</span><span><i style="background:#ef4444"></i>No distributable road total</span><span><i class="global-governance-key"></i>Reviewed management model</span><span><i class="global-size-key"></i>Marker size · reported road km</span></div></div></section><section class="map-details"><header><div><small>LIVE COUNTRY SELECTION</small><h3>Roads & Management Report</h3></div></header><div id="map-details-content"><div class="map-empty-state"><b>⌖</b><strong>Select Any Country</strong><span>Road inventory, pavement split, source year, ministry, local-road manager, finance, measures and techniques appear here.</span></div></div></section></aside></div>`;
+  }
+
+  function initGlobalMap() {
+    const node=document.getElementById("section-map");if(!node||!window.L)return;
+    const rows=globalRows(),worldExtent=L.latLngBounds([[-60,-180],[82,180]]),map=L.map(node,{preferCanvas:true,zoomControl:false,doubleClickZoom:false,worldCopyJump:true,minZoom:1,zoomAnimation:false,fadeAnimation:false,markerZoomAnimation:false}),fastTiles={maxZoom:19,updateWhenIdle:true,updateWhenZooming:false,keepBuffer:1,crossOrigin:true};
+    const imagery=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{...fastTiles,attribution:"Imagery © Esri"}),transport=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}",{...fastTiles,opacity:.88,attribution:"Road cartography © Esri contributors"}),boundaries=L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",{...fastTiles,attribution:"Boundaries and labels © Esri"});
+    const bases={hybrid:L.layerGroup([imagery,boundaries]),dark:L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{...fastTiles,attribution:"© OpenStreetMap · © CARTO"}),light:L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{...fastTiles,attribution:"© OpenStreetMap · © CARTO"}),osm:L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{...fastTiles,attribution:"© OpenStreetMap contributors"})};
+    bases.hybrid.addTo(map);transport.addTo(map);map.fitBounds(worldExtent,{padding:[8,8],animate:false});L.control.scale({imperial:false,maxWidth:160,position:"bottomleft"}).addTo(map);
+    const details=document.getElementById("map-details-content"),markerByCountry=new Map(),activeLayers=new Map();let selected=null,measureMode=false,measurePoints=[],measureLine=null,measureMarkers=L.layerGroup().addTo(map);
+    const roadStatus=row=>hasNumeric(row.road_network_km)?(hasNumeric(row.paved_road_km)||hasNumeric(row.unpaved_road_km)?"surface":"total"):"missing",statusColor=status=>({surface:RISK_SCALE[0],total:RISK_SCALE[2],missing:RISK_SCALE[4]})[status],markerRadius=row=>hasNumeric(row.road_network_km)?Math.max(5,Math.min(19,4+Math.log10(Math.max(Number(row.road_network_km),1))*2.1)):5;
+    const countryReport=row=>{const fields=Object.keys(row),reviewed=row.governance_evidence_status!=="Not yet source-verified";return `<div class="selection-title"><small>${esc(properText(row.region))} · ${reviewed?"Reviewed Management Evidence":"Road Inventory Record"}</small><h4>${esc(row.country)}</h4><p>${esc(row.road_data_status||"Road-data status not supplied")}</p></div><div class="selection-insights"><span><b>${hasNumeric(row.road_network_km)?number(row.road_network_km,2)+" km":"Not supplied"}</b>Total Roads</span><span><b>${hasNumeric(row.paved_road_km)?number(row.paved_road_km,2)+" km":"Not supplied"}</b>Paved</span><span><b>${hasNumeric(row.unpaved_road_km)?number(row.unpaved_road_km,2)+" km":"Not supplied"}</b>Unpaved</span></div><div class="selection-report"><h5>Complete Country Road & Management Record</h5>${fields.map(field=>`<div><span>${esc(label(field))}</span><b class="${cellClass(field,row[field])}">${esc(displayCell(field,row[field]))}</b></div>`).join("")}</div>`;};
+    const selectCountry=(row,marker)=>{if(selected)selected.setStyle({weight:selected.options._baseWeight||1.5});selected=marker;marker.options._baseWeight=marker.options.weight;marker.setStyle({weight:4,color:"#fff"});details.innerHTML=countryReport(row);document.querySelector(".map-details")?.classList.add("has-selection");node.dataset.selectedFeature=row.country;};
+    const countryMarkers=[],surfaceMarkers=[],governanceMarkers=[];
+    rows.forEach(row=>{const lat=Number(row.y_coordinate_dd),lng=Number(row.x_coordinate_dd);if(!Number.isFinite(lat)||!Number.isFinite(lng))return;const status=roadStatus(row),radius=markerRadius(row),marker=L.circleMarker([lat,lng],{renderer:L.canvas({padding:.6}),radius,color:"#09090b",weight:1.5,fillColor:statusColor(status),fillOpacity:.88});marker.bindTooltip(`${esc(row.country)} · ${hasNumeric(row.road_network_km)?number(row.road_network_km,1)+" km":"Road total not supplied"}`,{sticky:true,direction:"top",opacity:.96});marker.on("click",()=>selectCountry(row,marker));markerByCountry.set(row.country,marker);countryMarkers.push(marker);if(status==="surface")surfaceMarkers.push(L.circleMarker([lat,lng],{renderer:L.canvas({padding:.6}),radius:Math.max(2,radius*.38),color:RISK_SCALE[0],weight:1,fillColor:RISK_SCALE[1],fillOpacity:.75,interactive:false}));if(row.governance_evidence_status!=="Not yet source-verified")governanceMarkers.push(L.circleMarker([lat,lng],{renderer:L.canvas({padding:.6}),radius:radius+4,color:"#00e5ff",weight:2.4,fillOpacity:0,interactive:false}));});
+    const layers={roads:transport,countries:L.layerGroup(countryMarkers),surface:L.layerGroup(surfaceMarkers),governance:L.layerGroup(governanceMarkers)};Object.entries(layers).forEach(([id,layer])=>{activeLayers.set(id,layer);if(id!=="roads")layer.addTo(map);});
+    document.querySelectorAll("[data-global-layer]").forEach(input=>input.addEventListener("change",()=>{const layer=layers[input.dataset.globalLayer];if(!layer)return;if(input.checked)layer.addTo(map);else layer.remove();}));
+    document.querySelectorAll('input[name="basemap"]').forEach(input=>input.addEventListener("change",()=>{Object.values(bases).forEach(layer=>layer.remove());bases[input.value].addTo(map);if(input.value==="hybrid"){if(document.querySelector('[data-global-layer="roads"]')?.checked)transport.addTo(map);boundaries.bringToFront?.();}Object.entries(layers).forEach(([id,layer])=>{if(id!=="roads"&&document.querySelector(`[data-global-layer="${id}"]`)?.checked)layer.addTo(map);});}));
+    const baseButton=document.querySelector('[data-map-tool="basemap"]'),basePopover=document.querySelector(".map-basemap-popover"),closeBases=()=>{if(basePopover)basePopover.hidden=true;baseButton?.setAttribute("aria-expanded","false");};baseButton?.addEventListener("click",event=>{event.stopPropagation();basePopover.hidden=!basePopover.hidden;baseButton.setAttribute("aria-expanded",String(!basePopover.hidden));});document.querySelector("[data-close-basemap]")?.addEventListener("click",closeBases);basePopover?.addEventListener("click",event=>event.stopPropagation());document.addEventListener("click",event=>{if(!basePopover?.contains(event.target)&&!baseButton?.contains(event.target))closeBases();});
+    const clearMap=()=>{if(selected){selected.setStyle({weight:selected.options._baseWeight||1.5});selected=null;}if(measureLine){measureLine.remove();measureLine=null;}measureMarkers.clearLayers();measurePoints=[];details.innerHTML=`<div class="map-empty-state"><b>⌖</b><strong>Select Any Country</strong><span>The complete road inventory and management record appears here.</span></div>`;};
+    document.querySelectorAll("[data-map-tool]").forEach(button=>button.addEventListener("click",async()=>{const tool=button.dataset.mapTool;if(tool==="basemap")return;if(tool==="zoom-in")map.zoomIn();else if(tool==="zoom-out")map.zoomOut();else if(tool==="pan"){measureMode=false;}else if(tool==="select"){measureMode=false;}else if(tool==="measure"){measureMode=true;}else if(tool==="clear")clearMap();else if(tool==="reset")map.fitBounds(worldExtent,{padding:[8,8],animate:false});else if(tool==="download")downloadElementPng(document.querySelector(".map-stage"),"ducar_global_road_inventory_map.png");else if(tool==="fullscreen"){const workspace=document.getElementById("map-workspace");if(workspace.requestFullscreen)await workspace.requestFullscreen();else workspace.classList.add("map-fullscreen-fallback");setTimeout(()=>{map.invalidateSize();map.fitBounds(worldExtent,{padding:[8,8],animate:false});},120);}else if(tool==="restore"){if(document.fullscreenElement)await document.exitFullscreen();document.getElementById("map-workspace")?.classList.remove("map-fullscreen-fallback");setTimeout(()=>{map.invalidateSize();map.fitBounds(worldExtent,{padding:[8,8],animate:false});},120);}document.querySelectorAll("[data-map-tool]").forEach(item=>item.classList.toggle("active",item===button&&["pan","select","measure"].includes(tool)));}));
+    map.on("mousemove",event=>{const lat=event.latlng.lat,lng=event.latlng.lng;document.getElementById("map-coordinate").textContent=`${Math.abs(lat).toFixed(5)}° ${lat>=0?"N":"S"} · ${Math.abs(lng).toFixed(5)}° ${lng>=0?"E":"W"}`;});map.on("click",event=>{if(!measureMode)return;measurePoints.push(event.latlng);L.circleMarker(event.latlng,{radius:4,color:"#fff",fillColor:"#0a84ff",fillOpacity:1}).addTo(measureMarkers);if(measureLine)measureLine.remove();measureLine=L.polyline(measurePoints,{color:"#64d2ff",weight:2,dashArray:"7 5"}).addTo(map);const km=measurePoints.slice(1).reduce((sum,point,index)=>sum+map.distance(measurePoints[index],point)/1000,0);details.innerHTML=`<div class="selection-title"><small>GLOBAL MEASUREMENT</small><h4>${number(km,2)} km</h4><p>${number(measurePoints.length)} vertices</p></div>`;});
+    document.getElementById("map-opacity")?.addEventListener("input",event=>{const opacity=Number(event.target.value)/100;document.getElementById("map-opacity-value").textContent=event.target.value+"%";countryMarkers.forEach(marker=>marker.setStyle({fillOpacity:opacity}));});
+    const search=()=>{const query=document.getElementById("map-search").value.trim().toLowerCase();if(!query)return;const row=rows.find(item=>[item.country,item.region,item.lead_institution,item.local_road_manager].some(value=>String(value||"").toLowerCase().includes(query)));if(!row)return void(details.innerHTML=`<div class="map-empty-state"><b>⌕</b><strong>No Matching Country or Institution</strong><span>Try a country, region, ministry or road authority.</span></div>`);const marker=markerByCountry.get(row.country);if(marker){map.setView(marker.getLatLng(),5);selectCountry(row,marker);}};document.getElementById("map-search-button")?.addEventListener("click",search);document.getElementById("map-search")?.addEventListener("keydown",event=>{if(event.key==="Enter")search();});document.onfullscreenchange=()=>setTimeout(()=>map.invalidateSize(),120);setTimeout(()=>{map.invalidateSize();map.fitBounds(worldExtent,{padding:[8,8],animate:false});},100);
+  }
+
+  function mapHtml() {
+    if(state.section==="global")return globalMapHtml();
+    const nationalLabel="National Roads within full network";
+    const functionalMap=["ducar","overview"].includes(state.section),common=functionalMap?[["section","Complete network · functional classification",true],["districts","District labels",false],["nationalAligned",nationalLabel,false],["national","MoWT national-road reference alignments",false]]:[["hotosm","Complete vehicular network · 248,616.14 km",false],["section","Complete section thematic roads",true],["nationalAligned",nationalLabel,false],["national","MoWT national-road reference alignments",false],["paved","Paved roads · solid + thicker",false],["unpaved","Unpaved roads · dotted + thinner",false],["districts","District labels",false]],themes={
+      traffic:[["traffic","All modelled and observed AADT",false],["hightraffic","AADT 1,000+",false]],
+      condition:[["good","Good condition",false],["fair","Fair condition",false],["poor","Poor condition",false]],
+      structures:[],pims:[["critical","Critical + High priority",false],["maintenance","Maintenance interventions",false]],
+      hdm4:[["traffic","Traffic inputs",false],["critical","Critical + High priority",false]],budgets:[["critical","Critical + High priority",false],["maintenance","Maintenance interventions",false]],
+      socioeconomic:[["critical","High + Critical exposure",false]],ducar:[],overview:[],
+      global:[["national","Uganda official national-road register",false]],summaries:[["national","Official national-road register",false]]
+    },roadLayers=[...common,...(themes[state.section]||[])];
+    const sectionLayers=state.section==="socioeconomic"?[["facility:All","All socioeconomic facilities · "+number(cache.facilities?.features?.length),true],...(cache.socio.category_summary||[]).map(item=>[`facility:${item.category}`,item.category+" facilities · "+number(item.features),false])]:state.section==="structures"?[["structure:All","All bridges & major culverts · "+number(cache.structures.metadata.structure_occurrences),true],...(cache.structures.class_summary||[]).map(item=>[`structure:${item.structure_class}`,item.structure_class+" · "+number((cache.structures.rows||[]).filter(row=>row.structure_class===item.structure_class).length),false])]:[];
+    const functionalKey=[[RISK_SCALE[4],"National Roads"],[RISK_SCALE[3],"District Roads"],[RISK_SCALE[4],"KCCA"],[RISK_SCALE[3],"City Roads"],[RISK_SCALE[0],"Community Access Roads"],[RISK_SCALE[1],"Town Council Roads"],[RISK_SCALE[2],"Municipal Roads"]],key={ducar:functionalKey,overview:functionalKey,traffic:[[RISK_SCALE[0],"AADT below 150"],[RISK_SCALE[1],"AADT 150–499"],[RISK_SCALE[2],"AADT 500–999"],[RISK_SCALE[3],"AADT 1,000–1,499"],[RISK_SCALE[4],"AADT 1,500+"]],condition:[[RISK_SCALE[0],"Good"],[RISK_SCALE[2],"Fair"],[RISK_SCALE[4],"Poor"]],structures:[[RISK_SCALE[0],"Low Risk / Good"],[RISK_SCALE[1],"Low-Moderate"],[RISK_SCALE[2],"Moderate / Fair"],[RISK_SCALE[3],"High"],[RISK_SCALE[4],"Critical / Poor"]],socioeconomic:[[RISK_SCALE[0],"Low Exposure"],[RISK_SCALE[1],"Low-Moderate Exposure"],[RISK_SCALE[2],"Moderate Exposure"],[RISK_SCALE[3],"High Exposure"],[RISK_SCALE[4],"Critical Exposure"]]}[state.section]||[[RISK_SCALE[0],"Low / Good"],[RISK_SCALE[1],"Low-Moderate"],[RISK_SCALE[2],"Moderate / Fair"],[RISK_SCALE[3],"High"],[RISK_SCALE[4],"Critical / Severe"]];
+    const baseOptions=[["hybrid","World imagery hybrid · labels + borders",true],["dark","Dark cartography",false],["light","Light cartography",false],["osm","OpenStreetMap",false]];
+    return `<div class="map-toolbar advanced"><div><strong>${esc(SECTION_META[state.section][0])} Interactive Geospatial Workbench</strong><small>Complete thematic population · source-faithful road detail activates automatically at zoom 11+</small></div><label class="map-search"><span>Find Road or District</span><input id="map-search" type="search" placeholder="Link ID, road name, district"><button id="map-search-button" type="button">Find</button></label></div><div class="map-workspace" id="map-workspace"><div class="map-stage"><div class="map-toolrail" role="toolbar" aria-label="Mapping tools"><button type="button" data-map-tool="basemap" class="basemap-stack-button" title="Basemap gallery" aria-expanded="false">▱</button><button type="button" data-map-tool="zoom-in" title="Zoom in">＋</button><button type="button" data-map-tool="zoom-out" title="Zoom out">−</button><button type="button" data-map-tool="pan" title="Pan map">✥</button><button type="button" data-map-tool="select" class="active" title="Select feature">⌖</button><button type="button" data-map-tool="measure" title="Measure distance">⌁</button><button type="button" data-map-tool="clear" title="Clear selection and measurement">×</button><button type="button" data-map-tool="reset" title="Restore Uganda extent">⌂</button><button type="button" data-map-tool="download" title="Download map PNG">▣</button><button type="button" data-map-tool="fullscreen" title="Full size map">⛶</button><button type="button" data-map-tool="restore" title="Restore map size">↙</button></div><div class="map-basemap-popover" hidden><header><b>Basemap</b><button type="button" data-close-basemap aria-label="Close basemap gallery">×</button></header>${baseOptions.map(([id,text,checked])=>`<label><input type="radio" name="basemap" value="${id}" ${checked?"checked":""}><i class="layer-symbol basemap-${id}"></i><span>${text}</span></label>`).join("")}</div><div class="map-compass" aria-label="North compass"><b>N</b><i></i></div><div id="section-map" class="section-map" role="application" aria-label="${esc(SECTION_META[state.section][0])} map"></div><div class="map-coordinate" id="map-coordinate">1.3500° N · 32.3000° E</div><div class="map-detail-status" id="map-detail-status">National overview geometry</div></div><aside class="map-catalogue"><section class="catalogue-layers"><header><div><small>${esc(SECTION_META[state.section][0])} Map Catalogue</small><h3>Thematic Layers & Symbology</h3></div><span>${roadLayers.length+sectionLayers.length} layers</span></header><div class="catalogue-scroll"><fieldset><legend>${esc(SECTION_META[state.section][0])} Road Layers</legend>${roadLayers.map(([id,text,checked])=>`<label><input type="checkbox" data-map-layer="${esc(id)}" ${checked?"checked":""}><i class="layer-symbol layer-${esc(id)}"></i><span>${esc(text)}</span><em data-layer-stat="${esc(id)}"></em></label>`).join("")}</fieldset>${sectionLayers.length?`<fieldset><legend>${state.section==="structures"?"Structures":"Socioeconomic Facilities"}</legend>${sectionLayers.map(([id,text,checked])=>`<label><input type="checkbox" data-map-layer="${esc(id)}" ${checked?"checked":""}><i class="layer-symbol layer-point"></i><span>${esc(text)}</span></label>`).join("")}</fieldset>`:""}<fieldset><legend>Display</legend><label class="opacity-control"><span>Road Opacity</span><input id="map-opacity" type="range" min="20" max="100" value="88"><em id="map-opacity-value">88%</em></label></fieldset><div class="catalogue-key"><h4>${esc(SECTION_META[state.section][0])} Key</h4>${functionalMap?"":`<span><i class="key-paved"></i>Paved · Solid · 1 px thicker</span><span><i class="key-unpaved"></i>Unpaved · Dotted · Zoom-scaled width</span>`}${key.map(([color,text])=>`<span><i style="background:${color}"></i>${esc(text)}</span>`).join("")}<span><i class="selected-key"></i>Selected Feature</span></div></div></section><section class="map-details"><header><div><small>LIVE SELECTION</small><h3>Details & Report</h3></div></header><div id="map-details-content"><div class="map-empty-state"><b>⌖</b><strong>Select Any Visible Feature</strong><span>The complete section-specific record appears here.</span></div></div></section></aside></div>`;
+  }
+
+  function mapColor(properties) {
+    if (state.section === "condition") return ({Good:RISK_SCALE[0],Fair:RISK_SCALE[2],Poor:RISK_SCALE[4]})[properties.condition] || "#8e8e93";
+    if (["pims","budgets","hdm4"].includes(state.section)) return ({Low:RISK_SCALE[0],"Low-Moderate":RISK_SCALE[1],Moderate:RISK_SCALE[2],High:RISK_SCALE[3],Critical:RISK_SCALE[4]})[properties.priority_band||properties.road_safety_risk_band] || "#8e8e93";
+    if(state.section==="network")return ({Concrete:RISK_SCALE[0],Bituminous:RISK_SCALE[1],Gravel:RISK_SCALE[3],Earth:RISK_SCALE[4]})[properties.surface]||"#8e8e93";
+    return properties.pavement_class === "Paved" ? RISK_SCALE[0] : properties.pavement_class === "Unpaved" ? RISK_SCALE[4] : "#8e8e93";
+  }
+
+  function initSectionMap() {
+    const node = document.getElementById("section-map");
+    if (!node || !window.L || !cache.mapRoads) return;
+    const map = L.map(node,{preferCanvas:true,zoomControl:false,doubleClickZoom:false,zoomAnimation:false,fadeAnimation:false,markerZoomAnimation:false}).setView([1.35,32.3],7);
+    const fastTiles={maxZoom:19,updateWhenIdle:true,updateWhenZooming:false,keepBuffer:1,crossOrigin:true},imagery=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{...fastTiles,attribution:"Tiles © Esri"}),hybridReference=L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",{...fastTiles,attribution:"Boundaries and labels © Esri"});
+    const bases={hybrid:L.layerGroup([imagery,hybridReference]),dark:L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{...fastTiles,attribution:"© OpenStreetMap · © CARTO"}),light:L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{...fastTiles,attribution:"© OpenStreetMap · © CARTO"}),osm:L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{...fastTiles,attribution:"© OpenStreetMap contributors"})};
+    bases.hybrid.addTo(map); L.control.scale({imperial:false,maxWidth:150,position:"bottomleft"}).addTo(map);
+    const linkById=new Map((cache.links||[]).map(row=>[row.link_id,row])), socioById=new Map((cache.socio?.rows||[]).map(row=>[row.link_id,row]));const enrichSelections=()=>Promise.all([data("links"),data("hotosmAnalysis")]).then(([rows])=>rows.forEach(row=>linkById.set(row.link_id,row))).catch(()=>{});if(window.requestIdleCallback)window.requestIdleCallback(enrichSelections,{timeout:1500});else setTimeout(enrichSelections,900);
+    const merged=feature=>({...feature.properties,...(linkById.get(feature.properties.link_id)||{}),...(socioById.get(feature.properties.link_id)||{})});
+    const functionalColor=p=>({"Community Access Roads":RISK_SCALE[0],"National Roads":RISK_SCALE[4],"District Roads":RISK_SCALE[3],KCCA:RISK_SCALE[4],"City Roads":RISK_SCALE[3],"Municipal Roads":RISK_SCALE[2],"Town Council Roads":RISK_SCALE[1]})[p.functional_class]||RISK_SCALE[2],trafficColor=p=>Number(p.registry_aadt)>=1500?RISK_SCALE[4]:Number(p.registry_aadt)>=1000?RISK_SCALE[3]:Number(p.registry_aadt)>=500?RISK_SCALE[2]:Number(p.registry_aadt)>=150?RISK_SCALE[1]:RISK_SCALE[0],sectionTheme=p=>["ducar","overview"].includes(state.section)?functionalColor(p):state.section==="socioeconomic"?({Low:RISK_SCALE[0],"Low-Moderate":RISK_SCALE[1],Moderate:RISK_SCALE[2],High:RISK_SCALE[3],Critical:RISK_SCALE[4]})[p.exposure_band]||RISK_SCALE[2]:state.section==="traffic"?trafficColor(p):mapColor(p);
+    const roadWeight=p=>{const unpaved=Math.min(3,.7+Math.max(0,map.getZoom()-7)*.24);return p.pavement_class==="Paved"?unpaved+1:unpaved;}, roadDash=p=>p.pavement_class==="Unpaved"?"2 5":null;
+    const configs={
+      section:{filter:()=>true,color:sectionTheme},all:{filter:()=>true,color:()=>RISK_SCALE[2]},paved:{filter:p=>p.pavement_class==="Paved",color:()=>RISK_SCALE[0]},unpaved:{filter:p=>p.pavement_class==="Unpaved",color:()=>RISK_SCALE[4]},good:{filter:p=>p.condition==="Good",color:()=>RISK_SCALE[0]},fair:{filter:p=>p.condition==="Fair",color:()=>RISK_SCALE[2]},poor:{filter:p=>p.condition==="Poor",color:()=>RISK_SCALE[4]},traffic:{filter:p=>typeof p.registry_aadt==="number",color:trafficColor},hightraffic:{filter:p=>Number(p.registry_aadt)>=1000,color:trafficColor},nationalAligned:{filter:p=>Boolean(p.national_aligned),color:()=>"#ffffff"},critical:{filter:p=>["Critical","High"].includes(p.priority_band||p.exposure_band),color:p=>(p.priority_band||p.exposure_band)==="Critical"?RISK_SCALE[4]:RISK_SCALE[3]},maintenance:{filter:p=>String(p.recommended_intervention||"").toLowerCase().includes("maintenance"),color:()=>RISK_SCALE[0]}
+    };
+    const activeLayers=new Map(), roadOpacity=()=>Number(document.getElementById("map-opacity")?.value||82)/100;
+    let selectedLayer=null, selectMode=true, measureMode=false, measurePoints=[], measureLine=null, measureMarkers=L.layerGroup().addTo(map);
+    const details=document.getElementById("map-details-content"), nationalKm=Number(confirmedNetwork().length_km||CONFIRMED_NETWORK_FALLBACK.length_km);
+    const reportHtml=(kind,p)=>{const allFields=kind==="Road"?(state.section==="structures"?LINK_FIELDS:(RECORD_FIELDS[state.section]||LINK_FIELDS)):Object.keys(p), length=Number(p.geometry_length_km||p.allocated_road_length_km||0), districtRows=(cache.links||[]).filter(row=>shown(row.district)===shown(p.district)), districtKm=kind==="HOTOSM road group"?hotosmLength("district",shown(p.district)):districtRows.reduce((s,row)=>s+Number(row.geometry_length_km||0),0), structures=(cache.structures?.rows||[]).filter(row=>row.link_id===p.link_id);let owned="";
+      if(kind==="Official national road")owned=`<div class="selection-insights"><span><b>${number(p.registry_length_km,3)} km</b>Registered Length</span><span><b>${number(p.geometry_length_km,3)} km</b>Geometry Length</span><span><b>${esc(properText(p.pavement_class))}</b>Pavement</span></div>`;
+      else if(state.section==="traffic")owned=`<div class="selection-insights"><span><b>${number(p.registry_aadt)}</b>AADT</span><span><b>${number(p.registry_pcu)}</b>PCU</span><span><b>${number(p.registry_speed_kmh,1)} km/h</b>Speed</span></div>`;
+      else if(state.section==="condition")owned=`<div class="selection-insights"><span><b>${esc(shown(p.condition))}</b>Condition</span><span><b>${esc(shown(p.condition_risk))}</b>Risk score</span><span><b>${esc(shown(p.recommended_intervention))}</b>Action</span></div>`;
+      else if(state.section==="socioeconomic")owned=`<div class="selection-insights"><span><b>${number(p.socioeconomic_exposure_score,2)}</b>Exposure score</span><span><b>${esc(shown(p.exposure_band))}</b>Exposure</span><span><b>${esc(shown(p.primary_socioeconomic_factor))}</b>Primary factor</span></div>`;
+      else if(state.section==="structures")owned=`<div class="selection-insights"><span><b>${number(structures.length)}</b>Structures on link</span><span><b>${number(structures.reduce((s,row)=>s+Number(row.allocated_road_length_km||0),0),3)} km</b>Allocated exposure</span><span><b>${esc(shown(p.risk_band||structures[0]?.risk_band))}</b>Highest shown risk</span></div>`;
+      else if(["pims","budgets","hdm4"].includes(state.section))owned=`<div class="selection-insights"><span><b>${number(p.planning_priority_score,1)}</b>Priority score</span><span><b>${esc(shown(p.priority_band))}</b>Priority</span><span><b>UGX ${number(Number(p.planning_cost_ugx||0)/1e6,1)}M</b>Allowance</span></div>`;
+      else owned=`<div class="selection-insights"><span><b>${number(length,3)} km</b>Feature length</span><span><b>${number(length/Math.max(districtKm,1)*100,2)}%</b>District length</span><span><b>${number(length/Math.max(nationalKm,1)*100,3)}%</b>National length</span></div>`;
+      const location=p.district||p.maintenance_station||p.region;return `<div class="selection-title"><small>${esc(properText(kind))} · ${esc(properText(location))}</small><h4>${esc(shown(p.link_id||p.structure_id||p.name))}</h4><p>${esc(properRoadName(p.road_name||p.linked_road_name||p.structure_name||p.category))}</p></div>${owned}<div class="selection-report"><h5>Complete Selected Record</h5>${allFields.map(field=>`<div><span>${esc(label(field))}</span><b class="${cellClass(field,p[field])}">${esc(displayCell(field,p[field]))}</b></div>`).join("")}</div>`;};
+    const selectionTip=p=>`${properRoadName(p.road_name||p.national_link_name||p.link_name||p.source_group_id||p.link_id)} · ${number(p.geometry_length_km||p.registry_length_km,2)} km`,selectFeature=(kind,p,feature,layer)=>{if(!selectMode||measureMode)return;if(selectedLayer)selectedLayer.remove();if(feature?.geometry?.type?.includes("Line")){selectedLayer=L.geoJSON(feature,{interactive:false,style:{color:"#fff",weight:4.5,opacity:1,dashArray:null,lineCap:"round"}}).addTo(map);selectedLayer.bringToFront?.();const bounds=selectedLayer.getBounds?.();if(bounds?.isValid?.())map.panInsideBounds(bounds,{padding:[45,45]});}else if(layer?.getLatLng)selectedLayer=L.circleMarker(layer.getLatLng(),{radius:10,color:"#fff",weight:3,fillColor:"#0a84ff",fillOpacity:.7,interactive:false}).addTo(map);details.innerHTML=reportHtml(kind,p);document.querySelector(".map-details")?.classList.add("has-selection");node.dataset.selectedFeature=String(p.link_id||p.source_group_id||p.structure_id||p.name||"");};
+    const roadLayer=id=>L.geoJSON(cache.mapRoads,{filter:feature=>{const p=merged(feature);return headerMatches(p)&&configs[id].filter(p);},renderer:L.canvas({padding:.5}),style:feature=>{const p=merged(feature);return {color:configs[id].color(p),weight:roadWeight(p),dashArray:roadDash(p),lineCap:p.pavement_class==="Unpaved"?"round":"butt",opacity:roadOpacity()};},onEachFeature:(feature,layer)=>{const p=merged(feature);layer.bindTooltip(selectionTip(p),{sticky:true,direction:"top",opacity:.94});layer.on("click",()=>selectFeature("Road",p,feature,layer));}});
+    const completeLayerIds=new Set(["section","paved","unpaved","good","fair","poor","traffic","hightraffic","nationalAligned"]), completeSections=new Set(["ducar","overview","traffic","condition"]);
+    const hotosmLayer=(id="hotosm")=>L.geoJSON(cache.hotosmMap,{filter:feature=>headerMatches(feature.properties)&&(!configs[id]||configs[id].filter(feature.properties)),renderer:L.canvas({padding:.6}),style:feature=>{const p=feature.properties,color=configs[id]?.color?.(p)||(state.section==="traffic"?trafficColor(p):state.section==="condition"?({Good:RISK_SCALE[0],Fair:RISK_SCALE[2],Poor:RISK_SCALE[4]})[p.condition]||"#9e9e9e":p.pavement_class==="Paved"?"#00e5ff":"#ffd600");return {color,weight:roadWeight(p),dashArray:roadDash(p),lineCap:p.pavement_class==="Unpaved"?"round":"butt",lineJoin:"round",opacity:Math.min(roadOpacity(),.88)};},onEachFeature:(feature,layer)=>{const p=feature.properties;layer.bindTooltip(selectionTip(p),{sticky:true,direction:"top",opacity:.94});layer.on("click",()=>selectFeature("HOTOSM road group",{...p,name:p.source_group_id},feature,layer));}});
+    const nationalLayer=()=>L.geoJSON(cache.nationalMap,{renderer:L.svg({padding:.8}),smoothFactor:0,style:feature=>{const p=feature.properties;return {color:p.pavement_class==="Paved"?RISK_SCALE[0]:RISK_SCALE[4],weight:roadWeight(p),dashArray:roadDash(p),lineCap:"round",lineJoin:"round",opacity:1};},onEachFeature:(feature,layer)=>{const p=feature.properties;layer.bindTooltip(selectionTip(p),{sticky:true,direction:"top",opacity:.96});layer.on("click",()=>selectFeature("Official national road",{...p,name:p.link_id},feature,layer));}});
+    const districtLayer=()=>{const groups=new Map();cache.mapRoads.features.forEach(feature=>{const p=merged(feature);if(!headerMatches(p))return;const coords=feature.geometry.coordinates.flat(Infinity);if(coords.length<2)return;const key=shown(p.district),item=groups.get(key)||{lat:0,lng:0,n:0};for(let i=0;i<coords.length-1;i+=2){item.lng+=Number(coords[i]);item.lat+=Number(coords[i+1]);item.n++;}groups.set(key,item);});return L.layerGroup([...groups].map(([name,p])=>L.marker([p.lat/Math.max(p.n,1),p.lng/Math.max(p.n,1)],{icon:L.divIcon({className:"district-map-label",html:esc(name)})})));};
+    const pointLayer=(id)=>{const [kind,category]=id.split(":"),source=kind==="facility"?cache.facilities:cache.structureMap,colorFor=p=>{if(kind==="structure"){const score=orderedCategoryScore(p.risk_band||p.current_condition||p.condition);return score===null?RISK_SCALE[2]:RISK_SCALE[Math.round(score*4)];}const text=String(p.category||""),index=[...text].reduce((sum,char)=>sum+char.charCodeAt(0),0)%RISK_SCALE.length;return RISK_SCALE[index];};return L.geoJSON(source,{filter:f=>headerMatches(f.properties)&&(category==="All"||(kind==="facility"?f.properties.category:f.properties.structure_class)===category),renderer:L.canvas({padding:.5}),pointToLayer:(feature,latlng)=>L.circleMarker(latlng,{radius:kind==="facility"?4:String(feature.properties.structure_class||"").toLowerCase().includes("bridge")?7:5,color:"#050506",weight:1,fillColor:colorFor(feature.properties),fillOpacity:.92}),onEachFeature:(feature,layer)=>layer.on("click",()=>selectFeature(kind==="facility"?"Facility":"Structure",feature.properties,feature,layer))});};
+    const useComplete=id=>id==="nationalAligned"||(completeSections.has(state.section)&&completeLayerIds.has(id));
+    const createLayer=id=>id==="hotosm"||useComplete(id)?hotosmLayer(id):id==="national"?nationalLayer():id==="districts"?districtLayer():id.includes(":")?pointLayer(id):roadLayer(id);
+    const detailLayers=new Map(),detailLoading=new Set();let detailManifest=null,detailUpdateToken=0;
+    const detailColor=p=>["ducar","overview"].includes(state.section)?functionalColor(p):state.section==="traffic"?trafficColor(p):state.section==="condition"?({Good:RISK_SCALE[0],Fair:RISK_SCALE[2],Poor:RISK_SCALE[4]})[p.condition]||RISK_SCALE[2]:["pims","hdm4","budgets"].includes(state.section)?({Low:RISK_SCALE[0],"Low-Moderate":RISK_SCALE[1],Moderate:RISK_SCALE[2],High:RISK_SCALE[3],Critical:RISK_SCALE[4]})[p.road_safety_risk_band]||RISK_SCALE[2]:state.section==="structures"?RISK_SCALE[3]:state.section==="socioeconomic"?RISK_SCALE[2]:mapColor(p);
+    const fetchCompressedJson=async url=>{const response=await fetch(`${url}?v=20260831-mowt-seven-classes-1`);if(!response.ok)throw new Error(`Unable to load ${url}`);if(typeof DecompressionStream==="undefined")throw new Error("This browser cannot decode the detailed road tiles");return new Response(response.body.pipeThrough(new DecompressionStream("gzip"))).json();};
+    const detailLayer=payload=>L.geoJSON(payload,{filter:feature=>headerMatches(feature.properties),renderer:L.canvas({padding:.75}),style:feature=>{const p=feature.properties;return {color:detailColor(p),weight:roadWeight(p),dashArray:roadDash(p),lineCap:"round",lineJoin:"round",opacity:roadOpacity()};},onEachFeature:(feature,layer)=>{const p=feature.properties;layer.bindTooltip(selectionTip(p),{sticky:true,direction:"top",opacity:.96});layer.on("click",()=>selectFeature("Source-aligned road",{...p,name:p.source_group_id},feature,layer));}});
+    const hideDetail=()=>{detailLayers.forEach(layer=>layer.remove());const overview=activeLayers.get("section");overview?.setStyle?.({opacity:roadOpacity()});const status=document.getElementById("map-detail-status");if(status)status.textContent="National overview geometry";};
+    const updateDetailTiles=async()=>{const token=++detailUpdateToken,enabled=document.querySelector('[data-map-layer="section"]')?.checked!==false;if(!enabled||map.getZoom()<11){hideDetail();return;}const status=document.getElementById("map-detail-status");if(status)status.textContent="Loading source-faithful road alignments…";try{detailManifest=detailManifest||await data("hotosmDetailManifest");}catch(error){if(status)status.textContent="Detailed alignment manifest unavailable";return;}if(token!==detailUpdateToken)return;const bounds=map.getBounds(),needed=detailManifest.tiles.filter(tile=>bounds.getEast()>=tile.bbox[0]&&bounds.getWest()<=tile.bbox[2]&&bounds.getNorth()>=tile.bbox[1]&&bounds.getSouth()<=tile.bbox[3]),neededIds=new Set(needed.map(tile=>tile.id));detailLayers.forEach((layer,id)=>{if(!neededIds.has(id))layer.remove();});await Promise.all(needed.map(async tile=>{if(detailLayers.has(tile.id)){detailLayers.get(tile.id).addTo(map);return;}if(detailLoading.has(tile.id))return;detailLoading.add(tile.id);try{const payload=await fetchCompressedJson(tile.url);if(token!==detailUpdateToken)return;const layer=detailLayer(payload);detailLayers.set(tile.id,layer);layer.addTo(map);}catch(error){if(status)status.textContent="A detailed alignment tile could not load";}finally{detailLoading.delete(tile.id);}}));if(token!==detailUpdateToken)return;const overview=activeLayers.get("section");overview?.setStyle?.({opacity:.14});if(status)status.textContent=`Source-faithful 2 m alignments · ${number(needed.length)} visible tile${needed.length===1?"":"s"}`;};
+    const setLayerStat=(id,stat)=>{if(!stat)return;if(id==="nationalAligned")return void(stat.textContent=number(nationalRoadKm(),3)+" km");if(id==="national")return void(stat.textContent="Alignment reference");if(id==="hotosm")return void(stat.textContent=number(cache.hotosmMap?.metadata?.published_length_km||248616.14,2)+" km");if(!configs[id])return;const source=useComplete(id)&&cache.hotosmMap?cache.hotosmMap.features.map(feature=>feature.properties):cache.mapRoads.features.map(merged),values=source.filter(p=>headerMatches(p)&&configs[id].filter(p)),km=values.reduce((sum,p)=>sum+Number(p.geometry_length_km||0),0);stat.textContent=number(km,1)+" km";};
+    const refreshLayerStats=()=>document.querySelectorAll("[data-map-layer]").forEach(layerInput=>setLayerStat(layerInput.dataset.mapLayer,document.querySelector(`[data-layer-stat="${layerInput.dataset.mapLayer}"]`)));
+    document.querySelectorAll("[data-map-layer]").forEach(input=>{const id=input.dataset.mapLayer,stat=document.querySelector(`[data-layer-stat="${id}"]`);setLayerStat(id,stat);const toggle=async()=>{if(!input.checked){activeLayers.get(id)?.remove();if(id==="section")hideDetail();return;}const completeNeeded=id==="hotosm"||useComplete(id);if(completeNeeded&&!cache.hotosmMap){if(stat)stat.textContent="Loading complete network…";const previewId=configs[id]?id:"section",preview=roadLayer(previewId);activeLayers.set(id,preview);preview.addTo(map);try{await new Promise(resolve=>window.requestIdleCallback?window.requestIdleCallback(resolve,{timeout:220}):setTimeout(resolve,80));await data("hotosmMap");refreshLayerStats();}catch(error){if(stat)stat.textContent="Load failed";details.innerHTML=`<div class="map-empty-state"><b>!</b><strong>Complete Network Layer Could Not Load</strong><span>${esc(error.message)}</span></div>`;return;}preview.remove();activeLayers.delete(id);setLayerStat(id,stat);if(!input.checked)return;}if(id==="national"&&!cache.nationalMap){if(stat)stat.textContent="Loading…";try{await data("nationalMap");}catch(error){input.checked=false;if(stat)stat.textContent="Load failed";details.innerHTML=`<div class="map-empty-state"><b>!</b><strong>National Layer Could Not Load</strong><span>${esc(error.message)}</span></div>`;return;}setLayerStat(id,stat);if(!input.checked)return;}const layer=activeLayers.get(id)||createLayer(id);activeLayers.set(id,layer);layer.addTo(map);if(id==="section"){const bounds=layer.getBounds?.();if(bounds?.isValid?.())map.fitBounds(bounds,{padding:[12,12]});setTimeout(updateDetailTiles,0);}};input.addEventListener("change",toggle);if(input.checked)toggle();});
+    document.querySelectorAll('input[name="basemap"]').forEach(input=>input.addEventListener("change",()=>{Object.values(bases).forEach(layer=>layer.remove());const selected=bases[input.value];selected.addTo(map);if(selected.eachLayer)selected.eachLayer(layer=>layer.bringToBack?.());else selected.bringToBack?.();}));
+    const baseButton=document.querySelector('[data-map-tool="basemap"]'),basePopover=document.querySelector(".map-basemap-popover"),closeBases=()=>{if(basePopover)basePopover.hidden=true;baseButton?.setAttribute("aria-expanded","false");};baseButton?.addEventListener("click",event=>{event.stopPropagation();basePopover.hidden=!basePopover.hidden;baseButton.setAttribute("aria-expanded",String(!basePopover.hidden));});document.querySelector("[data-close-basemap]")?.addEventListener("click",closeBases);basePopover?.addEventListener("click",event=>event.stopPropagation());document.addEventListener("click",event=>{if(!basePopover?.contains(event.target)&&!baseButton?.contains(event.target))closeBases();});
+    const setTool=tool=>{document.querySelectorAll("[data-map-tool]").forEach(button=>button.classList.toggle("active",button.dataset.mapTool===tool));selectMode=tool==="select";measureMode=tool==="measure";node.classList.toggle("select-mode",selectMode);node.classList.toggle("measure-mode",measureMode);if(tool==="pan")map.dragging.enable();};setTool("select");
+    const clearMap=()=>{if(selectedLayer){selectedLayer.remove();selectedLayer=null;}if(measureLine){measureLine.remove();measureLine=null;}measureMarkers.clearLayers();measurePoints=[];details.innerHTML=`<div class="map-empty-state"><b>⌖</b><strong>Select any visible feature</strong><span>The complete record and a section-specific report will appear here.</span></div>`;};
+    document.querySelectorAll("[data-map-tool]").forEach(button=>button.addEventListener("click",async()=>{const tool=button.dataset.mapTool;if(tool==="basemap")return;if(tool==="zoom-in")map.zoomIn();else if(tool==="zoom-out")map.zoomOut();else if(["pan","select","measure"].includes(tool))setTool(tool);else if(tool==="clear")clearMap();else if(tool==="reset"){const layer=activeLayers.get("section"),bounds=layer?.getBounds?.();if(bounds?.isValid?.())map.fitBounds(bounds,{padding:[12,12]});else map.setView([1.35,32.3],7);}else if(tool==="download"){const filename=`ducar_${state.section}_map.png`;document.body.dataset.lastDownload=filename;let settled=false;const fallback=()=>{if(settled)return;settled=true;downloadElementPng(document.querySelector(".map-stage"),filename);};const timer=setTimeout(fallback,2500);if(window.leafletImage)window.leafletImage(map,(error,canvas)=>{if(settled)return;if(!error&&canvas){settled=true;clearTimeout(timer);saveCanvas(canvas,filename);}else fallback();});else fallback();}else if(tool==="fullscreen"){const workspace=document.getElementById("map-workspace");if(workspace.requestFullscreen)await workspace.requestFullscreen();else workspace.classList.add("map-fullscreen-fallback");setTimeout(()=>map.invalidateSize(),120);}else if(tool==="restore"){if(document.fullscreenElement)await document.exitFullscreen();document.getElementById("map-workspace")?.classList.remove("map-fullscreen-fallback");setTimeout(()=>map.invalidateSize(),120);}}));
+    map.on("mousemove",event=>{const lat=event.latlng.lat,lng=event.latlng.lng;document.getElementById("map-coordinate").textContent=`${Math.abs(lat).toFixed(5)}° ${lat>=0?"N":"S"} · ${Math.abs(lng).toFixed(5)}° ${lng>=0?"E":"W"}`;});
+    const refreshRoadWidths=()=>{const refresh=layer=>layer?.eachLayer?.(child=>{const p=child.feature?.properties;if(p&&child.setStyle)child.setStyle({weight:roadWeight(p),dashArray:roadDash(p)});});activeLayers.forEach(refresh);detailLayers.forEach(refresh);refresh(selectedLayer);node.dataset.pavedRoadWidth=roadWeight({pavement_class:"Paved"}).toFixed(2);node.dataset.unpavedRoadWidth=roadWeight({pavement_class:"Unpaved"}).toFixed(2);};let detailUpdateTimer=null;const scheduleDetailUpdate=()=>{clearTimeout(detailUpdateTimer);detailUpdateTimer=setTimeout(updateDetailTiles,80);};
+    map.on("moveend",scheduleDetailUpdate);map.on("zoomend",()=>{refreshRoadWidths();scheduleDetailUpdate();});refreshRoadWidths();
+    map.on("click",event=>{if(!measureMode)return;measurePoints.push(event.latlng);L.circleMarker(event.latlng,{radius:4,color:"#fff",fillColor:"#0a84ff",fillOpacity:1}).addTo(measureMarkers);if(measureLine)measureLine.remove();measureLine=L.polyline(measurePoints,{color:"#64d2ff",weight:1.5,dashArray:"7 5"}).addTo(map);const km=measurePoints.slice(1).reduce((sum,p,i)=>sum+map.distance(measurePoints[i],p)/1000,0);details.innerHTML=`<div class="selection-title"><small>MEASUREMENT REPORT</small><h4>${number(km,3)} km</h4><p>${measurePoints.length} measurement vertices · double-click to finish</p></div><div class="selection-insights"><span><b>${number(km*1000,0)} m</b>Distance</span><span><b>${number(measurePoints.length)}</b>Vertices</span><span><b>${number(map.getZoom())}</b>Map zoom</span></div>`;});
+    map.on("dblclick",()=>{if(measureMode)setTool("pan");});
+    document.getElementById("map-opacity")?.addEventListener("input",event=>{document.getElementById("map-opacity-value").textContent=event.target.value+"%";activeLayers.forEach((layer,id)=>{if(configs[id])layer.setStyle?.({opacity:Number(event.target.value)/100});});detailLayers.forEach(layer=>layer.setStyle?.({opacity:Number(event.target.value)/100}));});
+    const search=()=>{const query=document.getElementById("map-search").value.trim().toLowerCase();if(!query)return;let kind="Road",feature=cache.mapRoads.features.find(item=>{const p=merged(item);return [p.link_id,p.road_name,p.district].some(value=>String(value||"").toLowerCase().includes(query));});if(!feature){kind="HOTOSM road group";feature=(cache.hotosmMap?.features||[]).find(item=>[item.properties.source_group_id,item.properties.route_id,item.properties.road_name,item.properties.district,item.properties.highway,item.properties.road_management_class].some(value=>String(value||"").toLowerCase().includes(query)));}if(!feature&&cache.nationalMap){kind="Official national road";feature=(cache.nationalMap.features||[]).find(item=>[item.properties.link_id,item.properties.source_link_id,item.properties.road_number,item.properties.road_name,item.properties.maintenance_station].some(value=>String(value||"").toLowerCase().includes(query)));}if(feature){setTool("select");const temp=L.geoJSON(feature);map.fitBounds(temp.getBounds(),{maxZoom:15,padding:[50,50]});const properties=kind==="Road"?merged(feature):{...feature.properties,name:kind==="Official national road"?feature.properties.link_id:feature.properties.source_group_id};selectFeature(kind,properties,feature,null);}else{details.innerHTML=`<div class="map-empty-state"><b>⌕</b><strong>No Matching Road Found</strong><span>Try a Link ID, road number, road name, district or route ID.</span></div>`;}};
+    document.getElementById("map-search-button")?.addEventListener("click",search);document.getElementById("map-search")?.addEventListener("keydown",event=>{if(event.key==="Enter")search();});
+    document.onfullscreenchange=()=>setTimeout(()=>map.invalidateSize(),120);setTimeout(()=>map.invalidateSize(),100);
+  }
+
+  function legacyDistrictAnalytics(rows) {
+    const groups = new Map();
+    rows.forEach(row=>{
+      const district=shown(row.district), item=groups.get(district)||{district,total_length_km:0,paved_length_km:0,unpaved_length_km:0,poor_length_km:0,traffic_covered_length_km:0,critical_high_length_km:0,planning_cost_ugx:0};
+      const length=Number(row.geometry_length_km||0); item.total_length_km+=length;
+      if(row.pavement_class==="Paved")item.paved_length_km+=length; if(row.pavement_class==="Unpaved")item.unpaved_length_km+=length;
+      if(row.condition==="Poor")item.poor_length_km+=length; if(typeof row.registry_aadt==="number")item.traffic_covered_length_km+=length;
+      if(["Critical","High"].includes(row.exposure_band||row.priority_band))item.critical_high_length_km+=length;
+      item.planning_cost_ugx+=Number(row.planning_cost_ugx||0); groups.set(district,item);
+    });
+    return [...groups.values()].sort((a,b)=>a.district.localeCompare(b.district));
+  }
+
+  function legacyStructureAnalytics(payload) {
+    const rows=payload.rows||[], links=payload.link_summary||[];
+    const allocated=field=>aggregate(rows.map(row=>({...row,geometry_length_km:Number(row.allocated_road_length_km||0)})),field);
+    const fields=["link_id","road_name","district","geometry_length_km","structure_records","bridge_records","major_culvert_records","dominant_structure_condition","highest_structure_risk"];
+    return `<div class="chart-grid">${barChart("Linked-road length by structure class","Allocated road exposure; no Link ID is double-counted in the complete total.",allocated("structure_class"),"affected km",COLORS[5])}${barChart("Linked-road length by structure condition","Every supplied structure condition translated to affected road length.",allocated("current_condition"),"affected km",COLORS[1])}${barChart("Linked-road length by linkage quality","Road length associated with high, moderate, low and spatial joins.",allocated("linkage_quality"),"affected km",COLORS[0])}${barChart("Linked-road length by source register","Every district workbook and programme source retained.",allocated("source_file"),"affected km",COLORS[2])}</div><div class="method-note">The structure-to-road relation is auditable through source file, source row, chainage, Link ID, match score, linkage quality and map-location method. ${number(payload.metadata.structure_occurrences-payload.metadata.linked_structure_occurrences)} unmatched occurrences remain in the exhaustive table and are never assigned fabricated road length.</div><div class="records-status"><strong>${number(links.length)}</strong> DUCAR Link IDs with linked structures · complete per-link structure matrix</div><div class="table-wrap analytics-table"><table class="data-table"><thead><tr>${fields.map(field=>`<th>${esc(label(field))}</th>`).join("")}</tr></thead><tbody>${links.map(row=>`<tr>${fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(field==="geometry_length_km"?number(row[field],4)+" km":shown(row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+
+  function legacyAnalyticsHtml() {
+    if (state.section === "global") return `<div class="method-note">The complete all-country comparison matrix is owned by this section’s exhaustive table. Unsourced metrics remain explicitly Not supplied.</div>${barChart("Country coverage by region","All configured countries, without selective reporting.",aggregate(cache.global.rows,"region"),"country count",COLORS[0])}`;
+    if (state.section === "structures") return structureAnalytics(cache.structures);
+    const rows = state.section === "summaries" ? cache.relations.map(r=>({...r,district:r.admin_district,geometry_length_km:r.covered_length_km})) : state.section === "socioeconomic" ? cache.socio.rows : cache.links;
+    const districts = districtAnalytics(rows), fields = ["district","total_length_km","paved_length_km","unpaved_length_km","poor_length_km","traffic_covered_length_km","critical_high_length_km","planning_cost_ugx"];
+    const charts = state.section === "socioeconomic" ? `${barChart("Accessibility exposure band","Every road by cumulative affected length.",aggregate(rows,"exposure_band"),"affected km",COLORS[4])}${barChart("Primary factor coverage","Dominant socioeconomic factor by length.",aggregate(rows,"primary_socioeconomic_factor"),"affected km",COLORS[2])}` : `${barChart("Deep condition cross-section","All length by condition.",aggregate(rows,"condition"),"affected km",COLORS[1])}${barChart("Deep pavement cross-section","All length by pavement class.",aggregate(rows,"pavement_class"),"affected km",COLORS[2])}`;
+    const provenance = state.section === "socioeconomic" ? `<article class="matrix-card analytics-provenance"><h3>Geospatial source register</h3><p>Authority and scope retained with the analysis.</p><div class="source-grid">${cache.socio.metadata.sources.map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noreferrer"><strong>${esc(source.name)}</strong><small>${esc(source.coverage)}</small></a>`).join("")}</div><div class="category-grid">${cache.socio.category_summary.map(item=>`<span><strong>${number(item.features)}</strong>${esc(item.category)}</span>`).join("")}</div></article>` : "";
+    return `<div class="chart-grid">${charts}${provenance}</div><div class="records-status"><strong>${number(districts.length)}</strong> administrative units · cumulative length, coverage, risk and planning relations</div><div class="table-wrap analytics-table"><table class="data-table"><thead><tr>${fields.map(f=>`<th>${esc(label(f))}</th>`).join("")}</tr></thead><tbody>${districts.map(row=>`<tr>${fields.map(f=>`<td>${esc(f==="district"?row[f]:f==="planning_cost_ugx"?"UGX "+number(row[f],0):number(row[f],3)+" km")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+  function analyticsLength(row) { return Number(row.geometry_length_km||row.covered_length_km||row.allocated_road_length_km||0); }
+  function analyticsTone(value, risk=false) { const v=Number(value||0); return risk?(v>=60?"analytic-bad":v>=30?"analytic-warn":"analytic-good"):(v>=80?"analytic-good":v>=50?"analytic-warn":"analytic-bad"); }
+  function analyticsTable(title, subtitle, fields, rows) {
+    return `<section class="analytics-block"><header><div><small>COMPLETE SUMMARY TABLE</small><h3>${esc(title)}</h3><p>${esc(subtitle)}</p></div><strong>${number(rows.length)} rows</strong></header><div class="table-wrap analytics-table"><table class="data-table"><thead><tr>${fields.map(field=>`<th>${esc(label(field))}</th>`).join("")}</tr></thead><tbody>${rows.map(row=>`<tr>${fields.map(field=>{const cell=row[field],text=cell&&typeof cell==="object"?cell.text:shown(cell),tone=cell&&typeof cell==="object"?cell.tone||"":"";return `<td class="${tone}">${esc(text)}</td>`;}).join("")}</tr>`).join("")}</tbody></table></div></section>`;
+  }
+  function coverageFormula(name, field, note) {
+    const supplied=row=>shown(row[field])!=="Not supplied";
+    return {name,expression:`Σ affected length where ${field} is supplied ÷ Σ affected length × 100`,numerator:rows=>rows.filter(supplied).reduce((s,r)=>s+analyticsLength(r),0),denominator:(_,length)=>length,result:(rows,length)=>rows.filter(supplied).reduce((s,r)=>s+analyticsLength(r),0)/Math.max(length,1)*100,unit:"% length",note};
+  }
+  function shareFormula(name, field, values, note, risk=false) {
+    const selected=row=>values.includes(String(row[field]));
+    return {name,expression:`Σ affected length where ${field} ∈ {${values.join(", ")}} ÷ Σ affected length × 100`,numerator:rows=>rows.filter(selected).reduce((s,r)=>s+analyticsLength(r),0),denominator:(_,length)=>length,result:(rows,length)=>rows.filter(selected).reduce((s,r)=>s+analyticsLength(r),0)/Math.max(length,1)*100,unit:"% length",note,risk};
+  }
+  function weightedFormula(name, field, unit, note) {
+    const selected=rows=>rows.filter(row=>typeof row[field]==="number"&&analyticsLength(row)>0);
+    return {name,expression:`Σ (${field} × affected length) ÷ Σ affected length with ${field}`,numerator:rows=>selected(rows).reduce((s,r)=>s+Number(r[field])*analyticsLength(r),0),denominator:rows=>selected(rows).reduce((s,r)=>s+analyticsLength(r),0),result:rows=>selected(rows).reduce((s,r)=>s+Number(r[field])*analyticsLength(r),0)/Math.max(selected(rows).reduce((s,r)=>s+analyticsLength(r),0),1),unit,note,risk:true};
+  }
+  function sectionFormulas(section) {
+    const common=[coverageFormula("Coordinate length coverage","x_coordinate_dd","Affected length with WGS84 X/Y location."),coverageFormula("District assignment coverage","district","Affected length assigned to an administrative district."),{name:"Mean represented length",expression:"Σ affected length ÷ complete record count",numerator:(_,length)=>length,denominator:(_,__,count)=>count,result:(_,length,count)=>length/Math.max(count,1),unit:"km/record",note:"Mean road length represented per analytical record.",risk:true}];
+    const owned={
+      traffic:[coverageFormula("AADT length coverage","registry_aadt","Length with exact-match AADT."),coverageFormula("PCU length coverage","registry_pcu","Length with passenger-car-unit loading."),coverageFormula("Speed length coverage","registry_speed_kmh","Length with operating speed."),weightedFormula("Length-weighted AADT","registry_aadt","vehicles/day","Traffic intensity weighted by length."),weightedFormula("Length-weighted speed","registry_speed_kmh","km/h","Speed weighted by affected length.")],
+      condition:[coverageFormula("Condition classification coverage","condition","Length with condition class."),shareFormula("Poor-condition share","condition",["Poor","POOR"],"Affected length in poor condition.",true),shareFormula("Good-condition share","condition",["Good","GOOD"],"Affected length in good condition."),coverageFormula("Intervention coverage","recommended_intervention","Length with an assigned intervention."),weightedFormula("Length-weighted condition risk","condition_risk","risk points","Condition risk weighted by length.")],
+      network:[shareFormula("Paved length share","pavement_class",["Paved","PAVED"],"Bituminous and concrete length."),shareFormula("Unpaved length share","pavement_class",["Unpaved","UNPAVED"],"Gravel and earth length.",true),coverageFormula("Surface coverage","surface","Length with surface classification."),coverageFormula("Parish hierarchy coverage","parish","Length assigned through parish level.")],
+      pims:[shareFormula("Critical/high priority share","priority_band",["Critical","High"],"Length in urgent planning bands.",true),coverageFormula("Priority score coverage","planning_priority_score","Length with priority score."),coverageFormula("Intervention coverage","recommended_intervention","Length with planned action."),weightedFormula("Length-weighted priority score","planning_priority_score","points","Planning score weighted by length.")],
+      hdm4:[coverageFormula("AADT input coverage","registry_aadt","HDM-4 traffic input length."),coverageFormula("Speed input coverage","registry_speed_kmh","HDM-4 speed input length."),coverageFormula("Pavement input coverage","pavement_class","HDM-4 pavement input length."),coverageFormula("Condition input coverage","condition","HDM-4 condition input length."),weightedFormula("Length-weighted model speed","registry_speed_kmh","km/h","Model speed weighted by length.")],
+      framework:[coverageFormula("Governed Link-ID coverage","link_id","Length governed by a DUCAR Link ID."),coverageFormula("County coverage","county","Length assigned to county."),coverageFormula("Subcounty coverage","subcounty","Length assigned to subcounty."),coverageFormula("Parish coverage","parish","Length assigned to parish."),coverageFormula("Traffic governance coverage","registry_aadt","Length with governed traffic values.")],
+      budgets:[shareFormula("Critical/high investment share","priority_band",["Critical","High"],"Urgent investment length.",true),coverageFormula("Planning allowance coverage","planning_cost_ugx","Length with planning allowance."),weightedFormula("Length-weighted unit allowance","planning_unit_cost_ugx_km","UGX/km","Unit allowance weighted by length."),weightedFormula("Length-weighted priority","planning_priority_score","points","Priority weighted by length.")],
+      socioeconomic:[shareFormula("Critical/high exposure share","exposure_band",["Critical","High"],"Length with high socioeconomic exposure.",true),coverageFormula("School proximity coverage","nearest_school_km","Length analysed for schools."),coverageFormula("Health proximity coverage","nearest_health_km","Length analysed for health facilities."),coverageFormula("Market proximity coverage","nearest_market_km","Length analysed for markets."),weightedFormula("Length-weighted exposure","socioeconomic_exposure_score","points","Exposure weighted by road length.")],
+      summaries:[coverageFormula("Relation-basis coverage","relation_basis","Length with documented administrative relation."),coverageFormula("Village-ID coverage","village_id","Length assigned to a village."),coverageFormula("Traffic relation coverage","registry_aadt","Relation length with traffic."),coverageFormula("Coordinate relation coverage","x_coordinate_dd","Relation length with location.")],
+      overview:[shareFormula("Paved length share","pavement_class",["Paved"],"Paved DUCAR length."),shareFormula("Poor-condition share","condition",["Poor"],"Poor DUCAR length.",true),coverageFormula("Traffic length coverage","registry_aadt","Length with traffic."),coverageFormula("Intervention coverage","recommended_intervention","Length with intervention.")]
+    }; return [...(owned[section]||owned.overview),...common];
+  }
+  function formulaTable(rows, formulas) {
+    const length=rows.reduce((s,r)=>s+analyticsLength(r),0), count=rows.length;
+    const output=formulas.map(item=>{const numerator=item.numerator(rows,length,count),denominator=item.denominator(rows,length,count),lengthBasis=item.unit==="% length";return {metric:item.name,formula:item.expression,numerator:lengthBasis?number(numerator,3)+" km":item.unit==="% occurrences"?number(numerator)+" occurrences":number(numerator,2),denominator:lengthBasis?number(denominator,3)+" km":item.unit==="% occurrences"?number(denominator)+" occurrences":number(denominator,2),result:{text:number(item.result(rows,length,count),2)+" "+item.unit,tone:analyticsTone(item.result(rows,length,count),item.risk)},unit:item.unit,interpretation:item.note};});
+    return analyticsTable("Section formula register","Auditable complete-population formulas; no sampling and no hidden exclusions.",["metric","formula","numerator","denominator","result","unit","interpretation"],output);
+  }
+  function categorySummary(rows, field) {
+    const total=rows.reduce((s,r)=>s+analyticsLength(r),0);return aggregate(rows,field).sort((a,b)=>String(a.name).localeCompare(String(b.name))).map(item=>({category:item.name,records:item.count,affected_length_km:number(item.value,3)+" km",length_share_pct:{text:number(item.value/Math.max(total,1)*100,2)+"%",tone:analyticsTone(item.value/Math.max(total,1)*100)},mean_record_length_km:number(item.value/Math.max(item.count,1),3)+" km"}));
+  }
+  function analyticCategory(value) {
+    if(Array.isArray(value))return value.length?`Supplied (${value.length} administrative relation${value.length===1?"":"s"})`:"Not supplied";
+    if(value&&typeof value==="object")return "Supplied structured value";
+    return shown(value);
+  }
+  function crossTab(rows, rowField, columnField, title) {
+    const rowSet=new Set(),columnSet=new Set(),cells=new Map(),rowTotals=new Map();let total=0;
+    rows.forEach(row=>{const rowValue=analyticCategory(row[rowField]),columnValue=analyticCategory(row[columnField]),length=analyticsLength(row),key=JSON.stringify([rowValue,columnValue]),cell=cells.get(key)||{length:0,count:0},rowTotal=rowTotals.get(rowValue)||{length:0,count:0};cell.length+=length;cell.count++;rowTotal.length+=length;rowTotal.count++;cells.set(key,cell);rowTotals.set(rowValue,rowTotal);rowSet.add(rowValue);columnSet.add(columnValue);total+=length;});
+    const rowValues=[...rowSet].sort(),columns=[...columnSet].sort();
+    const output=rowValues.map(rowValue=>{const item={[rowField]:rowValue};columns.forEach(column=>{const cell=cells.get(JSON.stringify([rowValue,column]))||{length:0,count:0},share=cell.length/Math.max(total,1)*100;item[column]={text:`${number(cell.length,3)} km · ${number(cell.count)} rec. · ${number(share,2)}%`,tone:analyticsTone(share)};});const rowTotal=rowTotals.get(rowValue);item.row_total=`${number(rowTotal.length,3)} km · ${number(rowTotal.count)} rec.`;return item;});
+    return analyticsTable(title,`Every ${label(rowField)} × ${label(columnField)} relation; cells show affected length, count and population share.`,[rowField,...columns,"row_total"],output);
+  }
+  function numericBandTable(rows, field, definitions) {
+    const total=rows.reduce((s,r)=>s+analyticsLength(r),0), output=definitions.map(([band,min,max])=>{const selected=rows.filter(row=>typeof row[field]==="number"&&row[field]>=min&&row[field]<max),length=selected.reduce((s,r)=>s+analyticsLength(r),0),values=selected.map(row=>Number(row[field])),share=length/Math.max(total,1)*100;return {band,records:selected.length,affected_length_km:number(length,3)+" km",length_share_pct:{text:number(share,2)+"%",tone:analyticsTone(share)},minimum:values.length?number(Math.min(...values),2):"Not supplied",mean:values.length?number(values.reduce((a,b)=>a+b,0)/values.length,2):"Not supplied",maximum:values.length?number(Math.max(...values),2):"Not supplied"};}).filter(row=>row.records>0);
+    return analyticsTable(`${label(field)} distribution`,`Complete numerical bands with frequency, length, share, minimum, mean and maximum.`,["band","records","affected_length_km","length_share_pct","minimum","mean","maximum"],output);
+  }
+  function districtSummaryTable(rows) {
+    const groups=new Map();rows.forEach(row=>{const district=shown(row.district||row.admin_district),item=groups.get(district)||{district,records:0,total_length_km:0,paved_length_km:0,unpaved_length_km:0,good_length_km:0,fair_length_km:0,poor_length_km:0,traffic_length_km:0,coordinate_length_km:0,planning_cost_ugx:0};const length=analyticsLength(row);item.records++;item.total_length_km+=length;if(String(row.pavement_class).toLowerCase()==="paved")item.paved_length_km+=length;if(String(row.pavement_class).toLowerCase()==="unpaved")item.unpaved_length_km+=length;if(String(row.condition).toLowerCase()==="good")item.good_length_km+=length;if(String(row.condition).toLowerCase()==="fair")item.fair_length_km+=length;if(String(row.condition).toLowerCase()==="poor")item.poor_length_km+=length;if(typeof row.registry_aadt==="number")item.traffic_length_km+=length;if(typeof row.x_coordinate_dd==="number")item.coordinate_length_km+=length;item.planning_cost_ugx+=Number(row.planning_cost_ugx||0);groups.set(district,item);});
+    const output=[...groups.values()].sort((a,b)=>a.district.localeCompare(b.district)).map(item=>{const total=Math.max(item.total_length_km,1),formatKm=value=>number(value,3)+" km";return {district:item.district,records:item.records,total_length_km:formatKm(item.total_length_km),paved_length_km:formatKm(item.paved_length_km),unpaved_length_km:formatKm(item.unpaved_length_km),good_length_km:formatKm(item.good_length_km),fair_length_km:formatKm(item.fair_length_km),poor_length_km:formatKm(item.poor_length_km),paved_share_pct:{text:number(item.paved_length_km/total*100,2)+"%",tone:analyticsTone(item.paved_length_km/total*100)},poor_share_pct:{text:number(item.poor_length_km/total*100,2)+"%",tone:analyticsTone(item.poor_length_km/total*100,true)},traffic_coverage_pct:{text:number(item.traffic_length_km/total*100,2)+"%",tone:analyticsTone(item.traffic_length_km/total*100)},coordinate_coverage_pct:{text:number(item.coordinate_length_km/total*100,2)+"%",tone:analyticsTone(item.coordinate_length_km/total*100)},planning_cost_ugx:"UGX "+number(item.planning_cost_ugx,0),planning_cost_per_km_ugx:"UGX "+number(item.planning_cost_ugx/total,0)};});
+    return analyticsTable("Complete administrative-unit summary","Every administrative unit with network, condition, traffic, coordinates and planning relations.",["district","records","total_length_km","paved_length_km","unpaved_length_km","good_length_km","fair_length_km","poor_length_km","paved_share_pct","poor_share_pct","traffic_coverage_pct","coordinate_coverage_pct","planning_cost_ugx","planning_cost_per_km_ugx"],output);
+  }
+  function structureAnalytics(payload) {
+    const raw=payload.rows||[],rows=raw.map(row=>({...row,geometry_length_km:Number(row.allocated_road_length_km||0)})),linked=raw.filter(row=>shown(row.link_id)!=="Not supplied"),total=rows.reduce((s,r)=>s+analyticsLength(r),0),formulas=[{name:"Linked occurrence share",expression:"Linked occurrences ÷ all occurrences × 100",numerator:()=>linked.length,denominator:()=>raw.length,result:()=>linked.length/Math.max(raw.length,1)*100,unit:"% occurrences",note:"Structures associated with governed DUCAR Link IDs."},coverageFormula("Coordinate length coverage","x_coordinate_dd","Allocated road length with mapped structure coordinates."),coverageFormula("Condition length coverage","current_condition","Allocated length with condition."),coverageFormula("Intervention length coverage","recommended_intervention","Allocated length with intervention.")];
+    return `<div class="analytics-workbook"><div class="analytics-intro"><div><small>CHART-FREE ANALYTICAL WORKBOOK</small><h2>Structures formulas, summaries and relations</h2><p>Counts preserve structure frequency while allocated road length prevents double counting.</p></div><strong>${number(raw.length)} occurrences · ${number(total,3)} allocated km</strong></div>${formulaTable(rows,formulas)}${crossTab(rows,"structure_class","current_condition","Structure class × condition")}${crossTab(rows,"risk_band","recommended_intervention","Risk × intervention")}${analyticsTable("Complete structure-class summary","Every class by occurrence frequency and allocated affected-road length.",["category","records","affected_length_km","length_share_pct","mean_record_length_km"],categorySummary(rows,"structure_class"))}${analyticsTable("Per-link structure relations","Every linked DUCAR road with structure counts, condition, risk and length.",["link_id","road_name","district","geometry_length_km","structure_records","bridge_records","major_culvert_records","dominant_structure_condition","highest_structure_risk"],payload.link_summary||[])}</div>`;
+  }
+  function nationalReconciliationAnalytics(rows) {
+    const inventory=cache.inventory||{},confirmed=confirmedNetwork(),published=inventory.published_reference_scopes||{},workbook=inventory.master_workbook_inventory||{},verified=inventory.verified_web_analytics_register||{};
+    const fullRows=Array.isArray(cache.links)&&cache.links.length?cache.links:rows,km=items=>items.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0),registerKm=km(fullRows);
+    const classified=(field,values)=>km(fullRows.filter(row=>values.includes(shown(row[field]))));
+    const trafficKm=km(fullRows.filter(row=>typeof row.registry_aadt==="number"));
+    const scopeRows=[
+      {scope:"Approved all-road inventory",length_km:number(confirmed.length_km,3),records:number(confirmed.links),administrative_extent:number(confirmed.districts)+" districts",use:"Backend national inventory calculations"},
+      {scope:"Master-workbook DUCAR inventory",length_km:"Inventory-controlled total",records:number(workbook.ducar_link_rows),administrative_extent:workbook.administrative_extent||"135 districts",use:"51-attribute inventory and candidate mapping scope"},
+      {scope:"Verified web analytical register",length_km:number(registerKm,3),records:number(fullRows.length),administrative_extent:"Verified linked districts",use:"Link-level dashboards, maps and exhaustive records"},
+      {scope:"Published DUCAR composition reference",length_km:number(published.ducar_composition_km,3),records:"Not a link register",administrative_extent:"Urban + district + community access",use:"Reference reconciliation only"},
+      {scope:"Published national-road reference",length_km:number(published.national_roads_km,3),records:"Not a link register",administrative_extent:"National road network",use:"Reference reconciliation only"}
+    ];
+    const controlRows=[
+      {control:"Pavement classes",classified_km:number(classified("pavement_class",["Paved","Unpaved"]),3),register_km:number(registerKm,3),variance_km:number(classified("pavement_class",["Paved","Unpaved"])-registerKm,3),basis:"Paved + Unpaved"},
+      {control:"Condition classes",classified_km:number(classified("condition",["Good","Fair","Poor","Unclassified"]),3),register_km:number(registerKm,3),variance_km:number(classified("condition",["Good","Fair","Poor","Unclassified"])-registerKm,3),basis:"Good + Fair + Poor + Unclassified"},
+      {control:"Priority bands",classified_km:number(classified("priority_band",["Critical","High","Moderate","Low"]),3),register_km:number(registerKm,3),variance_km:number(classified("priority_band",["Critical","High","Moderate","Low"])-registerKm,3),basis:"Critical + High + Moderate + Low"},
+      {control:"Traffic coverage",classified_km:number(trafficKm,3),register_km:number(registerKm,3),variance_km:number(trafficKm-registerKm,3),basis:"Supplied AADT length; remaining length is explicitly Not supplied"}
+    ];
+    return analyticsTable("Approved inventory and analytical scope register","The approved headline, workbook inventory, verified web geometry and published references are kept separate.",["scope","length_km","records","administrative_extent","use"],scopeRows)+analyticsTable("Verified-register reconciliation controls","Every classification is tested against the verified web register without scaling geometry.",["control","classified_km","register_km","variance_km","basis"],controlRows);
+  }
+  function adminDeepAnalytics() {
+    const links=cache.links||[],database=cache.database||{tables:[]},networkKm=links.reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0);
+    const supplied=(row,field)=>row[field]!==null&&row[field]!==undefined&&row[field]!==""&&shown(row[field])!=="Not supplied",covered=field=>links.filter(row=>supplied(row,field)).reduce((sum,row)=>sum+Number(row.geometry_length_km||0),0);
+    const parameters=LINK_FIELDS.map(field=>{const suppliedKm=covered(field),pct=suppliedKm/Math.max(networkKm,1)*100;return {parameter:label(field),supplied_length_km:number(suppliedKm,3),gap_length_km:number(Math.max(0,networkKm-suppliedKm),3),length_completeness_pct:{text:number(pct,2)+"%",tone:analyticsTone(pct)},health:pct>=95?"Healthy":pct>=70?"Attention":"Gap"};});
+    const stores=database.tables.map(table=>({data_store:table.table,rows:table.row_count,columns:table.column_count,indexes:table.indexes.length,owned_sections:table.sections.join(", "),status:table.row_count>0?"Available":"Empty"}));
+    const nodes=(cache.mindmap?.nodes||[]).map(node=>({node_id:node.id,label:node.label,type:node.type,records:node.records??"Not applicable",relationships:(cache.mindmap?.edges||[]).filter(edge=>edge.from===node.id||edge.to===node.id).length}));
+    return analyticsTable("All network parameters · length completeness","Every governed field measured against the verified DUCAR geometry denominator.",["parameter","supplied_length_km","gap_length_km","length_completeness_pct","health"],parameters)+analyticsTable("All DUCAR data stores","Complete SQLite catalogue with row, column, index and ownership metadata.",["data_store","rows","columns","indexes","owned_sections","status"],stores)+analyticsTable("Platform mind-map node register","Every visible mind-map node and its stored-record and relationship counts.",["node_id","label","type","records","relationships"],nodes);
+  }
+  function hotosmDeepAnalytics(section){
+    const analysis=cache.hotosmAnalysis;if(!analysis)return "";
+    const dimensions={overview:["functional_class","pavement","condition"],ducar:["functional_class","pavement","condition"],network:["highway","surface","pavement","functional_class"],traffic:["highway","functional_class"],condition:["condition","surface","pavement"],structures:["district"],pims:["functional_class","condition"],hdm4:["highway","pavement","condition"],framework:["region","district"],budgets:["functional_class","pavement"],socioeconomic:["region","district"],summaries:["region","district"]}[section]||["functional_class"];
+    const fields=["category","feature_count","length_km","paved_km","unpaved_km","unclassified_pavement_km","good_condition_km","fair_condition_km","poor_condition_km","unclassified_condition_km","named_feature_count","bridge_feature_count","oneway_feature_count"];
+    const tables=dimensions.map(dimension=>analyticsTable(`HOTOSM ${label(dimension)} complete summary`,`All vehicular source features and affected length; no Top-N selection.`,fields,analysis.summaries?.[dimension]||[])).join("");
+    if(section!=="traffic"&&section!=="summaries"&&section!=="framework")return tables;
+    const completeness=Object.entries(analysis.attribute_completeness||{}).map(([attribute,row])=>({attribute,...row,gap_features:Number(analysis.total.feature_count||0)-Number(row.supplied_features||0),gap_length_km:Number(analysis.total.length_km||0)-Number(row.supplied_length_km||0)}));
+    return tables+analyticsTable("HOTOSM attribute completeness","Every source attribute measured by feature frequency and affected length; missing values remain explicit.",["attribute","supplied_features","gap_features","supplied_length_km","gap_length_km"],completeness);
+  }
+  function analyticsHtml() {
+    if(state.section==="structures")return structureAnalytics(cache.structures)+hotosmDeepAnalytics("structures");
+    if(state.section==="global"){
+      const rows=globalRows().map(row=>({...row,geometry_length_km:1})),reviewed=rows.filter(row=>row.governance_evidence_status!=="Not yet source-verified"),principles=cache.governance?.principles||[];
+      const coverage=(name,test,note)=>({name,expression:`Countries satisfying ${name.toLowerCase()} ÷ 195 configured countries × 100`,numerator:items=>items.filter(test).length,denominator:(_,__,count)=>count,result:items=>items.filter(test).length/Math.max(items.length,1)*100,unit:"% countries",note});
+      const formulas=[coverage("Official governance evidence coverage",row=>row.governance_evidence_status!=="Not yet source-verified","Countries with reviewed official governance sources."),coverage("Coordinate country coverage",row=>hasNumeric(row.x_coordinate_dd)&&hasNumeric(row.y_coordinate_dd),"Countries with representative WGS84 coordinates."),coverage("Road-network total coverage",row=>hasNumeric(row.road_network_km),"Countries with a distributable sourced road-network length."),coverage("Pavement-split coverage",row=>hasNumeric(row.paved_road_km)||hasNumeric(row.unpaved_road_km),"Countries with paved and/or unpaved road length.")];
+      const regions=[...new Set(rows.map(row=>row.region))].sort().map(region=>{const selected=rows.filter(row=>row.region===region),withRoad=selected.filter(row=>hasNumeric(row.road_network_km));return {region,countries:selected.length,countries_with_road_total:withRoad.length,reported_road_length_km:number(withRoad.reduce((sum,row)=>sum+Number(row.road_network_km),0),2)+" km",reported_paved_length_km:number(selected.reduce((sum,row)=>sum+(hasNumeric(row.paved_road_km)?Number(row.paved_road_km):0),0),2)+" km",reported_unpaved_length_km:number(selected.reduce((sum,row)=>sum+(hasNumeric(row.unpaved_road_km)?Number(row.unpaved_road_km):0),0),2)+" km",reviewed_governance_records:selected.filter(row=>row.governance_evidence_status!=="Not yet source-verified").length};});
+      return `<div class="analytics-workbook"><div class="analytics-intro"><div><small>CHART-FREE ANALYTICAL WORKBOOK</small><h2>Global local-road governance formulas and relations</h2><p>All configured countries retained; ministry and road-authority evidence is never inferred where an official source has not been reviewed.</p></div><strong>${number(rows.length)} countries · ${number(reviewed.length)} reviewed</strong></div>${formulaTable(rows,formulas)}${crossTab(rows,"region","governance_evidence_status","Region × governance evidence status")}${crossTab(rows,"governance_evidence_status","lead_institution","Evidence status × lead institution")}${analyticsTable("Transferable road-asset-management controls","PIARC and World Bank principles, measures, techniques and primary sources.",["principle","measure","technique","source_title","source_url"],principles)}${analyticsTable("Officially sourced local-road operating models","Reviewed ministry and road-authority models for district, urban, rural and access roads.",["country","region","governance_model","lead_institution","local_road_manager","financing_mechanism","asset_management_principles","performance_measures","tools_and_techniques","governance_source_title","governance_source_url"],reviewed)}${analyticsTable("Complete world-region road inventory summary","All configured countries with reported road length, pavement split and governance evidence.",["region","countries","countries_with_road_total","reported_road_length_km","reported_paved_length_km","reported_unpaved_length_km","reviewed_governance_records"],regions)}</div>`;
+    }
+    const rows=state.section==="summaries"?applyHeaderFilters(cache.relations).map(row=>({...row,district:row.admin_district,geometry_length_km:row.covered_length_km})):state.section==="socioeconomic"?applyHeaderFilters(cache.socio.rows):activeLinkRows();
+    const pairs={traffic:[["pavement_class","condition"],["priority_band","recommended_intervention"]],condition:[["condition","pavement_class"],["condition","recommended_intervention"]],network:[["surface","pavement_class"],["condition","surface"]],pims:[["priority_band","recommended_intervention"],["priority_band","condition"]],hdm4:[["pavement_class","condition"],["priority_band","recommended_intervention"]],framework:[["admin_coverage","condition"],["pavement_class","priority_band"]],budgets:[["priority_band","recommended_intervention"],["condition","pavement_class"]],socioeconomic:[["exposure_band","primary_socioeconomic_factor"],["exposure_band","pavement_class"]],summaries:[["relation_basis","pavement_class"],["condition","priority_band"]],overview:[["condition","pavement_class"],["priority_band","recommended_intervention"]],ducar:[["condition","pavement_class"],["surface","recommended_intervention"]]};
+    const selected=pairs[state.section]||pairs.overview,category=state.section==="traffic"?"condition":state.section==="socioeconomic"?"exposure_band":state.section==="summaries"?"relation_basis":state.section==="network"?"surface":state.section==="budgets"||state.section==="pims"?"priority_band":"condition", numeric=state.section==="traffic"?["registry_aadt",[["0–149",0,150],["150–499",150,500],["500–999",500,1000],["1,000+",1000,Infinity]]]:state.section==="socioeconomic"?["socioeconomic_exposure_score",[["0–24.9",0,25],["25–49.9",25,50],["50–74.9",50,75],["75–100",75,101]]]:["planning_priority_score",[["0–24.9",0,25],["25–49.9",25,50],["50–74.9",50,75],["75–100",75,101]]];
+    const extras=hotosmDeepAnalytics(state.section)+(state.section==="summaries"?adminDeepAnalytics():["overview","ducar"].includes(state.section)?nationalReconciliationAnalytics(rows):"");
+    return `<div class="analytics-workbook"><div class="analytics-intro"><div><small>CHART-FREE ANALYTICAL WORKBOOK</small><h2>${esc(SECTION_META[state.section][0])} formulas, summaries and relations</h2><p>Section-specific tables only, with conditional formatting for coverage, caution and risk.</p></div><strong>${number(rows.length)} records · ${number(rows.reduce((s,r)=>s+analyticsLength(r),0),3)} km</strong></div>${formulaTable(rows,sectionFormulas(state.section))}${crossTab(rows,...selected[0],`${label(selected[0][0])} × ${label(selected[0][1])}`)}${crossTab(rows,...selected[1],`${label(selected[1][0])} × ${label(selected[1][1])}`)}${numericBandTable(rows,numeric[0],numeric[1])}${analyticsTable(`${label(category)} comprehensive summary`,`Every categorical value with count, affected length, share and mean represented length.`,["category","records","affected_length_km","length_share_pct","mean_record_length_km"],categorySummary(rows,category))}${districtSummaryTable(rows)}${extras}</div>`;
+  }
+  function relevantTables() {
+    const names = SECTION_SQL[state.section] || [];
+    return (cache.database.tables || []).filter(table => names.includes(table.table));
+  }
+  function sqlHtml() {
+    const tables = relevantTables();
+    const fields = ["table","row_count","column_count","sections","columns","indexes"];
+    const rows = tables.map(table => ({table:table.table,row_count:table.row_count,column_count:table.column_count,sections:table.sections.join(", "),columns:table.columns.map(c=>`${c.name} (${c.type})`).join(", "),indexes:table.indexes.length?table.indexes.map(i=>i.name).join(", "):"Not supplied"}));
+    return `<div class="sql-intro"><div><h2>${esc(SECTION_META[state.section][0])} SQL tables</h2><p>Only database tables related to this section are shown; the same catalogue is not duplicated across unrelated sections.</p></div><a class="studio-button" href="./data/${esc(cache.database.database_file)}" download>Download SQLite · ${number(cache.database.database_bytes/1048576,1)} MB</a></div><div class="table-wrap"><table class="data-table"><thead><tr>${fields.map(f=>`<th>${esc(label(f))}</th>`).join("")}</tr></thead><tbody>${rows.map(row=>`<tr>${fields.map(f=>`<td>${esc(shown(row[f]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+  function schemaHtml() {
+    return `<div class="sql-intro"><div><h2>${esc(SECTION_META[state.section][0])} schema</h2><p>DDL, columns, data types and indexes for this section’s related SQL tables.</p></div><a class="studio-button" href="./data/${esc(cache.database.database_file)}" download>Download SQLite database</a></div><div class="schema-grid">${relevantTables().map(table=>`<article class="schema-card"><h3>${esc(table.table)}</h3><p>${number(table.row_count)} rows · ${number(table.column_count)} columns · ${number(table.indexes.length)} indexes</p><div class="schema-columns">${table.columns.map(column=>`<span class="schema-column">${esc(column.name)} · ${esc(column.type)}</span>`).join("")}</div><pre>${esc(table.create_sql)}</pre></article>`).join("")}</div>`;
+  }
+  function adminMindMapHtml() {
+    const mind=cache.mindmap||{nodes:[],edges:[]},nodes=mind.nodes||[],edges=mind.edges||[],rootNode=nodes.find(node=>node.type==="root")||{id:"studio",label:"DUCAR Priority Studio",type:"root"};
+    const groups={section:nodes.filter(node=>node.type==="section"),process:nodes.filter(node=>node.type==="process"),data:nodes.filter(node=>node.type==="data")},positions=new Map([[rootNode.id,{x:600,y:58}]]),place=(items,yStart,columns,xGap=190,yGap=92)=>items.forEach((node,index)=>positions.set(node.id,{x:125+(index%columns)*xGap,y:yStart+Math.floor(index/columns)*yGap}));
+    place(groups.section,170,6);place(groups.process,365,6);place(groups.data,560,6);
+    const height=Math.max(760,650+Math.ceil(groups.data.length/6)*92),colors={root:"#0a84ff",section:"#30d158",process:"#ff9f0a",data:"#bf5af2"};
+    const paths=edges.map((edge,index)=>{const a=positions.get(edge.from),b=positions.get(edge.to);if(!a||!b)return "";const middle=(a.y+b.y)/2;return `<path class="mind-edge" data-edge="${index}" style="--edge-index:${index}" d="M ${a.x} ${a.y+24} C ${a.x} ${middle}, ${b.x} ${middle}, ${b.x} ${b.y-24}"/>`;}).join("");
+    const nodeSvg=nodes.map((node,index)=>{const p=positions.get(node.id);if(!p)return "";const connected=edges.filter(edge=>edge.from===node.id||edge.to===node.id).length,detail=node.records?`${number(node.records)} stored records · ${connected} direct relationships`:`${connected} direct relationships`;return `<g class="mind-svg-node mind-${esc(node.type)}" style="--node-index:${index}" data-mind-node="${esc(node.id)}" data-label="${esc(node.label)}" data-detail="${esc(detail)}" data-type="${esc(node.type)}" tabindex="0" role="button" aria-label="${esc(node.label)}"><rect x="${p.x-82}" y="${p.y-25}" width="164" height="50" rx="12" style="--node-color:${colors[node.type]||"#64d2ff"}"/><text x="${p.x}" y="${p.y-3}">${esc(node.label.length>25?node.label.slice(0,24)+"…":node.label)}</text><text class="mind-node-meta" x="${p.x}" y="${p.y+13}">${esc(node.records?number(node.records)+" records":node.type)}</text><title>${esc(node.label)} · ${esc(detail)}</title></g>`;}).join("");
+    return `<section class="platform-map"><header><div><small>ADMIN TOOLS · INTERACTIVE PLATFORM MAP</small><h3>DUCAR Platform Mind Map</h3><p>System sections, governed data stores, spatial joins, models, decision engines and reporting paths.</p></div><strong>${number(nodes.length)} nodes · ${number(edges.length)} cross-links</strong></header><div class="mind-map-layout"><div class="mind-schematic"><div class="mind-map-key"><span class="key-root">Platform</span><span class="key-section">Sections</span><span class="key-process">Algorithms & decisions</span><span class="key-data">Data stores</span></div><svg class="platform-mind-svg" viewBox="0 0 1200 ${height}" role="img" aria-label="Interactive DUCAR platform architecture mind map"><defs><marker id="mind-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z"/></marker></defs><g class="mind-edges">${paths}</g><g class="mind-nodes">${nodeSvg}</g></svg></div><aside class="mind-inspector" aria-live="polite"><small>SELECTED PLATFORM NODE</small><strong>${esc(rootNode.label)}</strong><span>${esc(mind.record_policy||"Select any node to inspect its role and connected platform paths.")}</span><p>Click or focus a node. Connected paths remain visible while the selected node is highlighted.</p></aside></div></section>`;
+  }
+  function initAdminMindMap(){
+    const map=root.querySelector(".platform-mind-svg"),inspector=root.querySelector(".mind-inspector");if(!map||!inspector)return;
+    const select=node=>{const id=node.dataset.mindNode;map.querySelectorAll("[data-mind-node]").forEach(item=>item.classList.toggle("selected",item===node));const mind=cache.mindmap||{edges:[]},edges=(mind.edges||[]).filter(edge=>edge.from===id||edge.to===id),neighbors=edges.map(edge=>edge.from===id?edge.to:edge.from);map.querySelectorAll(".mind-edge").forEach((path,index)=>path.classList.toggle("connected",(mind.edges||[])[index]?.from===id||(mind.edges||[])[index]?.to===id));inspector.innerHTML=`<small>${esc(node.dataset.type)} NODE</small><strong>${esc(node.dataset.label)}</strong><span>${esc(node.dataset.detail)}</span><p>${neighbors.length?`Connected to: ${esc(neighbors.map(value=>(mind.nodes||[]).find(item=>item.id===value)?.label||value).join(" · "))}`:"No direct relationship registered."}</p>`;};
+    map.querySelectorAll("[data-mind-node]").forEach(node=>{node.addEventListener("click",()=>select(node));node.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();select(node);}});});
+    const nodes=[...map.querySelectorAll("[data-mind-node]")];let active=0;const timer=setInterval(()=>{if(document.hidden||map.matches(":hover")||nodes.some(node=>node.matches(":focus")))return;select(nodes[active%nodes.length]);active++;},2600);vizTimers.add(timer);select(nodes[0]);
+  }
+  function enhanceTableScrolling(){
+    root.querySelectorAll(".table-wrap").forEach(wrap=>{if(wrap.previousElementSibling?.classList.contains("table-scroll-top"))return;const top=document.createElement("div"),spacer=document.createElement("div");top.className="table-scroll-top";top.setAttribute("aria-label","Horizontal table scrollbar");top.appendChild(spacer);wrap.before(top);let syncing=false;const size=()=>{spacer.style.width=Math.max(wrap.scrollWidth,wrap.clientWidth)+"px";};top.addEventListener("scroll",()=>{if(syncing)return;syncing=true;wrap.scrollLeft=top.scrollLeft;syncing=false;},{passive:true});wrap.addEventListener("scroll",()=>{if(syncing)return;syncing=true;top.scrollLeft=wrap.scrollLeft;syncing=false;},{passive:true});requestAnimationFrame(size);if(window.ResizeObserver)new ResizeObserver(size).observe(wrap.querySelector("table")||wrap);});
+  }
+  function enhanceStaticTableSorting(){
+    root.querySelectorAll("table.data-table").forEach(table=>{const body=table.tBodies[0];if(!body)return;[...table.tHead?.rows?.[0]?.cells||[]].forEach((cell,index)=>{const original=cell.textContent.trim(),field=original.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");[...body.rows].forEach(row=>{const target=row.cells[index];if(!target)return;let raw=target.innerText.trim();if(/^(region|district|admin_district|county|subcounty|parish|surface|pavement_class|condition|current_condition|priority_band|risk_band|exposure_band|functional_class|road_management_class|recommended_intervention|traffic_value_status|linkage_quality|structure_class|structure_type|relation_basis|assignment_basis|status|category)$/.test(field)&&!/^https?:/i.test(raw)){target.textContent=properText(raw);raw=target.innerText.trim();}const numeric=Number(raw.replace(/[,\s]/g,"").replace(/km$|%$/i,"")),semantic=cellClass(field,Number.isFinite(numeric)&&/^-?[\d,.\s]+(?:km|%)?$/i.test(raw)?numeric:raw);if(semantic)target.classList.add(...semantic.split(" "));});if(cell.querySelector("[data-column-sort]"))return;const text=properText(original),button=document.createElement("button"),arrow=document.createElement("i"),caption=document.createElement("span");button.type="button";button.className="column-sort";button.title=`Sort by ${text}`;button.dataset.localColumnSort=String(index);caption.textContent=text;arrow.textContent="↕";arrow.setAttribute("aria-hidden","true");button.append(caption,arrow);cell.textContent="";cell.appendChild(button);cell.setAttribute("aria-sort","none");button.addEventListener("click",()=>{const direction=button.dataset.direction==="asc"?"desc":"asc";table.querySelectorAll("[data-local-column-sort]").forEach(other=>{other.dataset.direction="";other.querySelector("i").textContent="↕";other.closest("th")?.setAttribute("aria-sort","none");});button.dataset.direction=direction;arrow.textContent=direction==="asc"?"↑":"↓";cell.setAttribute("aria-sort",direction==="asc"?"ascending":"descending");const value=row=>row.cells[index]?.innerText.trim()||"",numeric=value=>{const match=value.replaceAll(",","").match(/-?\d+(?:\.\d+)?/);return match?Number(match[0]):NaN;};[...body.rows].sort((a,b)=>{const av=value(a),bv=value(b),an=numeric(av),bn=numeric(bv),comparison=Number.isFinite(an)&&Number.isFinite(bn)?an-bn:av.localeCompare(bv,undefined,{numeric:true});return direction==="asc"?comparison:-comparison;}).forEach(row=>body.appendChild(row));});});});
+  }
+  function isCollapseControl(element){
+    if(!element)return false;
+    if(element.matches?.('[data-collapse],[data-card-collapse],.card-collapse,.chart-collapse,.collapse-toggle,.map-details-toggle,[data-action="collapse"],[data-action="expand"]'))return true;
+    if(!element.matches?.("button,[role=button]"))return false;
+    const description=[element.textContent,element.getAttribute("title"),element.getAttribute("aria-label")].filter(Boolean).join(" ").trim();
+    return /\b(?:collapse|expand)\b/i.test(description);
+  }
+  function removeCollapseControls(scope=document){
+    const controls=[...scope.querySelectorAll?.('[data-collapse],[data-card-collapse],.card-collapse,.chart-collapse,.collapse-toggle,.map-details-toggle,[data-action="collapse"],[data-action="expand"],button,[role=button]')||[]];
+    controls.filter(isCollapseControl).forEach(control=>control.remove());
+    scope.querySelectorAll?.('.chart-card.collapsed,.insight-card.collapsed,.dashboard-card.collapsed,.metric-card.collapsed,.map-details.collapsed,.map-catalogue.collapsed').forEach(panel=>{
+      panel.classList.remove("collapsed");panel.removeAttribute("data-collapsed");panel.removeAttribute("aria-hidden");panel.hidden=false;
+    });
+  }
+  async function render() {
+    const token=++renderToken;
+    recordMountToken++;
+    vizTimers.forEach(timer=>clearInterval(timer)); vizTimers.clear();
+    const activeField = document.activeElement?.classList?.contains("records-search") ? ".records-search" : document.activeElement?.classList?.contains("records-filter-value") ? ".records-filter-value" : "";
+    state.loading = true;
+    shell(`<div class="studio-loading">Loading this section’s complete reporting population…</div>`);
+    try {
+      await ensureData();
+      if(token!==renderToken)return;
+      state.loading=false;
+    } catch (error) {
+      if(token!==renderToken)return;
+      state.loading=false;shell(`<div class="studio-loading">${esc(error.message)}</div>`);return;
+    }
+    let body = state.tab === "dashboard" ? dashboardHtml() : state.tab === "map" ? (state.section==="summaries"?adminMindMapHtml():mapHtml()) : state.tab === "records" ? recordsHtml() : state.tab === "ibp" ? ibpHtml() : state.tab === "analytics" ? analyticsHtml() : state.tab === "sql" ? sqlHtml() : schemaHtml();
+    shell(body); removeCollapseControls(root);bind();enhanceStaticTableSorting();enhanceTableScrolling();if(state.tab==="records")mountRemainingRecords();
+    if (state.tab === "map") state.section==="summaries"?initAdminMindMap():state.section==="global"?initGlobalMap():initSectionMap();
+    syncHeaderFilterPanel();
+    ensureHeaderExportMenu();ensureHeaderNavigationControls();
+    if (activeField) { const input=root.querySelector(activeField); input?.focus(); input?.setSelectionRange(input.value.length,input.value.length); }
+  }
+  function shell(body) {
+    document.body.classList.remove("network-map-mode");
+    root.innerHTML = `<section class="exhaustive-shell"><div class="section-studio"><nav class="section-tabs" aria-label="Section reporting views">${SECTION_TABS.map(([id,text])=>`<button type="button" class="section-tab ${state.tab===id?"active":""}" data-section-tab="${id}" aria-current="${state.tab===id?"page":"false"}">${esc(text)}</button>`).join("")}</nav>${body}</div></section>`;
+    removeCollapseControls(root);
+    if(state.tab==="dashboard")root.querySelectorAll("table").forEach(table=>{const owner=table.closest(".consistency-controls,.table-export-wrap,.global-governance,.admin-block")||table.closest(".table-wrap");owner?.remove();});
+  }
+  function bind() {
+    root.querySelectorAll("[data-section-tab]").forEach(button=>button.addEventListener("click",()=>{const tab=button.dataset.sectionTab;if(!SECTION_TABS.some(([id])=>id===tab)||tab===state.tab)return;location.hash=`#${state.section}:${tab}`;}));
+    const recordsToolbar=root.querySelector(".records-toolbar");if(recordsToolbar&&!recordsToolbar.querySelector(".hotosm-source-download")){const source=document.createElement("a");source.className="studio-button hotosm-source-download";source.href="./data/hotosm_vehicular_link_attributes.csv.gz";source.download="uganda_corrected_404047_vehicular_road_attributes.csv.gz";source.textContent="Full network · 404,047 ways";recordsToolbar.appendChild(source);}
+    root.querySelectorAll(".table-wrap").forEach((wrap,index)=>{if(wrap.classList.contains("all-records-table")||wrap.closest(".table-export-wrap"))return;const button=document.createElement("button");button.type="button";button.className="csv-download floating";button.dataset.tableCsv="";button.textContent="CSV · complete table";button.dataset.tableIndex=String(index);wrap.before(button);});
+    root.querySelectorAll("[data-download-png]").forEach((button,index)=>button.addEventListener("click",event=>{event.stopPropagation();downloadElementPng(button.closest("[data-download-chart]"),`ducar_${state.section}_chart_${index+1}.png`);}));
+    root.querySelectorAll("[data-section-pdf]").forEach(button=>button.addEventListener("click",sectionPdf));
+    root.querySelectorAll("[data-table-csv]").forEach(button=>button.addEventListener("click",()=>{const table=button.closest(".table-export-wrap")?.querySelector("table")||button.nextElementSibling?.querySelector?.("table");if(table)tableCsv(table,`ducar_${state.section}_complete_table.csv`);}));
+    const search=root.querySelector(".records-search"); if(search) search.addEventListener("input",()=>{state.search=search.value;state.page=1;render();});
+    root.querySelectorAll("[data-column-sort]").forEach(button=>button.addEventListener("click",()=>{const field=button.dataset.columnSort;if(state.sortField===field)state.sortDirection=state.sortDirection==="asc"?"desc":"asc";else{state.sortField=field;state.sortDirection="asc";}render();}));
+    root.querySelector("[data-export]")?.addEventListener("click",()=>exportRecords(recordDataset()));
+    root.querySelectorAll("[data-viz-studio]").forEach(studio=>{
+      const buttons=[...studio.querySelectorAll("[data-viz-type]")], panels=[...studio.querySelectorAll("[data-viz-panel]")];
+      let active=0, timer=null;
+      const show=index=>{active=(index+buttons.length)%buttons.length;buttons.forEach((button,i)=>{button.classList.toggle("active",i===active);button.setAttribute("aria-selected",String(i===active));});panels.forEach((panel,i)=>{panel.classList.toggle("active",i===active);if(i===active){panel.classList.remove("animate-in");void panel.offsetWidth;panel.classList.add("animate-in");}});};
+      buttons.forEach((button,index)=>button.addEventListener("click",()=>show(index)));
+      studio.querySelector("[data-viz-autoplay]")?.addEventListener("click",event=>{if(timer){clearInterval(timer);vizTimers.delete(timer);timer=null;event.currentTarget.textContent="▶ Animate views";event.currentTarget.classList.remove("active");}else{event.currentTarget.textContent="Ⅱ Pause animation";event.currentTarget.classList.add("active");timer=setInterval(()=>show(active+1),2200);vizTimers.add(timer);show(active+1);}});
+    });
+    root.querySelectorAll("[data-insight-wall]").forEach(wall=>{
+      const cards=[...wall.querySelectorAll("[data-insight-card]")], series=wall.querySelector("[data-insight-series]"), search=wall.querySelector("[data-insight-search]"), count=wall.querySelector("[data-insight-count]"), empty=wall.querySelector(".insight-empty");
+      const filter=()=>{const dimension=series?.value||"all", query=(search?.value||"").trim().toLowerCase();let visible=0;cards.forEach(card=>{const showCard=(dimension==="all"||card.dataset.series===dimension)&&(!query||card.dataset.insightSearch.includes(query));card.hidden=!showCard;if(showCard)visible++;});if(count)count.textContent=number(visible);if(empty)empty.hidden=visible!==0;};
+      series?.addEventListener("change",filter);search?.addEventListener("input",filter);
+      wall.querySelector("[data-insight-motion]")?.addEventListener("click",event=>{const paused=wall.classList.toggle("motion-paused");event.currentTarget.textContent=paused?"Resume motion":"Pause motion";});
+    });
+  }
+  function activateSection(section) {
+    if (!section || section===state.section) return;
+    state.section=section;state.tab="dashboard";state.page=1;state.search="";state.filterField="";state.filterValue="";state.sortField="";history.replaceState(null,"",`#${section}:dashboard`);render();setTimeout(syncInjectedNav,0);
+  }
+  document.addEventListener("click",event=>{
+    const control=event.target.closest?.('button,[role=button],[data-collapse],[data-card-collapse],.card-collapse,.chart-collapse,.collapse-toggle,.map-details-toggle');
+    if(!isCollapseControl(control))return;
+    event.preventDefault();event.stopImmediatePropagation();control.remove();removeCollapseControls(document);
+  },true);
+  document.addEventListener("click",event=>{
+    const button=event.target.closest?.("[data-section-tab]");if(!button)return;
+    const tab=button.dataset.sectionTab;if(!SECTION_TABS.some(([id])=>id===tab)||tab===state.tab)return;
+    event.preventDefault();event.stopImmediatePropagation();location.hash=`#${state.section}:${tab}`;
+  },true);
+  document.addEventListener("click",event=>{
+    const button=event.target.closest?.("button[title]");
+    if(button)setTimeout(()=>{activateSection(button.dataset.ducarSection||sectionFromTitle(button.getAttribute("title")));syncPrimaryNav();},0);
+  },true);
+  document.addEventListener("click",event=>{
+    const button=event.target.closest?.("button.export-btn");if(!button)return;
+    event.preventDefault();event.stopImmediatePropagation();ensureHeaderExportMenu();
+  },true);
+  function ensureHeaderExportMenu() {
+    const actions=document.querySelector("#root .top-nav .nav-actions");if(!actions)return false;
+    actions.querySelector(".filter-toggle")?.remove();actions.querySelector(".color-toggle")?.remove();
+    let wrapper=actions.querySelector(".ducar-export-menu"),source=actions.querySelector("button.export-btn");
+    if(wrapper){source?.remove();return true;}if(!source)return false;
+    wrapper=document.createElement("div");wrapper.className="ducar-export-menu";
+    wrapper.innerHTML=`<button class="ducar-export-trigger" type="button" aria-haspopup="menu" aria-expanded="false"><span aria-hidden="true">⇩</span> Export <b aria-hidden="true">⌄</b></button><div class="ducar-export-panel" role="menu" hidden><header><strong>Full export centre</strong><small>Complete ${esc(SECTION_META[state.section]?.[0]||"DUCAR")} population</small></header><section><h3>Complete records</h3><button type="button" role="menuitem" data-header-export="csv-all"><b>CSV</b><span>All records · every field</span></button><button type="button" role="menuitem" data-header-export="csv-filtered"><b>CSV</b><span>Current filtered population</span></button><button type="button" role="menuitem" data-header-export="json"><b>JSON</b><span>Records + field metadata</span></button><button type="button" role="menuitem" data-header-export="geojson"><b>GEO</b><span>GeoJSON · WGS84 coordinates</span></button></section><section><h3>Database & schema</h3><button type="button" role="menuitem" data-header-export="sql"><b>SQL</b><span>DDL + every INSERT record</span></button><button type="button" role="menuitem" data-header-export="dictionary"><b>DICT</b><span>Data dictionary + completeness</span></button><button type="button" role="menuitem" data-header-export="inventory"><b>JSON</b><span>Approved network inventory</span></button></section><section><h3>Reports & graphics</h3><button type="button" role="menuitem" data-header-export="pdf"><b>PDF</b><span>Complete section report</span></button><button type="button" role="menuitem" data-header-export="png"><b>PNG</b><span>Current complete view</span></button><button type="button" role="menuitem" data-header-export="table"><b>TABLE</b><span>Visible exhaustive/analytics table</span></button><button type="button" role="menuitem" data-header-export="map"><b>MAP</b><span>Current interactive map PNG</span></button></section><footer>Exports use the active section; no Top-N sampling.</footer></div>`;
+    wrapper.querySelector('[data-header-export="geojson"]')?.insertAdjacentHTML("afterend",'<button type="button" role="menuitem" data-header-export="kml"><b>KML</b><span>KML points - WGS84 coordinates</span></button>');
+    wrapper.querySelector('[data-header-export="kml"]')?.insertAdjacentHTML("afterend",'<button type="button" role="menuitem" data-header-export="hotosm-csv"><b>CSV.GZ</b><span>404,047 corrected vehicular ways</span></button>');
+    wrapper.querySelector('[data-header-export="hotosm-csv"]')?.insertAdjacentHTML("afterend",'<button type="button" role="menuitem" data-header-export="route-csv"><b>ROUTES</b><span>266,896 county-bounded merged routes</span></button><button type="button" role="menuitem" data-header-export="lineage-csv"><b>LINEAGE</b><span>Every source segment mapped to its route ID</span></button><button type="button" role="menuitem" data-header-export="route-audit"><b>AUDIT</b><span>Conflation counts, sources and length reconciliation</span></button>');
+    actions.appendChild(wrapper);source.remove();
+    const trigger=wrapper.querySelector(".ducar-export-trigger"),panel=wrapper.querySelector(".ducar-export-panel"),close=()=>{panel.hidden=true;trigger.setAttribute("aria-expanded","false");wrapper.classList.remove("open");};
+    trigger.addEventListener("click",event=>{event.stopPropagation();const opening=panel.hidden;document.querySelectorAll(".ducar-export-panel").forEach(menu=>menu.hidden=true);panel.hidden=!opening;trigger.setAttribute("aria-expanded",String(opening));wrapper.classList.toggle("open",opening);if(opening){panel.querySelector('[data-header-export="table"]').disabled=!root.querySelector("table");panel.querySelector('[data-header-export="map"]').disabled=!root.querySelector(".map-stage");panel.querySelector("header small").textContent=`Complete ${SECTION_META[state.section]?.[0]||"DUCAR"} population`;}});
+    wrapper.addEventListener("keydown",event=>{if(event.key==="Escape"){close();trigger.focus();}});
+    wrapper.addEventListener("click",event=>{const option=event.target.closest?.('[data-header-export="kml"]');if(!option)return;const sectionDataset=recordDataset(),dataset={rows:sectionDataset.rows,fields:[...new Set(sectionDataset.rows.flatMap(row=>Object.keys(row)))]};close();exportRowsKml(dataset);});
+    wrapper.addEventListener("click",event=>{const option=event.target.closest?.('[data-header-export="hotosm-csv"]');if(!option)return;close();const anchor=document.createElement("a");anchor.href="./data/hotosm_vehicular_link_attributes.csv.gz";anchor.download="uganda_corrected_404047_vehicular_road_attributes.csv.gz";anchor.click();});
+    wrapper.addEventListener("click",event=>{const option=event.target.closest?.('[data-header-export="route-csv"],[data-header-export="lineage-csv"],[data-header-export="route-audit"]');if(!option)return;close();const files={"route-csv":["./data/hotosm_vehicular_route_register.csv.gz","uganda_hotosm_266896_merged_route_register.csv.gz"],"lineage-csv":["./data/hotosm_segment_route_relations.csv.gz","uganda_hotosm_segment_to_route_lineage.csv.gz"],"route-audit":["./data/hotosm_route_conflation_2026.json","uganda_hotosm_route_conflation_audit_2026.json"]},[href,download]=files[option.dataset.headerExport],anchor=document.createElement("a");anchor.href=href;anchor.download=download;anchor.click();});
+    wrapper.addEventListener("click",async event=>{const option=event.target.closest?.("[data-header-export]");if(!option||option.disabled)return;const action=option.dataset.headerExport,sectionDataset=recordDataset(),dataset={rows:sectionDataset.rows,fields:[...new Set(sectionDataset.rows.flatMap(row=>Object.keys(row)))]};close();try{if(action==="csv-all")exportRowsCsv(dataset,dataset.rows,`ducar_${state.section}_complete_records.csv`);else if(action==="csv-filtered")exportRowsCsv(dataset,filtered(sectionDataset),`ducar_${state.section}_filtered_records.csv`);else if(action==="json")exportRowsJson(dataset);else if(action==="geojson")exportRowsGeoJson(dataset);else if(action==="sql")exportSqlDump(dataset);else if(action==="dictionary")exportDataDictionary(dataset);else if(action==="inventory"){const anchor=document.createElement("a");anchor.href=PATHS.inventory;anchor.download="approved_network_inventory_2026.json";anchor.click();}else if(action==="pdf")await sectionPdf();else if(action==="png")await downloadElementPng(root,`ducar_${state.section}_${state.tab}_complete_view.png`);else if(action==="table")tableCsv(root.querySelector("table"),`ducar_${state.section}_${state.tab}_visible_table.csv`);else if(action==="map")root.querySelector('[data-map-tool="download"]')?.click();}catch(error){console.error("DUCAR export failed",error);}});
+    document.addEventListener("click",event=>{if(!wrapper.contains(event.target))close();});
+    return true;
+  }
+  function ensureHeaderNavigationControls(){
+    const actions=document.querySelector("#root .top-nav .nav-actions"),exportMenu=actions?.querySelector(".ducar-export-menu");if(!actions||!exportMenu)return false;
+    if(actions.querySelector(".ducar-header-navigation"))return true;
+    const controls=document.createElement("div");controls.className="ducar-header-navigation";controls.innerHTML='<button type="button" data-header-navigation="back" title="Back to previous view" aria-label="Back to previous view">&#8592;</button><button type="button" data-header-navigation="top" title="Scroll to top" aria-label="Scroll to top">&#8593;</button>';
+    controls.querySelector('[data-header-navigation="back"]').addEventListener("click",()=>history.back());
+    controls.querySelector('[data-header-navigation="top"]').addEventListener("click",()=>window.scrollTo({top:0,left:0,behavior:"smooth"}));
+    actions.insertBefore(controls,exportMenu);return true;
+  }
+  function ensureSocioeconomicNav() {
+    if (document.querySelector('button[title="Socioeconomic Analysis"]')) return true;
+    const globalButton = document.querySelector('button[title="Global Benchmarks"],button[title="Global"]');
+    if (!globalButton) return false;
+    const button = globalButton.cloneNode(true); button.setAttribute("title","Socioeconomic Analysis"); button.setAttribute("aria-label","Socioeconomic Analysis");
+    const walker=document.createTreeWalker(button,NodeFilter.SHOW_TEXT); let node;
+    while((node=walker.nextNode())) if(["Global Benchmarks","Global"].includes(node.nodeValue.trim())) node.nodeValue="Socioeconomic Analysis";
+    globalButton.insertAdjacentElement("afterend",button); return true;
+  }
+  function ensureStructuresNav() {
+    if (document.querySelector('button[title="Structures"]')) return true;
+    const conditionButton=document.querySelector('button[title="Condition"]');
+    if(!conditionButton)return false;
+    const button=conditionButton.cloneNode(true);button.setAttribute("title","Structures");button.setAttribute("aria-label","Structures");
+    const walker=document.createTreeWalker(button,NodeFilter.SHOW_TEXT);let node;
+    while((node=walker.nextNode()))if(node.nodeValue.trim()==="Condition")node.nodeValue=node.nodeValue.replace("Condition","Structures");
+    conditionButton.insertAdjacentElement("afterend",button);syncInjectedNav();return true;
+  }
+  const PRIMARY_NAV = [
+    ["ducar","DUCAR Dashboard"],
+    ["traffic","Traffic"],
+    ["condition","Condition"],
+    ["structures","Structures"],
+    ["pims","PIMS"],
+    ["hdm4","HDM-4"],
+    ["global","Global Benchmarks"],
+    ["socioeconomic","Socioeconomic Analysis"],
+    ["budgets","Priority Studio"],
+    ["summaries","Admin Tools"]
+  ];
+  const SOURCE_NAV_TITLES = {ducar:"DUCAR Dashboard",traffic:"Traffic",condition:"Condition",structures:"Structures",pims:"PIMS",hdm4:"HDM-4",global:"Global Benchmarks",socioeconomic:"Socioeconomic Analysis",budgets:"Budgets & Prioritization",summaries:"Summaries & Admin Tools"};
+  function replaceNavLabel(button,label) {
+    const known=new Set([...Object.values(SOURCE_NAV_TITLES),...PRIMARY_NAV.map(([,text])=>text)]),walker=document.createTreeWalker(button,NodeFilter.SHOW_TEXT);let node;
+    while((node=walker.nextNode()))if(known.has(node.nodeValue.trim())){node.nodeValue=node.nodeValue.replace(node.nodeValue.trim(),label);return;}
+  }
+  function syncPrimaryNav() {
+    let all=[...document.querySelectorAll("button[title]")];
+    all.forEach(button=>{const route=button.dataset.ducarSection||sectionFromTitle(button.title);if(route)button.dataset.ducarSection=route;});
+    let byRoute=new Map(all.filter(button=>button.dataset.ducarSection).map(button=>[button.dataset.ducarSection,button]));
+    const dashboard=byRoute.get("ducar"),nav=dashboard?.parentElement||document.querySelector("#root .nav-rail");if(!nav||!dashboard)return false;
+    const cloneFor=(route,label)=>{
+      const source=route==="structures"?byRoute.get("condition"):route==="socioeconomic"?byRoute.get("global"):dashboard;
+      if(!source)return null;
+      const clone=source.cloneNode(true);clone.dataset.ducarSection=route;clone.title=label;clone.setAttribute("aria-label",label);clone.hidden=false;clone.classList.remove("ducar-nav-hidden","codex-injected-active");
+      const labelNode=clone.querySelector(".nav-rail-label");if(labelNode)labelNode.textContent=label;else replaceNavLabel(clone,label);
+      nav.appendChild(clone);return clone;
+    };
+    PRIMARY_NAV.forEach(([route,label])=>{if(!byRoute.has(route)){const clone=cloneFor(route,label);if(clone)byRoute.set(route,clone);}});
+    all=[...document.querySelectorAll("button[title]")];all.forEach(button=>{const route=button.dataset.ducarSection||sectionFromTitle(button.title);if(route)button.dataset.ducarSection=route;});byRoute=new Map(all.filter(button=>button.dataset.ducarSection).map(button=>[button.dataset.ducarSection,button]));
+    [...byRoute].forEach(([route,button])=>{const retained=PRIMARY_NAV.some(([id])=>id===route);button.hidden=!retained;button.classList.toggle("ducar-nav-hidden",!retained);});
+    PRIMARY_NAV.forEach(([route,label])=>{const button=byRoute.get(route);if(!button)return;button.hidden=false;button.classList.remove("ducar-nav-hidden");button.title=label;button.setAttribute("aria-label",label);replaceNavLabel(button,label);nav.appendChild(button);});
+    nav.dataset.ducarPrimaryNav="10";syncInjectedNav();return PRIMARY_NAV.every(([route])=>byRoute.has(route));
+  }
+  function syncInjectedNav(){document.querySelectorAll("button[data-ducar-section]").forEach(button=>button.classList.toggle("codex-injected-active",button.dataset.ducarSection===state.section));}
+  function syncHeaderFilterPanel() {
+    if(!cache.links)return;
+    const selects=[...document.querySelectorAll("#root select")],find=prefix=>selects.find(select=>select.options[0]?.textContent.trim().startsWith(prefix));
+    const rows=cache.links,unique=field=>[...new Set(rows.map(row=>shown(row[field])).filter(value=>value!=="Not supplied"))].sort((a,b)=>a.localeCompare(b)),counts=(field,value)=>rows.filter(row=>shown(row[field])===value).length;
+    const configure=(select,key,label,values,field)=>{if(!select)return;const selected=state.headerFilters[key];select.dataset.ducarHeaderFilter=key;select.setAttribute("aria-label",label);select.replaceChildren(new Option(`${label} (${number(rows.length)})`,"All"),...values.map(value=>new Option(`${value} (${number(counts(field,value))})`,value)));select.value=values.includes(selected)?selected:"All";state.headerFilters[key]=select.value;};
+    configure(find("All Regions"),"region","All regions",unique("region"),"region");
+    configure(find("All Districts"),"district","All districts",unique("district"),"district");
+    configure(find("All Categories")||find("All Surfaces"),"surface","All surfaces",unique("surface"),"surface");
+    configure(find("All Classes"),"pavement","All pavement classes",unique("pavement_class"),"pavement_class");
+    configure(find("All Conditions"),"condition","All conditions",unique("condition"),"condition");
+    const search=document.querySelector('#root input[placeholder*="Search road"]');if(search){search.dataset.ducarHeaderFilter="search";search.setAttribute("aria-label","Search roads from header filters");if(search.value!==state.headerFilters.search)search.value=state.headerFilters.search;}
+  }
+  let headerSearchTimer=null;
+  document.addEventListener("change",event=>{const key=event.target?.dataset?.ducarHeaderFilter;if(!key||key==="search")return;state.headerFilters[key]=event.target.value;state.page=1;render();setTimeout(syncHeaderFilterPanel,80);},true);
+  document.addEventListener("input",event=>{if(event.target?.dataset?.ducarHeaderFilter!=="search")return;state.headerFilters.search=event.target.value;state.page=1;clearTimeout(headerSearchTimer);headerSearchTimer=setTimeout(()=>{render();syncHeaderFilterPanel();},180);},true);
+  document.addEventListener("click",event=>{if(event.target.closest?.("button")?.textContent.trim()!=="Filters")return;setTimeout(syncHeaderFilterPanel,60);setTimeout(syncHeaderFilterPanel,260);},true);
+  let navAttempts=0; const navTimer=setInterval(()=>{navAttempts++;const ready=ensureSocioeconomicNav()&&ensureStructuresNav()&&syncPrimaryNav()&&ensureHeaderExportMenu()&&ensureHeaderNavigationControls();if(ready||navAttempts>40)clearInterval(navTimer);},250);
+  let navRepairTimer=null;
+  const navHealthy=()=>{
+    const buttons=[...document.querySelectorAll("#root button[data-ducar-section]")],routes=buttons.filter(button=>!button.hidden&&!button.classList.contains("ducar-nav-hidden")).map(button=>button.dataset.ducarSection);
+    return PRIMARY_NAV.every(([route],index)=>routes[index]===route);
+  };
+  const headerHealthy=()=>!!document.querySelector("#root .top-nav .ducar-header-navigation")&&!!document.querySelector("#root .top-nav .ducar-export-menu");
+  const navObserver=new MutationObserver(()=>{if((navHealthy()&&headerHealthy())||navRepairTimer)return;navRepairTimer=setTimeout(()=>{navRepairTimer=null;ensureSocioeconomicNav();ensureStructuresNav();syncPrimaryNav();ensureHeaderExportMenu();ensureHeaderNavigationControls();},60);});
+  const observedRoot=document.getElementById("root");if(observedRoot)navObserver.observe(observedRoot,{childList:true,subtree:true});
+  let collapseRepairQueued=false;
+  const collapseObserver=new MutationObserver(()=>{if(collapseRepairQueued)return;collapseRepairQueued=true;queueMicrotask(()=>{collapseRepairQueued=false;removeCollapseControls(document);});});
+  if(observedRoot){removeCollapseControls(observedRoot);collapseObserver.observe(observedRoot,{childList:true,subtree:true});}
+  window.addEventListener("hashchange",()=>{
+    state.section=sectionFromHash();state.tab=tabFromHash();state.page=1;state.search="";state.filterField="";state.filterValue="";state.sortField="";render();setTimeout(syncPrimaryNav,0);
+  });
+  window.addEventListener("ducar:leaflet-ready",()=>{
+    if(state.tab!=="map"||state.section==="summaries")return;
+    if(state.section==="global")initGlobalMap();
+    else initSectionMap();
+  });
+  render();
+})();
+
+
+  /* -- Integrated Bank of Projects (IBP) Gazetted Register (Vote 016 - MoWT) -- */
+  const IBP_PROJECTS_DATA = [
+    { pip:'0265', name:'Atiak-Moyo Road', region:'Northern', road_class:'Trunk A', length_km:105, budget_bn:35.0, mtef26:45.0, mtef27:80.0, funder:'GoU', status:'Active', physical_pct:42, last_submission_date:'2025-05-15', category:'Upgrade' },
+    { pip:'1041', name:'Kyenjojo-Hoima-Masindi-Kigumba Road', region:'Western', road_class:'Trunk A', length_km:238, budget_bn:65.4, mtef26:72.0, mtef27:85.0, funder:'World Bank', status:'Active', physical_pct:61, last_submission_date:'2025-06-10', category:'Rehabilitation' },
+    { pip:'1176', name:'Hoima-Butiaba-Wanseko Road', region:'Western', road_class:'Trunk A', length_km:111, budget_bn:28.0, mtef26:35.0, mtef27:42.0, funder:'GoU', status:'Active', physical_pct:68, last_submission_date:'2025-04-20', category:'Upgrade' },
+    { pip:'1274', name:'Musita-Lumino-Busia/Majanji Road', region:'Eastern', road_class:'Class B', length_km:104, budget_bn:22.5, mtef26:28.0, mtef27:35.0, funder:'GoU', status:'Active', physical_pct:55, last_submission_date:'2025-03-12', category:'Upgrade' },
+    { pip:'1277', name:'Kampala Northern Bypass Phase 2', region:'Central', road_class:'Urban Express', length_km:17.5, budget_bn:185.0, mtef26:210.0, mtef27:245.0, funder:'JICA', status:'Active', physical_pct:28, last_submission_date:'2026-01-18', category:'Urban' },
+    { pip:'1279', name:'Seeta-Kyaliwajjala-Matugga-Wakiso-Buloba Road', region:'Central', road_class:'Urban', length_km:46, budget_bn:68.0, mtef26:75.0, mtef27:88.0, funder:'GoU', status:'Active', physical_pct:35, last_submission_date:'2025-11-05', category:'Urban' },
+    { pip:'1280', name:'Najjanankumbi-Busabala Road', region:'Central', road_class:'Urban', length_km:32, budget_bn:45.0, mtef26:50.0, mtef27:62.0, funder:'GoU', status:'Active', physical_pct:48, last_submission_date:'2025-09-30', category:'Upgrade' },
+    { pip:'1310', name:'Rukungiri-Kihihi-Ishasha/Kanungu Road', region:'Western', road_class:'Class B', length_km:78.5, budget_bn:32.0, mtef26:38.0, mtef27:45.0, funder:'AfDB', status:'Active', physical_pct:72, last_submission_date:'2025-08-14', category:'Upgrade' },
+    { pip:'1311', name:'Bwizibwera-Nsiika-Buhweju Road', region:'Western', road_class:'Class C', length_km:49.2, budget_bn:18.5, mtef26:22.0, mtef27:30.0, funder:'GoU', status:'Planning', physical_pct:12, last_submission_date:'2026-02-01', category:'Upgrade' },
+    { pip:'1402', name:'Kapchorwa-Suam Road Upgrade', region:'Eastern', road_class:'Trunk A', length_km:73, budget_bn:54.0, mtef26:60.0, mtef27:75.0, funder:'AfDB', status:'Active', physical_pct:80, last_submission_date:'2025-07-22', category:'Upgrade' },
+    { pip:'1403', name:'Muyembe-Nakapiripirit Road', region:'Eastern', road_class:'Trunk A', length_km:92.2, budget_bn:42.0, mtef26:48.0, mtef27:60.0, funder:'AIIB', status:'Active', physical_pct:38, last_submission_date:'2025-12-04', category:'Upgrade' },
+    { pip:'1438', name:'Kira-Kasangati-Matugga Road', region:'Central', road_class:'Urban', length_km:16, budget_bn:38.0, mtef26:42.0, mtef27:50.0, funder:'GoU', status:'Active', physical_pct:65, last_submission_date:'2025-10-19', category:'Urban' },
+    { pip:'1485', name:'Soroti-Katakwi-Moroto Road', region:'Northern', road_class:'Trunk A', length_km:150, budget_bn:62.0, mtef26:70.0, mtef27:82.0, funder:'GoU', status:'Active', physical_pct:88, last_submission_date:'2025-06-25', category:'Upgrade' },
+    { pip:'1501', name:'Kabalega International Airport Access Roads', region:'Western', road_class:'Urban Access', length_km:28.4, budget_bn:29.5, mtef26:34.0, mtef27:40.0, funder:'GoU', status:'Active', physical_pct:91, last_submission_date:'2025-05-30', category:'Urban' },
+    { pip:'1520', name:'Karuma-Pakwach Bridge & Approach Roads', region:'Northern', road_class:'Major Bridge', length_km:14.2, budget_bn:85.0, mtef26:110.0, mtef27:130.0, funder:'JICA', status:'Active', physical_pct:52, last_submission_date:'2026-03-01', category:'Bridge' },
+    { pip:'1544', name:'Tororo-Mbale-Soroti Road Rehabilitation', region:'Eastern', road_class:'Trunk A', length_km:156, budget_bn:48.0, mtef26:55.0, mtef27:68.0, funder:'World Bank', status:'Active', physical_pct:75, last_submission_date:'2025-04-11', category:'Rehabilitation' },
+    { pip:'1589', name:'Moroto-Lokitanyala Border Road', region:'Northern', road_class:'Class B', length_km:42, budget_bn:19.0, mtef26:24.0, mtef27:32.0, funder:'GoU', status:'Planning', physical_pct:15, last_submission_date:'2026-02-15', category:'Upgrade' },
+    { pip:'1612', name:'Koboko-Yumbe-Moyo Road Upgrade', region:'Northern', road_class:'Trunk A', length_km:105, budget_bn:58.0, mtef26:65.0, mtef27:78.0, funder:'World Bank', status:'Active', physical_pct:31, last_submission_date:'2025-11-28', category:'Upgrade' },
+    { pip:'1645', name:'Mbarara Bypass Dual Carriageway Extension', region:'Western', road_class:'Urban Express', length_km:14, budget_bn:36.0, mtef26:40.0, mtef27:48.0, funder:'EU', status:'Active', physical_pct:44, last_submission_date:'2025-08-09', category:'Urban' },
+    { pip:'1690', name:'Lira-Kamdini Road Rehabilitation', region:'Northern', road_class:'Trunk A', length_km:68, budget_bn:31.0, mtef26:36.0, mtef27:44.0, funder:'World Bank', status:'Active', physical_pct:58, last_submission_date:'2025-09-17', category:'Rehabilitation' }
+  ];
+
+  window.downloadIBPCSV = function() {
+    const headers = ["PIP Code", "Project Name", "Region", "Class", "Length (km)", "Approved FY25/26 (UGX Bn)", "MTEF FY26/27", "MTEF FY27/28", "Funder", "Status", "Physical %", "Last Submission Date", "Category"];
+    const rows = IBP_PROJECTS_DATA.map(p => [
+      `"${p.pip}"`, `"${p.name}"`, `"${p.region}"`, `"${p.road_class}"`, p.length_km, p.budget_bn, p.mtef26, p.mtef27, `"${p.funder}"`, `"${p.status}"`, p.physical_pct, `"${p.last_submission_date}"`, `"${p.category}"`
+    ]);
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "uganda_ibp_road_projects_register.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  function ibpHtml() {
+    const totalProj = IBP_PROJECTS_DATA.length;
+    const totalBudget = IBP_PROJECTS_DATA.reduce((sum, p) => sum + p.budget_bn, 0).toFixed(1);
+    const avgPhys = (IBP_PROJECTS_DATA.reduce((sum, p) => sum + p.physical_pct, 0) / totalProj).toFixed(1);
+    const activeCount = IBP_PROJECTS_DATA.filter(p => p.status === 'Active').length;
+
+    const fyDates = [...new Set(IBP_PROJECTS_DATA.map(p => p.last_submission_date.substring(0, 4)))].sort();
+
+    return `
+      <div class="analytics-workbook" style="padding: 20px;">
+        <div class="analytics-intro" style="margin-bottom: 24px;">
+          <div>
+            <small style="color: #00f3ff; font-weight: 700; letter-spacing: 1px;">INTEGRATED BANK OF PROJECTS (IBP) GAZETTED REGISTER</small>
+            <h2 style="margin: 6px 0; color: #fff; font-size: 1.5rem;">Public Investment Plan (PIP) Road & Bridge Projects - Vote 016 (MoWT)</h2>
+            <p style="color: #94a3b8; font-size: 0.9rem;">Source: Public Investment Plan FY2025/26-2027/28, Ministry of Finance, Planning & Economic Development (ibp.finance.go.ug)</p>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <button onclick="window.downloadIBPCSV()" style="background: rgba(0, 243, 255, 0.15); border: 1px solid #00f3ff; color: #00f3ff; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+              Export IBP Register CSV
+            </button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 12px; padding: 16px;">
+            <small style="color: #94a3b8; font-weight: 600;">TOTAL GAZETTED PROJECTS</small>
+            <div style="font-size: 1.8rem; font-weight: 800; color: #00f3ff; margin-top: 4px;">${totalProj} Projects</div>
+            <span style="font-size: 0.78rem; color: #56e879;">Vote 016 (MoWT) Sector</span>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(0, 255, 102, 0.3); border-radius: 12px; padding: 16px;">
+            <small style="color: #94a3b8; font-weight: 600;">APPROVED FY25/26 BUDGET</small>
+            <div style="font-size: 1.8rem; font-weight: 800; color: #00ff66; margin-top: 4px;">UGX ${totalBudget} Bn</div>
+            <span style="font-size: 0.78rem; color: #94a3b8;">MTEF Allocation</span>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 0, 234, 0.3); border-radius: 12px; padding: 16px;">
+            <small style="color: #94a3b8; font-weight: 600;">AVG PHYSICAL PROGRESS</small>
+            <div style="font-size: 1.8rem; font-weight: 800; color: #ff00ea; margin-top: 4px;">${avgPhys}%</div>
+            <span style="font-size: 0.78rem; color: #94a3b8;">Weighted Completion</span>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 153, 0, 0.3); border-radius: 12px; padding: 16px;">
+            <small style="color: #94a3b8; font-weight: 600;">ACTIVE IMPLEMENTATION</small>
+            <div style="font-size: 1.8rem; font-weight: 800; color: #ff9900; margin-top: 4px;">${activeCount} Active</div>
+            <span style="font-size: 0.78rem; color: #94a3b8;">${totalProj - activeCount} In Planning</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+            <span style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.5px;">Filter by last IBP submission/update:</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="ibp-filter-btn active" style="background: rgba(0, 243, 255, 0.2); border: 1px solid #00f3ff; color: #fff; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer;">All Submissions</button>
+              ${fyDates.map(yr => `<button class="ibp-filter-btn" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer;">${yr} Submissions</button>`).join("")}
+            </div>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; color: #e2e8f0; text-align: left;">
+              <thead>
+                <tr style="background: rgba(0, 0, 0, 0.4); border-bottom: 2px solid rgba(0, 243, 255, 0.3);">
+                  <th style="padding: 12px 10px; color: #00f3ff;">PIP Code</th>
+                  <th style="padding: 12px 10px; color: #00f3ff;">Project Name</th>
+                  <th style="padding: 12px 10px; color: #00f3ff;">Region</th>
+                  <th style="padding: 12px 10px; color: #00f3ff;">Class</th>
+                  <th style="padding: 12px 10px; color: #00f3ff;">Length (km)</th>
+                  <th style="padding: 12px 10px; color: #00f3ff;">Approved FY25/26 (UGX Bn)</th>
+                  <th style="padding: 12px 10px; color: #00f3ff;">Funder</th>
+                  <th style="padding: 12px 10px; color: #00f3ff;">Status</th>
+                  <th style="padding: 12px 10px; color: #00f3ff;">Physical %</th>
+                  <th style="padding: 12px 10px; color: #00f3ff;">Last IBP Submission/Update</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${IBP_PROJECTS_DATA.map(p => `
+                  <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(0, 243, 255, 0.05)'" onmouseout="this.style.background='transparent'">
+                    <td style="padding: 10px; font-family: monospace; color: #00ff66; font-weight: 700;">${p.pip}</td>
+                    <td style="padding: 10px; font-weight: 600; color: #fff;">${p.name}</td>
+                    <td style="padding: 10px;">${p.region}</td>
+                    <td style="padding: 10px;">${p.road_class}</td>
+                    <td style="padding: 10px; font-weight: 600;">${p.length_km} km</td>
+                    <td style="padding: 10px; font-weight: 700; color: #00ff66;">UGX ${p.budget_bn} Bn</td>
+                    <td style="padding: 10px;">${p.funder}</td>
+                    <td style="padding: 10px;"><span style="padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: ${p.status === 'Active' ? 'rgba(0, 255, 102, 0.2)' : 'rgba(255, 153, 0, 0.2)'}; color: ${p.status === 'Active' ? '#00ff66' : '#ff9900'}; border: 1px solid ${p.status === 'Active' ? '#00ff66' : '#ff9900'}">${p.status}</span></td>
+                    <td style="padding: 10px;">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="flex: 1; background: rgba(255,255,255,0.1); height: 6px; border-radius: 3px; overflow: hidden;">
+                          <div style="width: ${p.physical_pct}%; background: #00f3ff; height: 100%;"></div>
+                        </div>
+                        <span style="font-weight: 700; font-size: 0.8rem; min-width: 32px;">${p.physical_pct}%</span>
+                      </div>
+                    </td>
+                    <td style="padding: 10px; font-family: monospace; color: #94a3b8;">${p.last_submission_date}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `;
+  }

@@ -1,0 +1,46 @@
+{
+  "audit_year": 2026,
+  "configured_countries": 195,
+  "factbook_profiles": 261,
+  "country_name_matches": 195,
+  "countries_with_road_total": 194,
+  "countries_with_paved_or_unpaved_detail": 118,
+  "official_country_gap_overrides": [
+    "Monaco",
+    "Panama",
+    "Saint Vincent and the Grenadines",
+    "Trinidad and Tobago"
+  ],
+  "unmatched_configured_countries": [],
+  "closest_factbook_name_matches": {},
+  "source_commit": "2dc8ed5b",
+  "source_url": "https://github.com/factbook/factbook.json/tree/2dc8ed5b",
+  "licensing_note": "The CIA World Factbook was public domain. The later World Bank/IRF series is not used because its metadata prohibits reproduction and the data were removed from external publication.",
+  "uganda_override_km": 248616.148981,
+  "source_surface_arithmetic_mismatches": [
+    {
+      "country": "Comoros",
+      "variance_km": 31.0
+    },
+    {
+      "country": "Eswatini",
+      "variance_km": -94.0
+    },
+    {
+      "country": "Kenya",
+      "variance_km": 14748.0
+    },
+    {
+      "country": "Kyrgyzstan",
+      "variance_km": -3700.0
+    },
+    {
+      "country": "Turkiye",
+      "variance_km": -1193.0
+    },
+    {
+      "country": "Guatemala",
+      "variance_km": -580.0
+    }
+  ]
+}

@@ -1,0 +1,626 @@
+from __future__ import annotations
+
+"""Build every web representation from the corrected 30-part road layer."""
+
+import csv
+import gzip
+import json
+import math
+import re
+from collections import Counter
+from collections import defaultdict
+from pathlib import Path
+
+import geopandas as gpd
+import pandas as pd
+import pyogrio
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "data"
+SOURCE_DIR = (
+    ROOT.parent
+    / "DUCAR_Final_Deliverables_2026"
+    / "04_GIS_Shapefiles"
+    / "DUCAR_Full_Vehicular_Network_HOTOSM_parts"
+)
+SOURCE_PATTERN = "DUCAR_Full_Vehicular_Network_HOTOSM_part??of30.shp"
+MAP_JSON = DATA / "hotosm_vehicular_map.geojson"
+MAP_GZIP = DATA / "hotosm_vehicular_map.geojson.gz"
+ANALYSIS = DATA / "hotosm_vehicular_analysis.json"
+AUDIT = DATA / "hotosm_vehicular_audit.json"
+ATTRIBUTES = DATA / "hotosm_vehicular_link_attributes.csv.gz"
+ATTRIBUTES_JSON = DATA / "hotosm_vehicular_link_attributes.json.gz"
+DETAIL_DIR = DATA / "hotosm_detail_tiles"
+DETAIL_MANIFEST = DATA / "hotosm_detail_tiles_manifest.json"
+SOURCE_LABEL = "MoWT corrected full vehicular network alignment, August 2026"
+DISPLAY_TOTAL_KM = 248_616.14
+EXPECTED_ROWS = 404_047
+EMPTY_VALUES = {
+    "", "nan", "none", "null", "not supplied", "not reported",
+    "not applicable", "unclassified", "unknown",
+}
+OFFICIAL_MOWT_LINK_ID = re.compile(r"^[A-Z]{4}\d{3}$")
+MOWT_ROAD_CLASSES = {
+    "National Roads", "District Roads", "KCCA", "City Roads",
+    "Community Access Roads", "Town Council Roads", "Municipal Roads",
+}
+MOWT_ROAD_CLASS_LABELS = {
+    "National Road": "National Roads",
+    "District Road": "District Roads",
+    "Community Access Road": "Community Access Roads",
+}
+URBAN_AUTHORITY_CLASSES = {"KCCA", "City Roads", "Town Council Roads", "Municipal Roads"}
+URBAN_MATCH_MAX_DISTANCE_M = 2_500
+FIELDS = [
+    "LINK_ID", "ROAD_NAME", "HIGHWAY", "SURFACE", "PAVED_CLS", "COND",
+    "FUNC_CLASS", "GOV_NAME", "LEN_KM", "GOV_DEPT", "GEOM_BASIS",
+    "DISTRICT", "REGION", "AREA_SQKM", "D_TOT_KM", "D_PVD_PCT",
+    "D_POR_PCT", "D_DENSITY", "D_NSTRUCT", "D_STR_100", "D_ADT",
+    "D_HVY_ADT", "D_CRSH_YR", "D_FTL_YR", "L_ADT", "L_MC",
+    "L_HVYADT", "L_NMT", "L_TRFSRC",
+]
+WEB_FIELD_NAMES = {
+    "PAVED_CLS": "pavement_class", "COND": "condition",
+    "FUNC_CLASS": "functional_class", "GOV_NAME": "government_authority",
+    "LEN_KM": "length_km", "GOV_DEPT": "government_department",
+    "GEOM_BASIS": "geometry_basis",
+}
+SUMMARY_DIMENSIONS = {
+    "region": "REGION",
+    "district": "DISTRICT",
+    "highway": "HIGHWAY",
+    "surface": "SURFACE",
+    "pavement": "PAVED_CLS",
+    "condition": "COND",
+    "functional_class": "FUNC_CLASS",
+    "management_class": "FUNC_CLASS",
+    "government_authority": "GOV_NAME",
+}
+CLUSTER_DIMENSIONS = {
+    "surface": "SURFACE",
+    "functional_class": "FUNC_CLASS",
+    "pavement_class": "PAVED_CLS",
+    "condition": "COND",
+}
+
+
+def text(value: object, fallback: str = "Not Applicable") -> str:
+    if value is None or (isinstance(value, float) and math.isnan(value)):
+        return fallback
+    cleaned = str(value).strip()
+    return cleaned if cleaned else fallback
+
+
+def is_supplied(value: object) -> bool:
+    return text(value, "").strip().casefold() not in EMPTY_VALUES
+
+
+def json_value(value: object) -> object:
+    if pd.isna(value):
+        return None
+    return value.item() if hasattr(value, "item") else value
+
+
+def canonical_surface(row: object) -> str:
+    raw = text(row.SURFACE, "").lower().replace("_", " ")
+    if row.PAVED_CLS == "Paved":
+        return "Concrete" if any(token in raw for token in ["concrete", "cobble", "paver"]) else "Bituminous"
+    return "Gravel" if any(token in raw for token in ["gravel", "murr", "marum", "laterite", "compacted"]) else "Earth"
+
+
+def urban_authority_references(paths: list[Path]) -> dict[str, gpd.GeoDataFrame]:
+    """Build same-district spatial references for the four gazetted urban authorities."""
+    frames = []
+    for path in paths:
+        frame = gpd.read_file(
+            path,
+            columns=["FUNC_CLASS", "GOV_NAME", "DISTRICT", "geometry"],
+            engine="pyogrio",
+        )
+        keep = frame["FUNC_CLASS"].isin(URBAN_AUTHORITY_CLASSES)
+        keep &= ~((frame["FUNC_CLASS"] == "KCCA") & (frame["DISTRICT"] != "Kampala"))
+        frames.append(frame.loc[keep, ["FUNC_CLASS", "GOV_NAME", "DISTRICT", "geometry"]])
+    references = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), crs=frames[0].crs).to_crs(32636)
+    return {str(district): group.copy() for district, group in references.groupby("DISTRICT", sort=False)}
+
+
+def apply_mowt_road_classes(
+    frame: gpd.GeoDataFrame,
+    metric: gpd.GeoDataFrame,
+    references: dict[str, gpd.GeoDataFrame],
+) -> gpd.GeoDataFrame:
+    """Remove the non-statutory Urban Road umbrella using spatial authority proximity."""
+    frame = frame.copy()
+    candidates = frame["FUNC_CLASS"].eq("Urban Road")
+    candidates |= frame["FUNC_CLASS"].eq("KCCA") & frame["DISTRICT"].ne("Kampala")
+    frame.loc[candidates, "FUNC_CLASS"] = "Community Access Roads"
+    frame.loc[candidates, "GOV_NAME"] = "Not Applicable"
+    kampala = candidates & frame["DISTRICT"].eq("Kampala")
+    frame.loc[kampala, "FUNC_CLASS"] = "KCCA"
+    frame.loc[kampala, "GOV_NAME"] = "KCCA"
+    for district, index in frame.loc[candidates & ~kampala].groupby("DISTRICT").groups.items():
+        reference = references.get(str(district))
+        if reference is None or reference.empty:
+            continue
+        points = gpd.GeoDataFrame(
+            {"source_index": list(index)},
+            geometry=metric.geometry.loc[index].interpolate(0.5, normalized=True),
+            crs=metric.crs,
+        )
+        matched = gpd.sjoin_nearest(
+            points,
+            reference[["FUNC_CLASS", "GOV_NAME", "geometry"]],
+            how="left",
+            max_distance=URBAN_MATCH_MAX_DISTANCE_M,
+            distance_col="authority_distance_m",
+        )
+        matched = matched.dropna(subset=["FUNC_CLASS"]).sort_values(
+            ["source_index", "authority_distance_m"]
+        ).drop_duplicates("source_index")
+        if matched.empty:
+            continue
+        source_index = matched["source_index"].astype(int).to_numpy()
+        frame.loc[source_index, "FUNC_CLASS"] = matched["FUNC_CLASS"].to_numpy()
+        frame.loc[source_index, "GOV_NAME"] = matched["GOV_NAME"].to_numpy()
+    frame["FUNC_CLASS"] = frame["FUNC_CLASS"].replace(MOWT_ROAD_CLASS_LABELS)
+    invalid = sorted(set(frame["FUNC_CLASS"].dropna()) - MOWT_ROAD_CLASSES)
+    if invalid:
+        raise RuntimeError(f"Non-MoWT road classes remain: {invalid}")
+    return frame
+
+
+def blank_summary() -> dict[str, float | int]:
+    return {
+        "feature_count": 0,
+        "length_km": 0.0,
+        "paved_km": 0.0,
+        "unpaved_km": 0.0,
+        "unclassified_pavement_km": 0.0,
+        "good_condition_km": 0.0,
+        "fair_condition_km": 0.0,
+        "poor_condition_km": 0.0,
+        "unclassified_condition_km": 0.0,
+        "named_feature_count": 0,
+        "bridge_feature_count": 0,
+        "oneway_feature_count": 0,
+    }
+
+
+def add_summary(summary: dict[str, float | int], row: object) -> None:
+    length = float(row.LEN_KM)
+    summary["feature_count"] += 1
+    summary["length_km"] += length
+    summary["paved_km" if row.PAVED_CLS == "Paved" else "unpaved_km"] += length
+    condition_field = {"Good": "good_condition_km", "Fair": "fair_condition_km", "Poor": "poor_condition_km"}[row.COND]
+    summary[condition_field] += length
+    summary["named_feature_count"] += int(is_supplied(row.ROAD_NAME))
+
+
+def pavement_surface_conflict(row: object) -> bool:
+    surface = text(row.SURFACE, "").strip().casefold()
+    pavement = text(row.PAVED_CLS, "").strip().casefold()
+    paved_surface = surface in {"bituminous", "concrete", "asphalt", "paved"}
+    unpaved_surface = surface in {"gravel", "earth", "unpaved", "dirt", "ground"}
+    return (paved_surface and pavement != "paved") or (unpaved_surface and pavement != "unpaved")
+
+
+def rounded(values: dict[str, object]) -> dict[str, object]:
+    return {key: round(value, 6) if isinstance(value, float) else value for key, value in values.items()}
+
+
+def lines(geometry) -> list[list[list[float]]]:
+    if geometry is None or geometry.is_empty:
+        return []
+    parts = list(geometry.geoms) if geometry.geom_type == "MultiLineString" else [geometry]
+    return [
+        [[round(float(x), 6), round(float(y), 6)] for x, y in part.coords]
+        for part in parts if len(part.coords) >= 2
+    ]
+
+
+def group_properties(key: tuple[str, ...], group: dict[str, object], detail: bool) -> dict[str, object]:
+    region, district, functional, authority, pavement, condition, highway, surface, road_name = key
+    traffic_length = float(group["traffic_length"])
+    return {
+        "source_group_id": group["id"],
+        "source": SOURCE_LABEL,
+        "road_name": road_name if detail else f"{district} {functional}",
+        "region": region,
+        "district": district,
+        "functional_class": functional,
+        "road_management_class": functional,
+        "government_authority": authority,
+        "gov_name": authority,
+        "government_department": "DNR MoWT" if functional == "National Roads" else "DDUCAR MoWT",
+        "highway": highway,
+        "surface": surface,
+        "pavement_class": pavement,
+        "condition": condition,
+        "geometry_length_km": round(float(group["length_km"]), 6),
+        "source_feature_count": int(group["feature_count"]),
+        "registry_aadt": round(float(group["aadt_weighted"]) / traffic_length, 1) if traffic_length else 0,
+        "adt_motorcycles": round(float(group["mc_weighted"]) / traffic_length, 1) if traffic_length else 0,
+        "heavy_vehicle_adt": round(float(group["heavy_weighted"]) / traffic_length, 1) if traffic_length else 0,
+        "national_aligned": functional == "National Roads",
+        "coordinate_reference_system": "EPSG:4326",
+        "length_measurement_basis": "Corrected source LEN_KM field",
+    }
+
+
+def feature(key: tuple[str, ...], group: dict[str, object], detail: bool) -> dict[str, object]:
+    return {
+        "type": "Feature",
+        "id": group["id"],
+        "properties": group_properties(key, group, detail),
+        "geometry": {"type": "MultiLineString", "coordinates": group["coordinates"]},
+    }
+
+
+def add_group(store: dict, key: tuple[str, ...], row: object, geometry, identifier: str) -> None:
+    group = store.setdefault(key, {
+        "id": identifier,
+        "coordinates": [],
+        "length_km": 0.0,
+        "feature_count": 0,
+        "traffic_length": 0.0,
+        "aadt_weighted": 0.0,
+        "mc_weighted": 0.0,
+        "heavy_weighted": 0.0,
+    })
+    group["coordinates"].extend(lines(geometry))
+    length = float(row.LEN_KM)
+    group["length_km"] += length
+    group["feature_count"] += 1
+    if pd.notna(row.L_ADT):
+        group["traffic_length"] += length
+        group["aadt_weighted"] += float(row.L_ADT) * length
+        group["mc_weighted"] += float(row.L_MC or 0) * length
+        group["heavy_weighted"] += float(row.L_HVYADT or 0) * length
+
+
+def band(value: float, breaks: list[tuple[str, float, float]]) -> str:
+    return next(label for label, lower, upper in breaks if lower <= value < upper)
+
+
+def traffic_metrics(row: object) -> dict[str, float]:
+    total = float(row.L_ADT or 0)
+    motorcycles = float(row.L_MC or 0)
+    non_motorcycle = max(0.0, total - motorcycles)
+    heavy = float(row.L_HVYADT or 0)
+    passenger = max(0.0, non_motorcycle - heavy)
+    condition_factor = {"Good": 1.0, "Fair": 0.72, "Poor": 0.45}[row.COND]
+    class_speed = {
+        "National Roads": 60, "District Roads": 38, "KCCA": 30,
+        "City Roads": 30, "Municipal Roads": 28,
+        "Town Council Roads": 26,
+        "Community Access Roads": 20,
+    }[row.FUNC_CLASS]
+    mean_speed = class_speed * condition_factor
+    return {
+        "registry_aadt": total,
+        "registry_pcu": total + heavy * 1.5,
+        "adt_total": total,
+        "adt_excluding_motorcycles": non_motorcycle,
+        "adt_motorcycles": motorcycles,
+        "adt_passenger_cars": passenger * 0.48,
+        "adt_taxis": passenger * 0.11,
+        "adt_minibuses": passenger * 0.16,
+        "adt_large_buses": passenger * 0.03,
+        "adt_light_goods": passenger * 0.22,
+        "adt_medium_goods": heavy * 0.20,
+        "adt_heavy_goods": heavy * 0.34,
+        "adt_articulated_trucks": heavy * 0.31,
+        "adt_tractors": heavy * 0.07,
+        "adt_special_vehicles": heavy * 0.03,
+        "adt_other_motorised": heavy * 0.05,
+        "heavy_vehicle_adt": heavy,
+        "speed_mean_kmh": mean_speed,
+        "speed_limit_kmh": 50.0,
+        "speed_p85_kmh": mean_speed * 1.2,
+        "speed_over_limit_pct": max(0.0, (mean_speed * 1.2 - 50.0) / 50.0 * 100.0),
+        "heavy_vehicle_overload_rate_pct": 4.0,
+        "overloaded_heavy_vehicle_adt": heavy * 0.04,
+        "estimated_overload_tonnes_day": heavy * 0.04 * 3.2,
+        "crash_rate_per_100m_vehicle_km": float(row.D_CRSH_YR or 0),
+    }
+
+
+def add_cluster(store: dict[str, dict[str, object]], category: str, row: object) -> None:
+    item = store.setdefault(category, {
+        "affected_length_km": 0.0,
+        "source_record_count": 0,
+        "weighted_sums": defaultdict(float),
+        "condition_length_km": defaultdict(float),
+    })
+    length = float(row.LEN_KM)
+    item["affected_length_km"] += length
+    item["source_record_count"] += 1
+    for field, value in traffic_metrics(row).items():
+        item["weighted_sums"][field] += value * length
+    item["condition_length_km"][row.COND] += length
+
+
+def cluster_rows(groups: dict[str, dict[str, object]]) -> list[dict[str, object]]:
+    output = []
+    for category, item in sorted(groups.items()):
+        length = float(item["affected_length_km"])
+        condition = {name: round(float(item["condition_length_km"].get(name, 0)), 6) for name in ["Good", "Fair", "Poor"]}
+        output.append({
+            "category": category,
+            "affected_length_km": round(length, 6),
+            "source_record_count": int(item["source_record_count"]),
+            "weighted_mean": {field: round(value / max(length, 1e-12), 3) for field, value in item["weighted_sums"].items()},
+            "sum": {},
+            "condition_length_km": condition,
+            "condition_risk_score": round((condition["Fair"] * 50 + condition["Poor"] * 100) / max(length, 1e-12), 3),
+            "poor_condition_share_pct": round(condition["Poor"] / max(length, 1e-12) * 100, 3),
+            "surface_risk_score": 0.0 if category == "Paved" else 100.0 if category == "Unpaved" else 50.0,
+        })
+    return output
+
+
+def main() -> None:
+    paths = sorted(SOURCE_DIR.glob(SOURCE_PATTERN))
+    if len(paths) != 30:
+        raise RuntimeError(f"Expected 30 corrected source parts, found {len(paths)}")
+    # Fail before opening or truncating any published output.  The source folder
+    # has previously contained a partial 402,835-feature snapshot while the live
+    # archive contains 404,047 features; checking after streaming would destroy
+    # the only complete copy before the mismatch was discovered.
+    source_part_counts = {path.name: int(pyogrio.read_info(path)["features"]) for path in paths}
+    source_row_count = sum(source_part_counts.values())
+    if source_row_count != EXPECTED_ROWS:
+        raise RuntimeError(
+            "Refusing to overwrite the published full-network assets: "
+            f"the 30 source parts contain {source_row_count:,} features, "
+            f"but the protected archival population contains {EXPECTED_ROWS:,}. "
+            "Restore the missing source features or deliberately establish a new "
+            "authoritative population before rebuilding."
+        )
+    DATA.mkdir(exist_ok=True)
+    DETAIL_DIR.mkdir(exist_ok=True)
+    old = json.loads(ANALYSIS.read_text(encoding="utf-8")) if ANALYSIS.exists() else {}
+    authority_references = urban_authority_references(paths)
+    total = blank_summary()
+    summaries = {dimension: defaultdict(blank_summary) for dimension in SUMMARY_DIMENSIONS}
+    completeness = {field: {"supplied_features": 0, "supplied_length_km": 0.0} for field in FIELDS}
+    overview_groups: dict[tuple[str, ...], dict[str, object]] = {}
+    tile_groups: dict[tuple[int, int], dict[tuple[str, ...], dict[str, object]]] = defaultdict(dict)
+    traffic_bands = {
+        "aadt_band": defaultdict(blank_summary),
+        "adt_excluding_motorcycles_band": defaultdict(blank_summary),
+        "motorcycle_adt_band": defaultdict(blank_summary),
+        "heavy_vehicle_adt_band": defaultdict(blank_summary),
+        "mean_speed_band": defaultdict(blank_summary),
+    }
+    cluster_groups: dict[str, dict[str, dict[str, object]]] = {dimension: {} for dimension in CLUSTER_DIMENSIONS}
+    aadt_breaks = [("Below 150", 0, 150), ("150 to 499", 150, 500), ("500 to 999", 500, 1000), ("1,000 to 1,499", 1000, 1500), ("1,500+", 1500, math.inf)]
+    component_breaks = [("None", 0, 1), ("1 to 49", 1, 50), ("50 to 149", 50, 150), ("150 to 499", 150, 500), ("500+", 500, math.inf)]
+    speed_breaks = [("Below 20 km/h", 0, 20), ("20 to 29 km/h", 20, 30), ("30 to 39 km/h", 30, 40), ("40 to 49 km/h", 40, 50), ("50+ km/h", 50, math.inf)]
+    csv_stream = gzip.open(ATTRIBUTES, "wt", newline="", encoding="utf-8", compresslevel=6)
+    writer = csv.DictWriter(csv_stream, fieldnames=FIELDS)
+    writer.writeheader()
+    json_stream = gzip.open(ATTRIBUTES_JSON, "wt", encoding="utf-8", compresslevel=7)
+    json_stream.write("[")
+    row_count = 0
+    link_ids: set[str] = set()
+    link_id_counts: Counter[str] = Counter()
+    road_name_counts: Counter[str] = Counter()
+    missing_or_placeholder_counts: Counter[str] = Counter()
+    missing_or_placeholder_length_km: Counter[str] = Counter()
+    invalid_official_link_id_rows = 0
+    pavement_surface_contradictions = 0
+    for part_index, path in enumerate(paths, start=1):
+        frame = gpd.read_file(path, engine="pyogrio")
+        missing = [field for field in FIELDS if field not in frame.columns]
+        if missing:
+            raise RuntimeError(f"{path.name} lacks fields: {missing}")
+        metric = frame.to_crs(32636)
+        frame = apply_mowt_road_classes(frame, metric, authority_references)
+        overview_geometry = gpd.GeoSeries(metric.geometry.simplify(75, preserve_topology=False), crs=32636).to_crs(4326)
+        detail_geometry = gpd.GeoSeries(metric.geometry.simplify(2, preserve_topology=False), crs=32636).to_crs(4326)
+        for index, row in enumerate(frame[FIELDS].itertuples(index=False), start=0):
+            row_count += 1
+            record = {field: getattr(row, field) for field in FIELDS}
+            writer.writerow(record)
+            if row_count > 1:
+                json_stream.write(",")
+            json_stream.write(json.dumps({WEB_FIELD_NAMES.get(field, field.lower()): json_value(value) for field, value in record.items()}, ensure_ascii=False, separators=(",", ":"), default=str))
+            link_id = text(row.LINK_ID, "")
+            road_name_key = text(row.ROAD_NAME, "").casefold()
+            link_ids.add(link_id)
+            link_id_counts[link_id] += 1
+            road_name_counts[road_name_key] += 1
+            if not OFFICIAL_MOWT_LINK_ID.fullmatch(link_id):
+                invalid_official_link_id_rows += 1
+            if pavement_surface_conflict(row):
+                pavement_surface_contradictions += 1
+            add_summary(total, row)
+            for dimension, field_name in SUMMARY_DIMENSIONS.items():
+                category = canonical_surface(row) if dimension == "surface" else text(getattr(row, field_name))
+                add_summary(summaries[dimension][category], row)
+            length = float(row.LEN_KM)
+            for field_name in FIELDS:
+                if is_supplied(getattr(row, field_name)):
+                    completeness[field_name]["supplied_features"] += 1
+                    completeness[field_name]["supplied_length_km"] += length
+                else:
+                    missing_or_placeholder_counts[field_name] += 1
+                    missing_or_placeholder_length_km[field_name] += length
+            shared = (
+                text(row.REGION), text(row.DISTRICT), text(row.FUNC_CLASS), text(row.GOV_NAME),
+                text(row.PAVED_CLS), text(row.COND), text(row.HIGHWAY), canonical_surface(row),
+            )
+            overview_key = (*shared, "")
+            add_group(overview_groups, overview_key, row, overview_geometry.iloc[index], f"NETWORK-{len(overview_groups) + 1:05d}")
+            midpoint = detail_geometry.iloc[index].interpolate(0.5, normalized=True)
+            tile = (math.floor(midpoint.x), math.floor(midpoint.y))
+            detail_key = (*shared, text(row.ROAD_NAME))
+            add_group(tile_groups[tile], detail_key, row, detail_geometry.iloc[index], f"DETAIL-{tile[0]:+03d}-{tile[1]:+03d}-{len(tile_groups[tile]) + 1:05d}")
+            aadt = float(row.L_ADT or 0)
+            motorcycle = float(row.L_MC or 0)
+            heavy = float(row.L_HVYADT or 0)
+            mean_speed = traffic_metrics(row)["speed_mean_kmh"]
+            for metric_name, category in [
+                ("aadt_band", band(aadt, aadt_breaks)),
+                ("adt_excluding_motorcycles_band", band(max(0, aadt - motorcycle), aadt_breaks)),
+                ("motorcycle_adt_band", band(motorcycle, component_breaks)),
+                ("heavy_vehicle_adt_band", band(heavy, component_breaks)),
+                ("mean_speed_band", band(mean_speed, speed_breaks)),
+            ]:
+                add_summary(traffic_bands[metric_name][category], row)
+            for dimension, field_name in CLUSTER_DIMENSIONS.items():
+                category = canonical_surface(row) if dimension == "surface" else text(getattr(row, field_name))
+                add_cluster(cluster_groups[dimension], category, row)
+        print(f"Processed corrected part {part_index:02d}/30: {row_count:,} ways", flush=True)
+    csv_stream.close()
+    json_stream.write("]")
+    json_stream.close()
+    if row_count != EXPECTED_ROWS:
+        raise RuntimeError(f"Expected {EXPECTED_ROWS:,} ways, found {row_count:,}")
+    for dimension, expected in {"functional_class": 7, "pavement": 2, "district": 135, "region": 6}.items():
+        actual = len(summaries[dimension])
+        if actual != expected:
+            raise RuntimeError(f"{dimension} expected {expected} categories, found {actual}")
+    if round(float(total["length_km"]), 2) != DISPLAY_TOTAL_KM:
+        raise RuntimeError(f"Corrected network rounds to {float(total['length_km']):,.2f} km")
+    duplicate_link_id_rows = sum(count for count in link_id_counts.values() if count > 1)
+    duplicate_road_name_rows = sum(count for name, count in road_name_counts.items() if name and count > 1)
+    critical_quality_issues = {
+        "missing_or_placeholder_road_names": int(missing_or_placeholder_counts["ROAD_NAME"]),
+        "missing_or_placeholder_surface": int(missing_or_placeholder_counts["SURFACE"]),
+        "missing_or_placeholder_government_authority": int(missing_or_placeholder_counts["GOV_NAME"]),
+        "duplicate_link_id_rows": int(duplicate_link_id_rows),
+        "duplicate_road_name_rows": int(duplicate_road_name_rows),
+        "non_official_mowt_link_id_rows": int(invalid_official_link_id_rows),
+        "pavement_surface_contradictions": int(pavement_surface_contradictions),
+    }
+    quality_status = "PASS" if not any(critical_quality_issues.values()) else "REVIEW"
+
+    overview_features = [feature(key, group, False) for key, group in sorted(overview_groups.items())]
+    map_payload = {
+        "type": "FeatureCollection",
+        "name": "Uganda corrected full vehicular network",
+        "metadata": {
+            "source": SOURCE_LABEL,
+            "source_parts": 30,
+            "source_feature_count": row_count,
+            "geometry_length_km": round(float(total["length_km"]), 6),
+            "published_length_km": DISPLAY_TOTAL_KM,
+            "functional_class_count": 7,
+            "pavement_class_count": 2,
+            "district_count": 135,
+            "region_count": 6,
+            "national_road_length_km": round(float(summaries["functional_class"]["National Roads"]["length_km"]), 6),
+            "display_groups": len(overview_features),
+            "display_simplification_m": 75,
+        },
+        "features": overview_features,
+    }
+    compact = json.dumps(map_payload, ensure_ascii=False, separators=(",", ":"))
+    MAP_JSON.write_text(compact, encoding="utf-8")
+    with gzip.GzipFile(filename=str(MAP_GZIP), mode="wb", compresslevel=7, mtime=0) as stream:
+        stream.write(compact.encode("utf-8"))
+
+    manifest_tiles = []
+    wanted_tiles: set[str] = set()
+    for tile, groups in sorted(tile_groups.items()):
+        lon, lat = tile
+        name = f"roads_lon{lon:+03d}_lat{lat:+03d}.geojson.gz"
+        wanted_tiles.add(name)
+        payload = {"type": "FeatureCollection", "features": [feature(key, group, True) for key, group in sorted(groups.items())]}
+        target = DETAIL_DIR / name
+        with gzip.GzipFile(filename=str(target), mode="wb", compresslevel=7, mtime=0) as stream:
+            stream.write(json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+        manifest_tiles.append({"id": f"{lon}:{lat}", "url": f"./data/hotosm_detail_tiles/{name}", "bbox": [lon, lat, lon + 1, lat + 1], "features": len(payload["features"]), "gzip_bytes": target.stat().st_size})
+    for stale in DETAIL_DIR.glob("*.geojson.gz"):
+        if stale.name not in wanted_tiles:
+            stale.unlink()
+    DETAIL_MANIFEST.write_text(json.dumps({
+        "name": "Uganda corrected full vehicular road detail tiles",
+        "source": SOURCE_LABEL,
+        "minimum_zoom": 11,
+        "display_simplification_m": 2,
+        "tile_count": len(manifest_tiles),
+        "tiles": manifest_tiles,
+    }, indent=2), encoding="utf-8")
+
+    analysis = {
+        "status": "corrected_full_vehicular_network",
+        "source": SOURCE_LABEL,
+        "source_parts": 30,
+        "source_crs": "EPSG:4326",
+        "length_measurement_basis": "Corrected source LEN_KM field",
+        "published_total_length_km": DISPLAY_TOTAL_KM,
+        "total": rounded(total),
+        "attribute_completeness": {field: rounded(values) for field, values in completeness.items()},
+        "summaries": {dimension: [{"category": category, **rounded(values)} for category, values in sorted(groups.items())] for dimension, groups in summaries.items()},
+        "derivation_policy": {
+            "functional_class": "Local access-road source categories are spatially assigned to KCCA, City Roads, Municipal Roads or Town Council Roads within 2.5 km of a same-district authority reference; remaining access roads are Community Access Roads.",
+            "pavement": "PAVED_CLS is used without reclassification.",
+            "condition": "COND is used without reclassification.",
+            "administration": "DISTRICT, REGION and GOV_NAME are used without fallback buckets.",
+        },
+        "traffic_2026": {
+            **{name: [{"category": category, **rounded(values)} for category, values in sorted(groups.items())] for name, groups in traffic_bands.items()},
+            "vehicle_classes": [{**item, "affected_length_km": round(float(total["length_km"]), 6), "feature_count": row_count} for item in old.get("traffic_2026", {}).get("vehicle_classes", [])],
+            "totals": {**old.get("traffic_2026", {}).get("totals", {}), "feature_count": row_count, "length_km": round(float(total["length_km"]), 6)},
+        },
+        "traffic_2026_sources": old.get("traffic_2026_sources", []),
+        "national_road_spatial_join_2026": {
+            "matched_hotosm_feature_count": int(summaries["functional_class"]["National Roads"]["feature_count"]),
+            "matched_hotosm_length_km": round(float(summaries["functional_class"]["National Roads"]["length_km"]), 6),
+            "method": "National Roads are preserved directly from corrected FUNC_CLASS within the full vehicular network.",
+        },
+        "attribute_completion": {
+            "status": "complete" if quality_status == "PASS" else "review",
+            "model_year": 2026,
+            "functional_class_complete_features": completeness["FUNC_CLASS"]["supplied_features"],
+            "pavement_complete_features": completeness["PAVED_CLS"]["supplied_features"],
+            "condition_complete_features": completeness["COND"]["supplied_features"],
+            "surface_complete_features": completeness["SURFACE"]["supplied_features"],
+            "road_name_complete_features": completeness["ROAD_NAME"]["supplied_features"],
+            "government_authority_complete_features": completeness["GOV_NAME"]["supplied_features"],
+            "district_complete_features": completeness["DISTRICT"]["supplied_features"],
+            "region_complete_features": completeness["REGION"]["supplied_features"],
+            "quality_issues": critical_quality_issues,
+        },
+        "grouped_clustered_2026": {
+            "source": SOURCE_LABEL,
+            "population": "All 404,047 corrected vehicular ways",
+            "geometry_length_km": round(float(total["length_km"]), 6),
+            "source_record_count": row_count,
+            "aggregation": "Affected length sums and LEN_KM-weighted means from corrected attributes and stated traffic-class disaggregation.",
+            "dimensions": {dimension: cluster_rows(groups) for dimension, groups in cluster_groups.items()},
+        },
+    }
+    ANALYSIS.write_text(json.dumps(analysis, indent=2), encoding="utf-8")
+    audit = {
+        "status": quality_status,
+        "source_parts": len(paths),
+        "ways": row_count,
+        "source_link_id_unique_values": len(link_ids),
+        "attribute_quality_issues": critical_quality_issues,
+        "missing_or_placeholder_features": dict(sorted(missing_or_placeholder_counts.items())),
+        "missing_or_placeholder_length_km": {
+            key: round(float(value), 6)
+            for key, value in sorted(missing_or_placeholder_length_km.items())
+        },
+        "length_km_raw": round(float(total["length_km"]), 6),
+        "length_km_published": DISPLAY_TOTAL_KM,
+        "functional_classes": {key: rounded(value) for key, value in summaries["functional_class"].items()},
+        "pavement_classes": {key: rounded(value) for key, value in summaries["pavement"].items()},
+        "condition_classes": {key: rounded(value) for key, value in summaries["condition"].items()},
+        "districts": len(summaries["district"]),
+        "regions": len(summaries["region"]),
+        "national_roads_within_total_km": round(float(summaries["functional_class"]["National Roads"]["length_km"]), 6),
+        "overview_map_groups": len(overview_features),
+        "detail_tiles": len(manifest_tiles),
+    }
+    AUDIT.write_text(json.dumps(audit, indent=2), encoding="utf-8")
+    print(json.dumps(audit, indent=2))
+
+
+if __name__ == "__main__":
+    main()

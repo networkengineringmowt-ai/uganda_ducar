@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"name":"Footpath sample","functional_class":"Footpath","surface_type":"Earth","length_km":8},"geometry":{"type":"LineString","coordinates":[[32.7,0.6],[32.8,0.63]]}}]}

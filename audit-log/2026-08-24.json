@@ -1,0 +1,56 @@
+{
+  "date": "2026-08-24",
+  "repo": "uganda_ducar",
+  "url": "https://networkengineringmowt-ai.github.io/uganda_ducar/",
+  "technical": {
+    "httpStatus": 200,
+    "loadFailed": false,
+    "pageRendered": true,
+    "bodyTextLength": 20192,
+    "consoleErrors": [],
+    "brokenImages": [],
+    "hashLinksFound": [
+      "#exhaustive-root"
+    ],
+    "chartElementCount": 82
+  },
+  "accuracy": {
+    "extractedFigures": [
+      {
+        "value": 248616.15,
+        "raw": "248,616.15 km",
+        "context": "PDF report\nTOTAL VEHICULAR-ROAD LENGTH"
+      },
+      {
+        "value": 74161.66,
+        "raw": "74,161.66 km",
+        "context": "ADM2 coverage\nSURFACE-CLASSIFIED LENGTH"
+      },
+      {
+        "value": 1,
+        "raw": "1 km",
+        "context": "n\nPNG\nINDIVIDUAL-LINK LENGTH BAND\nBelow"
+      },
+      {
+        "value": 2.9,
+        "raw": "2.9 km",
+        "context": "mean\nPNG\nINDIVIDUAL-LINK LENGTH BAND\n1–"
+      },
+      {
+        "value": 4.9,
+        "raw": "4.9 km",
+        "context": "mean\nPNG\nINDIVIDUAL-LINK LENGTH BAND\n3–"
+      },
+      {
+        "value": 9.9,
+        "raw": "9.9 km",
+        "context": "mean\nPNG\nINDIVIDUAL-LINK LENGTH BAND\n5–"
+      }
+    ],
+    "discrepancies": []
+  },
+  "consistency": {
+    "districtList": null,
+    "notes": []
+  }
+}
