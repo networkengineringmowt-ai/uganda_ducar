@@ -123,7 +123,8 @@ body {
 
 .nav-rail-item.active,
 .nav-rail-item.codex-injected-active,
-#root .nav-rail-item.active {
+#root .nav-rail-item.active,
+#root .nav-rail-item.codex-injected-active {
   background: linear-gradient(135deg, #0a84ff 0%, #007aff 54%, #5856d6 100%) !important;
   border-color: transparent !important;
   color: #ffffff !important;
@@ -421,7 +422,7 @@ table th {
   background: #eaf3ff !important;
   color: #173b68 !important;
   border-color: #c9ddf5 !important;
-  font-weight: 750 !important;
+  font-weight: 650 !important;
 }
 
 .data-table td,
@@ -445,6 +446,45 @@ table tbody tr:nth-child(even) td {
 .analytics-table tbody tr:hover td,
 table tbody tr:hover td {
   background-color: #edf6ff !important;
+}
+
+.data-table td:first-child,
+.records-table td:first-child,
+.analytics-table td:first-child,
+table td:first-child {
+  background: #ffffff !important;
+  color: #173b68 !important;
+  font-weight: 600 !important;
+  box-shadow: 1px 0 0 #d9e4f2;
+}
+
+.data-table tbody tr:nth-child(even) td:first-child,
+.records-table tbody tr:nth-child(even) td:first-child,
+.analytics-table tbody tr:nth-child(even) td:first-child,
+table tbody tr:nth-child(even) td:first-child {
+  background: #fafaff !important;
+}
+
+.data-table tbody tr:hover td:first-child,
+.records-table tbody tr:hover td:first-child,
+.analytics-table tbody tr:hover td:first-child,
+table tbody tr:hover td:first-child {
+  background: #edf6ff !important;
+}
+
+.data-table th:first-child,
+.records-table th:first-child,
+.analytics-table th:first-child,
+table th:first-child {
+  background: #eaf3ff !important;
+  color: #173b68 !important;
+  box-shadow: 1px 0 0 #c9ddf5;
+}
+
+.table-scroll-top {
+  background: #ececf0 !important;
+  border-color: #d1d1d6 !important;
+  scrollbar-color: #8e8e93 #ececf0 !important;
 }
 
 .table-toolbar,
@@ -652,6 +692,21 @@ a:hover { color: #004d99; }
   .details-pane {
     border-radius: 16px !important;
   }
+
+  #root .nav-rail-item {
+    flex-basis: 96px !important;
+    width: 96px !important;
+  }
+
+  #root .nav-rail-label {
+    font-size: 8.5px !important;
+    font-weight: 600 !important;
+  }
+
+  .ducar-export-trigger {
+    padding-inline: 9px !important;
+    gap: 4px !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -660,4 +715,175 @@ a:hover { color: #004d99; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Typography and collision repair
+   Keep a restrained Apple-style hierarchy and prevent the legacy dark-theme
+   SVG outline from turning compact chart labels into unreadable black blocks. */
+body,
+button,
+input,
+select,
+textarea,
+table {
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+.records-heading h2,
+.section-studio h1 {
+  font-weight: 700 !important;
+  line-height: 1.12 !important;
+}
+
+h2,
+.metric-card strong,
+.benchmark-panel h2,
+.section-studio h2 {
+  font-weight: 650 !important;
+  line-height: 1.18 !important;
+}
+
+h3,
+h4,
+.chart-card h3,
+.dynamic-chart-card h4,
+.analytics-card h3,
+.schema-card h3,
+.section-studio h3,
+.section-studio h4 {
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+  overflow-wrap: anywhere;
+}
+
+.section-tab,
+.nav-rail a,
+.nav-rail button,
+.ducar-nav-item,
+.ducar-export-trigger,
+.ducar-header-navigation button,
+.studio-button,
+.chart-download,
+.pdf-download,
+.csv-download {
+  font-weight: 600 !important;
+}
+
+.metric-card small,
+.metric-card em,
+.chart-subtitle,
+.axis-title,
+.helper-text,
+.caption {
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+}
+
+.chart-card svg text,
+.dynamic-chart-card svg text,
+.viz-studio svg text,
+.insight-card svg text,
+.advanced-viz svg text,
+.sparkline svg text,
+svg .axis-label,
+svg .tick text {
+  stroke: none !important;
+  stroke-width: 0 !important;
+  paint-order: normal !important;
+  text-shadow: none !important;
+  font-weight: 450 !important;
+}
+
+.chart-card svg .chart-value,
+.chart-card svg .grouped-column-value,
+.dynamic-chart-card svg .chart-value {
+  font-weight: 600 !important;
+}
+
+.chart-card svg .chart-label,
+.chart-card svg .chart-column-label,
+.chart-card svg .chart-axis-label,
+.dynamic-chart-card svg .chart-label,
+.dynamic-chart-card svg .chart-axis-label {
+  font-weight: 500 !important;
+}
+
+.chart-card svg .chart-tick,
+.dynamic-chart-card svg .chart-tick {
+  font-size: 9px !important;
+  font-weight: 400 !important;
+}
+
+.dynamic-legend b,
+.chart-legend b,
+.legend b,
+.grouped-series-legend b {
+  font-weight: 600 !important;
+}
+
+.dynamic-legend small,
+.chart-legend small,
+.legend small,
+.axis-title,
+.universal-axis-strip {
+  font-weight: 400 !important;
+  letter-spacing: 0.01em !important;
+}
+
+.dynamic-legend span,
+.chart-legend span,
+.legend span,
+.grouped-series-legend span {
+  background: #f5f7fb !important;
+  color: #2c2c2e !important;
+  border-color: #e1e4ea !important;
+}
+
+.dynamic-legend span:hover,
+.chart-legend span:hover,
+.legend span:hover {
+  background: #eaf3ff !important;
+}
+
+.dynamic-legend small,
+.chart-legend small,
+.legend small,
+.grouped-series-legend small {
+  color: #636366 !important;
+}
+
+.data-table td,
+.records-table td,
+.analytics-table td,
+table td {
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.data-table th,
+.records-table th,
+.analytics-table th,
+table th {
+  line-height: 1.25;
+  overflow-wrap: normal;
+}
+
+.chart-card,
+.dynamic-chart-card,
+.metric-card,
+.analytics-card,
+.schema-card {
+  min-width: 0;
+}
+
+.chart-card > h3,
+.chart-card > p,
+.dynamic-chart-card header,
+.metric-card small,
+.metric-card strong,
+.metric-card em {
+  max-width: 100%;
 }
