@@ -1,5 +1,5 @@
 {
-  "auditedAt": "2026-09-22T08:55:49.110Z",
+  "auditedAt": "2026-09-22T09:00:05.538Z",
   "baseUrl": "http://127.0.0.1:8135/",
   "routesChecked": 60,
   "sectionsChecked": 10,
@@ -758,7 +758,7 @@
       "hash": "#socioeconomic:dashboard",
       "activeNav": "",
       "activeTab": "Dashboard",
-      "contentTextLength": 147,
+      "contentTextLength": 32910,
       "contentVisible": true,
       "documentVerticalScroll": true,
       "documentHorizontalOverflowPx": 0,
