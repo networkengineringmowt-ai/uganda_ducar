@@ -333,7 +333,7 @@
     if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap"), data("links"), data("database"), data("structures")]);
     if (state.section === "socioeconomic") return data("socio");
     if (state.section === "structures") return data("structures");
-    if (state.section === "ducar" && state.tab === "records") return Promise.all([data("links"), data("fullNetworkRecords")]);
+    if (state.section === "ducar" && state.tab === "records") return data("links");
     return data("links");
   }
   function number(value, digits = 0) { const numeric=Number(value||0),authoritative=Math.abs(numeric-Number(confirmedNetwork().length_km||0))<.01,precision=authoritative?2:digits;return numeric.toLocaleString(undefined,{maximumFractionDigits:precision,minimumFractionDigits:authoritative?2:0}); }
@@ -1305,10 +1305,10 @@
   }
   function recordsHtml() {
     const dataset = recordDataset();
-    const rows = filtered(dataset);
+    const rows = filtered(dataset),fullNetworkPending=state.section==="ducar"&&!Array.isArray(cache.fullNetworkRecords);
     const shownRows=rows.slice(0,Math.min(100,rows.length)),sectionTitle=SECTION_META[state.section]?.[0]||"DUCAR";
     const heading=field=>{const active=state.sortField===field,arrow=active?(state.sortDirection==="asc"?"↑":"↓"):"↕",aria=active?(state.sortDirection==="asc"?"ascending":"descending"):"none";return `<th aria-sort="${aria}"><button class="column-sort" data-column-sort="${esc(field)}" type="button" title="Sort by ${esc(label(field))}"><span>${esc(label(field))}</span><i aria-hidden="true">${arrow}</i></button></th>`;};
-    return `<header class="records-heading"><small>FULL EXHAUSTIVE TABLE</small><h2>${esc(sectionTitle)} Complete Records</h2><p>Every available record and field. Search the full population or sort directly from any column heading.</p></header><div class="records-toolbar exhaustive-controls"><input class="records-search" value="${esc(state.search)}" placeholder="Search every field in all records" aria-label="Search section records"><button class="studio-button" data-export type="button">CSV · complete searched records</button>${state.section==="overview" ? `<a class="studio-button" href="./data/ducar_link_register.csv" download>Master CSV</a>` : ""}</div><div class="records-status"><strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records in the complete searched population · loaded ${number(shownRows.length)} · ${number(dataset.fields.length)} fields · continuous vertical scrolling · horizontal scrolling above and below the table</div><div class="table-wrap all-records-table"><table class="data-table"><thead><tr>${dataset.fields.map(heading).join("")}</tr></thead><tbody>${shownRows.map(row=>`<tr>${dataset.fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(displayCell(field,row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    return `<header class="records-heading"><small>FULL EXHAUSTIVE TABLE</small><h2>${esc(sectionTitle)} Complete Records</h2><p>Every available record and field. Search the full population or sort directly from any column heading.</p></header>${fullNetworkPending?`<div class="records-load-notice" role="status"><strong>Loading the complete 404,047-road national register…</strong><span>The governed Link-ID register is available immediately; the full table will replace it automatically.</span></div>`:""}<div class="records-toolbar exhaustive-controls"><input class="records-search" value="${esc(state.search)}" placeholder="Search every field in all records" aria-label="Search section records"><button class="studio-button" data-export type="button">CSV · complete searched records</button>${state.section==="overview" ? `<a class="studio-button" href="./data/ducar_link_register.csv" download>Master CSV</a>` : ""}</div><div class="records-status"><strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records in the complete searched population · loaded ${number(shownRows.length)} · ${number(dataset.fields.length)} fields · continuous vertical scrolling · horizontal scrolling above and below the table</div><div class="table-wrap all-records-table"><table class="data-table"><thead><tr>${dataset.fields.map(heading).join("")}</tr></thead><tbody>${shownRows.map(row=>`<tr>${dataset.fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(displayCell(field,row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
   }
   function mountRemainingRecords(){
     const token=++recordMountToken,dataset=recordDataset(),rows=filtered(dataset),tbody=root.querySelector(".all-records-table tbody"),status=root.querySelector(".records-status");if(!tbody)return;
@@ -1666,6 +1666,7 @@
     }
     let body = state.tab === "dashboard" ? dashboardHtml() : state.tab === "map" ? (state.section==="summaries"?adminMindMapHtml():mapHtml()) : state.tab === "records" ? recordsHtml()+(state.section==="pims"?ibpHtml():"") : state.tab === "analytics" ? analyticsHtml() : state.tab === "sql" ? sqlHtml() : schemaHtml();
     shell(body); removeCollapseControls(root);bind();enhanceStaticTableSorting();enhanceTableScrolling();if(state.tab==="records")mountRemainingRecords();
+    if(state.section==="ducar"&&state.tab==="records"&&!Array.isArray(cache.fullNetworkRecords))data("fullNetworkRecords").then(()=>{if(state.section==="ducar"&&state.tab==="records")render();}).catch(error=>{const notice=root.querySelector(".records-load-notice");if(notice)notice.innerHTML=`<strong>Complete national register download unavailable</strong><span>${esc(error.message)}. The governed Link-ID register remains available.</span>`;});
     if (state.tab === "map") state.section==="summaries"?initAdminMindMap():state.section==="global"?initGlobalMap():initSectionMap();
     syncHeaderFilterPanel();
     ensureHeaderExportMenu();ensureHeaderNavigationControls();

@@ -945,3 +945,38 @@ table th {
 .ibp-register-section .ibp-register-table tbody tr:hover {
   background: #f2f7ff !important;
 }
+
+.records-load-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 10px 0;
+  padding: 10px 12px;
+  border: 1px solid #b8d8ff;
+  border-radius: 12px;
+  background: #eef6ff;
+  color: #1d1d1f;
+}
+
+.records-load-notice strong {
+  color: #0066cc;
+  font-size: 12px;
+}
+
+.records-load-notice span {
+  color: #636366;
+  font-size: 10px;
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .records-load-notice {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .records-load-notice span {
+    text-align: left;
+  }
+}
