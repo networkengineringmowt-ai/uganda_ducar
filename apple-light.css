@@ -887,3 +887,61 @@ table th {
 .metric-card em {
   max-width: 100%;
 }
+
+/* PIMS-owned IBP register: compact Apple-light presentation inside Records only. */
+.ibp-register-section {
+  gap: 12px;
+  margin-top: 16px;
+  padding: 16px !important;
+  border: 1px solid #d8dce3;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(40, 50, 70, 0.08);
+}
+
+.ibp-register-section .analytics-intro,
+.ibp-register-section > div {
+  background: #f7f8fa !important;
+  border-color: #d8dce3 !important;
+}
+
+.ibp-register-section h2,
+.ibp-register-section strong,
+.ibp-register-section td {
+  color: #1d1d1f !important;
+}
+
+.ibp-register-section small,
+.ibp-register-section p,
+.ibp-register-section span {
+  color: #636366 !important;
+}
+
+.ibp-register-section .ibp-filter-btn,
+.ibp-register-section button {
+  min-height: 34px;
+  padding: 7px 12px !important;
+  border: 1px solid #c9ced7 !important;
+  border-radius: 9px !important;
+  background: #fff !important;
+  color: #1d1d1f !important;
+  font-weight: 600 !important;
+}
+
+.ibp-register-section .ibp-filter-btn.active,
+.ibp-register-section button:hover {
+  border-color: #007aff !important;
+  background: #eaf3ff !important;
+  color: #0066cc !important;
+}
+
+.ibp-register-section .ibp-register-table thead tr,
+.ibp-register-section .ibp-register-table th {
+  background: #eef2f7 !important;
+  color: #1d1d1f !important;
+  border-color: #d8dce3 !important;
+}
+
+.ibp-register-section .ibp-register-table tbody tr:hover {
+  background: #f2f7ff !important;
+}

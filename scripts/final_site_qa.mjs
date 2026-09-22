@@ -38,7 +38,12 @@ await page.waitForTimeout(2_000);
 for (const section of sections) {
   for (const tab of tabs) {
     await page.evaluate(hash => { window.location.hash = hash; }, `${section}:${tab}`);
-    await page.waitForTimeout(tab === "map" ? 1_200 : 450);
+    if (tab === "map") {
+      await page.waitForSelector("#section-map,.mind-schematic,.platform-mind-svg", { timeout: 12_000 }).catch(() => {});
+      await page.waitForTimeout(750);
+    } else {
+      await page.waitForTimeout(450);
+    }
     if (section === "ducar" && tab === "records") {
       await page.waitForSelector("#exhaustive-root .all-records-table", { timeout: 30_000 });
     }
@@ -58,6 +63,7 @@ for (const section of sections) {
         .map(button => button.textContent?.trim()).filter(Boolean);
       const map = root?.querySelector("#section-map,.mind-schematic,.platform-mind-svg");
       const mapRect = map?.getBoundingClientRect();
+      const ibpRegister = Boolean(root?.querySelector(".ibp-register-section"));
       return {
         section,
         tab,
@@ -70,6 +76,7 @@ for (const section of sections) {
         documentHorizontalOverflowPx: Math.max(0, doc.scrollWidth - doc.clientWidth),
         collapseControls,
         visibleDisabled,
+        ibpRegister,
         table: tableWrap ? {
           rows: root.querySelectorAll(".all-records-table tbody tr").length,
           columns: headings.length,
@@ -113,6 +120,8 @@ await browser.close();
 const routeFailures = checks.filter(check =>
   !check.contentVisible || check.contentTextLength < 20 || check.documentHorizontalOverflowPx > 3 ||
   check.collapseControls > 0 || check.visibleDisabled.length > 0 ||
+  (check.ibpRegister && !(check.section === "pims" && check.tab === "records")) ||
+  (check.section === "pims" && check.tab === "records" && !check.ibpRegister) ||
   (check.tab === "records" && (!check.table || check.table.rows < 1 || check.table.headingSortControls !== check.table.columns)) ||
   (check.tab === "map" && (!check.map || !check.map.visible))
 );

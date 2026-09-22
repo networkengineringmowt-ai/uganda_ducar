@@ -4,8 +4,8 @@
   "status": "REVIEW",
   "authoritative_population": {
     "ways": 404047,
-    "length_km_raw": 248616.137116,
-    "length_km_published": 248616.14,
+    "length_km_raw": 248616.148981,
+    "length_km_published": 248616.15,
     "districts": 135,
     "regions": 6
   },
@@ -57,7 +57,8 @@
       "Other Vehicular Road",
       "Trunk/Primary Road",
       "Urban/Local Road"
-    ]
+    ],
+    "length_km": 248616.148981
   },
   "source_lineage": {
     "source_part_count_variance": 0,
@@ -162,7 +163,18 @@
     },
     "grouped_record_count_variance": 0,
     "grouped_length_variance_km": 0.0,
-    "missing_cluster_dimensions": []
+    "missing_cluster_dimensions": [],
+    "pavement_reconciliation": {
+      "source_layer": "DUCAR_ArcGIS_Pro_2026.gdb/Road_Segment_Master",
+      "source_record_count": 404047,
+      "source_length_km": 248616.148981,
+      "paved_record_count": 60607,
+      "paved_length_km": 17174.676417,
+      "unpaved_record_count": 343440,
+      "unpaved_length_km": 231441.472564,
+      "surface_pavement_contradictions": 0,
+      "status": "PASS"
+    }
   },
   "road_names": {
     "governed_link_count_variance": 0,

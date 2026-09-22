@@ -54,5 +54,16 @@
     "condition": 0,
     "start_coordinates": 0,
     "end_coordinates": 0
+  },
+  "pavement_reconciliation": {
+    "source_layer": "DUCAR_ArcGIS_Pro_2026.gdb/Road_Segment_Master",
+    "source_record_count": 404047,
+    "source_length_km": 248616.148981,
+    "paved_record_count": 60607,
+    "paved_length_km": 17174.676417,
+    "unpaved_record_count": 343440,
+    "unpaved_length_km": 231441.472564,
+    "surface_pavement_contradictions": 0,
+    "status": "PASS"
   }
 }

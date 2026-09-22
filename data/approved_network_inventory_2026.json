@@ -2,7 +2,7 @@
   "status": "approved_inventory_scope",
   "as_of": "2026-08-28",
   "confirmed_all_road_inventory": {
-    "length_km": 248616.14,
+    "length_km": 248616.15,
     "links": 404047,
     "districts": 135,
     "vehicular_source_features": 404047,
@@ -31,8 +31,8 @@
     "length_measurement_crs": "EPSG:32636",
     "source_line_features": 404047,
     "vehicular_features": 404047,
-    "vehicular_length_km": 248616.137116,
-    "published_rounded_length_km": 248616.14,
+    "vehicular_length_km": 248616.148981,
+    "published_rounded_length_km": 248616.15,
     "assigned_districts": 135,
     "unassigned_features": 0,
     "unassigned_length_km": 0,
@@ -51,7 +51,7 @@
     "pavement_class_categories": 2
   },
   "calculation_policy": [
-    "Use 248,616.14 km, 404,047 vehicular ways and 135 districts for public vehicular-road inventory calculations.",
+    "Use 248,616.15 km, 404,047 vehicular ways and 135 districts for public vehicular-road inventory calculations.",
     "Use all 404,047 corrected vehicular ways for national geometry, functional class, pavement, condition, administrative and map analytics.",
     "Use the governed web register for Link-ID, traffic, structures, cost and intervention analytics that require verified DUCAR relations.",
     "Show the denominator and scope beside any calculation that could otherwise be confused with the approved inventory.",
@@ -61,15 +61,15 @@
     "Treat structure exposure as allocated linked-road length so repeated structures on one link do not multiply the road-length total."
   ],
   "geospatial_reconciliation_policy": {
-    "authoritative_public_length_km": 248616.14,
+    "authoritative_public_length_km": 248616.15,
     "authoritative_public_links": 404047,
     "authoritative_public_districts": 135,
     "authoritative_source_features": 404047,
     "classification_remainder_label": "No remainder; corrected classifications are complete",
     "geometry_rule": "Do not scale, clone or fabricate geometry to manufacture agreement with the approved inventory.",
-    "public_reporting_rule": "Public dashboards use the corrected 248,616.14 km and 404,047-way vehicular inventory; governed Link-ID and source-verification coverage remain explicit in Admin Tools.",
+    "public_reporting_rule": "Public dashboards use the reconciled 248,616.15 km and 404,047-segment vehicular inventory; governed Link-ID and source-verification coverage remain explicit in Admin Tools.",
     "high_cardinality_rule": "Complete dimensions remain available in tables and exports rather than selective charts.",
-    "methodology_note": "The authoritative public total is the rounded sum of LEN_KM across all 404,047 corrected vehicular ways."
+    "methodology_note": "The authoritative public total is the rounded sum of length_km across all 404,047 Road_Segment_Master records; pavement is the complete reconciled surface classification."
   },
   "national_road_spatial_join_2026": {
     "official_reference_km": 22205.3794,
@@ -81,5 +81,16 @@
     "matched_hotosm_length_km": 22205.3794,
     "reference_coverage_pct": 100.0,
     "method": "National Road is preserved directly from corrected FUNC_CLASS within the full vehicular network."
+  },
+  "pavement_reconciliation_2026": {
+    "source_layer": "DUCAR_ArcGIS_Pro_2026.gdb/Road_Segment_Master",
+    "source_record_count": 404047,
+    "source_length_km": 248616.148981,
+    "paved_record_count": 60607,
+    "paved_length_km": 17174.676417,
+    "unpaved_record_count": 343440,
+    "unpaved_length_km": 231441.472564,
+    "surface_pavement_contradictions": 0,
+    "status": "PASS"
   }
 }
