@@ -1,5 +1,5 @@
 {
-  "auditedAt": "2026-09-22T07:00:10.314Z",
+  "auditedAt": "2026-09-22T08:30:56.287Z",
   "baseUrl": "http://127.0.0.1:8135/",
   "routesChecked": 60,
   "sectionsChecked": 10,
@@ -758,7 +758,7 @@
       "hash": "#socioeconomic:dashboard",
       "activeNav": "",
       "activeTab": "Dashboard",
-      "contentTextLength": 33836,
+      "contentTextLength": 147,
       "contentVisible": true,
       "documentVerticalScroll": true,
       "documentHorizontalOverflowPx": 0,
@@ -977,7 +977,7 @@
       "hash": "#summaries:map",
       "activeNav": "",
       "activeTab": "Map",
-      "contentTextLength": 1617,
+      "contentTextLength": 1655,
       "contentVisible": true,
       "documentVerticalScroll": true,
       "documentHorizontalOverflowPx": 0,
@@ -987,7 +987,7 @@
       "map": {
         "visible": true,
         "leaflet": false,
-        "paths": 69
+        "paths": 71
       }
     },
     {
@@ -1019,7 +1019,7 @@
       "hash": "#summaries:analytics",
       "activeNav": "",
       "activeTab": "Deep Analytics",
-      "contentTextLength": 36933,
+      "contentTextLength": 37023,
       "contentVisible": true,
       "documentVerticalScroll": true,
       "documentHorizontalOverflowPx": 0,
