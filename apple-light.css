@@ -980,3 +980,520 @@ table th {
     text-align: left;
   }
 }
+
+/* 2026 modern readability system
+   A single, responsive scale replaces the legacy 6–10 px reporting labels.
+   These are presentation-only overrides: routing, data, maps and exports are
+   intentionally untouched. */
+:root {
+  --ducar-type-xs: clamp(10.5px, 0.16vw + 9.9px, 12px);
+  --ducar-type-sm: clamp(12px, 0.18vw + 11.3px, 13.5px);
+  --ducar-type-md: clamp(13px, 0.22vw + 12.2px, 15px);
+  --ducar-type-lg: clamp(16px, 0.34vw + 14.7px, 19px);
+  --ducar-type-xl: clamp(22px, 0.62vw + 19.5px, 29px);
+  --ducar-radius-sm: 10px;
+  --ducar-radius-md: 15px;
+  --ducar-radius-lg: 20px;
+  --ducar-focus: 0 0 0 3px rgba(0, 122, 255, 0.22);
+}
+
+html { font-size: 16px; }
+body {
+  font-size: var(--ducar-type-md) !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.006em;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: var(--ducar-type-sm) !important;
+  line-height: 1.35 !important;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--apple-blue) !important;
+  outline-offset: 2px !important;
+  box-shadow: var(--ducar-focus) !important;
+}
+
+/* Persistent application chrome */
+.top-nav,
+#root .top-nav {
+  min-height: 64px !important;
+  padding-block: 9px !important;
+}
+
+.top-nav h1,
+.top-nav h2,
+.brand-title,
+.brand-name,
+#root .nav-brand h1 {
+  font-size: clamp(18px, 0.45vw + 15px, 22px) !important;
+  line-height: 1.12 !important;
+}
+
+.top-nav p,
+.brand-subtitle,
+#root .nav-subtitle {
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.35 !important;
+}
+
+.nav-rail-item,
+#root .nav-rail-item {
+  min-height: 48px !important;
+  border-radius: 13px !important;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease !important;
+}
+
+.nav-rail-label,
+#root .nav-rail-label,
+.ducar-nav-item {
+  font-size: var(--ducar-type-sm) !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.nav-rail-icon-wrap,
+#root .nav-rail-icon-wrap {
+  width: 22px !important;
+  min-width: 22px !important;
+}
+
+.ducar-header-navigation button {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 11px !important;
+  font-size: 18px !important;
+}
+
+.ducar-export-trigger {
+  min-height: 38px !important;
+  padding: 8px 14px !important;
+  border-radius: 11px !important;
+  font-size: var(--ducar-type-sm) !important;
+}
+
+.ducar-export-trigger b,
+.ducar-export-panel header small,
+.ducar-export-panel h3,
+.ducar-export-panel section button b,
+.ducar-export-panel section button span,
+.ducar-export-panel footer {
+  font-size: var(--ducar-type-xs) !important;
+}
+
+.ducar-export-panel header strong { font-size: var(--ducar-type-lg) !important; }
+
+/* Section navigation is a modern, readable segmented control. */
+.section-tabs,
+#root .section-tabs {
+  gap: 7px !important;
+  padding-block: 10px !important;
+  min-height: 57px !important;
+}
+
+.section-tab,
+#root .section-tab,
+.tab-button,
+.subtab-button {
+  min-height: 40px !important;
+  padding: 9px 15px !important;
+  border-radius: 11px !important;
+  font-size: var(--ducar-type-sm) !important;
+  line-height: 1.2 !important;
+  font-weight: 650 !important;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease !important;
+}
+
+.section-tab:hover,
+.tab-button:hover,
+.subtab-button:hover { transform: translateY(-1px); }
+
+/* Spacious card hierarchy without wasting the dashboard canvas. */
+.metric-card,
+.chart-card,
+.matrix-card,
+.benchmark-panel,
+.mandatory-breakdowns,
+.grouped-cluster-section,
+.viz-studio,
+.chart-type-section,
+.dynamic-chart-card,
+.insight-card,
+.analytics-card,
+.analytics-panel,
+.sql-intro,
+.sql-card,
+.schema-card,
+.schema-panel,
+.summary-card,
+.report-card,
+.system-health-card,
+.card,
+.panel {
+  border-radius: var(--ducar-radius-md) !important;
+  border-width: 1px !important;
+}
+
+.metric-card,
+.chart-card,
+.dynamic-chart-card,
+.analytics-card,
+.schema-card {
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease !important;
+}
+
+.metric-card:hover,
+.chart-card:hover,
+.dynamic-chart-card:hover,
+.analytics-card:hover,
+.schema-card:hover {
+  transform: translateY(-2px);
+  border-color: #c4dcf7 !important;
+  box-shadow: 0 18px 42px rgba(31, 35, 48, 0.12), 0 4px 12px rgba(31, 35, 48, 0.06) !important;
+}
+
+.metric-card { padding: 15px 16px 14px 19px !important; }
+.metric-card small,
+.metric-label {
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.35 !important;
+  letter-spacing: .075em !important;
+}
+.metric-card strong,
+.metric-value {
+  font-size: clamp(25px, 0.72vw + 21px, 34px) !important;
+  line-height: 1.08 !important;
+}
+.metric-card em,
+.metric-card p {
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.45 !important;
+}
+
+.section-studio h1,
+.records-heading h2 { font-size: var(--ducar-type-xl) !important; }
+.section-studio h2,
+.analytics-intro h2,
+.sql-intro h2,
+.monolithic-title h2 { font-size: clamp(20px, .42vw + 18px, 25px) !important; }
+.section-studio h3,
+.chart-card h3,
+.viz-heading h3,
+.insight-heading h3,
+.analytics-block > header h3,
+.schema-card h3,
+.mandatory-breakdowns > header h3,
+.grouped-cluster-section > header h3 { font-size: var(--ducar-type-lg) !important; }
+
+.section-kicker,
+.eyebrow,
+.records-heading small,
+.benchmark-panel header small,
+.viz-heading small,
+.insight-heading small,
+.analytics-intro small,
+.analytics-block > header small,
+.mandatory-breakdowns > header small,
+.grouped-cluster-section > header small {
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.35 !important;
+  letter-spacing: .09em !important;
+}
+
+.section-studio p,
+.records-heading p,
+.chart-card .chart-subtitle,
+.chart-card p,
+.viz-heading p,
+.insight-heading p,
+.analytics-intro p,
+.analytics-block > header p,
+.sql-intro p,
+.schema-card p,
+.mandatory-breakdowns > header p,
+.grouped-cluster-section > header p,
+.benchmark-panel header p {
+  font-size: var(--ducar-type-sm) !important;
+  line-height: 1.5 !important;
+}
+
+/* Charts: readable at a glance on standard laptops and large displays. */
+.chart-tick,
+.chart-card svg .chart-tick,
+.dynamic-chart-card svg .chart-tick,
+.chart-label,
+.chart-value,
+.chart-column-label,
+.grouped-category-label,
+.grouped-column-value,
+.chart-axis-label,
+.chart-card svg text,
+.dynamic-chart-card svg text,
+.advanced-viz svg text,
+.sparkline svg text,
+svg .axis-label,
+svg .tick text {
+  font-size: var(--ducar-type-xs) !important;
+}
+
+.axis-title,
+.universal-axis-strip,
+.cartesian-scale,
+.cartesian-axis-caption,
+.stacked-scale {
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.35 !important;
+}
+
+.legend-key,
+.dynamic-legend b,
+.dynamic-legend small,
+.chart-legend b,
+.chart-legend small,
+.legend b,
+.legend small,
+.grouped-series-legend span,
+.risk-scale-key span {
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.3 !important;
+}
+
+.chart-download,
+.pdf-download,
+.csv-download,
+.chart-download.compact {
+  min-height: 30px !important;
+  padding: 6px 9px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+}
+
+.dynamic-chart-card h4,
+.chart-type-section > header h4 { font-size: var(--ducar-type-md) !important; }
+.dynamic-chart-card header span,
+.chart-type-section > header span { font-size: var(--ducar-type-xs) !important; }
+
+.insight-card { min-height: 230px !important; padding: 13px !important; }
+.insight-card header,
+.insight-frequency,
+.insight-card footer,
+.treemap-viz small,
+.gauge-item small,
+.ranked-matrix > div {
+  font-size: var(--ducar-type-xs) !important;
+}
+.insight-card h4,
+.treemap-viz b,
+.gauge-item strong { font-size: var(--ducar-type-sm) !important; }
+.insight-card > strong { font-size: clamp(20px, .45vw + 18px, 25px) !important; }
+.treemap-viz span { font-size: var(--ducar-type-md) !important; }
+
+/* Tables retain exhaustive density but no longer require zooming. */
+.records-heading { padding-bottom: 14px !important; }
+.records-toolbar,
+.table-toolbar { gap: 10px !important; margin-bottom: 11px !important; }
+.records-status,
+.table-summary,
+.record-count-bar,
+.pages.virtual-window,
+.scope-notice,
+.benchmark-audit,
+.consistency-controls > p,
+.consistency-badge {
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.45 !important;
+}
+
+.data-table th,
+.records-table th,
+.analytics-table th,
+table th {
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.3 !important;
+  letter-spacing: .045em !important;
+}
+.column-sort {
+  min-height: 44px !important;
+  padding: 10px 12px !important;
+  grid-template-columns: minmax(0, 1fr) 18px !important;
+}
+.column-sort i { font-size: 12px !important; }
+.data-table td,
+.records-table td,
+.analytics-table td,
+table td {
+  font-size: var(--ducar-type-sm) !important;
+  line-height: 1.45 !important;
+  padding: 11px 13px !important;
+}
+
+.studio-button,
+.records-search,
+.records-toolbar input,
+.records-toolbar select,
+.table-toolbar input,
+.table-toolbar select {
+  min-height: 40px !important;
+  font-size: var(--ducar-type-sm) !important;
+}
+
+.schema-card pre,
+.sql-code,
+.schema-code { font-size: var(--ducar-type-sm) !important; line-height: 1.55 !important; }
+.schema-column,
+.category-grid span,
+.source-grid small { font-size: var(--ducar-type-xs) !important; }
+.source-grid strong { font-size: var(--ducar-type-sm) !important; }
+
+/* Map catalogue and live report—the area most affected by legacy micro-type. */
+.map-header,
+.map-toolbar { padding-block: 10px !important; }
+.map-header h2,
+.map-header h3,
+.map-toolbar strong { font-size: var(--ducar-type-lg) !important; }
+.map-header p,
+.map-toolbar small,
+.map-search span { font-size: var(--ducar-type-xs) !important; line-height: 1.4 !important; }
+.map-search input,
+.map-search button { min-height: 38px !important; font-size: var(--ducar-type-sm) !important; }
+
+.map-catalogue,
+.layer-catalogue,
+.catalogue-panel,
+.map-details,
+.details-pane,
+.map-report-pane { border-radius: var(--ducar-radius-md) !important; }
+.map-catalogue h2,
+.map-catalogue h3,
+.catalogue-panel h3,
+.details-pane h3 { font-size: var(--ducar-type-lg) !important; line-height: 1.25 !important; }
+.map-catalogue p,
+.details-pane p,
+.layer-meta { font-size: var(--ducar-type-xs) !important; line-height: 1.45 !important; }
+
+.catalogue-scroll label:not(.opacity-control),
+.layer-row,
+.catalogue-layer,
+.map-layer-row {
+  min-height: 42px !important;
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.35 !important;
+}
+.map-catalogue label span,
+.map-catalogue label em,
+.map-catalogue fieldset span,
+.map-catalogue fieldset em,
+.map-catalogue .count-chip,
+.catalogue-panel label span,
+.catalogue-panel label em {
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.35 !important;
+}
+.catalogue-layers > header > span,
+.map-details > header > span {
+  min-width: 52px;
+  padding: 5px 8px !important;
+  border-radius: 999px !important;
+  font-size: var(--ducar-type-xs) !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  text-align: center;
+}
+.catalogue-scroll label:not(.opacity-control) {
+  grid-template-columns: 20px 24px minmax(0, 1fr) auto !important;
+}
+.opacity-control,
+.catalogue-key span,
+.global-layer-stat,
+.map-detail-status,
+.selection-title small,
+.selection-insights span,
+.selection-report h5,
+.selection-report > div {
+  font-size: var(--ducar-type-xs) !important;
+  line-height: 1.35 !important;
+}
+.catalogue-key h4,
+.selection-title p { font-size: var(--ducar-type-sm) !important; }
+.selection-title h4 { font-size: var(--ducar-type-lg) !important; }
+.selection-insights b,
+.map-empty-state span { font-size: var(--ducar-type-xs) !important; }
+.map-empty-state strong { font-size: var(--ducar-type-md) !important; }
+
+.map-toolrail button,
+.map-tool-button,
+.leaflet-bar a,
+.map-controls button {
+  min-width: 38px !important;
+  min-height: 38px !important;
+  border-radius: 10px !important;
+}
+
+/* The platform schematic remains dense, but every node and inspector is legible. */
+.mind-map-key span,
+.mind-svg-node .mind-node-meta,
+.mind-schematic-node small,
+.mind-inspector small { font-size: var(--ducar-type-xs) !important; }
+.mind-svg-node text,
+.mind-schematic-node strong,
+.mind-inspector span,
+.mind-inspector p { font-size: var(--ducar-type-sm) !important; }
+.mind-inspector strong { font-size: var(--ducar-type-lg) !important; }
+
+@media (min-width: 1500px) {
+  .map-catalogue { min-width: 370px !important; }
+  .insight-grid { grid-template-columns: repeat(4, minmax(250px, 1fr)) !important; }
+}
+
+@media (max-width: 820px) {
+  :root {
+    --ducar-type-xs: 10.5px;
+    --ducar-type-sm: 12px;
+    --ducar-type-md: 13px;
+    --ducar-type-lg: 16px;
+    --ducar-type-xl: 22px;
+  }
+
+  body { font-size: 13px !important; }
+  #root .top-nav { min-height: 54px !important; }
+  #root .nav-brand h1 { font-size: 15px !important; }
+  #root .nav-rail-label { font-size: 10.5px !important; }
+  #root .nav-rail-item {
+    flex-basis: 124px !important;
+    width: 124px !important;
+    min-height: 46px !important;
+  }
+  .section-tab { min-height: 38px !important; padding: 8px 11px !important; font-size: 11.5px !important; }
+  .metric-card strong { font-size: 24px !important; }
+  .data-table th,
+  .records-table th,
+  .analytics-table th { font-size: 10.5px !important; }
+  .data-table td,
+  .records-table td,
+  .analytics-table td { font-size: 11.5px !important; }
+  .chart-tick,
+  .chart-label,
+  .chart-value,
+  .chart-axis-label,
+  .chart-column-label { font-size: 10px !important; }
+  .insight-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+@media (max-width: 520px) {
+  #root .nav-rail-label { font-size: 10px !important; }
+  .insight-grid { grid-template-columns: 1fr !important; }
+  .metric-grid { gap: 9px !important; }
+  .metric-card { padding: 13px 13px 12px 17px !important; }
+}
