@@ -187,11 +187,11 @@ def main() -> None:
     })
     approved["pavement_reconciliation_2026"] = analysis["pavement_reconciliation_2026"]
     approved["calculation_policy"] = [
-        item.replace("248,616.14 km", "248,616.15 km") for item in approved["calculation_policy"]
+        item.replace("248,616.15 km", "248,616.14 km") for item in approved["calculation_policy"]
     ]
     approved["geospatial_reconciliation_policy"]["authoritative_public_length_km"] = round(total_km, 2)
     approved["geospatial_reconciliation_policy"]["public_reporting_rule"] = (
-        "Public dashboards use the reconciled 248,616.15 km and 404,047-segment vehicular inventory; "
+        "Public dashboards use the reconciled 248,616.14 km and 404,047-segment vehicular inventory; "
         "governed Link-ID and source-verification coverage remain explicit in Admin Tools."
     )
     approved["geospatial_reconciliation_policy"]["methodology_note"] = (
@@ -212,7 +212,7 @@ def main() -> None:
         "paved_share_pct": round(paved_km / total_km * 100, 3),
         "paved_road_km": round(paved_km, 6),
         "unpaved_road_km": round(unpaved_km, 6),
-        "road_data_source_text": "248,616.15 km reconciled vehicular network; Paved and Unpaved classes complete",
+        "road_data_source_text": "248,616.14 km reconciled vehicular network; Paved and Unpaved classes complete",
         "road_data_status": "Geometry-derived complete ArcGIS vehicular-road inventory",
         "road_data_source_title": "DUCAR ArcGIS Road Segment Master pavement reconciliation 2026",
         "road_data_source_url": "./data/hotosm_vehicular_analysis.json",
@@ -220,7 +220,7 @@ def main() -> None:
     write_json(GLOBAL, global_matrix)
 
     mind_map = read_json(MIND_MAP)
-    encoded = json.dumps(mind_map, ensure_ascii=False).replace("248,616.14 km", "248,616.15 km")
+    encoded = json.dumps(mind_map, ensure_ascii=False).replace("248,616.15 km", "248,616.14 km")
     write_json(MIND_MAP, json.loads(encoded))
 
     platform_audit = read_json(PLATFORM_AUDIT)

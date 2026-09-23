@@ -339,7 +339,7 @@ def main() -> None:
         "duplicate_groups": duplicate_groups,
         "records": records,
         "integration_policy": {
-            "geometry": "RI_DATA workbooks are attribute evidence only unless a source includes explicit coordinates verified against the 248,616.15 km master geometry.",
+            "geometry": "RI_DATA workbooks are attribute evidence only unless a source includes explicit coordinates verified against the 248,616.14 km master geometry.",
             "district": "Use workbook content and boundary containment before directory-name inference.",
             "duplicates": "Retain one payload per SHA-256 group; preserve every source path as lineage.",
             "road_identity": "Match normalized official ID first, then district + normalized name + length, then spatial alignment; never join on road name alone.",

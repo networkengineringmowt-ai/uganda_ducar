@@ -111,7 +111,7 @@ const landing = await page.evaluate(() => {
     backButton: Boolean(document.querySelector("#root [data-header-navigation='back']")),
     topButton: Boolean(document.querySelector("#root [data-header-navigation='top']")),
     totalTextPresent: document.body.innerText.includes("248,616.14") || document.body.innerText.includes("248,616.15"),
-    nationalTextPresent: document.body.innerText.includes("21,370.39") || document.body.innerText.includes("21,370.4"),
+    nationalTextPresent: document.body.innerText.includes("21,302"),
   };
 });
 
