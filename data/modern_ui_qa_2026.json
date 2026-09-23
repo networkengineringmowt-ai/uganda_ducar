@@ -1,0 +1,1026 @@
+{
+  "auditedAt": "2026-09-23T09:21:29.599Z",
+  "baseUrl": "http://127.0.0.1:8138/",
+  "status": "PASS",
+  "failures": [],
+  "results": [
+    {
+      "name": "dashboard",
+      "hash": "ducar:dashboard",
+      "width": 1440,
+      "height": 980,
+      "viewport": {
+        "width": 1440,
+        "height": 980
+      },
+      "typography": {
+        "sectionTabs": {
+          "samples": 6,
+          "minimum": 13.5,
+          "required": 12,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab active",
+              "text": "Dashboard"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Map"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Full Exhaustive Table"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Deep Analytics"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "SQL Tables"
+            }
+          ]
+        },
+        "navigation": {
+          "samples": 10,
+          "minimum": 13.5,
+          "required": 12,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "DUCAR Dashboard"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Traffic"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Condition"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Structures"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "PIMS"
+            }
+          ]
+        },
+        "headings": {
+          "samples": 13,
+          "minimum": 19,
+          "required": 16,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 19,
+              "tag": "h3",
+              "className": "",
+              "text": "Uganda complete vehicular-road geometry"
+            },
+            {
+              "size": 19,
+              "tag": "h3",
+              "className": "",
+              "text": "DUCAR Network Classification"
+            },
+            {
+              "size": 19,
+              "tag": "h3",
+              "className": "",
+              "text": "Functional road class"
+            },
+            {
+              "size": 19,
+              "tag": "h3",
+              "className": "",
+              "text": "Pavement class"
+            },
+            {
+              "size": 19,
+              "tag": "h3",
+              "className": "",
+              "text": "Functional road classes"
+            }
+          ]
+        },
+        "controls": {
+          "samples": 137,
+          "minimum": 12,
+          "required": 12,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 12,
+              "tag": "button",
+              "className": "pdf-download",
+              "text": "PDF report"
+            },
+            {
+              "size": 12,
+              "tag": "button",
+              "className": "chart-download",
+              "text": "PNG"
+            },
+            {
+              "size": 12,
+              "tag": "button",
+              "className": "chart-download",
+              "text": "PNG"
+            },
+            {
+              "size": 12,
+              "tag": "button",
+              "className": "chart-download",
+              "text": "PNG"
+            },
+            {
+              "size": 12,
+              "tag": "button",
+              "className": "chart-download",
+              "text": "PNG"
+            }
+          ]
+        },
+        "tableCells": {
+          "samples": 0,
+          "minimum": null,
+          "required": 10.5,
+          "pass": true,
+          "smallest": []
+        },
+        "mapCatalogue": {
+          "samples": 0,
+          "minimum": null,
+          "required": 10.5,
+          "pass": true,
+          "smallest": []
+        }
+      },
+      "clipped": [],
+      "chrome": {
+        "brandText": "DUCAR Priority StudioUganda District, Urban & Community Access Roads Intelligence",
+        "brandVisible": true,
+        "brandRect": {
+          "x": 245,
+          "y": 11.375,
+          "width": 409.140625,
+          "height": 40.25
+        },
+        "headerRect": {
+          "x": 225,
+          "y": 0,
+          "width": 1215,
+          "height": 64
+        }
+      },
+      "horizontalOverflowPx": 0,
+      "errors": []
+    },
+    {
+      "name": "records",
+      "hash": "traffic:records",
+      "width": 1440,
+      "height": 980,
+      "viewport": {
+        "width": 1440,
+        "height": 980
+      },
+      "typography": {
+        "sectionTabs": {
+          "samples": 6,
+          "minimum": 13.5,
+          "required": 12,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Dashboard"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Map"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab active",
+              "text": "Full Exhaustive Table"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Deep Analytics"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "SQL Tables"
+            }
+          ]
+        },
+        "navigation": {
+          "samples": 10,
+          "minimum": 13.5,
+          "required": 12,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "DUCAR Dashboard"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Traffic"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Condition"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Structures"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "PIMS"
+            }
+          ]
+        },
+        "headings": {
+          "samples": 1,
+          "minimum": 24.048,
+          "required": 16,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 24.048,
+              "tag": "h2",
+              "className": "",
+              "text": "Traffic Intelligence Complete Records"
+            }
+          ]
+        },
+        "controls": {
+          "samples": 44,
+          "minimum": 13,
+          "required": 12,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 13,
+              "tag": "select",
+              "className": "",
+              "text": "All Maintenance RegionsCentralEasternNorth EasternNorthernSouthernWestern"
+            },
+            {
+              "size": 13,
+              "tag": "select",
+              "className": "",
+              "text": "All Sub-RegionsAcholiAnkoleBunyoroBusogaElgonGreater KampalaGreater MasakaGreater MubendeKaramojaKig"
+            },
+            {
+              "size": 13,
+              "tag": "select",
+              "className": "",
+              "text": "All Maintenance StationsAruaFort PortalGuluHoimaIbandaJinjaKabaleKampalaKaseseKitgumKotidoLiraLuwero"
+            },
+            {
+              "size": 13,
+              "tag": "select",
+              "className": "",
+              "text": "All Functional ClassesNational RoadsDistrict RoadsKCCA City RoadsCity RoadsCommunity Access RoadsTow"
+            },
+            {
+              "size": 13,
+              "tag": "select",
+              "className": "",
+              "text": "All Pavement TypesPavedUnpaved"
+            }
+          ]
+        },
+        "tableCells": {
+          "samples": 250,
+          "minimum": 12,
+          "required": 10.5,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 12,
+              "tag": "th",
+              "className": "",
+              "text": "Link ID↕"
+            },
+            {
+              "size": 12,
+              "tag": "th",
+              "className": "",
+              "text": "Road Name↕"
+            },
+            {
+              "size": 12,
+              "tag": "th",
+              "className": "",
+              "text": "Start X Coordinate DD↕"
+            },
+            {
+              "size": 12,
+              "tag": "th",
+              "className": "",
+              "text": "Start Y Coordinate DD↕"
+            },
+            {
+              "size": 12,
+              "tag": "th",
+              "className": "",
+              "text": "End X Coordinate DD↕"
+            }
+          ]
+        },
+        "mapCatalogue": {
+          "samples": 0,
+          "minimum": null,
+          "required": 10.5,
+          "pass": true,
+          "smallest": []
+        }
+      },
+      "clipped": [],
+      "chrome": {
+        "brandText": "DUCAR Priority StudioUganda District, Urban & Community Access Roads Intelligence",
+        "brandVisible": true,
+        "brandRect": {
+          "x": 245,
+          "y": 11.375,
+          "width": 384.03125,
+          "height": 40.25
+        },
+        "headerRect": {
+          "x": 225,
+          "y": 0,
+          "width": 1215,
+          "height": 64
+        }
+      },
+      "horizontalOverflowPx": 0,
+      "errors": []
+    },
+    {
+      "name": "map",
+      "hash": "ducar:map",
+      "width": 1440,
+      "height": 980,
+      "viewport": {
+        "width": 1440,
+        "height": 980
+      },
+      "typography": {
+        "sectionTabs": {
+          "samples": 6,
+          "minimum": 13.5,
+          "required": 12,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Dashboard"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab active",
+              "text": "Map"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Full Exhaustive Table"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Deep Analytics"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "SQL Tables"
+            }
+          ]
+        },
+        "navigation": {
+          "samples": 10,
+          "minimum": 13.5,
+          "required": 12,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "DUCAR Dashboard"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Traffic"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Condition"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Structures"
+            },
+            {
+              "size": 13.5,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "PIMS"
+            }
+          ]
+        },
+        "headings": {
+          "samples": 2,
+          "minimum": 19,
+          "required": 16,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 19,
+              "tag": "h3",
+              "className": "",
+              "text": "Thematic Layers & Symbology"
+            },
+            {
+              "size": 19,
+              "tag": "h3",
+              "className": "",
+              "text": "Details & Report"
+            }
+          ]
+        },
+        "controls": {
+          "samples": 23,
+          "minimum": 13.5,
+          "required": 12,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Dashboard"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab active",
+              "text": "Map"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Full Exhaustive Table"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Deep Analytics"
+            },
+            {
+              "size": 13.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "SQL Tables"
+            }
+          ]
+        },
+        "tableCells": {
+          "samples": 0,
+          "minimum": null,
+          "required": 10.5,
+          "pass": true,
+          "smallest": []
+        },
+        "mapCatalogue": {
+          "samples": 22,
+          "minimum": 12,
+          "required": 10.5,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 12,
+              "tag": "span",
+              "className": "",
+              "text": "4 layers"
+            },
+            {
+              "size": 12,
+              "tag": "label",
+              "className": "",
+              "text": "Complete network · functional classification248,616.14 km"
+            },
+            {
+              "size": 12,
+              "tag": "span",
+              "className": "",
+              "text": "Complete network · functional classification"
+            },
+            {
+              "size": 12,
+              "tag": "label",
+              "className": "",
+              "text": "District labels"
+            },
+            {
+              "size": 12,
+              "tag": "span",
+              "className": "",
+              "text": "District labels"
+            }
+          ]
+        }
+      },
+      "clipped": [],
+      "chrome": {
+        "brandText": "DUCAR Priority StudioUganda District, Urban & Community Access Roads Intelligence",
+        "brandVisible": true,
+        "brandRect": {
+          "x": 245,
+          "y": 11.375,
+          "width": 409.140625,
+          "height": 40.25
+        },
+        "headerRect": {
+          "x": 225,
+          "y": 0,
+          "width": 1215,
+          "height": 64
+        }
+      },
+      "horizontalOverflowPx": 0,
+      "errors": []
+    },
+    {
+      "name": "mobile-dashboard",
+      "hash": "ducar:dashboard",
+      "width": 430,
+      "height": 932,
+      "viewport": {
+        "width": 430,
+        "height": 932
+      },
+      "typography": {
+        "sectionTabs": {
+          "samples": 6,
+          "minimum": 11.5,
+          "required": 11,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab active",
+              "text": "Dashboard"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Map"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Full Exhaustive Table"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Deep Analytics"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "SQL Tables"
+            }
+          ]
+        },
+        "navigation": {
+          "samples": 10,
+          "minimum": 10,
+          "required": 9.5,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 10,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "DUCAR Dashboard"
+            },
+            {
+              "size": 10,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Traffic"
+            },
+            {
+              "size": 10,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Condition"
+            },
+            {
+              "size": 10,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Structures"
+            },
+            {
+              "size": 10,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "PIMS"
+            }
+          ]
+        },
+        "headings": {
+          "samples": 13,
+          "minimum": 16,
+          "required": 15,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 16,
+              "tag": "h3",
+              "className": "",
+              "text": "Uganda complete vehicular-road geometry"
+            },
+            {
+              "size": 16,
+              "tag": "h3",
+              "className": "",
+              "text": "DUCAR Network Classification"
+            },
+            {
+              "size": 16,
+              "tag": "h3",
+              "className": "",
+              "text": "Functional road class"
+            },
+            {
+              "size": 16,
+              "tag": "h3",
+              "className": "",
+              "text": "Pavement class"
+            },
+            {
+              "size": 16,
+              "tag": "h3",
+              "className": "",
+              "text": "Functional road classes"
+            }
+          ]
+        },
+        "controls": {
+          "samples": 137,
+          "minimum": 11.5,
+          "required": 10.5,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab active",
+              "text": "Dashboard"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Map"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Full Exhaustive Table"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Deep Analytics"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "SQL Tables"
+            }
+          ]
+        },
+        "tableCells": {
+          "samples": 0,
+          "minimum": null,
+          "required": 10,
+          "pass": true,
+          "smallest": []
+        },
+        "mapCatalogue": {
+          "samples": 0,
+          "minimum": null,
+          "required": 10,
+          "pass": true,
+          "smallest": []
+        }
+      },
+      "clipped": [],
+      "chrome": {
+        "brandText": "DUCAR Priority StudioUganda District, Urban & Community Access Roads Intelligence",
+        "brandVisible": true,
+        "brandRect": {
+          "x": 7,
+          "y": 17,
+          "width": 185.40625,
+          "height": 19
+        },
+        "headerRect": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 54
+        }
+      },
+      "horizontalOverflowPx": 0,
+      "errors": []
+    },
+    {
+      "name": "mobile-map",
+      "hash": "ducar:map",
+      "width": 430,
+      "height": 932,
+      "viewport": {
+        "width": 430,
+        "height": 932
+      },
+      "typography": {
+        "sectionTabs": {
+          "samples": 6,
+          "minimum": 11.5,
+          "required": 11,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Dashboard"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab active",
+              "text": "Map"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Full Exhaustive Table"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Deep Analytics"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "SQL Tables"
+            }
+          ]
+        },
+        "navigation": {
+          "samples": 10,
+          "minimum": 10,
+          "required": 9.5,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 10,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "DUCAR Dashboard"
+            },
+            {
+              "size": 10,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Traffic"
+            },
+            {
+              "size": 10,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Condition"
+            },
+            {
+              "size": 10,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "Structures"
+            },
+            {
+              "size": 10,
+              "tag": "span",
+              "className": "nav-rail-label",
+              "text": "PIMS"
+            }
+          ]
+        },
+        "headings": {
+          "samples": 2,
+          "minimum": 16,
+          "required": 15,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 16,
+              "tag": "h3",
+              "className": "",
+              "text": "Thematic Layers & Symbology"
+            },
+            {
+              "size": 16,
+              "tag": "h3",
+              "className": "",
+              "text": "Details & Report"
+            }
+          ]
+        },
+        "controls": {
+          "samples": 23,
+          "minimum": 11.5,
+          "required": 10.5,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Dashboard"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab active",
+              "text": "Map"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Full Exhaustive Table"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "Deep Analytics"
+            },
+            {
+              "size": 11.5,
+              "tag": "button",
+              "className": "section-tab ",
+              "text": "SQL Tables"
+            }
+          ]
+        },
+        "tableCells": {
+          "samples": 0,
+          "minimum": null,
+          "required": 10,
+          "pass": true,
+          "smallest": []
+        },
+        "mapCatalogue": {
+          "samples": 22,
+          "minimum": 10.5,
+          "required": 10,
+          "pass": true,
+          "smallest": [
+            {
+              "size": 10.5,
+              "tag": "span",
+              "className": "",
+              "text": "4 layers"
+            },
+            {
+              "size": 10.5,
+              "tag": "label",
+              "className": "",
+              "text": "Complete network · functional classification248,616.14 km"
+            },
+            {
+              "size": 10.5,
+              "tag": "span",
+              "className": "",
+              "text": "Complete network · functional classification"
+            },
+            {
+              "size": 10.5,
+              "tag": "label",
+              "className": "",
+              "text": "District labels"
+            },
+            {
+              "size": 10.5,
+              "tag": "span",
+              "className": "",
+              "text": "District labels"
+            }
+          ]
+        }
+      },
+      "clipped": [],
+      "chrome": {
+        "brandText": "DUCAR Priority StudioUganda District, Urban & Community Access Roads Intelligence",
+        "brandVisible": true,
+        "brandRect": {
+          "x": 7,
+          "y": 17,
+          "width": 185.40625,
+          "height": 19
+        },
+        "headerRect": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 54
+        }
+      },
+      "horizontalOverflowPx": 0,
+      "errors": []
+    }
+  ]
+}

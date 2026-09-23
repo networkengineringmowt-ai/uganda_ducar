@@ -1,6 +1,6 @@
 {
-  "auditedAt": "2026-09-23T07:05:13.114Z",
-  "baseUrl": "http://127.0.0.1:8136/",
+  "auditedAt": "2026-09-23T09:27:48.658Z",
+  "baseUrl": "http://127.0.0.1:8138/",
   "status": "PASS",
   "failures": [],
   "results": [
@@ -11,7 +11,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 126
+      "visibleTextLength": 477
     },
     {
       "viewport": "desktop",
@@ -20,7 +20,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 30472
+      "visibleTextLength": 35221
     },
     {
       "viewport": "desktop",
@@ -29,7 +29,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 30222
+      "visibleTextLength": 34943
     },
     {
       "viewport": "desktop",
@@ -38,7 +38,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 24779
+      "visibleTextLength": 28254
     },
     {
       "viewport": "desktop",
@@ -47,7 +47,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 26128
+      "visibleTextLength": 29003
     },
     {
       "viewport": "desktop",
@@ -56,7 +56,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 32895
+      "visibleTextLength": 36896
     },
     {
       "viewport": "desktop",
@@ -65,7 +65,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 23784
+      "visibleTextLength": 26004
     },
     {
       "viewport": "desktop",
@@ -74,7 +74,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 40234
+      "visibleTextLength": 42489
     },
     {
       "viewport": "desktop",
@@ -83,7 +83,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 22764
+      "visibleTextLength": 30954
     },
     {
       "viewport": "desktop",
@@ -92,7 +92,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 3603
+      "visibleTextLength": 5817
     },
     {
       "viewport": "desktop",
@@ -101,7 +101,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 6335
+      "visibleTextLength": 8587
     },
     {
       "viewport": "desktop",
@@ -119,7 +119,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 126
+      "visibleTextLength": 475
     },
     {
       "viewport": "mobile",
@@ -128,7 +128,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 30472
+      "visibleTextLength": 35219
     },
     {
       "viewport": "mobile",
@@ -137,7 +137,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 30222
+      "visibleTextLength": 34941
     },
     {
       "viewport": "mobile",
@@ -146,7 +146,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 24779
+      "visibleTextLength": 28252
     },
     {
       "viewport": "mobile",
@@ -155,7 +155,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 26128
+      "visibleTextLength": 29001
     },
     {
       "viewport": "mobile",
@@ -164,7 +164,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 32895
+      "visibleTextLength": 36894
     },
     {
       "viewport": "mobile",
@@ -173,7 +173,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 23784
+      "visibleTextLength": 26002
     },
     {
       "viewport": "mobile",
@@ -182,7 +182,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 40234
+      "visibleTextLength": 42487
     },
     {
       "viewport": "mobile",
@@ -191,7 +191,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 22764
+      "visibleTextLength": 30952
     },
     {
       "viewport": "mobile",
@@ -200,7 +200,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 3603
+      "visibleTextLength": 5815
     },
     {
       "viewport": "mobile",
@@ -209,7 +209,7 @@
       "tooSmallControls": [],
       "emptyHeadings": 0,
       "horizontalOverflowPx": 0,
-      "visibleTextLength": 6335
+      "visibleTextLength": 8585
     },
     {
       "viewport": "mobile",

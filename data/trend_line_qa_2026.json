@@ -1,6 +1,6 @@
 {
-  "auditedAt": "2026-09-23T07:19:53.573Z",
-  "baseUrl": "http://127.0.0.1:8136/",
+  "auditedAt": "2026-09-23T09:28:15.047Z",
+  "baseUrl": "http://127.0.0.1:8138/",
   "status": "PASS",
   "failures": [],
   "results": [
@@ -8,7 +8,7 @@
       "viewport": "desktop",
       "profiles": 4,
       "composed": 4,
-      "micro": 3,
+      "micro": 4,
       "profileFailures": [],
       "composedFailures": [],
       "microFailures": [],
@@ -18,7 +18,7 @@
       "viewport": "mobile",
       "profiles": 4,
       "composed": 4,
-      "micro": 3,
+      "micro": 4,
       "profileFailures": [],
       "composedFailures": [],
       "microFailures": [],
