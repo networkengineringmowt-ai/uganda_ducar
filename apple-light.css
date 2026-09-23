@@ -1519,6 +1519,81 @@ table td {
   min-height: 34px !important;
   box-sizing: border-box !important;
 }
+.category-profile-scroll,
+.composed-scroll {
+  max-width: 100%;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding-bottom: 8px;
+  scrollbar-gutter: stable;
+}
+.category-profile-chart,
+.composed-chart { height: auto !important; }
+.category-profile-line,
+.cumulative-line {
+  stroke: #0066cc !important;
+  filter: drop-shadow(0 2px 3px rgba(0, 102, 204, .22));
+}
+.category-profile-point,
+.cumulative-point { vector-effect: non-scaling-stroke; }
+.category-profile-label,
+.composed-category-label,
+.cumulative-tick {
+  fill: #3a3a3c !important;
+  font-size: var(--ducar-type-xs) !important;
+}
+.dynamic-chart-card header span { color: #0066cc !important; }
+.universal-axis-strip {
+  color: #4b4b50 !important;
+  border-top-color: #d2d2d7 !important;
+  font-weight: 650 !important;
+}
+.universal-axis-strip span:nth-child(2) { color: #5e5e64 !important; }
+.cumulative-axis { stroke: #0066cc !important; }
+.composed-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 7px 0 9px;
+  padding: 8px 10px;
+  border: 1px solid var(--apple-border-soft);
+  border-radius: 9px;
+  background: #f8f9fb;
+  color: #3a3a3c;
+  font-size: var(--ducar-type-xs);
+}
+.composed-key span { display: inline-flex; align-items: center; gap: 7px; }
+.composed-key i { display: inline-block; width: 22px; }
+.composed-key-bar {
+  height: 9px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--apple-green), var(--apple-amber), var(--apple-red));
+}
+.composed-key-line { height: 0; border-top: 3px solid var(--apple-blue-deep); }
+.insight-card:has(.micro-sparkline) {
+  grid-template-rows: auto minmax(30px, auto) auto auto 88px auto !important;
+  min-height: 260px !important;
+}
+.micro-sparkline {
+  width: min(100%, 260px) !important;
+  height: 82px !important;
+  margin-inline: auto !important;
+  overflow: visible !important;
+}
+.micro-sparkline .micro-grid {
+  stroke: #d8dbe1 !important;
+  stroke-width: 1 !important;
+}
+.micro-sparkline polyline {
+  stroke: var(--accent) !important;
+  stroke-width: 3.5 !important;
+}
+.micro-sparkline .micro-axis-text {
+  fill: #555b65 !important;
+  font-size: 9px !important;
+  font-weight: 650 !important;
+}
+.micro-sparkline .micro-x-label { font-size: 8px !important; }
 
 @media (max-width: 820px) {
   .ranked-matrix { overflow-x: auto !important; }
