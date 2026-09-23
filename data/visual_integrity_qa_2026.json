@@ -1,0 +1,224 @@
+{
+  "auditedAt": "2026-09-23T07:05:13.114Z",
+  "baseUrl": "http://127.0.0.1:8136/",
+  "status": "PASS",
+  "failures": [],
+  "results": [
+    {
+      "viewport": "desktop",
+      "hash": "ducar:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 126
+    },
+    {
+      "viewport": "desktop",
+      "hash": "traffic:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 30472
+    },
+    {
+      "viewport": "desktop",
+      "hash": "condition:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 30222
+    },
+    {
+      "viewport": "desktop",
+      "hash": "structures:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 24779
+    },
+    {
+      "viewport": "desktop",
+      "hash": "global:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 26128
+    },
+    {
+      "viewport": "desktop",
+      "hash": "socioeconomic:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 32895
+    },
+    {
+      "viewport": "desktop",
+      "hash": "traffic:records",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 23784
+    },
+    {
+      "viewport": "desktop",
+      "hash": "pims:records",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 40234
+    },
+    {
+      "viewport": "desktop",
+      "hash": "traffic:analytics",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 22764
+    },
+    {
+      "viewport": "desktop",
+      "hash": "traffic:sql",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 3603
+    },
+    {
+      "viewport": "desktop",
+      "hash": "traffic:schema",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 6335
+    },
+    {
+      "viewport": "desktop",
+      "hash": "summaries:map",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 1634
+    },
+    {
+      "viewport": "mobile",
+      "hash": "ducar:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 126
+    },
+    {
+      "viewport": "mobile",
+      "hash": "traffic:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 30472
+    },
+    {
+      "viewport": "mobile",
+      "hash": "condition:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 30222
+    },
+    {
+      "viewport": "mobile",
+      "hash": "structures:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 24779
+    },
+    {
+      "viewport": "mobile",
+      "hash": "global:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 26128
+    },
+    {
+      "viewport": "mobile",
+      "hash": "socioeconomic:dashboard",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 32895
+    },
+    {
+      "viewport": "mobile",
+      "hash": "traffic:records",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 23784
+    },
+    {
+      "viewport": "mobile",
+      "hash": "pims:records",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 40234
+    },
+    {
+      "viewport": "mobile",
+      "hash": "traffic:analytics",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 22764
+    },
+    {
+      "viewport": "mobile",
+      "hash": "traffic:sql",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 3603
+    },
+    {
+      "viewport": "mobile",
+      "hash": "traffic:schema",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 6335
+    },
+    {
+      "viewport": "mobile",
+      "hash": "summaries:map",
+      "clipped": [],
+      "tooSmallControls": [],
+      "emptyHeadings": 0,
+      "horizontalOverflowPx": 0,
+      "visibleTextLength": 1634
+    }
+  ]
+}
