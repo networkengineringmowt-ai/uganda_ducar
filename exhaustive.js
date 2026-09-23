@@ -588,7 +588,7 @@
   function insightWall(title, series) {
     const types=["bar","ring","column","lollipop","stacked","pie","funnel","heat","bullet","gauge","sparkline","radar","treemap","scatter","composed"];
     if(state.section==="global"&&series.some(group=>group.name==="Configured country")){const rows=globalRows();series=[...series,{name:"Governance model",values:aggregate(rows,"governance_model"),unit:"country count"},{name:"Local-road manager",values:aggregate(rows,"local_road_manager"),unit:"country count"},{name:"Asset-management principles",values:aggregate(rows,"asset_management_principles"),unit:"country count"},{name:"Performance measures",values:aggregate(rows,"performance_measures"),unit:"country count"},{name:"Tools and techniques",values:aggregate(rows,"tools_and_techniques"),unit:"country count"}];}
-    if(state.section==="summaries"){const rows=cache.links||[];series=[...series,{name:"Surface type health",values:aggregate(rows,"surface"),unit:"covered km"},{name:"Condition-risk bands",values:bands(rows,"condition_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"},{name:"Surface-risk bands",values:bands(rows,"surface_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"},{name:"Link-length bands",values:bands(rows,"geometry_length_km",[["Below 1 km",0,1],["1 to 2.9 km",1,3],["3 to 4.9 km",3,5],["5 to 9.9 km",5,10],["10+ km",10,Infinity]]),unit:"covered km"},{name:"Planning-score bands",values:bands(rows,"planning_priority_score",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"covered km"}];}
+    if(state.section==="summaries"){const rows=cache.links||[];series=[...series,{name:"Surface type health",values:aggregate(rows,"surface"),unit:"affected km"},{name:"Condition-risk bands",values:bands(rows,"condition_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"affected km"},{name:"Surface-risk bands",values:bands(rows,"surface_risk",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"affected km"},{name:"Link-length bands",values:bands(rows,"geometry_length_km",[["Below 1 km",0,1],["1 to 2.9 km",1,3],["3 to 4.9 km",3,5],["5 to 9.9 km",5,10],["10+ km",10,Infinity]]),unit:"affected km"},{name:"Planning-score bands",values:bands(rows,"planning_priority_score",[["0 to 24.9",0,25],["25 to 49.9",25,50],["50 to 74.9",50,75],["75 to 100",75,101]]),unit:"affected km"}];}
     const routed=series.filter(group=>!chartable(group.values));
     const eligible=series.filter(group=>chartable(group.values)), cards=[];
     series=eligible;
@@ -933,29 +933,29 @@
     const covered=field=>links.filter(row=>supplied(row,field)).reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
     const trafficKm=links.filter(row=>typeof row.registry_aadt==="number").reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
     const validIdKm=links.filter(row=>/^[A-Z]{4}\d{3}$/.test(row.link_id)).reduce((s,row)=>s+Number(row.geometry_length_km||0),0);
-    const charts = barChart("Administrative relation basis", "True polygon intersections are separated from registry hierarchy fallbacks.", [{name:"Spatial polygon intersection",value:spatial},{name:"Registry hierarchy fallback",value:fallback}], "covered km", COLORS[5]) +
-      barChart("Administrative length by pavement", "Every relation inherits the explicit paved/unpaved classification.", aggregate(relations, "pavement_class"), "covered km", COLORS[2]) +
-      barChart("Administrative traffic coverage", "Exact-match traffic availability by relation-covered road length.", aggregate(relations, row => row.traffic_measured ? "Traffic supplied" : "Traffic not supplied"), "covered km", COLORS[0]);
+    const charts = barChart("Administrative relation basis", "True polygon intersections are separated from registry hierarchy fallbacks.", [{name:"Spatial polygon intersection",value:spatial},{name:"Registry hierarchy fallback",value:fallback}], "affected km", COLORS[5]) +
+      barChart("Administrative length by pavement", "Every relation inherits the explicit paved/unpaved classification.", aggregate(relations, "pavement_class"), "affected km", COLORS[2]) +
+      barChart("Administrative traffic coverage", "Exact-match traffic availability by affected km.", aggregate(relations, row => row.traffic_measured ? "Traffic supplied" : "Traffic not supplied"), "affected km", COLORS[0]);
     const nodes = mindmap.nodes || [];
     const edges=mindmap.edges||[];
     const mind = `<article class="matrix-card admin-block"><h3>Interactive DUCAR system mind map</h3><p>Hover or focus a node to inspect its type, stored records and relationship count.</p><div class="mind-map-canvas"><button class="mind-root" type="button">DUCAR Priority Studio<small>${number(networkKm,1)} network km</small></button><div class="mind-branches"><section><h4>Reporting sections</h4>${nodes.filter(n=>n.type==="section").map(n=>`<button class="mind-node" type="button" title="${esc(n.label)} · ${edges.filter(e=>e.from===n.id||e.to===n.id).length} relationships"><strong>${esc(n.label)}</strong><small>${edges.filter(e=>e.from===n.id||e.to===n.id).length} relationships</small></button>`).join("")}</section><section><h4>Data and evidence stores</h4>${nodes.filter(n=>n.type==="data").map(n=>`<button class="mind-node data" type="button" title="${esc(n.label)}"><strong>${esc(n.label)}</strong><small>${n.records?number(n.records)+" rows":"Connected store"}</small></button>`).join("")}</section></div></div></article>`;
     const parameterRows=LINK_FIELDS.map(field=>{const suppliedKm=covered(field);return {field,suppliedKm,gapKm:Math.max(0,networkKm-suppliedKm),pct:suppliedKm/Math.max(networkKm,1)*100};});
     const healthSeries=[
-      {name:"Link-ID standard",values:[{name:"Valid-ID length",value:validIdKm},{name:"ID gap length",value:Math.max(0,networkKm-validIdKm)}],unit:"covered km"},
-      {name:"Traffic parameter health",values:[{name:"Traffic supplied",value:trafficKm},{name:"Traffic gap",value:networkKm-trafficKm}],unit:"covered km"},
-      {name:"Condition parameter health",values:[{name:"Condition supplied",value:covered("condition")},{name:"Condition gap",value:networkKm-covered("condition")}],unit:"covered km"},
-      {name:"Planning parameter health",values:[{name:"Priority supplied",value:covered("priority_band")},{name:"Priority gap",value:networkKm-covered("priority_band")}],unit:"covered km"}
+      {name:"Link-ID standard",values:[{name:"Valid-ID length",value:validIdKm},{name:"ID gap length",value:Math.max(0,networkKm-validIdKm)}],unit:"affected km"},
+      {name:"Traffic parameter health",values:[{name:"Traffic supplied",value:trafficKm},{name:"Traffic gap",value:networkKm-trafficKm}],unit:"affected km"},
+      {name:"Condition parameter health",values:[{name:"Condition supplied",value:covered("condition")},{name:"Condition gap",value:networkKm-covered("condition")}],unit:"affected km"},
+      {name:"Planning parameter health",values:[{name:"Priority supplied",value:covered("priority_band")},{name:"Priority gap",value:networkKm-covered("priority_band")}],unit:"affected km"}
     ];
     const relationRows=relations.map(row=>({...row,geometry_length_km:Number(row.covered_length_km||0)}));
     const adminInsights=[
-      {name:"Administrative district",values:aggregate(relationRows,"admin_district"),unit:"covered km"},
-      {name:"Relation basis",values:aggregate(relationRows,"relation_basis"),unit:"covered km"},
-      {name:"Pavement class",values:aggregate(relationRows,"pavement_class"),unit:"covered km"},
-      {name:"Road condition",values:aggregate(relationRows,"condition"),unit:"covered km"},
-      {name:"Traffic-data coverage",values:aggregate(relationRows,row=>row.traffic_measured?"Traffic supplied":"Not supplied"),unit:"covered km"},
-      {name:"Planning priority",values:aggregate(relationRows,"priority_band"),unit:"covered km"},
-      {name:"Recommended intervention",values:aggregate(relationRows,"recommended_intervention"),unit:"covered km"},
-      {name:"System parameter completeness",values:parameterRows.map(row=>({name:label(row.field),value:row.suppliedKm})),unit:"covered km"},
+      {name:"Administrative district",values:aggregate(relationRows,"admin_district"),unit:"affected km"},
+      {name:"Relation basis",values:aggregate(relationRows,"relation_basis"),unit:"affected km"},
+      {name:"Pavement class",values:aggregate(relationRows,"pavement_class"),unit:"affected km"},
+      {name:"Road condition",values:aggregate(relationRows,"condition"),unit:"affected km"},
+      {name:"Traffic-data coverage",values:aggregate(relationRows,row=>row.traffic_measured?"Traffic supplied":"Not supplied"),unit:"affected km"},
+      {name:"Planning priority",values:aggregate(relationRows,"priority_band"),unit:"affected km"},
+      {name:"Recommended intervention",values:aggregate(relationRows,"recommended_intervention"),unit:"affected km"},
+      {name:"System parameter completeness",values:parameterRows.map(row=>({name:label(row.field),value:row.suppliedKm})),unit:"affected km"},
       {name:"Database store population",values:database.tables.map(table=>({name:table.table,value:Number(table.row_count||0)})),unit:"records"}
     ];
     return metricCards([{label:"Network geometry health",value:number(networkKm,1)+" km",note:"Complete DUCAR reporting denominator"},{label:"Valid Link-ID length",value:number(validIdKm,1)+" km",note:number(validIdKm/Math.max(networkKm,1)*100,1)+"% standard compliance"},{label:"Spatial admin length",value:number(spatial,1)+" km",note:"Polygon-intersected coverage"},{label:"Traffic parameter length",value:number(trafficKm,1)+" km",note:"Exact-match observation coverage"}]) + `<div class="chart-grid">${charts}</div>`+interactiveGallery("System health · animated chart gallery",healthSeries)+insightWall("System health & administration · 50+ insight atlas",adminInsights);
@@ -1651,6 +1651,34 @@
       panel.classList.remove("collapsed");panel.removeAttribute("data-collapsed");panel.removeAttribute("aria-hidden");panel.hidden=false;
     });
   }
+  function pageToolsHtml(){
+    if(state.tab==="map")return "";
+    return `<div class="page-tools" role="search" aria-label="Search and navigate this page"><label class="page-tools-search"><span>Search this page</span><input type="search" data-page-search placeholder="Search every visible card, chart, table and field" autocomplete="off"></label><label class="page-tools-jump"><span>Go to</span><select data-page-jump aria-label="Go to a section on this page"><option value="">All page content</option></select></label><button type="button" data-page-search-clear>Clear</button><output data-page-search-status aria-live="polite">Affected km · complete page visible</output></div>`;
+  }
+  function normalizeMetricWording(scope){
+    const walker=document.createTreeWalker(scope,NodeFilter.SHOW_TEXT,{acceptNode(node){return node.parentElement?.closest("script,style,textarea")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}});let node;
+    while((node=walker.nextNode())){
+      const original=node.nodeValue;
+      const revised=original
+        .replace(/covered\s+road\s+length/gi,"affected km")
+        .replace(/covered\s+km/gi,"affected km")
+        .replace(/affected\s+road\s+length/gi,"affected km")
+        .replace(/affected\s+length/gi,"affected km")
+        .replace(/affected\s+km\s+km/gi,"affected km");
+      if(revised!==original)node.nodeValue=revised;
+    }
+  }
+  function initPageTools(){
+    const toolbar=root.querySelector(".page-tools");if(!toolbar)return;
+    const input=toolbar.querySelector("[data-page-search]"),jump=toolbar.querySelector("[data-page-jump]"),status=toolbar.querySelector("[data-page-search-status]");
+    const headings=[...root.querySelectorAll(".section-studio h2,.section-studio h3")].filter(heading=>!heading.closest(".page-tools,.ducar-export-panel")&&heading.textContent.trim());
+    headings.forEach((heading,index)=>{if(!heading.id)heading.id=`page-section-${index+1}`;jump.appendChild(new Option(heading.textContent.trim(),heading.id));});
+    jump.addEventListener("change",()=>{if(!jump.value){window.scrollTo({top:0,behavior:"smooth"});return;}const target=document.getElementById(jump.value);target?.scrollIntoView({behavior:"smooth",block:"start"});target?.closest("section,article,.chart-card,.table-export-wrap")?.classList.add("page-search-focus");setTimeout(()=>root.querySelector(".page-search-focus")?.classList.remove("page-search-focus"),1400);});
+    const searchable=[...root.querySelectorAll(".metric-card,.chart-card,.dynamic-chart-card,.insight-card,.admin-block,.schema-card,.sql-table,.table-export-wrap")];
+    const rows=[...root.querySelectorAll("table tbody tr")];
+    const apply=()=>{const query=input.value.trim().toLocaleLowerCase();let matches=0;searchable.forEach(item=>{const ownTable=item.matches(".table-export-wrap")?item.querySelector("table"):null;const match=!query||(ownTable?ownTable.textContent:item.textContent).toLocaleLowerCase().includes(query);item.classList.toggle("page-search-hidden",!match);if(match&&query)matches++;});rows.forEach(row=>{const match=!query||row.textContent.toLocaleLowerCase().includes(query);row.classList.toggle("page-search-row-hidden",!match);});status.textContent=query?`${number(matches)} matching page blocks`:`Affected km · complete page visible`;};
+    input.addEventListener("input",apply);toolbar.querySelector("[data-page-search-clear]").addEventListener("click",()=>{input.value="";apply();input.focus();});
+  }
   async function render() {
     const token=++renderToken;
     recordMountToken++;
@@ -1667,7 +1695,7 @@
       state.loading=false;shell(`<div class="studio-loading">${esc(error.message)}</div>`);return;
     }
     let body = state.tab === "dashboard" ? dashboardHtml() : state.tab === "map" ? (state.section==="summaries"?adminMindMapHtml():mapHtml()) : state.tab === "records" ? recordsHtml()+(state.section==="pims"?ibpHtml():"") : state.tab === "analytics" ? analyticsHtml() : state.tab === "sql" ? sqlHtml() : schemaHtml();
-    shell(body); removeCollapseControls(root);bind();enhanceStaticTableSorting();enhanceTableScrolling();if(state.tab==="records")mountRemainingRecords();
+    shell(body); normalizeMetricWording(root);removeCollapseControls(root);bind();initPageTools();enhanceStaticTableSorting();enhanceTableScrolling();if(state.tab==="records")mountRemainingRecords();
     if(state.section==="ducar"&&state.tab==="records"&&!Array.isArray(cache.fullNetworkRecords))data("fullNetworkRecords").then(()=>{if(state.section==="ducar"&&state.tab==="records")render();}).catch(error=>{const notice=root.querySelector(".records-load-notice");if(notice)notice.innerHTML=`<strong>Complete national register download unavailable</strong><span>${esc(error.message)}. The governed Link-ID register remains available.</span>`;});
     if (state.tab === "map") state.section==="summaries"?initAdminMindMap():state.section==="global"?initGlobalMap():initSectionMap();
     syncHeaderFilterPanel();
@@ -1676,7 +1704,7 @@
   }
   function shell(body) {
     document.body.classList.remove("network-map-mode");
-    root.innerHTML = `<section class="exhaustive-shell"><div class="section-studio"><nav class="section-tabs" aria-label="Section reporting views">${SECTION_TABS.map(([id,text])=>`<button type="button" class="section-tab ${state.tab===id?"active":""}" data-section-tab="${id}" aria-current="${state.tab===id?"page":"false"}">${esc(text)}</button>`).join("")}</nav>${body}</div></section>`;
+    root.innerHTML = `<section class="exhaustive-shell"><div class="section-studio"><nav class="section-tabs" aria-label="Section reporting views">${SECTION_TABS.map(([id,text])=>`<button type="button" class="section-tab ${state.tab===id?"active":""}" data-section-tab="${id}" aria-current="${state.tab===id?"page":"false"}">${esc(text)}</button>`).join("")}</nav>${pageToolsHtml()}${body}</div></section>`;
     removeCollapseControls(root);
     if(state.tab==="dashboard")root.querySelectorAll("table").forEach(table=>{const owner=table.closest(".consistency-controls,.table-export-wrap,.global-governance,.admin-block")||table.closest(".table-wrap");owner?.remove();});
   }
