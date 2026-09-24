@@ -1872,6 +1872,14 @@ table td {
 }
 .page-facets label { min-width: 145px; }
 .page-facets select { min-height: 40px !important; }
+.page-tools.page-tools-compact {
+  margin: 4px 0 6px !important;
+  padding: 6px 8px !important;
+  border-radius: 12px !important;
+}
+.page-tools-compact .page-filter-icon { height: 36px; }
+.page-tools-compact .page-facets { gap: 6px; }
+.page-tools-compact .page-facets select { min-height: 36px !important; padding-block: 6px !important; }
 .page-scope-metrics,
 .page-tools-lower {
   grid-column: 2;

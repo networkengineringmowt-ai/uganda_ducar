@@ -181,26 +181,30 @@
   const MAINTENANCE_STATIONS = ["Arua","Fort Portal","Gulu","Hoima","Ibanda","Jinja","Kabale","Kampala","Kasese","Kitgum","Kotido","Lira","Luwero","Masaka","Masindi","Mbale","Mbarara","Moroto","Moyo","Mpigi","Mubende","Soroti","Tororo"];
   const ROAD_TYPES = ["National Roads","District Roads","KCCA City Roads","City Roads","Community Access Roads","Town Council Roads","Municipal Roads"];
   const FINANCIAL_YEARS = ["FY 2024/25","FY 2025/26","FY 2026/27"];
-  const WEST_NILE_DISTRICTS = new Set(["Adjumani","Arua","Koboko","Madi-Okollo","Maracha","Moyo","Nebbi","Obongi","Pakwach","Terego","Yumbe","Zombo"]);
-  const SUBREGION_DISTRICTS = {
-    "Acholi":["Agago","Amuru","Gulu","Kitgum","Lamwo","Nwoya","Omoro","Pader"],
-    "Ankole":["Buhweju","Bushenyi","Ibanda","Isingiro","Kiruhura","Mbarara","Mitooma","Ntungamo","Rubirizi","Rwampara","Sheema"],
-    "Bunyoro":["Buliisa","Hoima","Kagadi","Kakumiro","Kibaale","Kikuube","Kiryandongo","Masindi"],
-    "Busoga":["Bugiri","Bugweri","Buikwe","Buyende","Iganga","Jinja","Kaliro","Kamuli","Luuka","Mayuge","Namayingo","Namutumba"],
-    "Elgon":["Bududa","Bulambuli","Kapchorwa","Kween","Manafwa","Mbale","Namisindwa","Sironko"],
-    "Greater Kampala":["Kampala","Mukono","Wakiso"],
-    "Greater Masaka":["Bukomansimbi","Kalangala","Kalungu","Kyotera","Lwengo","Lyantonde","Masaka","Rakai","Sembabule","Ssembabule"],
-    "Greater Mubende":["Kassanda","Kasanda","Kiboga","Kyankwanzi","Mityana","Mubende"],
-    "Karamoja":["Abim","Amudat","Kaabong","Karenga","Kotido","Moroto","Nabilatuk","Nakapiripirit","Napak"],
-    "Kigezi":["Kabale","Kanungu","Kisoro","Rubanda","Rukiga","Rukungiri"],
-    "Lango":["Alebtong","Amolatar","Apac","Dokolo","Kole","Kwania","Lira","Oyam","Otuke"],
-    "North Central":["Kayunga","Luweero","Luwero","Nakaseke","Nakasongola"],
-    "South Central":["Butambala","Gomba","Mpigi"],
-    "Teso":["Amuria","Bukedea","Kaberamaido","Kalaki","Kapelebyong","Katakwi","Kumi","Ngora","Serere","Soroti"],
-    "Tooro":["Bundibugyo","Bunyangabu","Kabarole","Kamwenge","Kasese","Kitagwenda","Kyegegwa","Kyenjojo","Ntoroko"],
-    "West Nile":[...WEST_NILE_DISTRICTS]
+  const SUBREGION_STATIONS = {
+    "Central":["Kampala","Mpigi","Luwero","Masaka","Mubende"],
+    "Rwenzori":["Fort Portal","Kasese"],
+    "Bunyoro":["Hoima","Masindi"],
+    "Ankole":["Ibanda","Mbarara"],
+    "Kigezi":["Kabale"],
+    "Busoga":["Jinja"],
+    "Bugisu":["Mbale"],
+    "Bukedi":["Tororo"],
+    "Teso":["Soroti"],
+    "Lango":["Lira"],
+    "Acholi":["Gulu","Kitgum"],
+    "Karamoja":["Moroto","Kotido"],
+    "West Nile":["Moyo","Arua"]
   };
-  const DISTRICT_SUBREGION = new Map(Object.entries(SUBREGION_DISTRICTS).flatMap(([subregion,districts])=>districts.map(district=>[district.toLowerCase(),subregion])));
+  const STATION_SUBREGION = new Map(Object.entries(SUBREGION_STATIONS).flatMap(([subregion,stations])=>stations.map(station=>[station.toLowerCase(),subregion])));
+  const STATION_REGION = new Map([
+    ...SUBREGION_STATIONS.Central.map(station=>[station.toLowerCase(),"Central"]),
+    ...[...SUBREGION_STATIONS.Rwenzori,...SUBREGION_STATIONS.Bunyoro].map(station=>[station.toLowerCase(),"Western"]),
+    ...[...SUBREGION_STATIONS.Ankole,...SUBREGION_STATIONS.Kigezi].map(station=>[station.toLowerCase(),"Southern"]),
+    ...[...SUBREGION_STATIONS.Busoga,...SUBREGION_STATIONS.Bugisu,...SUBREGION_STATIONS.Bukedi].map(station=>[station.toLowerCase(),"Eastern"]),
+    ...[...SUBREGION_STATIONS.Teso,...SUBREGION_STATIONS.Karamoja].map(station=>[station.toLowerCase(),"North Eastern"]),
+    ...[...SUBREGION_STATIONS.Lango,...SUBREGION_STATIONS.Acholi,...SUBREGION_STATIONS["West Nile"]].map(station=>[station.toLowerCase(),"Northern"])
+  ]);
   const SECTION_TABS = [["dashboard", "Dashboard"], ["map", "Map"], ["records", "Full Exhaustive Table"], ["analytics", "Deep Analytics"], ["sql", "SQL Tables"], ["schema", "SQL Schema"]];
   const SECTION_META = {
     overview: ["National DUCAR Overview", "Whole-register coverage, condition, pavement, traffic and planning status."],
@@ -264,16 +268,17 @@
     return String(value);
   }
   function normalDistrict(value){return properText(value).replace(/^Sembabule$/i,"Ssembabule").replace(/^Luweero$/i,"Luwero");}
+  function normalStation(value){return properText(value).replace(/^Fortportal$/i,"Fort Portal").replace(/^Luweero$/i,"Luwero");}
   function maintenanceProfile(row) {
-    const district=normalDistrict(row.district||row.admin_district||row.source_district),baseRegion=properText(row.maintenance_region||row.region||DISTRICT_GEO[district]?.region||"Uganda");
-    const maintenanceRegion=baseRegion==="Uganda"?(DISTRICT_GEO[district]?.region||"Central"):baseRegion;
-    const subRegion=properText(row.sub_region||row.subregion||DISTRICT_SUBREGION.get(district.toLowerCase())||(WEST_NILE_DISTRICTS.has(district)?"West Nile":maintenanceRegion));
-    let station=properText(row.maintenance_station||row.station||"");
+    const district=normalDistrict(row.district||row.admin_district||row.source_district);
+    let station=normalStation(row.maintenance_station||row.station||"");
     if(!station||station==="Not supplied"){
       const point=DISTRICT_GEO[district];
       const candidates=MAINTENANCE_STATIONS.map(name=>{const stationDistrict=name==="Fort Portal"?"Kabarole":name,geo=DISTRICT_GEO[stationDistrict];return {name,geo};}).filter(item=>item.geo?.lat!==null&&item.geo?.lat!==undefined&&point?.lat!==null&&point?.lat!==undefined);
       station=candidates.sort((a,b)=>Math.hypot(point.lat-a.geo.lat,point.lng-a.geo.lng)-Math.hypot(point.lat-b.geo.lat,point.lng-b.geo.lng))[0]?.name||MAINTENANCE_STATIONS[0];
     }
+    const suppliedRegion=properText(row.maintenance_region||row.region||""),maintenanceRegion=MAINTENANCE_REGIONS.includes(suppliedRegion)?suppliedRegion:(STATION_REGION.get(station.toLowerCase())||DISTRICT_GEO[district]?.region||"Central");
+    const suppliedSubRegion=properText(row.sub_region||row.subregion||""),subRegion=Object.hasOwn(SUBREGION_STATIONS,suppliedSubRegion)?suppliedSubRegion:(STATION_SUBREGION.get(station.toLowerCase())||"Central");
     const rawRoadClass=properText(row.functional_class||row.road_management_class||row.road_class||row.government_authority||"District Roads"),roadClass=rawRoadClass==="KCCA"?"KCCA City Roads":rawRoadClass;
     const yearValue=row.financial_year||row.fy||row.survey_financial_year||row.survey_year||row.traffic_projection_year||2026,yearText=String(yearValue),financialYear=/FY/i.test(yearText)?properText(yearText):/^20\d{2}$/.test(yearText)?`FY ${Number(yearText)-1}/${yearText.slice(-2)}`:"FY 2025/26";
     return {district,maintenance_region:maintenanceRegion,sub_region:subRegion,maintenance_station:station,functional_class:roadClass,financial_year:financialYear};
@@ -803,7 +808,7 @@
     return Number((cache.hotosmAnalysis?.summaries?.[dimension]||[]).find(row=>row.category===category)?.length_km||0);
   }
   function authoritativeNetworkOverview() {
-    if(cache.hotosmAnalysis){const confirmed=confirmedNetwork(),total=cache.hotosmAnalysis.total||{};return `<section class="benchmark-panel authoritative-inventory"><header><div><small>MoWT RECONCILED VEHICULAR NETWORK · 2026</small><h3>Uganda complete vehicular-road geometry</h3><p>Every public pavement summary uses the complete 404,047-segment ArcGIS road master.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></header>${metricCards([{label:"Total vehicular-road length",value:number(confirmed.length_km,2)+" km",note:"Complete geometry-derived inventory"},{label:"Paved road length",value:number(total.paved_km,2)+" km",note:"Bituminous + Concrete"},{label:"Unpaved road length",value:number(total.unpaved_km,2)+" km",note:"Gravel + Earth"},{label:"Administrative districts",value:number(confirmed.districts),note:"All districts classified"}])}<div class="chart-grid">${barChart("Functional road classes","All corrected road geometry grouped by MoWT functional classification.",hotosmValues("functional_class"),"affected km",COLORS[0])}${barChart("Pavement classification","Complete Paved and Unpaved classification from the reconciled road master.",hotosmValues("pavement"),"affected km",COLORS[2])}${barChart("Condition classification","Complete Good, Fair and Poor classification from COND.",hotosmValues("condition"),"affected km",COLORS[1])}${barChart("Highway classification","All source highway values retained; high-cardinality detail remains in tables.",hotosmValues("highway"),"affected km",COLORS[4])}</div><div class="method-note">Authoritative public total: ${number(confirmed.length_km,2)} km across ${number(total.feature_count)} vehicular ways. National Roads remain part of the same full-network geometry and attribute model.</div></section>`;}
+    if(cache.hotosmAnalysis){const confirmed=confirmedNetwork(),total=cache.hotosmAnalysis.total||{},paved=confirmed.paved_km,unpaved=Math.max(0,confirmed.length_km-paved);return `<section class="benchmark-panel authoritative-inventory"><header><div><small>MoWT RECONCILED VEHICULAR NETWORK · 2026</small><h3>Uganda complete vehicular-road geometry</h3><p>Every public pavement headline uses the approved network baseline; detailed source classifications remain available in the tables.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></header>${metricCards([{label:"Total vehicular-road length",value:number(confirmed.length_km,2)+" km",note:"Approved complete-network baseline"},{label:"Paved road length",value:number(paved,2)+" km",note:"Bituminous + Concrete"},{label:"Unpaved road length",value:number(unpaved,2)+" km",note:"Gravel + Earth"},{label:"Administrative districts",value:number(confirmed.districts),note:"All districts classified"}])}<div class="chart-grid">${barChart("Functional road classes","All corrected road geometry grouped by MoWT functional classification.",hotosmValues("functional_class"),"affected km",COLORS[0])}${barChart("Pavement classification","Approved Paved and Unpaved network baseline.",[{name:"Paved",value:paved},{name:"Unpaved",value:unpaved}],"affected km",COLORS[2])}${barChart("Condition classification","Complete Good, Fair and Poor classification from COND.",hotosmValues("condition"),"affected km",COLORS[1])}${barChart("Highway classification","All source highway values retained; high-cardinality detail remains in tables.",hotosmValues("highway"),"affected km",COLORS[4])}</div><div class="method-note">Authoritative public total: ${number(confirmed.length_km,2)} km across ${number(total.feature_count)} vehicular ways. National Roads remain part of the same full-network geometry and attribute model.</div></section>`;}
     const confirmed=confirmedNetwork(),official={ducar:138503,urban:19952,district:38603,community:79948};
     return `<section class="benchmark-panel authoritative-inventory"><header><div><small>AUTHORITATIVE NATIONAL ROAD INVENTORY · JULY 2026</small><h3>Uganda confirmed all-road inventory</h3><p>One approved inventory scope is used consistently across public dashboards. Technical validation and reconciliation controls are retained in Admin Tools.</p></div><button class="pdf-download" data-section-pdf type="button">PDF report</button></header>${metricCards([
       {label:"Total road inventory",value:number(confirmed.length_km)+" km",note:"Authoritative national reporting total"},
@@ -1727,8 +1732,7 @@
   }
   function pageToolsHtml(){
     if(state.tab==="map")return "";
-    const scope=scopeDensity(pageScopeRows()),globalScope=state.section==="global";
-    return `<div class="page-tools" role="search" aria-label="Interactive filters, search and page navigation"><div class="page-filter-icon" aria-hidden="true">⌄</div><div class="page-facets"><label><span>Maintenance Region</span><select data-page-filter="maintenanceRegion"></select></label><label><span>Sub-Region</span><select data-page-filter="subRegion"></select></label><label><span>Maintenance Station</span><select data-page-filter="station"></select></label><label><span>Functional Class</span><select data-page-filter="roadClass"></select></label><label><span>Pavement Type</span><select data-page-filter="pavement"></select></label><label><span>Surface Type</span><select data-page-filter="surface"></select></label><label><span>Condition</span><select data-page-filter="condition"></select></label><label><span>Financial Year</span><select data-page-filter="financialYear"></select></label><label><span>Additional Field</span><select data-page-facet-field></select></label><label><span>Field Value</span><select data-page-facet-value></select></label></div>${globalScope?"":`<div class="page-scope-metrics" aria-label="Current filtered scope"><span><small>Affected km</small><strong>${number(scope.affectedKm,2)} km</strong></span><span><small>Represented Area</small><strong>${number(scope.areaSqKm,2)} km²</strong></span><span><small>Road Density</small><strong>${number(scope.density,2)} km/1,000 km²</strong></span><span><small>Districts</small><strong>${number(scope.districts)}</strong></span></div>`}<div class="page-tools-lower"><label class="page-tools-search"><span>Search This Page</span><input type="search" data-page-search placeholder="Search every visible card, chart, table and field" autocomplete="off"></label><label class="page-tools-jump"><span>Go To</span><select data-page-jump aria-label="Go to a section on this page"><option value="">All Page Content</option></select></label><button type="button" data-page-filter-reset>Reset Filters</button><button type="button" data-page-search-clear>Clear Search</button><output data-page-search-status aria-live="polite">Affected km and density · complete page visible</output></div></div>`;
+    return `<div class="page-tools page-tools-compact" role="group" aria-label="Interactive network filters"><div class="page-filter-icon" aria-hidden="true">⌄</div><div class="page-facets"><label><span>Maintenance Region</span><select data-page-filter="maintenanceRegion"></select></label><label><span>Sub-Region</span><select data-page-filter="subRegion"></select></label><label><span>Maintenance Station</span><select data-page-filter="station"></select></label><label><span>Functional Class</span><select data-page-filter="roadClass"></select></label><label><span>Pavement Type</span><select data-page-filter="pavement"></select></label><label><span>Surface Type</span><select data-page-filter="surface"></select></label><label><span>Condition</span><select data-page-filter="condition"></select></label><label><span>Financial Year</span><select data-page-filter="financialYear"></select></label></div></div>`;
   }
   function normalizeMetricWording(scope){
     const walker=document.createTreeWalker(scope,NodeFilter.SHOW_TEXT,{acceptNode(node){return node.parentElement?.closest("script,style,textarea")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}});let node;
@@ -1745,25 +1749,11 @@
   }
   function initPageTools(){
     const toolbar=root.querySelector(".page-tools");if(!toolbar)return;
-    const input=toolbar.querySelector("[data-page-search]"),jump=toolbar.querySelector("[data-page-jump]"),status=toolbar.querySelector("[data-page-search-status]");
     const sourceRows=state.section==="structures"?(cache.structures?.rows||[]):state.section==="socioeconomic"?(cache.socio?.rows||[]):state.section==="summaries"?(cache.relations||[]):state.section==="global"?(cache.global?.rows||[]):(cache.links||[]);
     const rowsWithProfile=sourceRows.map(enrichedAdministrativeRow),unique=values=>[...new Set(values.map(value=>shown(value)).filter(value=>value!=="Not supplied"))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
     const options=(select,label,values,selected)=>{select.replaceChildren(new Option(label,"All"),...values.map(value=>new Option(value,value)));select.value=values.includes(selected)?selected:"All";};
-    const core={maintenanceRegion:["All Maintenance Regions",MAINTENANCE_REGIONS],subRegion:["All Sub-Regions",Object.keys(SUBREGION_DISTRICTS).sort()],station:["All Maintenance Stations",MAINTENANCE_STATIONS],roadClass:["All Functional Classes",ROAD_TYPES],pavement:["All Pavement Types",["Paved","Unpaved"]],surface:["All Surface Types",unique(rowsWithProfile.map(row=>row.surface))],condition:["All Conditions",unique(rowsWithProfile.map(row=>row.condition||row.current_condition))],financialYear:["All Financial Years",FINANCIAL_YEARS]};
+    const core={maintenanceRegion:["All Regions",MAINTENANCE_REGIONS],subRegion:["All Sub-Regions",Object.keys(SUBREGION_STATIONS)],station:["All Stations",MAINTENANCE_STATIONS],roadClass:["All Classes",ROAD_TYPES],pavement:["All Pavement Types",["Paved","Unpaved"]],surface:["All Surface Types",unique(rowsWithProfile.map(row=>row.surface))],condition:["All Conditions",unique(rowsWithProfile.map(row=>row.condition||row.current_condition))],financialYear:["All Financial Years",FINANCIAL_YEARS]};
     toolbar.querySelectorAll("[data-page-filter]").forEach(select=>{const key=select.dataset.pageFilter,[labelText,values]=core[key];options(select,labelText,values,state.headerFilters[key]);select.addEventListener("change",()=>{state.headerFilters[key]=select.value;state.page=1;render();});});
-    const coreFields=new Set(["maintenance_region","sub_region","maintenance_station","functional_class","financial_year","region","district","admin_district","surface","pavement_class","condition","current_condition"]),fieldSelect=toolbar.querySelector("[data-page-facet-field]"),valueSelect=toolbar.querySelector("[data-page-facet-value]");
-    const fields=[...new Set(rowsWithProfile.flatMap(row=>Object.keys(row)))].filter(field=>!coreFields.has(field)&&!HIDDEN_RECORD_FIELDS.has(field)).map(field=>({field,values:unique(rowsWithProfile.map(row=>row[field]))})).filter(item=>item.values.length>1&&item.values.length<=250).sort((a,b)=>label(a.field).localeCompare(label(b.field)));
-    fieldSelect.replaceChildren(new Option("All Categorical Fields",""),...fields.map(item=>new Option(label(item.field),item.field)));fieldSelect.value=fields.some(item=>item.field===state.headerFilters.facetField)?state.headerFilters.facetField:"";state.headerFilters.facetField=fieldSelect.value;
-    const setFacetValues=()=>{const item=fields.find(field=>field.field===fieldSelect.value),values=item?.values||[];options(valueSelect,"All Values",values,state.headerFilters.facetValue);valueSelect.disabled=!item;state.headerFilters.facetValue=valueSelect.value;};setFacetValues();
-    fieldSelect.addEventListener("change",()=>{state.headerFilters.facetField=fieldSelect.value;state.headerFilters.facetValue="All";setFacetValues();render();});valueSelect.addEventListener("change",()=>{state.headerFilters.facetValue=valueSelect.value;state.page=1;render();});
-    const headings=[...root.querySelectorAll(".section-studio h2,.section-studio h3")].filter(heading=>!heading.closest(".page-tools,.ducar-export-panel")&&heading.textContent.trim());
-    headings.forEach((heading,index)=>{if(!heading.id)heading.id=`page-section-${index+1}`;jump.appendChild(new Option(heading.textContent.trim(),heading.id));});
-    jump.addEventListener("change",()=>{if(!jump.value){window.scrollTo({top:0,behavior:"smooth"});return;}const target=document.getElementById(jump.value);target?.scrollIntoView({behavior:"smooth",block:"start"});target?.closest("section,article,.chart-card,.table-export-wrap")?.classList.add("page-search-focus");setTimeout(()=>root.querySelector(".page-search-focus")?.classList.remove("page-search-focus"),1400);});
-    const searchable=[...root.querySelectorAll(".metric-card,.chart-card,.dynamic-chart-card,.insight-card,.admin-block,.schema-card,.sql-table,.table-export-wrap")];
-    const rows=[...root.querySelectorAll("table tbody tr")];
-    const apply=()=>{const query=input.value.trim().toLocaleLowerCase();let matches=0;searchable.forEach(item=>{const ownTable=item.matches(".table-export-wrap")?item.querySelector("table"):null;const match=!query||(ownTable?ownTable.textContent:item.textContent).toLocaleLowerCase().includes(query);item.classList.toggle("page-search-hidden",!match);if(match&&query)matches++;});rows.forEach(row=>{const match=!query||row.textContent.toLocaleLowerCase().includes(query);row.classList.toggle("page-search-row-hidden",!match);});status.textContent=query?`${number(matches)} matching page blocks`:`Affected km and density · complete page visible`;};
-    input.addEventListener("input",apply);toolbar.querySelector("[data-page-search-clear]").addEventListener("click",()=>{input.value="";apply();input.focus();});
-    toolbar.querySelector("[data-page-filter-reset]").addEventListener("click",()=>{Object.assign(state.headerFilters,{maintenanceRegion:"All",subRegion:"All",station:"All",roadClass:"All",financialYear:"All",region:"All",district:"All",surface:"All",pavement:"All",condition:"All",facetField:"",facetValue:"All",search:""});state.page=1;render();});
   }
   async function render() {
     const token=++renderToken;

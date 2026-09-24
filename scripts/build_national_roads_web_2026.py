@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import os
 import re
 from pathlib import Path
 
@@ -14,11 +15,30 @@ import shapely
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT.parent / "National Roads" / "network2026" / "network2026.shp"
+SOURCE_ROOT = Path(os.environ.get("UGANDA_NATIONAL_ROAD_ROOT", r"D:\OneDrive\National Road Network"))
+SOURCE = SOURCE_ROOT / "network2026" / "network2026.shp"
+SOURCE_FALLBACK = ROOT.parents[1] / "network2026" / "network2026.shp"
+REGISTER = SOURCE_ROOT / "National Road Network_ July 2026.xlsx"
 OUTPUT = ROOT / "data" / "uganda_national_roads_2026.geojson"
 OUTPUT_GZIP = ROOT / "data" / "uganda_national_roads_2026.geojson.gz"
 AUDIT = ROOT / "data" / "national_road_accuracy_audit_2026.json"
 MODEL_YEAR = 2026
+SUBREGION_STATIONS = {
+    "Central": ["Kampala", "Mpigi", "Luwero", "Masaka", "Mubende"],
+    "Rwenzori": ["Fort Portal", "Kasese"],
+    "Bunyoro": ["Hoima", "Masindi"],
+    "Ankole": ["Ibanda", "Mbarara"],
+    "Kigezi": ["Kabale"],
+    "Busoga": ["Jinja"],
+    "Bugisu": ["Mbale"],
+    "Bukedi": ["Tororo"],
+    "Teso": ["Soroti"],
+    "Lango": ["Lira"],
+    "Acholi": ["Gulu", "Kitgum"],
+    "Karamoja": ["Moroto", "Kotido"],
+    "West Nile": ["Moyo", "Arua"],
+}
+STATION_SUBREGION = {station: subregion for subregion, stations in SUBREGION_STATIONS.items() for station in stations}
 
 
 def clean_name(value: object) -> str:
@@ -60,20 +80,38 @@ def condition(row: pd.Series) -> tuple[str, float, str]:
 
 
 def main() -> None:
-    roads = gpd.read_file(SOURCE)
+    source_path = SOURCE
+    try:
+        roads = gpd.read_file(source_path)
+    except Exception:
+        source_path = SOURCE_FALLBACK
+        roads = gpd.read_file(source_path)
+    register = pd.read_excel(REGISTER, sheet_name="Table")
+    register["Link_ID"] = register["Link_ID"].astype("string").str.strip()
+    register["_road_name_key"] = register["Link_Name"].map(clean_name).str.casefold()
+    register["_road_pair_key"] = register["Road_No"].astype("string").str.strip().str.casefold() + "|" + register["_road_name_key"]
+    register_by_id = register.dropna(subset=["Link_ID"]).drop_duplicates("Link_ID").set_index("Link_ID")
+    register_by_pair = register.dropna(subset=["Road_No", "Link_Name"]).drop_duplicates("_road_pair_key").set_index("_road_pair_key")
     roads = roads[~roads.geometry.isna() & ~roads.geometry.is_empty].copy()
     roads.geometry = roads.geometry.map(valid_line_geometry)
-    roads["registry_length_km"] = pd.to_numeric(roads["Length_km_"], errors="coerce").fillna(0)
+    source_ids = roads["Link_ID_1"].astype(str).str.strip()
+    source_pair_keys = roads["Road_No_1"].astype(str).str.strip().str.casefold() + "|" + roads["Link_Name"].map(clean_name).str.casefold()
+    def official(column: str) -> pd.Series:
+        return source_pair_keys.map(register_by_pair[column]).combine_first(source_ids.map(register_by_id[column]))
+
+    official_length = official("Length(km)")
+    roads["registry_length_km"] = pd.to_numeric(official_length, errors="coerce").fillna(pd.to_numeric(roads["Length_km_"], errors="coerce")).fillna(0)
     roads["geometry_length_km"] = roads.to_crs(32636).length / 1000.0
     roads["registry_geometry_variance_pct"] = np.where(roads["registry_length_km"] > 0, (roads["geometry_length_km"] / roads["registry_length_km"] - 1) * 100, 0)
-    roads["source_link_id"] = roads["Link_ID_1"].astype(str).str.strip()
+    roads["source_link_id"] = source_ids
     duplicate_sequence = roads.groupby("source_link_id").cumcount() + 1
     duplicate_count = roads.groupby("source_link_id")["source_link_id"].transform("size")
     roads["link_id"] = np.where(duplicate_count > 1, roads["source_link_id"] + "-" + duplicate_sequence.astype(str).str.zfill(2), roads["source_link_id"])
-    roads["road_number"] = roads["Road_No_1"].astype(str).str.strip()
-    roads["road_name"] = roads["Link_Name"].map(clean_name)
-    roads["road_class"] = roads["Road_Cla_1"].map(lambda value: f"Class {str(value).strip().upper()} National Road")
-    roads["surface_source_value"] = roads["Surface__1"].astype(str).str.strip()
+    roads["road_number"] = official("Road_No").fillna(roads["Road_No_1"]).astype(str).str.strip()
+    roads["road_name"] = official("Link_Name").fillna(roads["Link_Name"]).map(clean_name)
+    road_class = official("Road_Class").fillna(roads["Road_Cla_1"])
+    roads["road_class"] = road_class.map(lambda value: f"Class {str(value).strip().upper()} National Road")
+    roads["surface_source_value"] = official("Surface_Type").fillna(roads["Surface__1"]).astype(str).str.strip()
     roads["surface"] = roads["surface_source_value"].map(lambda value: "Bituminous" if value.lower() == "bituminous" else "Gravel")
     roads["pavement_class"] = roads["surface"].map(lambda value: "Paved" if value == "Bituminous" else "Unpaved")
     estimates = roads.apply(condition, axis=1)
@@ -81,24 +119,25 @@ def main() -> None:
     roads["condition_model_confidence_pct"] = estimates.map(lambda item: item[1])
     roads["condition_assignment_basis"] = estimates.map(lambda item: item[2])
     roads["condition_value_status"] = "Model estimated from official asset fields"
-    roads["maintenance_station"] = roads["Maintena_2"].fillna("National Roads Directorate").map(clean_name)
-    roads["region"] = roads["Maintena_3"].fillna("Uganda").map(clean_name)
+    roads["maintenance_station"] = official("Maintenance_Station").fillna(roads["Maintena_2"]).fillna("National Roads Directorate").map(clean_name)
+    roads["region"] = official("Maintenance_Region").fillna(roads["Maintena_3"]).fillna("Uganda").map(clean_name)
+    roads["sub_region"] = roads["maintenance_station"].map(STATION_SUBREGION).fillna("Not supplied")
     roads["chainage_start_km"] = pd.to_numeric(roads["Chainage_1"], errors="coerce").fillna(0)
     roads["chainage_end_km"] = pd.to_numeric(roads["Chainage_2"], errors="coerce").fillna(roads["registry_length_km"])
-    roads["completion_year"] = pd.to_numeric(roads["Completi_1"], errors="coerce").fillna(0).astype(int)
-    roads["rehabilitation_year"] = pd.to_numeric(roads["Rehabili_1"], errors="coerce").fillna(0).astype(int)
-    roads["last_intervention_year"] = pd.to_numeric(roads["Year_of_La"], errors="coerce").fillna(0).astype(int)
+    roads["completion_year"] = pd.to_numeric(official("Completion_Year").fillna(roads["Completi_1"]), errors="coerce").fillna(0).astype(int)
+    roads["rehabilitation_year"] = pd.to_numeric(official("Rehabilitation_Year").fillna(roads["Rehabili_1"]), errors="coerce").fillna(0).astype(int)
+    roads["last_intervention_year"] = pd.to_numeric(official("Year_of_Last_Interventation").fillna(roads["Year_of_La"]), errors="coerce").fillna(0).astype(int)
     roads["comments"] = roads["Comments"].fillna("No additional source comment")
     roads = roads.to_crs(4326)
     roads["start_x_coordinate_dd"] = roads.geometry.map(lambda geometry: endpoint(geometry)[0])
     roads["start_y_coordinate_dd"] = roads.geometry.map(lambda geometry: endpoint(geometry)[1])
     roads["end_x_coordinate_dd"] = roads.geometry.map(lambda geometry: endpoint(geometry, True)[0])
     roads["end_y_coordinate_dd"] = roads.geometry.map(lambda geometry: endpoint(geometry, True)[1])
-    roads["source"] = "MoWT National Roads network2026.shp FY2025/26"
+    roads["source"] = "MoWT National Road Network July 2026 register joined to network2026.shp"
     roads["length_measurement_crs"] = "EPSG:32636"
     roads["coordinate_reference_system"] = "EPSG:4326"
 
-    fields = ["link_id", "source_link_id", "road_number", "road_name", "road_class", "surface_source_value", "surface", "pavement_class", "condition", "condition_value_status", "condition_model_confidence_pct", "condition_assignment_basis", "maintenance_station", "region", "registry_length_km", "geometry_length_km", "registry_geometry_variance_pct", "chainage_start_km", "chainage_end_km", "completion_year", "rehabilitation_year", "last_intervention_year", "comments", "start_x_coordinate_dd", "start_y_coordinate_dd", "end_x_coordinate_dd", "end_y_coordinate_dd", "source", "length_measurement_crs", "coordinate_reference_system", "geometry"]
+    fields = ["link_id", "source_link_id", "road_number", "road_name", "road_class", "surface_source_value", "surface", "pavement_class", "condition", "condition_value_status", "condition_model_confidence_pct", "condition_assignment_basis", "maintenance_station", "region", "sub_region", "registry_length_km", "geometry_length_km", "registry_geometry_variance_pct", "chainage_start_km", "chainage_end_km", "completion_year", "rehabilitation_year", "last_intervention_year", "comments", "start_x_coordinate_dd", "start_y_coordinate_dd", "end_x_coordinate_dd", "end_y_coordinate_dd", "source", "length_measurement_crs", "coordinate_reference_system", "geometry"]
     public = roads[fields].copy()
     # Preserve the authoritative source alignment for map inspection while
     # removing only sub-25-centimetre digitising noise. This resolution is well
@@ -113,14 +152,22 @@ def main() -> None:
     registry_total = float(roads["registry_length_km"].sum())
     geometry_total = float(roads["geometry_length_km"].sum())
     payload["name"] = "Uganda MoWT FY2025/26 National Road Network"
+    authoritative_total = float(pd.to_numeric(register["Length(km)"], errors="coerce").fillna(0).sum())
+    authoritative_paved = float(pd.to_numeric(register.loc[register["Surface_Type"].eq("Bituminous"), "Length(km)"], errors="coerce").fillna(0).sum())
+    authoritative_unpaved = float(pd.to_numeric(register.loc[register["Surface_Type"].eq("Unsealed"), "Length(km)"], errors="coerce").fillna(0).sum())
     payload["metadata"] = {
-        "source": str(SOURCE), "source_scope": "MoWT National Roads FY2025/26 link register", "records": int(len(roads)),
+        "source": str(source_path), "attribute_register": str(REGISTER), "source_scope": "MoWT National Road Network July 2026 register", "records": int(len(roads)),
         "registry_length_km": round(registry_total, 6), "geometry_length_km": round(geometry_total, 6),
         "paved_registry_length_km": round(float(roads.loc[roads["pavement_class"] == "Paved", "registry_length_km"].sum()), 6),
         "unpaved_registry_length_km": round(float(roads.loc[roads["pavement_class"] == "Unpaved", "registry_length_km"].sum()), 6),
-        "public_official_headline_km": 21292, "public_official_headline_source": "https://works.go.ug/",
+        "authoritative_register_length_km": round(authoritative_total, 6),
+        "authoritative_register_paved_km": round(authoritative_paved, 6),
+        "authoritative_register_unpaved_km": round(authoritative_unpaved, 6),
+        "register_only_length_km": round(authoritative_total - registry_total, 6),
+        "public_official_headline_km": 21302, "public_official_headline_source": str(REGISTER),
+        "sub_regions": list(SUBREGION_STATIONS), "sub_region_count": len(SUBREGION_STATIONS),
         "display_geometry": "Authoritative source alignment with 0.25 m sub-survey-noise reduction and six-decimal-degree output precision",
-        "scope_note": "The local FY2025/26 link-register total and the current MoWT public headline are retained as separate evidence scopes; neither is rescaled.",
+        "scope_note": "The July 2026 register supplies authoritative attributes and the network2026 shapefile supplies mapped alignments. Blank Link IDs with matching road number and link name are joined to their source geometry. The remaining register-only length is retained in the authoritative total without fabricated geometry.",
     }
     serialized = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     OUTPUT.write_text(serialized, encoding="utf-8")
@@ -128,7 +175,7 @@ def main() -> None:
         stream.write(serialized)
 
     audit = {
-        "source": str(SOURCE), "records": int(len(roads)), "unique_public_link_ids": int(roads["link_id"].nunique()),
+        "source": str(source_path), "attribute_register": str(REGISTER), "records": int(len(roads)), "unique_public_link_ids": int(roads["link_id"].nunique()),
         "duplicate_source_link_id_records": int(roads["source_link_id"].duplicated(keep=False).sum()),
         "blank_road_names": int(roads["road_name"].eq("").sum()), "null_geometries": 0,
         "invalid_geometries_after_repair": int((~roads.geometry.is_valid).sum()),
@@ -139,7 +186,12 @@ def main() -> None:
         "noncanonical_surface_records": int((~roads["surface"].isin(["Bituminous", "Concrete", "Gravel", "Earth"])).sum()),
         "unclassified_pavement_records": int((~roads["pavement_class"].isin(["Paved", "Unpaved"])).sum()),
         "unclassified_condition_records": int((~roads["condition"].isin(["Good", "Fair", "Poor"])).sum()),
-        "official_comparison": {"mowt_public_headline_km": 21292, "ubos_2023_24_km": 21200, "local_fy2025_26_link_register_km": round(registry_total, 6), "reason_for_separate_values": "Different publication dates and evidence scopes; no forced reconciliation."},
+        "authoritative_register_length_km": round(authoritative_total, 6),
+        "authoritative_register_paved_km": round(authoritative_paved, 6),
+        "authoritative_register_unpaved_km": round(authoritative_unpaved, 6),
+        "register_only_length_km": round(authoritative_total - registry_total, 6),
+        "sub_region_count": len(SUBREGION_STATIONS),
+        "official_comparison": {"approved_headline_km": 21302, "july_2026_register_km": round(authoritative_total, 6), "mapped_registry_km": round(registry_total, 6), "mapped_geometry_km": round(geometry_total, 6), "reason_for_separate_values": "Road number and link name matches recover blank-ID geometry where evidence exists. The remaining register-only length stays in the authoritative total and is not assigned fabricated geometry."},
     }
     AUDIT.write_text(json.dumps(audit, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(audit, indent=2))
