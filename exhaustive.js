@@ -25,7 +25,8 @@
     hotosmAnalysis: "./data/hotosm_vehicular_analysis.json?v=20260831-mowt-seven-classes-1",
     arcgisReady: "./data/arcgis_ready_complete_network_reconciliation_2026.json?v=20260910-arcgis-ready-1",
     fullNetworkRecords: "./data/hotosm_vehicular_link_attributes.json.gz?v=20260831-mowt-seven-classes-1",
-    nationalMap: "./data/uganda_national_roads_2026.geojson.gz?v=20260824-national-register-exact-4"
+    nationalMap: "./data/uganda_national_roads_2026.geojson.gz?v=20260924-national-register-actual-1",
+    nationalAudit: "./data/national_road_accuracy_audit_2026.json?v=20260924-national-register-actual-1"
   };
   const RISK_SCALE = ["#22c55e", "#84cc16", "#eab308", "#f97316", "#ef4444"];
   const CATEGORICAL_COLORS = ["#2563eb", "#7c3aed", "#0891b2", "#f97316", "#db2777", "#16a34a", "#ca8a04", "#4f46e5", "#0f766e", "#be123c", "#9333ea", "#0284c7"];
@@ -375,7 +376,7 @@
       if(state.section==="structures")return Promise.all([data("structures"),data("mapRoads"),data("structureMap")]);
       return data("mapRoads");
     }
-    await data("hotosmAnalysis");
+    await Promise.all([data("hotosmAnalysis"), data("nationalAudit").catch(() => null)]);
     await data("arcgisReady").catch(() => null);
     if (["sql", "schema"].includes(state.tab)) return data("database");
     if (state.section === "global") return Promise.all([data("global"), data("governance")]);
@@ -388,7 +389,20 @@
   function number(value, digits = 0) { const numeric=Number(value||0),authoritative=Math.abs(numeric-Number(confirmedNetwork().length_km||0))<.01,precision=authoritative?2:digits;return numeric.toLocaleString(undefined,{maximumFractionDigits:precision,minimumFractionDigits:authoritative?2:0}); }
   function hasNumeric(value) { return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)); }
   function confirmedNetwork() { return CONFIRMED_NETWORK_FALLBACK; }
-  function nationalRoadKm() { return CONFIRMED_NETWORK_FALLBACK.national_road_km; }
+  function nationalRoadKm() { return Number(cache.nationalAudit?.official_comparison?.approved_headline_km||CONFIRMED_NETWORK_FALLBACK.national_road_km); }
+  function nationalRoadActual() {
+    const audit=cache.nationalAudit||{};
+    return {
+      headlineKm:nationalRoadKm(),
+      registerKm:Number(audit.authoritative_register_length_km||nationalRoadKm()),
+      pavedKm:Number(audit.authoritative_register_paved_km||6405.053853),
+      unpavedKm:Number(audit.authoritative_register_unpaved_km||14896.762445),
+      mappedRecords:Number(audit.records||1014),
+      mappedGeometryKm:Number(audit.geometry_length_km||21091.23854),
+      conditionRecords:audit.mapped_condition_records||{Good:133,Fair:134,Poor:747},
+      conditionKm:audit.mapped_condition_length_km||{Good:1839.269228,Fair:3170.247243,Poor:16179.754827}
+    };
+  }
   function chartNumber(value, unit) {
     if (unit === "UGX") return "UGX " + new Intl.NumberFormat(undefined, { notation: "compact", maximumFractionDigits: 1 }).format(value);
     return number(value, unit.includes("km") ? 1 : 0)+(unit.includes("km")?" km":"");
@@ -795,11 +809,12 @@
   }
   function hotosmValues(dimension) {
     if(dimension==="functional_class"&&cache.arcgisReady?.class_summary){
+      const national=nationalRoadActual();
       return Object.entries(cache.arcgisReady.class_summary).map(([name,item])=>({
         name:properText(name),
-        value:Number(item.length_km||0),
-        length:Number(item.length_km||0),
-        count:Number(item.records||0)
+        value:name==="National Roads"?national.headlineKm:Number(item.length_km||0),
+        length:name==="National Roads"?national.headlineKm:Number(item.length_km||0),
+        count:name==="National Roads"?national.mappedRecords:Number(item.records||0)
       }));
     }
     return (cache.hotosmAnalysis?.summaries?.[dimension]||[]).map(row=>({name:properText(row.category),value:Number(row.length_km||0),length:Number(row.length_km||0),count:Number(row.feature_count||0)}));
@@ -1626,7 +1641,7 @@
       {scope:"Master-workbook DUCAR inventory",length_km:"Inventory-controlled total",records:number(workbook.ducar_link_rows),administrative_extent:workbook.administrative_extent||"135 districts",use:"51-attribute inventory and candidate mapping scope"},
       {scope:"Verified web analytical register",length_km:number(registerKm,3),records:number(fullRows.length),administrative_extent:"Verified linked districts",use:"Link-level dashboards, maps and exhaustive records"},
       {scope:"Published DUCAR composition reference",length_km:number(published.ducar_composition_km,3),records:"Not a link register",administrative_extent:"Urban + district + community access",use:"Reference reconciliation only"},
-      {scope:"Published national-road reference",length_km:number(published.national_roads_km,3),records:"Not a link register",administrative_extent:"National road network",use:"Reference reconciliation only"}
+      {scope:"Actual National Road Network register",length_km:number(nationalRoadActual().registerKm,3),records:number(nationalRoadActual().mappedRecords)+" mapped alignments",administrative_extent:"National Road Network",use:"July 2026 road register joined to actual network2026 alignments"}
     ];
     const controlRows=[
       {control:"Pavement classes",classified_km:number(classified("pavement_class",["Paved","Unpaved"]),3),register_km:number(registerKm,3),variance_km:number(classified("pavement_class",["Paved","Unpaved"])-registerKm,3),basis:"Paved + Unpaved"},
@@ -1648,7 +1663,7 @@
     const analysis=cache.hotosmAnalysis;if(!analysis)return "";
     const dimensions={overview:["functional_class","pavement","condition"],ducar:["functional_class","pavement","condition"],network:["highway","surface","pavement","functional_class"],traffic:["highway","functional_class"],condition:["condition","surface","pavement"],structures:["district"],pims:["functional_class","condition"],hdm4:["highway","pavement","condition"],framework:["region","district"],budgets:["functional_class","pavement"],socioeconomic:["region","district"],summaries:["region","district"]}[section]||["functional_class"];
     const fields=["category","feature_count","length_km","paved_km","unpaved_km","unclassified_pavement_km","good_condition_km","fair_condition_km","poor_condition_km","unclassified_condition_km","named_feature_count","bridge_feature_count","oneway_feature_count"];
-    const tables=dimensions.map(dimension=>analyticsTable(`HOTOSM ${label(dimension)} complete summary`,`All vehicular source features and affected length; no Top-N selection.`,fields,analysis.summaries?.[dimension]||[])).join("");
+    const tables=dimensions.map(dimension=>{let rows=analysis.summaries?.[dimension]||[];if(dimension==="functional_class"){const national=nationalRoadActual();rows=rows.map(row=>row.category==="National Roads"?{...row,feature_count:national.mappedRecords,length_km:national.registerKm,paved_km:national.pavedKm,unpaved_km:national.unpavedKm,unclassified_pavement_km:0,good_condition_km:national.conditionKm.Good,fair_condition_km:national.conditionKm.Fair,poor_condition_km:national.conditionKm.Poor,unclassified_condition_km:0,named_feature_count:national.mappedRecords,bridge_feature_count:0,oneway_feature_count:0}:row);}return analyticsTable(`${dimension==="functional_class"?"Authoritative":"HOTOSM"} ${label(dimension)} complete summary`,dimension==="functional_class"?"National Roads use the actual July 2026 register and mapped network2026 alignments. Other classes retain complete vehicular source classification.":"All vehicular source features and affected length; no Top-N selection.",fields,rows);}).join("");
     if(section!=="traffic"&&section!=="summaries"&&section!=="framework")return tables;
     const completeness=Object.entries(analysis.attribute_completeness||{}).map(([attribute,row])=>({attribute,...row,gap_features:Number(analysis.total.feature_count||0)-Number(row.supplied_features||0),gap_length_km:Number(analysis.total.length_km||0)-Number(row.supplied_length_km||0)}));
     return tables+analyticsTable("HOTOSM attribute completeness","Every source attribute measured by feature frequency and affected length; missing values remain explicit.",["attribute","supplied_features","gap_features","supplied_length_km","gap_length_km"],completeness);

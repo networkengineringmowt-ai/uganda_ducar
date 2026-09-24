@@ -155,6 +155,8 @@ def main() -> None:
     authoritative_total = float(pd.to_numeric(register["Length(km)"], errors="coerce").fillna(0).sum())
     authoritative_paved = float(pd.to_numeric(register.loc[register["Surface_Type"].eq("Bituminous"), "Length(km)"], errors="coerce").fillna(0).sum())
     authoritative_unpaved = float(pd.to_numeric(register.loc[register["Surface_Type"].eq("Unsealed"), "Length(km)"], errors="coerce").fillna(0).sum())
+    mapped_condition_records = {condition: int((roads["condition"] == condition).sum()) for condition in ["Good", "Fair", "Poor"]}
+    mapped_condition_length_km = {condition: round(float(roads.loc[roads["condition"] == condition, "registry_length_km"].sum()), 6) for condition in ["Good", "Fair", "Poor"]}
     payload["metadata"] = {
         "source": str(source_path), "attribute_register": str(REGISTER), "source_scope": "MoWT National Road Network July 2026 register", "records": int(len(roads)),
         "registry_length_km": round(registry_total, 6), "geometry_length_km": round(geometry_total, 6),
@@ -164,6 +166,8 @@ def main() -> None:
         "authoritative_register_paved_km": round(authoritative_paved, 6),
         "authoritative_register_unpaved_km": round(authoritative_unpaved, 6),
         "register_only_length_km": round(authoritative_total - registry_total, 6),
+        "mapped_condition_records": mapped_condition_records,
+        "mapped_condition_length_km": mapped_condition_length_km,
         "public_official_headline_km": 21302, "public_official_headline_source": str(REGISTER),
         "sub_regions": list(SUBREGION_STATIONS), "sub_region_count": len(SUBREGION_STATIONS),
         "display_geometry": "Authoritative source alignment with 0.25 m sub-survey-noise reduction and six-decimal-degree output precision",
@@ -190,6 +194,8 @@ def main() -> None:
         "authoritative_register_paved_km": round(authoritative_paved, 6),
         "authoritative_register_unpaved_km": round(authoritative_unpaved, 6),
         "register_only_length_km": round(authoritative_total - registry_total, 6),
+        "mapped_condition_records": mapped_condition_records,
+        "mapped_condition_length_km": mapped_condition_length_km,
         "sub_region_count": len(SUBREGION_STATIONS),
         "official_comparison": {"approved_headline_km": 21302, "july_2026_register_km": round(authoritative_total, 6), "mapped_registry_km": round(registry_total, 6), "mapped_geometry_km": round(geometry_total, 6), "reason_for_separate_values": "Road number and link name matches recover blank-ID geometry where evidence exists. The remaining register-only length stays in the authoritative total and is not assigned fabricated geometry."},
     }

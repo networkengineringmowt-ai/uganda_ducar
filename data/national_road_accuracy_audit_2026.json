@@ -19,6 +19,16 @@
   "authoritative_register_paved_km": 6405.053853,
   "authoritative_register_unpaved_km": 14896.762445,
   "register_only_length_km": 112.545,
+  "mapped_condition_records": {
+    "Good": 133,
+    "Fair": 134,
+    "Poor": 747
+  },
+  "mapped_condition_length_km": {
+    "Good": 1839.269228,
+    "Fair": 3170.247243,
+    "Poor": 16179.754827
+  },
   "sub_region_count": 13,
   "official_comparison": {
     "approved_headline_km": 21302,
