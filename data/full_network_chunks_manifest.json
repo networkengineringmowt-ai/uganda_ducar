@@ -1,0 +1,122 @@
+{
+  "population_records": 404047,
+  "chunk_size": 20000,
+  "chunk_count": 21,
+  "fields": [
+    "link_id",
+    "road_name",
+    "highway",
+    "surface",
+    "pavement_class",
+    "condition",
+    "functional_class",
+    "government_authority",
+    "length_km",
+    "government_department",
+    "geometry_basis",
+    "district",
+    "region",
+    "area_sqkm",
+    "d_tot_km",
+    "d_pvd_pct",
+    "d_por_pct",
+    "d_density",
+    "d_nstruct",
+    "d_str_100",
+    "d_adt",
+    "d_hvy_adt",
+    "d_crsh_yr",
+    "d_ftl_yr",
+    "l_adt",
+    "l_mc",
+    "l_hvyadt",
+    "l_nmt",
+    "l_trfsrc"
+  ],
+  "chunks": [
+    {
+      "path": "./data/full_network_chunks/roads_00.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_01.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_02.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_03.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_04.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_05.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_06.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_07.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_08.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_09.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_10.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_11.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_12.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_13.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_14.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_15.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_16.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_17.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_18.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_19.json.gz",
+      "records": 20000
+    },
+    {
+      "path": "./data/full_network_chunks/roads_20.json.gz",
+      "records": 4047
+    }
+  ]
+}

@@ -1606,6 +1606,58 @@ table td {
   .gauge-item { min-height: 112px !important; }
 }
 
+/* Deep Analytics and exhaustive-record visibility corrections. */
+.analytics-intro {
+  background: linear-gradient(135deg, #ffffff 0%, #edf7ff 100%) !important;
+  border-color: #b7d8f8 !important;
+  box-shadow: var(--apple-shadow) !important;
+}
+.analytics-intro h2,
+.analytics-block > header h3 { color: #172033 !important; }
+.analytics-intro p,
+.analytics-block > header p { color: #526174 !important; }
+.analytics-intro > strong,
+.analytics-block > header > strong { color: #075fb8 !important; }
+.analytics-intro small,
+.analytics-block > header small { color: #0878c9 !important; }
+.analytics-block {
+  background: #ffffff !important;
+  border-color: #d5e2ef !important;
+  box-shadow: 0 8px 26px rgba(31, 35, 48, .07) !important;
+}
+.analytics-table {
+  max-height: none !important;
+  height: auto !important;
+  overflow-y: visible !important;
+}
+.records-status { color: #526174 !important; }
+.records-status strong { color: #123f73 !important; }
+.cell-good,
+.cell-low,
+.cell-paved,
+.analytic-good {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+}
+.cell-fair,
+.cell-moderate,
+.analytic-warn {
+  background: #fef3c7 !important;
+  color: #854d0e !important;
+}
+.cell-high,
+.cell-unpaved {
+  background: #ffedd5 !important;
+  color: #9a3412 !important;
+}
+.cell-poor,
+.cell-critical,
+.analytic-bad {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+}
+.not-supplied { color: #9a3412 !important; }
+
 @media (min-width: 1500px) {
   .map-catalogue { min-width: 370px !important; }
   .insight-grid { grid-template-columns: repeat(4, minmax(250px, 1fr)) !important; }
@@ -1650,6 +1702,15 @@ table td {
   .insight-grid { grid-template-columns: 1fr !important; }
   .metric-grid { gap: 9px !important; }
   .metric-card { padding: 13px 13px 12px 17px !important; }
+  .analytics-intro {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 9px !important;
+  }
+  .analytics-intro > strong {
+    max-width: 100% !important;
+    text-align: left !important;
+  }
 }
 
 /* Unified non-map discovery controls. These replace isolated dark filter bars

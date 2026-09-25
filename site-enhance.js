@@ -536,7 +536,10 @@
       // skip trivial 0/1-row tables and tables already inside our own toolbar/pagination
       if (t.querySelector("tbody tr")) enhanceTable(t);
     });
-    document.querySelectorAll("select:not([data-se-select])").forEach(enhanceSelect);
+    document.querySelectorAll("select:not([data-se-select])").forEach(function (select) {
+      if (select.closest(".page-tools") && select.options.length <= 1) return;
+      enhanceSelect(select);
+    });
     document.querySelectorAll(KPI_SELECTOR + ":not([data-se-kpi])").forEach(enhanceKpiCard);
     document.querySelectorAll(".dynamic-legend:not([data-se-legend])").forEach(enhanceLegend);
     if (window.__seDismissSkeleton) window.__seDismissSkeleton();

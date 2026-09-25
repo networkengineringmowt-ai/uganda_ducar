@@ -25,6 +25,7 @@
     hotosmAnalysis: "./data/hotosm_vehicular_analysis.json?v=20260831-mowt-seven-classes-1",
     arcgisReady: "./data/arcgis_ready_complete_network_reconciliation_2026.json?v=20260910-arcgis-ready-1",
     fullNetworkRecords: "./data/hotosm_vehicular_link_attributes.json.gz?v=20260831-mowt-seven-classes-1",
+    fullNetworkManifest: "./data/full_network_chunks_manifest.json?v=20260925-progressive-1",
     nationalMap: "./data/uganda_national_roads_2026.geojson.gz?v=20260924-national-register-actual-1",
     nationalAudit: "./data/national_road_accuracy_audit_2026.json?v=20260924-national-register-actual-1"
   };
@@ -367,6 +368,46 @@
     }
     return cache[key];
   }
+  async function fetchGzipJson(path) {
+    const response=await fetch(path);
+    if(!response.ok)throw new Error("Unable to load "+path);
+    if(typeof DecompressionStream==="undefined")throw new Error("This browser does not support progressive compressed records");
+    return new Response(response.body.pipeThrough(new DecompressionStream("gzip"))).json();
+  }
+  async function loadFullNetworkPreview() {
+    const manifest=await data("fullNetworkManifest");
+    if(!Array.isArray(cache.fullNetworkRecords)){
+      cache.fullNetworkRecords=await fetchGzipJson(manifest.chunks[0].path);
+      cache.fullNetworkLoadedChunks=1;
+      cache.fullNetworkComplete=manifest.chunks.length===1;
+    }
+    return cache.fullNetworkRecords;
+  }
+  function updateFullNetworkProgress() {
+    if(state.section!=="ducar"||state.tab!=="records")return;
+    const loaded=cache.fullNetworkRecords?.length||0,total=cache.fullNetworkManifest?.population_records||404047,notice=root.querySelector(".records-load-notice"),status=root.querySelector(".records-status");
+    if(notice)notice.innerHTML=`<strong>${number(loaded)} of ${number(total)} road links indexed</strong><span>The table remains usable while the complete search index loads progressively.</span>`;
+    if(status)status.innerHTML=`<strong>${number(total)}</strong> records in the complete population · ${number(loaded)} records searchable now · showing ${number(root.querySelectorAll(".all-records-table tbody tr").length)} rows`;
+  }
+  async function loadRemainingFullNetworkChunks() {
+    if(cache.fullNetworkComplete)return cache.fullNetworkRecords;
+    if(cache.fullNetworkLoading)return cache.fullNetworkLoading;
+    cache.fullNetworkLoading=(async()=>{
+      const manifest=await data("fullNetworkManifest");
+      for(let index=Number(cache.fullNetworkLoadedChunks||0);index<manifest.chunks.length;index++){
+        const rows=await fetchGzipJson(manifest.chunks[index].path);
+        cache.fullNetworkRecords.push(...rows);
+        cache.fullNetworkLoadedChunks=index+1;
+        updateFullNetworkProgress();
+        await new Promise(resolve=>window.requestIdleCallback?window.requestIdleCallback(()=>resolve(),{timeout:180}):setTimeout(resolve,0));
+      }
+      cache.fullNetworkComplete=true;
+      cache.fullNetworkLoading=null;
+      if(state.section==="ducar"&&state.tab==="records")render();
+      return cache.fullNetworkRecords;
+    })().catch(error=>{cache.fullNetworkLoading=null;throw error;});
+    return cache.fullNetworkLoading;
+  }
   async function ensureData() {
     await data("inventory"); await data("criticality").catch(() => ({}));
     if(state.tab==="map"){
@@ -376,6 +417,7 @@
       if(state.section==="structures")return Promise.all([data("structures"),data("mapRoads"),data("structureMap")]);
       return data("mapRoads");
     }
+    if (state.section === "ducar" && state.tab === "records") { await Promise.all([data("links"), data("hotosmAnalysis"), data("nationalAudit").catch(() => null)]); return loadFullNetworkPreview(); }
     await Promise.all([data("hotosmAnalysis"), data("nationalAudit").catch(() => null)]);
     await data("arcgisReady").catch(() => null);
     if (["sql", "schema"].includes(state.tab)) return data("database");
@@ -383,7 +425,6 @@
     if (state.section === "summaries") return Promise.all([data("relations"), data("mindmap"), data("links"), data("database"), data("structures")]);
     if (state.section === "socioeconomic") return data("socio");
     if (state.section === "structures") return data("structures");
-    if (state.section === "ducar" && state.tab === "records") return data("links");
     return data("links");
   }
   function number(value, digits = 0) { const numeric=Number(value||0),authoritative=Math.abs(numeric-Number(confirmedNetwork().length_km||0))<.01,precision=authoritative?2:digits;return numeric.toLocaleString(undefined,{maximumFractionDigits:precision,minimumFractionDigits:authoritative?2:0}); }
@@ -1386,16 +1427,19 @@
   }
   function recordsHtml() {
     const dataset = recordDataset();
-    const rows = filtered(dataset),fullNetworkPending=state.section==="ducar"&&!Array.isArray(cache.fullNetworkRecords);
+    const rows = filtered(dataset),fullNetworkPending=state.section==="ducar"&&cache.fullNetworkComplete!==true;
     const shownRows=rows.slice(0,Math.min(100,rows.length)),sectionTitle=SECTION_META[state.section]?.[0]||"DUCAR";
     const heading=field=>{const active=state.sortField===field,arrow=active?(state.sortDirection==="asc"?"↑":"↓"):"↕",aria=active?(state.sortDirection==="asc"?"ascending":"descending"):"none";return `<th aria-sort="${aria}"><button class="column-sort" data-column-sort="${esc(field)}" type="button" title="Sort by ${esc(label(field))}"><span>${esc(label(field))}</span><i aria-hidden="true">${arrow}</i></button></th>`;};
-    return `<header class="records-heading"><small>FULL EXHAUSTIVE TABLE</small><h2>${esc(sectionTitle)} Complete Records</h2><p>Every available record and field. Search the full population or sort directly from any column heading.</p></header>${fullNetworkPending?`<div class="records-load-notice" role="status"><strong>Loading the complete 404,047-road national register…</strong><span>The governed Link-ID register is available immediately; the full table will replace it automatically.</span></div>`:""}<div class="records-toolbar exhaustive-controls"><input class="records-search" value="${esc(state.search)}" placeholder="Search every field in all records" aria-label="Search section records"><button class="studio-button" data-export type="button">CSV · complete searched records</button>${state.section==="overview" ? `<a class="studio-button" href="./data/ducar_link_register.csv" download>Master CSV</a>` : ""}</div><div class="records-status"><strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records in the complete searched population · loaded ${number(shownRows.length)} · ${number(dataset.fields.length)} fields · continuous vertical scrolling · horizontal scrolling above and below the table</div><div class="table-wrap all-records-table"><table class="data-table"><thead><tr>${dataset.fields.map(heading).join("")}</tr></thead><tbody>${shownRows.map(row=>`<tr>${dataset.fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(displayCell(field,row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    const completePopulation=fullNetworkPending?Number(cache.fullNetworkManifest?.population_records||cache.hotosmAnalysis?.total?.feature_count||404047):dataset.rows.length;
+    const populationStatus=fullNetworkPending?`<strong>${number(completePopulation)}</strong> records in the complete population · ${number(dataset.rows.length)} records searchable now · showing ${number(shownRows.length)} rows`:`<strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records in the complete searched population · showing ${number(shownRows.length)} rows · ${number(dataset.fields.length)} fields · scroll vertically for more rows and horizontally for all fields`;
+    const exportLabel=fullNetworkPending?`CSV · ${number(dataset.rows.length)} indexed records`:"CSV · complete searched records";
+    return `<header class="records-heading"><small>FULL EXHAUSTIVE TABLE</small><h2>${esc(sectionTitle)} Complete Records</h2><p>Every available record and field. Search the full population or sort directly from any column heading.</p></header>${fullNetworkPending?`<div class="records-load-notice" role="status"><strong>Preparing complete search across ${number(completePopulation)} road links</strong><span>The first indexed records are available immediately and the population expands automatically.</span></div>`:""}<div class="records-toolbar exhaustive-controls"><input class="records-search" value="${esc(state.search)}" placeholder="Search every field in all records" aria-label="Search section records"><button class="studio-button" data-export type="button">${exportLabel}</button>${state.section==="overview" ? `<a class="studio-button" href="./data/ducar_link_register.csv" download>Master CSV</a>` : ""}</div><div class="records-status">${populationStatus}</div><div class="table-wrap all-records-table"><table class="data-table"><thead><tr>${dataset.fields.map(heading).join("")}</tr></thead><tbody>${shownRows.map(row=>`<tr>${dataset.fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(displayCell(field,row[field]))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
   }
   function mountRemainingRecords(){
     const token=++recordMountToken,dataset=recordDataset(),rows=filtered(dataset),tbody=root.querySelector(".all-records-table tbody"),status=root.querySelector(".records-status");if(!tbody)return;
     if(tbody.rows.length>=rows.length)return;
     const wrap=tbody.closest(".table-wrap");let index=tbody.rows.length,appending=false;
-    const updateStatus=()=>{if(status)status.innerHTML=`<strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records in the complete searched population · loaded ${number(index)} of ${number(rows.length)} · ${number(dataset.fields.length)} fields · ${index<rows.length?"scroll down to continue loading":"complete population shown"}`;};
+    const updateStatus=()=>{if(!status)return;const progressive=state.section==="ducar"&&cache.fullNetworkComplete!==true,total=Number(cache.fullNetworkManifest?.population_records||404047);status.innerHTML=progressive?`<strong>${number(total)}</strong> records in the complete population · ${number(dataset.rows.length)} records searchable now · showing ${number(index)} rows`:`<strong>${number(rows.length)}</strong> of ${number(dataset.rows.length)} records in the complete searched population · showing ${number(index)} rows · ${number(dataset.fields.length)} fields · ${index<rows.length?"scroll vertically to display more rows":"complete population displayed"}`;};
     const appendBatch=()=>{if(appending||token!==recordMountToken||!tbody.isConnected||index>=rows.length)return;appending=true;const end=Math.min(index+250,rows.length),html=rows.slice(index,end).map(row=>`<tr>${dataset.fields.map(field=>`<td class="${cellClass(field,row[field])}">${esc(displayCell(field,row[field]))}</td>`).join("")}</tr>`).join("");tbody.insertAdjacentHTML("beforeend",html);index=end;appending=false;updateStatus();};
     wrap?.addEventListener("scroll",()=>{if(wrap.scrollTop+wrap.clientHeight>=wrap.scrollHeight-700)appendBatch();},{passive:true});updateStatus();
   }
@@ -1565,7 +1609,7 @@
     const provenance = state.section === "socioeconomic" ? `<article class="matrix-card analytics-provenance"><h3>Geospatial source register</h3><p>Authority and scope retained with the analysis.</p><div class="source-grid">${cache.socio.metadata.sources.map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noreferrer"><strong>${esc(source.name)}</strong><small>${esc(source.coverage)}</small></a>`).join("")}</div><div class="category-grid">${cache.socio.category_summary.map(item=>`<span><strong>${number(item.features)}</strong>${esc(item.category)}</span>`).join("")}</div></article>` : "";
     return `<div class="chart-grid">${charts}${provenance}</div><div class="records-status"><strong>${number(districts.length)}</strong> administrative units · cumulative length, coverage, risk and planning relations</div><div class="table-wrap analytics-table"><table class="data-table"><thead><tr>${fields.map(f=>`<th>${esc(label(f))}</th>`).join("")}</tr></thead><tbody>${districts.map(row=>`<tr>${fields.map(f=>`<td>${esc(f==="district"?row[f]:f==="planning_cost_ugx"?"UGX "+number(row[f],0):number(row[f],3)+" km")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
   }
-  function analyticsLength(row) { return Number(row.geometry_length_km||row.covered_length_km||row.allocated_road_length_km||0); }
+  function analyticsLength(row) { return Number(row.geometry_length_km||row.covered_length_km||row.allocated_road_length_km||row.length_km||0); }
   function analyticsTone(value, risk=false) { const v=Number(value||0); return risk?(v>=60?"analytic-bad":v>=30?"analytic-warn":"analytic-good"):(v>=80?"analytic-good":v>=50?"analytic-warn":"analytic-bad"); }
   function analyticsTable(title, subtitle, fields, rows) {
     return `<section class="analytics-block"><header><div><small>COMPLETE SUMMARY TABLE</small><h3>${esc(title)}</h3><p>${esc(subtitle)}</p></div><strong>${number(rows.length)} rows</strong></header><div class="table-wrap analytics-table"><table class="data-table"><thead><tr>${fields.map(field=>`<th>${esc(label(field))}</th>`).join("")}</tr></thead><tbody>${rows.map(row=>`<tr>${fields.map(field=>{const cell=row[field],text=cell&&typeof cell==="object"?cell.text:shown(cell),tone=cell&&typeof cell==="object"?cell.tone||"":"";return `<td class="${tone}">${esc(text)}</td>`;}).join("")}</tr>`).join("")}</tbody></table></div></section>`;
@@ -1661,9 +1705,9 @@
   }
   function hotosmDeepAnalytics(section){
     const analysis=cache.hotosmAnalysis;if(!analysis)return "";
-    const dimensions={overview:["functional_class","pavement","condition"],ducar:["functional_class","pavement","condition"],network:["highway","surface","pavement","functional_class"],traffic:["highway","functional_class"],condition:["condition","surface","pavement"],structures:["district"],pims:["functional_class","condition"],hdm4:["highway","pavement","condition"],framework:["region","district"],budgets:["functional_class","pavement"],socioeconomic:["region","district"],summaries:["region","district"]}[section]||["functional_class"];
+    const dimensions={overview:["functional_class","pavement","condition"],ducar:["region","district","highway","surface","pavement","condition","functional_class","management_class","government_authority"],network:["highway","surface","pavement","functional_class"],traffic:["highway","functional_class"],condition:["condition","surface","pavement"],structures:["district"],pims:["functional_class","condition"],hdm4:["highway","pavement","condition"],framework:["region","district"],budgets:["functional_class","pavement"],socioeconomic:["region","district"],summaries:["region","district"]}[section]||["functional_class"];
     const fields=["category","feature_count","length_km","paved_km","unpaved_km","unclassified_pavement_km","good_condition_km","fair_condition_km","poor_condition_km","unclassified_condition_km","named_feature_count","bridge_feature_count","oneway_feature_count"];
-    const tables=dimensions.map(dimension=>{let rows=analysis.summaries?.[dimension]||[];if(dimension==="functional_class"){const national=nationalRoadActual();rows=rows.map(row=>row.category==="National Roads"?{...row,feature_count:national.mappedRecords,length_km:national.registerKm,paved_km:national.pavedKm,unpaved_km:national.unpavedKm,unclassified_pavement_km:0,good_condition_km:national.conditionKm.Good,fair_condition_km:national.conditionKm.Fair,poor_condition_km:national.conditionKm.Poor,unclassified_condition_km:0,named_feature_count:national.mappedRecords,bridge_feature_count:0,oneway_feature_count:0}:row);}return analyticsTable(`${dimension==="functional_class"?"Authoritative":"HOTOSM"} ${label(dimension)} complete summary`,dimension==="functional_class"?"National Roads use the actual July 2026 register and mapped network2026 alignments. Other classes retain complete vehicular source classification.":"All vehicular source features and affected length; no Top-N selection.",fields,rows);}).join("");
+    const tables=dimensions.map(dimension=>{let rows=analysis.summaries?.[dimension]||[];if(dimension==="functional_class"){const national=nationalRoadActual();rows=rows.map(row=>row.category==="National Roads"?{...row,feature_count:national.mappedRecords,length_km:national.registerKm,paved_km:national.pavedKm,unpaved_km:national.unpavedKm,unclassified_pavement_km:0,good_condition_km:national.conditionKm.Good,fair_condition_km:national.conditionKm.Fair,poor_condition_km:national.conditionKm.Poor,unclassified_condition_km:0,named_feature_count:national.mappedRecords,bridge_feature_count:0,oneway_feature_count:0}:row);}if(dimension==="pavement"){const confirmed=confirmedNetwork(),paved=confirmed.paved_km,unpaved=confirmed.length_km-paved;rows=rows.map(row=>row.category==="Paved"?{...row,length_km:paved,paved_km:paved,unpaved_km:0,unclassified_pavement_km:0}:row.category==="Unpaved"?{...row,length_km:unpaved,paved_km:0,unpaved_km:unpaved,unclassified_pavement_km:0}:row);}return analyticsTable(`${dimension==="functional_class"||dimension==="pavement"?"Authoritative":"Complete Source"} ${label(dimension)} summary`,dimension==="functional_class"?"National Roads use the actual July 2026 register and mapped network2026 alignments. Other classes retain complete vehicular source classification.":dimension==="pavement"?"Paved and Unpaved affected length use the approved network baseline.":"All 404,047 vehicular source records are retained without Top-N selection.",fields,rows);}).join("");
     if(section!=="traffic"&&section!=="summaries"&&section!=="framework")return tables;
     const completeness=Object.entries(analysis.attribute_completeness||{}).map(([attribute,row])=>({attribute,...row,gap_features:Number(analysis.total.feature_count||0)-Number(row.supplied_features||0),gap_length_km:Number(analysis.total.length_km||0)-Number(row.supplied_length_km||0)}));
     return tables+analyticsTable("HOTOSM attribute completeness","Every source attribute measured by feature frequency and affected length; missing values remain explicit.",["attribute","supplied_features","gap_features","supplied_length_km","gap_length_km"],completeness);
@@ -1676,6 +1720,16 @@
       const formulas=[coverage("Official governance evidence coverage",row=>row.governance_evidence_status!=="Not yet source-verified","Countries with reviewed official governance sources."),coverage("Coordinate country coverage",row=>hasNumeric(row.x_coordinate_dd)&&hasNumeric(row.y_coordinate_dd),"Countries with representative WGS84 coordinates."),coverage("Road-network total coverage",row=>hasNumeric(row.road_network_km),"Countries with a distributable sourced road-network length."),coverage("Pavement-split coverage",row=>hasNumeric(row.paved_road_km)||hasNumeric(row.unpaved_road_km),"Countries with paved and/or unpaved road length.")];
       const regions=[...new Set(rows.map(row=>row.region))].sort().map(region=>{const selected=rows.filter(row=>row.region===region),withRoad=selected.filter(row=>hasNumeric(row.road_network_km));return {region,countries:selected.length,countries_with_road_total:withRoad.length,reported_road_length_km:number(withRoad.reduce((sum,row)=>sum+Number(row.road_network_km),0),2)+" km",reported_paved_length_km:number(selected.reduce((sum,row)=>sum+(hasNumeric(row.paved_road_km)?Number(row.paved_road_km):0),0),2)+" km",reported_unpaved_length_km:number(selected.reduce((sum,row)=>sum+(hasNumeric(row.unpaved_road_km)?Number(row.unpaved_road_km):0),0),2)+" km",reviewed_governance_records:selected.filter(row=>row.governance_evidence_status!=="Not yet source-verified").length};});
       return `<div class="analytics-workbook"><div class="analytics-intro"><div><small>CHART-FREE ANALYTICAL WORKBOOK</small><h2>Global local-road governance formulas and relations</h2><p>All configured countries retained; ministry and road-authority evidence is never inferred where an official source has not been reviewed.</p></div><strong>${number(rows.length)} countries · ${number(reviewed.length)} reviewed</strong></div>${formulaTable(rows,formulas)}${crossTab(rows,"region","governance_evidence_status","Region × governance evidence status")}${crossTab(rows,"governance_evidence_status","lead_institution","Evidence status × lead institution")}${analyticsTable("Transferable road-asset-management controls","PIARC and World Bank principles, measures, techniques and primary sources.",["principle","measure","technique","source_title","source_url"],principles)}${analyticsTable("Officially sourced local-road operating models","Reviewed ministry and road-authority models for district, urban, rural and access roads.",["country","region","governance_model","lead_institution","local_road_manager","financing_mechanism","asset_management_principles","performance_measures","tools_and_techniques","governance_source_title","governance_source_url"],reviewed)}${analyticsTable("Complete world-region road inventory summary","All configured countries with reported road length, pavement split and governance evidence.",["region","countries","countries_with_road_total","reported_road_length_km","reported_paved_length_km","reported_unpaved_length_km","reviewed_governance_records"],regions)}</div>`;
+    }
+    if(state.section==="ducar"){
+      const analysis=cache.hotosmAnalysis||{},total=analysis.total||{},confirmed=confirmedNetwork(),linked=activeLinkRows().map(enrichedAdministrativeRow),inventoryRows=[
+        {metric:"Complete road-link population",value:number(total.feature_count||confirmed.links),unit:"records",basis:"Complete reconciled vehicular-road inventory"},
+        {metric:"Total affected road length",value:number(confirmed.length_km,2),unit:"km",basis:"Approved complete-network baseline"},
+        {metric:"Paved affected road length",value:number(confirmed.paved_km,2),unit:"km",basis:"Approved Paved baseline"},
+        {metric:"Unpaved affected road length",value:number(confirmed.length_km-confirmed.paved_km,2),unit:"km",basis:"Approved Unpaved baseline"},
+        {metric:"Actual National Road Network",value:number(nationalRoadActual().registerKm,3),unit:"km",basis:"July 2026 register joined to network2026 alignments"}
+      ],management=[["Maintenance region","maintenance_region"],["Sub-region","sub_region"],["Maintenance station","maintenance_station"],["Financial year","financial_year"]].map(([title,field])=>analyticsTable(`${title} linked-register summary`,`All governed ${title.toLowerCase()} values in the 7,733-link administrative register, shown separately from the 404,047-link complete inventory.`,["category","records","affected_length_km","represented_area_sqkm","road_density_km_per_1000_sqkm","length_share_pct","mean_record_length_km"],categorySummary(linked,field))).join("");
+      return `<div class="analytics-workbook"><div class="analytics-intro"><div><small>COMPLETE-POPULATION ANALYTICAL WORKBOOK</small><h2>National DUCAR Overview formulas, summaries and relations</h2><p>Pre-aggregated complete-population tables load immediately. No district, category or road link is removed through Top-N selection.</p></div><strong>${number(total.feature_count||confirmed.links)} records · ${number(confirmed.length_km,2)} km</strong></div>${analyticsTable("Authoritative inventory formula register","Approved totals and actual National Road Network data used throughout the public site.",["metric","value","unit","basis"],inventoryRows)}${hotosmDeepAnalytics("ducar")}${management}${nationalReconciliationAnalytics(linked)}</div>`;
     }
     const rows=state.section==="summaries"?applyHeaderFilters(cache.relations).map(row=>({...row,district:row.admin_district,geometry_length_km:row.covered_length_km})):state.section==="socioeconomic"?applyHeaderFilters(cache.socio.rows):activeLinkRows();
     const pairs={traffic:[["pavement_class","condition"],["priority_band","recommended_intervention"]],condition:[["condition","pavement_class"],["condition","recommended_intervention"]],network:[["surface","pavement_class"],["condition","surface"]],pims:[["priority_band","recommended_intervention"],["priority_band","condition"]],hdm4:[["pavement_class","condition"],["priority_band","recommended_intervention"]],framework:[["admin_coverage","condition"],["pavement_class","priority_band"]],budgets:[["priority_band","recommended_intervention"],["condition","pavement_class"]],socioeconomic:[["exposure_band","primary_socioeconomic_factor"],["exposure_band","pavement_class"]],summaries:[["relation_basis","pavement_class"],["condition","priority_band"]],overview:[["condition","pavement_class"],["priority_band","recommended_intervention"]],ducar:[["condition","pavement_class"],["surface","recommended_intervention"]]};
@@ -1787,7 +1841,7 @@
     }
     let body = state.tab === "dashboard" ? dashboardHtml() : state.tab === "map" ? (state.section==="summaries"?adminMindMapHtml():mapHtml()) : state.tab === "records" ? recordsHtml()+(state.section==="pims"?ibpHtml():"") : state.tab === "analytics" ? analyticsHtml() : state.tab === "sql" ? sqlHtml() : schemaHtml();
     shell(body); normalizeMetricWording(root);removeCollapseControls(root);bind();initPageTools();enhanceStaticTableSorting();enhanceTableScrolling();if(state.tab==="records")mountRemainingRecords();
-    if(state.section==="ducar"&&state.tab==="records"&&!Array.isArray(cache.fullNetworkRecords))data("fullNetworkRecords").then(()=>{if(state.section==="ducar"&&state.tab==="records")render();}).catch(error=>{const notice=root.querySelector(".records-load-notice");if(notice)notice.innerHTML=`<strong>Complete national register download unavailable</strong><span>${esc(error.message)}. The governed Link-ID register remains available.</span>`;});
+    if(state.section==="ducar"&&state.tab==="records"&&!cache.fullNetworkComplete)loadRemainingFullNetworkChunks().catch(error=>{const notice=root.querySelector(".records-load-notice");if(notice)notice.innerHTML=`<strong>Complete population search is temporarily unavailable</strong><span>${esc(error.message)}. The loaded records remain searchable.</span>`;});
     if (state.tab === "map") state.section==="summaries"?initAdminMindMap():state.section==="global"?initGlobalMap():initSectionMap();
     syncHeaderFilterPanel();
     ensureHeaderExportMenu();ensureHeaderNavigationControls();
@@ -1797,6 +1851,7 @@
     document.body.classList.remove("network-map-mode");
     root.innerHTML = `<section class="exhaustive-shell"><div class="section-studio"><nav class="section-tabs" aria-label="Section reporting views">${SECTION_TABS.map(([id,text])=>`<button type="button" class="section-tab ${state.tab===id?"active":""}" data-section-tab="${id}" aria-current="${state.tab===id?"page":"false"}">${esc(text)}</button>`).join("")}</nav>${pageToolsHtml()}${body}</div></section>`;
     removeCollapseControls(root);
+    requestAnimationFrame(()=>{const nav=root.querySelector(".section-tabs"),active=nav?.querySelector(".section-tab.active");if(nav&&active)nav.scrollLeft=Math.max(0,active.offsetLeft-(nav.clientWidth-active.offsetWidth)/2);});
     if(state.tab==="dashboard")root.querySelectorAll("table").forEach(table=>{const owner=table.closest(".consistency-controls,.table-export-wrap,.global-governance,.admin-block")||table.closest(".table-wrap");owner?.remove();});
   }
   function bind() {
