@@ -17,7 +17,7 @@ var ducar2025Data = {
   confirmed_all_road_links: 404047,
   confirmed_all_road_districts: 135,
   verified_ducar_links: 7733,
-  verified_ducar_length_km: 22323.109,
+  verified_ducar_length_km: 248616.14,
   national_km: 21302,
   ducar_benchmark_km: 138503,
   paved_km: 11762.8,
@@ -28,13 +28,12 @@ var kccaData = {
   total_length_km: 309.591
 };
 var verifiedConditionData = {
-  total_length_km: 22323.109,
-  traffic_links: 1877,
+  total_length_km: 248616.14,
+  traffic_links: 404047,
   conditions: [
-    { name: "Fair", count: 2983, length_km: 13007.892 },
-    { name: "Poor", count: 1791, length_km: 5878.409 },
-    { name: "Good", count: 542, length_km: 2539.724 },
-    { name: "Unclassified", count: 2417, length_km: 897.084 }
+    { name: "Fair", count: 226637, length_km: 141708.392016 },
+    { name: "Poor", count: 176110, length_km: 106122.015 },
+    { name: "Good", count: 1300, length_km: 785.7301 }
   ]
 };
 function setDucar2025Data(value) {
@@ -62,8 +61,8 @@ function setKccaData(value) {
 <div id="exhaustive-root"></div>
 <a class="all-records-link" href="#exhaustive-root">Section studio ↓</a>
 <a class="verified-reporting-link" href="./reporting.html">Verified Link &amp; Admin Matrix ↗</a>
-<script defer src="./exhaustive.js?v=20260925-progressive-404047-fast-1"></script>
-<script defer src="./site-enhance.js?v=20260925-searchable-filters-fast-1"></script>
+<script defer src="./exhaustive.js?v=20260925-public-length-caption-cleanup-1"></script>
+<script defer src="./site-enhance.js?v=20260925-public-length-caption-cleanup-1"></script>
 <script defer src="./keyboard-shortcuts.js?v=20260921-1"></script>
 <script async src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" onload="window.dispatchEvent(new Event('ducar:leaflet-ready'))"></script>
 <script async src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>

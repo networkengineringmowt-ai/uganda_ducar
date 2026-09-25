@@ -88,6 +88,26 @@
   function normalize(text) {
     return String(text == null ? "" : text).trim().toLowerCase();
   }
+  function cleanPublicNarrative() {
+    var selector = "p, li, .method-note, .chart-subtitle, .analytics-intro, .benchmark-panel, .metric-card, .axis-title, .universal-axis-strip";
+    document.querySelectorAll(selector).forEach(function (element) {
+      if (element.matches(".axis-title, .universal-axis-strip") || /(?:vertical axis:.*horizontal axis:|horizontal axis:.*vertical axis:)/i.test(element.textContent || "")) {
+        element.remove();
+        return;
+      }
+      var walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+      var node;
+      while ((node = walker.nextNode())) {
+        var original = node.nodeValue;
+        var revised = original
+          .replace(/22[ ,]?323(?:\.109|\.11)?\s*km/gi, "248,616.14 km")
+          .replace(/\b(?:as\s+)?(?:explained|described|shown|noted|set\s+out|detailed)\s+in\s+(?:section|chapter|appendix)\s+[A-Z]?\d+(?:\.\d+)*(?:\s+of\s+this\s+(?:page|report|document))?\b[,:;.]?/gi, "")
+          .replace(/\b(?:see|refer\s+to)\s+(?:section|chapter|appendix)\s+[A-Z]?\d+(?:\.\d+)*\b[,:;.]?/gi, "")
+          .replace(/\s{2,}/g, " ");
+        if (revised !== original) node.nodeValue = revised;
+      }
+    });
+  }
   function quantiles(values) {
     var sorted = values.slice().sort(function (a, b) { return a - b; });
     function q(p) {
@@ -528,6 +548,7 @@
 
   /* ================= Driver ================= */
   function runPass() {
+    cleanPublicNarrative();
     // .data-table (and anything already using our own toolbar) is exhaustive.js's
     // own territory — it already has its own sort/search/CSV/virtualized-load
     // handling there, so we leave those alone and only pick up tables nothing
